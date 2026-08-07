@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { terms } from '../../data/preview';
+import { definitionOverrides } from '../../data/definitionOverrides';
 
 export function getStaticPaths() {
   return terms
@@ -9,17 +10,18 @@ export function getStaticPaths() {
 }
 
 const { term } = Astro.props;
+const definition = definitionOverrides[term.slug] ?? term.definition;
 ---
 <BaseLayout title={`${term.label} — Astrological Lexicon`}>
   <div class="shell page-grid">
     <article class="article">
       <p class="eyebrow">{term.category} · Draft entry</p>
       <h1>{term.label}</h1>
-      <p class="lede">{term.definition}</p>
+      <p class="lede">{definition}</p>
 
       <section id="definition">
         <h2>Working definition</h2>
-        <p>{term.definition}</p>
+        <p>{definition}</p>
         <p class="meta">This entry is currently in the research-preview stage. The concept has been extracted and seeded in the project database, but the full author-by-author source presentation has not yet been promoted into the frontend.</p>
       </section>
 

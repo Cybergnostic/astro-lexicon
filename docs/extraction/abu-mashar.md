@@ -15,9 +15,21 @@ Method: read the work in order, chapter by chapter. Record technical vocabulary 
 - Chapter 5 (§§5.1–5.42): reviewed
 - Chapter 6 (§§6.1–6.22): reviewed
 
+### Part II — reviewed completely
+
+- Chapter 1 (§§1.1–1.10): reviewed
+- Chapter 2 (§§2.1–2.9): reviewed
+- Chapter 3 (§§3.1–3.9): reviewed
+- Chapter 4 (§§4.1–4.8): reviewed
+- Chapter 5 (§§5.1–5.7): reviewed
+- Chapter 6 (§§6.1–6.3): reviewed
+- Chapter 7 (§§7.1–7.7): reviewed
+- Chapter 8 (§§8.1–8.3): reviewed
+- Chapter 9 (§§9.1–9.4): reviewed
+
 ### Remaining
 
-- Parts II–VIII: not yet sequentially reviewed
+- Parts III–VIII: not yet sequentially reviewed
 
 ## Terms first encountered or formally established in Part I
 
@@ -78,7 +90,33 @@ The increase and decrease of lunar light appear as distinct lunar conditions in 
 ### Easternness / Westernness
 Mentioned in Chapter 2 among planetary conditions tracked by experienced practitioners. Their precise solar-phase definitions are intentionally deferred until the later dedicated planetary-condition sections are reached.
 
-## Editorial observations from Part I
+## Terms first encountered or formally established in Part II
+
+### Fixed Stars / Stellar Magnitude / Constellation
+Part II Chapter 1 distinguishes the seven planets from 1,022 slow-moving fixed stars, classifies the latter in six brightness magnitudes, and organizes them into forty-eight constellations. Abū Maʿshar explicitly says the constellation figures are formed in imagination and thought.
+
+### Zodiac / Sign
+Chapter 2 gives the central zodiacal belt as 360 degrees divided into twelve equal signs of thirty degrees each. The source also discusses the twelve stellar constellations on the Sun’s path, so the database must distinguish equal zodiacal signs from pictorial constellations rather than silently treating them as identical.
+
+### Universal and Particular Indication
+Part II sharpens the distinction already encountered in Part I. The twelve zodiacal constellations/signs are assigned universal indication, while the other constellations are assigned more particular indications.
+
+### Triplicity
+The twelve signs are grouped by elemental nature into four groups of three: fiery, earthy, airy, and watery. Abū Maʿshar sometimes uses the same translated word “triplicity” for the signs belonging to such a group, a translation issue that must remain visible in editorial notes.
+
+### Tropical / Fixed / Bicorporeal Signs
+Part II Chapters 6–7 derive the three sign modalities from the seasonal cycle. Tropical signs begin a seasonal quadrant and mark change; fixed signs establish its nature; bicorporeal signs mix the departing season with the approaching one. Preserve “tropical” and “bicorporeal” as source terminology rather than automatically replacing them with modern “cardinal” and “mutable”.
+
+### Quadrant of the Sphere
+The annual zodiacal cycle is divided into four seasonal quadrants. Their beginning, middle, and end provide the conceptual basis for the twelve signs and the three modalities.
+
+### Masculine / Feminine Signs
+The natural classification alternates masculine and feminine beginning with Aries masculine and Taurus feminine. Abū Maʿshar distinguishes this from an accidental house-based alternation counted from the ascendant and gives priority to the natural order when the two disagree.
+
+### Diurnal / Nocturnal Signs
+Part II Chapter 9 gives another alternating classification beginning Aries diurnal, Taurus nocturnal. This is a classification of signs and must not be collapsed into planetary sect.
+
+## Editorial observations from Parts I–II
 
 1. Part I is largely foundational and philosophical rather than a list of technical astrological rules. It nevertheless supplies the conceptual grammar of the rest of the work.
 2. “Indication” and “celestial power” are related but not interchangeable. One concerns what celestial conditions signify; the other concerns the causal or natural action Abū Maʿshar attributes to celestial motion.
@@ -87,8 +125,11 @@ Mentioned in Chapter 2 among planetary conditions tracked by experienced practit
 5. His treatment of possibility and choice is nuanced. He rejects simple fatalism, while also saying that when an event is actualized it enters necessity or impossibility. Do not summarize his position as either modern free will or strict determinism.
 6. Chapter 6 defines the value of astrology primarily through foreknowledge and preparation rather than through an assumption that every indicated event can be prevented.
 7. “Revolution of the world-year”, “revolution of the year of a nativity”, and “question” appear before their methods are developed. They are recorded now and should be refined later rather than overdefined from Part I alone.
-8. The source edition is copyrighted. Database summaries are original paraphrases; no long translated passages are stored.
+8. Part II confirms that source terminology should be preserved even when later English astrology uses different labels: `tropical` rather than automatically `cardinal`, and `bicorporeal` rather than automatically `mutable`.
+9. Part II also requires a strict distinction between zodiacal signs and stellar constellations. The text discusses both in close proximity, but the twelve signs are equal thirty-degree divisions of the zodiacal belt.
+10. Diurnal/nocturnal signs are not the same object as planetary sect. They belong in a separate sign-classification branch of the ontology.
+11. The source edition is copyrighted. Database summaries are original paraphrases; no long translated passages are stored.
 
 ## Next reading position
 
-Part II begins at original p. 176 / PDF p. 190. Chapter 1 concerns the number of fast- and slow-moving stars/planets recognized by the Ancients and their magnitudes. The sequential review should continue there.
+Part III begins at original p. 224 / PDF p. 238. It has nine chapters and turns from the signs to the seven planets, including why the planets receive general indication, the definition of astrologer, the specific indications of the Sun and Moon, tides, and lunar waxing/waning effects.

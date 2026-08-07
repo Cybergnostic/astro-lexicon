@@ -70,10 +70,58 @@ Do not infer Antiochus's definitions from later authors merely because the termi
 - `Application` needs both a conceptual definition and author-specific motion rules.
 - Triplicity rulership needs enough structure to represent day ruler, night ruler, participating ruler and alternate ordering traditions.
 
+## Pass 2 — perfection mechanics and solar/sect conditions
+
+Added to `db/seed/0003_perfection_and_solar_conditions.sql`:
+
+- Separation
+- Prohibition
+- Refranation
+- Translation of Light
+- Collection of Light
+- Frustration
+- Void of Course
+- Hayz
+- Peregrine
+- Cazimi / In the Heart of the Sun
+- Under the Sun's Rays
+- Orientality
+- Occidentality
+
+### William Lilly — directly checked
+
+- Prohibition — PDF pp. 131–132 / original pp. 110–111. A third planet interposes its body or aspect before an applying pair perfects; Lilly distinguishes bodily and aspectual prohibition.
+- Refrenation — PDF p. 132 / original p. 111. The applying planet turns retrograde before reaching conjunction.
+- Translation of light and nature — PDF pp. 132–133 / original pp. 111–112. A lighter planet separates from a heavier one and immediately joins another heavier planet, carrying virtue between them; Lilly allows aspect as well as conjunction.
+- Void of course — PDF p. 133 / original p. 112. A planet has separated and makes no further application during its remaining passage through the sign; Lilly notes this especially for the Moon.
+- Frustration — PDF pp. 133–134 / original pp. 112–113. The heavier planet being applied to joins another planet first.
+- Hayz — PDF p. 134 / original p. 113. Lilly combines sect, hemisphere and sign gender.
+- Peregrine — PDF p. 133 / original p. 112. Absence of house, exaltation, triplicity, term or face dignity in the occupied degree.
+- Cazimi and under the Sun's beams — PDF p. 134 / original p. 113. Lilly gives separate limits: cazimi within 17 minutes, combustion within 8°30′, under the beams to 17°.
+- Translation and collection as modes of perfection — PDF pp. 147–148 / original pp. 126–127. Collection requires two principal significators to cast aspects to a heavier planet which they receive in essential dignity.
+
+### Al-Bīrūnī — directly checked
+
+- §493–494 — peregrination and dignity. Absence of a favourable/dignified position is peregrine; detriment or fall adds further adversity. The following section ranks house, exaltation, term, triplicity and face.
+- §481 and surrounding solar-phase discussion — innermost solar condition, combustion, under the rays, orientality and occidentality are distinct phases; visibility limits differ by planet.
+- Immediately before §507 — refranation occurs when the applying inferior planet turns retrograde before conjunction. The same sequence also describes a translated condition called prevention in which a third planet intervenes before the intended conjunction.
+
+The al-Bīrūnī `prevention` material is currently attached cautiously to the draft `prohibition` concept with `close_paraphrase` certainty. This is a deliberate provisional mapping, not an assertion that the two historical terms are perfectly identical.
+
+## Editorial findings from Pass 2
+
+- `Frustration` must not become a generic label for every failed perfection. Lilly gives it a narrow mechanism.
+- `Prohibition`, `prevention`, `intervention`, and `abscission/cutting off the light` need a comparative pass before aliases are assigned.
+- `Translation of Light` and `Collection of Light` deserve separate entries; both are modes of mediation/perfection but operate differently.
+- `Cazimi`, `Combustion`, and `Under the Rays` now form a linked solar-proximity family rather than one flattened condition.
+- `Orientality` and `Occidentality` cannot be represented by a single simplistic east/west rule because al-Bīrūnī explicitly treats superior and inferior planets differently.
+- `Hayz` belongs under sect/accidental condition and should not be collapsed into sect itself.
+
 ## Next extraction pass
 
-1. Add `cazimi` and `under-the-rays` as separate terms.
-2. Add `separation`, `prohibition/prevention`, `refranation`, `translation of light`, and `collection of light`.
-3. Extract direct Bonatti passages for the above rather than relying on editorial essays.
-4. Read Antiochus's relevant page images and create manually verified source records.
-5. Revisit the schema if a historical doctrine cannot be represented without forcing it into modern terminology.
+1. Extract direct Bonatti text for reception/perfection mechanics, carefully excluding Robert Hand's introductory/editorial summaries.
+2. Read Antiochus's relevant page images and create manually verified source records.
+3. Extract Abū Maʿshar's dignity/sect material with exact part/chapter/page locators.
+4. Add domicile, exaltation, fall, detriment, face/decan, joy and sect as individual entries.
+5. Decide whether prevention/intervention/prohibition require separate canonical concepts or a broader parent concept with historically specific children.
+6. Connect the frontend term index to these seed records once the content set reaches roughly 25–30 stable draft concepts.

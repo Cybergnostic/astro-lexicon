@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+const { title = 'Astrological Lexicon', description = 'A source-based encyclopedia of traditional astrological terminology.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell site-header__inner">
+        <a class="wordmark" href="/">Astrological Lexicon</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="/terms/reception">Terms</a>
+          <a href="/authors/guido-bonatti">Authors</a>
+          <a href="/#sources">Sources</a>
+          <a href="/#method">Method</a>
+        </nav>
+      </div>
+    </header>
+    <main><slot /></main>
+    <footer class="footer">
+      <div class="shell">
+        <span>Source-based traditional astrology reference</span>
+        <span>Research preview</span>
+      </div>
+    </footer>
+    <script is:inline>
+      document.querySelectorAll('[data-mode]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const mode = button.getAttribute('data-mode');
+          document.body.classList.toggle('sources-mode', mode === 'sources');
+          document.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('active', b === button));
+        });
+      });
+    </script>
+  </body>
+</html>

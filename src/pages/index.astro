@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { terms, authors } from '../data/preview';
+
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUpperCase()));
 ---
 <BaseLayout>
   <div class="shell page-grid">
@@ -16,14 +19,20 @@ import { terms, authors } from '../data/preview';
 
       <p class="eyebrow">Browse</p>
       <div class="alpha" aria-label="Alphabetical index">
-        {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((letter) => <a href={`#${letter}`}>{letter}</a>)}
+        <a href="#terms" data-letter="ALL" class="alpha-all">All</a>
+        {alphabet.map((letter) => (
+          availableLetters.has(letter)
+            ? <a href={`#${letter}`} data-letter={letter}>{letter}</a>
+            : <span class="is-empty" aria-disabled="true">{letter}</span>
+        ))}
       </div>
 
       <section id="terms">
-        <h2>Current terms</h2>
-        <ul class="list-clean">
+        <h2 id="terms-heading">Current terms</h2>
+        <p id="no-letter-results" class="meta browse-empty" hidden>No terms under this letter yet.</p>
+        <ul id="term-list" class="list-clean">
           {terms.map((term) => (
-            <li>
+            <li data-term-letter={term.label.charAt(0).toUpperCase()}>
               <a href={`/terms/${term.slug}`}>{term.label}</a>
               <span class="count">{term.category}</span>
             </li>
@@ -78,5 +87,53 @@ import { terms, authors } from '../data/preview';
         : `<div class="search-result"><small>search</small><span>No indexed result yet.</span></div>`;
       box.classList.add('is-open');
     });
+
+    const alphaLinks = Array.from(document.querySelectorAll('.alpha a[data-letter]'));
+    const termRows = Array.from(document.querySelectorAll('#term-list li[data-term-letter]'));
+    const termsHeading = document.getElementById('terms-heading');
+    const emptyMessage = document.getElementById('no-letter-results');
+
+    function applyLetterFilter(letter, { updateHash = false } = {}) {
+      const normalized = letter === 'ALL' ? 'ALL' : String(letter || '').toUpperCase();
+      const filter = /^[A-Z]$/.test(normalized) ? normalized : 'ALL';
+      let visibleCount = 0;
+
+      termRows.forEach((row) => {
+        const visible = filter === 'ALL' || row.dataset.termLetter === filter;
+        row.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+
+      alphaLinks.forEach((link) => {
+        link.classList.toggle('active', link.dataset.letter === filter);
+        if (link.dataset.letter === filter) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+
+      if (termsHeading) termsHeading.textContent = filter === 'ALL' ? 'Current terms' : `Current terms — ${filter}`;
+      if (emptyMessage) emptyMessage.hidden = visibleCount !== 0;
+
+      if (updateHash) {
+        const nextHash = filter === 'ALL' ? '#terms' : `#${filter}`;
+        history.replaceState(null, '', nextHash);
+      }
+    }
+
+    alphaLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        applyLetterFilter(link.dataset.letter, { updateHash: true });
+        document.getElementById('terms')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    function filterFromHash() {
+      const hash = window.location.hash.replace('#', '').toUpperCase();
+      if (/^[A-Z]$/.test(hash)) applyLetterFilter(hash);
+      else if (hash === 'TERMS' || !hash) applyLetterFilter('ALL');
+    }
+
+    window.addEventListener('hashchange', filterFromHash);
+    filterFromHash();
   </script>
 </BaseLayout>

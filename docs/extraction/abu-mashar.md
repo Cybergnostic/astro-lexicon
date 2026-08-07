@@ -39,9 +39,21 @@ Method: read the work in order, chapter by chapter. Record technical vocabulary 
 - Chapter 8 (§§8.1–8.15): reviewed
 - Chapter 9 (§§9.1–9.11): reviewed
 
+### Part IV — reviewed completely
+
+- Chapter 1 (§§1.1–1.10): reviewed
+- Chapter 2 (§§2.1–2.19): reviewed
+- Chapter 3: reviewed
+- Chapter 4: reviewed
+- Chapter 5 (§§5.1–5.22): reviewed
+- Chapter 6 (§§6.1–6.20): reviewed
+- Chapter 7 (§§7.1–7.13): reviewed
+- Chapter 8 (§§8.1–8.4): reviewed
+- Chapter 9 (§§9.1–9.7): reviewed
+
 ### Remaining
 
-- Parts IV–VIII: not yet sequentially reviewed
+- Parts V–VIII: not yet sequentially reviewed
 
 ## Terms first encountered or formally established in Part I
 
@@ -148,23 +160,56 @@ Chapters 4–8 form a long historical natural-astrological treatment of tides. T
 ### Critical Days
 Chapter 9 connects the Moon’s daily motion and specified angular relationships to its earlier position with the “known” or critical days used in judging the changing condition of a patient.
 
-## Editorial observations from Parts I–III
+## Terms first encountered or formally established in Part IV
+
+### Planetary Nature
+Part IV is explicit that hot, cold, wet, and dry are not literal elemental constituents of celestial bodies. They are attributed to planets from the actions observed in the sublunary world. This is a critical distinction for interpreting every later use of planetary “nature”.
+
+### Planetary Property
+Abū Maʿshar distinguishes a planet’s property from its attributed elemental nature. Property explains why the same planet can produce different kinds of fortune and misfortune according to condition and receptivity.
+
+### Benefic / Malefic / Mixed
+Beneficence is associated with tempering, agreement, generation, life, and preservation; maleficence with excess, discord, corruption, and destruction. Mercury is especially mixed and readily takes on the qualities of associated signs and planets.
+
+### In the Nature of the Benefics / Malefics
+Part IV Chapter 6 does not simply reclassify a malefic as benefic or vice versa. A malefic under favourable conditions can act “in the nature of the benefics”; a benefic under corrupting conditions can act “in the nature of the malefics”. The original class remains conceptually distinct from the temporary manifestation.
+
+### Ascending / Descending in the Orb of Apogee
+Part IV Chapter 7 uses ascent and descent through the apogee orb as major modifiers of a planet’s attributed qualities. The effect is planet-specific and combines with sign, quadrant, term, and solar relation.
+
+### Direct Motion / Station / Retrogradation
+Stations and changes between direct and retrograde motion enter the qualitative phase doctrine. For the superior planets the sequence from eastern appearance through stations and opposition is assigned successive qualitative states; Mercury and Venus have their own phase sequence.
+
+### Planetary Masculinity / Femininity
+The planetary classification is grounded primarily in heat/activity versus wetness/passivity, but manifestation varies with eastern/western phase and quadrant. It must remain separate from the masculine/feminine classification of signs.
+
+### Diurnal / Nocturnal Planets
+Saturn, Jupiter, and the Sun are diurnal; Mars, Venus, and the Moon are nocturnal. Mercury is conditional. Abū Maʿshar explains this through temperateness by day or night and then modifies the indications through easternness and westernness. This belongs to sect doctrine, not to the separate Part II classification of diurnal/nocturnal signs.
+
+### Head / Tail of the Dragon
+The Head of the lunar ǧawzahar is associated with ascent, leadership, and a measure of good fortune; the Tail with descent and misfortune. Neither is absolutely fixed in manifestation: each can under some conditions produce effects resembling the opposite class.
+
+## Editorial observations from Parts I–IV
 
 1. Part I is largely foundational and philosophical rather than a list of technical astrological rules. It nevertheless supplies the conceptual grammar of the rest of the work.
 2. “Indication” and “celestial power” are related but not interchangeable. One concerns what celestial conditions signify; the other concerns the causal or natural action Abū Maʿshar attributes to celestial motion.
-3. “Nature” is heavily overloaded in the translation. It can mean one of the four elements, a qualitative constitution, or a natural property. Avoid a single generic `nature` entry.
+3. “Nature” is heavily overloaded in the translation. It can mean one of the four elements, a qualitative constitution, a planetary attribution, or a natural property. Do not collapse these uses.
 4. Abū Maʿshar explicitly argues from universal to particular indications. This gives us a useful ontology distinction for later entries: some statements concern classes, others individuals or degree-specific particulars.
 5. His treatment of possibility and choice is nuanced. He rejects simple fatalism, while also saying that when an event is actualized it enters necessity or impossibility. Do not summarize his position as either modern free will or strict determinism.
 6. Chapter 6 of Part I defines the value of astrology primarily through foreknowledge and preparation rather than through an assumption that every indicated event can be prevented.
 7. “Revolution of the world-year”, “revolution of the year of a nativity”, and “question” appear before their methods are developed. They are recorded now and should be refined later rather than overdefined from Part I alone.
 8. Part II confirms that source terminology should be preserved even when later English astrology uses different labels: `tropical` rather than automatically `cardinal`, and `bicorporeal` rather than automatically `mutable`.
-9. Part II also requires a strict distinction between zodiacal signs and stellar constellations. The text discusses both in close proximity, but the twelve signs are equal thirty-degree divisions of the zodiacal belt.
-10. Diurnal/nocturnal signs are not the same object as planetary sect. They belong in a separate sign-classification branch of the ontology.
+9. Part II requires a strict distinction between zodiacal signs and stellar constellations.
+10. Diurnal/nocturnal signs are not the same object as planetary sect.
 11. Part III makes an important epistemological distinction: astrology is not presented as exhaustive knowledge of every possible stellar indication. Abū Maʿshar explicitly recognizes indications that are too subtle or difficult for practical human judgment.
-12. The long tidal chapters contain many physical and geographical details, but these should not each become separate lexicon entries. Their value is mainly as evidence for Abū Maʿshar’s model of lunar action and the interaction of natural and accidental modifying factors.
+12. The long tidal chapters contain many physical and geographical details, but these should not each become separate lexicon entries. Their value is mainly as evidence for Abū Maʿshar’s model of lunar action and modifying factors.
 13. Medical and natural claims in Part III are historical source material and must not be presented on the public site as modern medical or physical science.
-14. The source edition is copyrighted. Database summaries are original paraphrases; no long translated passages are stored.
+14. Part IV makes the nature/property distinction essential. “Saturn is cold and dry” in this source should not be read as saying Saturn is literally made of elemental coldness and dryness.
+15. Benefic and malefic are stable classes in the discourse, but their effects are not mechanically fixed. Conditions, placement, phase, and planetary mixtures can produce benefic-like or malefic-like manifestations.
+16. “In the nature of the benefics/malefics” should remain its own relational concept rather than being flattened into “is benefic/is malefic”.
+17. Planetary masculinity/femininity and diurnal/nocturnal planets are separate ontological objects from masculine/feminine signs and diurnal/nocturnal signs.
+18. The source edition is copyrighted. Database summaries are original paraphrases; no long translated passages are stored.
 
 ## Next reading position
 
-Part IV begins at original p. 344 / PDF p. 358. It has nine chapters and turns to the natures of the seven planets, benefics and malefics, the philosophical basis of benefic/malefic classification, variation of planetary natures and conditions, masculine/feminine planets, and diurnal/nocturnal planets.
+Part V begins after original p. 433 / PDF p. 447. It is the major dignity-and-sign-share section and should be especially lexicon-dense: houses/domiciles, exaltations and falls, triplicities, multiple systems of terms/bounds, decans/faces and related planetary shares.

@@ -27,9 +27,21 @@ Method: read the work in order, chapter by chapter. Record technical vocabulary 
 - Chapter 8 (§§8.1–8.3): reviewed
 - Chapter 9 (§§9.1–9.4): reviewed
 
+### Part III — reviewed completely
+
+- Chapter 1 (§§1.1–1.8): reviewed
+- Chapter 2 (§§2.1–2.14): reviewed
+- Chapter 3 (§§3.1–3.16): reviewed
+- Chapter 4 (§§4.1–4.8): reviewed
+- Chapter 5 (§§5.1–5.14): reviewed
+- Chapter 6 (§§6.1–6.32): reviewed
+- Chapter 7 (§§7.1–7.6): reviewed
+- Chapter 8 (§§8.1–8.15): reviewed
+- Chapter 9 (§§9.1–9.11): reviewed
+
 ### Remaining
 
-- Parts III–VIII: not yet sequentially reviewed
+- Parts IV–VIII: not yet sequentially reviewed
 
 ## Terms first encountered or formally established in Part I
 
@@ -116,20 +128,43 @@ The natural classification alternates masculine and feminine beginning with Arie
 ### Diurnal / Nocturnal Signs
 Part II Chapter 9 gives another alternating classification beginning Aries diurnal, Taurus nocturnal. This is a classification of signs and must not be collapsed into planetary sect.
 
-## Editorial observations from Parts I–II
+## Terms first encountered or formally established in Part III
+
+### Seven Planets / Swift-moving Stars
+Part III Chapter 1 explains why the seven planets are given broad, general indication. Their motions and conditions change more rapidly and more variously than those of the fixed stars, so Abū Maʿshar associates them with faster-changing general conditions and beginnings of actions.
+
+### Astrologer
+Chapter 2 gives a formal definition: the astrologer knows the conditions and indications of the stars and reports what they signify for a specified present or future time.
+
+### Obvious Indication / Hidden or Subtle Indication
+Chapter 2 explicitly limits the practical art. Some indications and their signified matters are sufficiently evident to know and use; others are too subtle, remote, or difficult for the astrologer to comprehend exactly. Abū Maʿshar does not deny that the latter exist, but says they are not necessary for practical judgment.
+
+### Luminaries
+The Sun and Moon are treated together as the two luminaries. Their indications are said to be especially evident because of the Sun’s size and the Moon’s proximity, and because both act through rays as well as motion.
+
+### Ebb and Flow of the Tide
+Chapters 4–8 form a long historical natural-astrological treatment of tides. The Moon is assigned the principal action producing the flow, while the return of the water in ebb is attributed to the water’s own nature. Local geography, salinity and density, winds, lunar phase, lunar distance and latitude, solar season, and other factors modify the result. This is preserved as historical doctrine, not presented as modern science.
+
+### Critical Days
+Chapter 9 connects the Moon’s daily motion and specified angular relationships to its earlier position with the “known” or critical days used in judging the changing condition of a patient.
+
+## Editorial observations from Parts I–III
 
 1. Part I is largely foundational and philosophical rather than a list of technical astrological rules. It nevertheless supplies the conceptual grammar of the rest of the work.
 2. “Indication” and “celestial power” are related but not interchangeable. One concerns what celestial conditions signify; the other concerns the causal or natural action Abū Maʿshar attributes to celestial motion.
 3. “Nature” is heavily overloaded in the translation. It can mean one of the four elements, a qualitative constitution, or a natural property. Avoid a single generic `nature` entry.
 4. Abū Maʿshar explicitly argues from universal to particular indications. This gives us a useful ontology distinction for later entries: some statements concern classes, others individuals or degree-specific particulars.
 5. His treatment of possibility and choice is nuanced. He rejects simple fatalism, while also saying that when an event is actualized it enters necessity or impossibility. Do not summarize his position as either modern free will or strict determinism.
-6. Chapter 6 defines the value of astrology primarily through foreknowledge and preparation rather than through an assumption that every indicated event can be prevented.
+6. Chapter 6 of Part I defines the value of astrology primarily through foreknowledge and preparation rather than through an assumption that every indicated event can be prevented.
 7. “Revolution of the world-year”, “revolution of the year of a nativity”, and “question” appear before their methods are developed. They are recorded now and should be refined later rather than overdefined from Part I alone.
 8. Part II confirms that source terminology should be preserved even when later English astrology uses different labels: `tropical` rather than automatically `cardinal`, and `bicorporeal` rather than automatically `mutable`.
 9. Part II also requires a strict distinction between zodiacal signs and stellar constellations. The text discusses both in close proximity, but the twelve signs are equal thirty-degree divisions of the zodiacal belt.
 10. Diurnal/nocturnal signs are not the same object as planetary sect. They belong in a separate sign-classification branch of the ontology.
-11. The source edition is copyrighted. Database summaries are original paraphrases; no long translated passages are stored.
+11. Part III makes an important epistemological distinction: astrology is not presented as exhaustive knowledge of every possible stellar indication. Abū Maʿshar explicitly recognizes indications that are too subtle or difficult for practical human judgment.
+12. The long tidal chapters contain many physical and geographical details, but these should not each become separate lexicon entries. Their value is mainly as evidence for Abū Maʿshar’s model of lunar action and the interaction of natural and accidental modifying factors.
+13. Medical and natural claims in Part III are historical source material and must not be presented on the public site as modern medical or physical science.
+14. The source edition is copyrighted. Database summaries are original paraphrases; no long translated passages are stored.
 
 ## Next reading position
 
-Part III begins at original p. 224 / PDF p. 238. It has nine chapters and turns from the signs to the seven planets, including why the planets receive general indication, the definition of astrologer, the specific indications of the Sun and Moon, tides, and lunar waxing/waning effects.
+Part IV begins at original p. 344 / PDF p. 358. It has nine chapters and turns to the natures of the seven planets, benefics and malefics, the philosophical basis of benefic/malefic classification, variation of planetary natures and conditions, masculine/feminine planets, and diurnal/nocturnal planets.

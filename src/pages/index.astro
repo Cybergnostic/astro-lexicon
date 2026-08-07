@@ -24,7 +24,7 @@ import { terms, authors } from '../data/preview';
         <ul class="list-clean">
           {terms.map((term) => (
             <li>
-              <a href={term.slug === 'reception' ? '/terms/reception' : '#'}>{term.label}</a>
+              <a href={`/terms/${term.slug}`}>{term.label}</a>
               <span class="count">{term.category}</span>
             </li>
           ))}
@@ -61,7 +61,7 @@ import { terms, authors } from '../data/preview';
     const input = document.getElementById('term-search');
     const box = document.getElementById('search-results');
     const index = [
-      ...terms.map((x) => ({ label: x.label, kind: 'term', detail: x.category, href: x.slug === 'reception' ? '/terms/reception' : '#' })),
+      ...terms.map((x) => ({ label: x.label, kind: 'term', detail: x.category, href: `/terms/${x.slug}` })),
       ...authors.map((x) => ({ label: x.name, kind: 'author', detail: x.work, href: x.name === 'Guido Bonatti' ? '/authors/guido-bonatti' : '#sources' }))
     ];
 

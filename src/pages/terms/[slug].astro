@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { terms } from '../../data/preview';
+
+export function getStaticPaths() {
+  return terms
+    .filter((term) => term.slug !== 'reception')
+    .map((term) => ({ params: { slug: term.slug }, props: { term } }));
+}
+
+const { term } = Astro.props;
+---
+<BaseLayout title={`${term.label} — Astrological Lexicon`}>
+  <div class="shell page-grid">
+    <article class="article">
+      <p class="eyebrow">{term.category} · Draft entry</p>
+      <h1>{term.label}</h1>
+      <p class="lede">{term.definition}</p>
+
+      <section id="definition">
+        <h2>Working definition</h2>
+        <p>{term.definition}</p>
+        <p class="meta">This entry is currently in the research-preview stage. The concept has been extracted and seeded in the project database, but the full author-by-author source presentation has not yet been promoted into the frontend.</p>
+      </section>
+
+      <section id="status">
+        <h2>Research status</h2>
+        <div class="source-block">
+          <div class="source-head">
+            <h3>Draft extraction</h3>
+            <span class="source-label">{term.status}</span>
+          </div>
+          <p>The term is part of the verified extraction set. Detailed source accounts, locators, historical variants and cross-author comparisons will appear here as the research data is connected directly to the frontend.</p>
+        </div>
+      </section>
+
+      <section id="browse">
+        <h2>Browse related material</h2>
+        <div class="term-links">
+          <a href="/">All terms</a>
+          <a href="/terms/reception">Reception</a>
+          <a href="/terms/application">Application</a>
+          <a href="/terms/combustion">Combustion</a>
+        </div>
+      </section>
+    </article>
+
+    <aside class="toc">
+      <strong>On this page</strong>
+      <a href="#definition">Definition</a>
+      <a href="#status">Research status</a>
+      <a href="#browse">Related material</a>
+    </aside>
+  </div>
+</BaseLayout>

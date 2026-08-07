@@ -21,8 +21,20 @@ Method: read the work in order, chapter by chapter. Record genuine technical voc
 ### Part V — reviewed completely
 - Chapters 1–22: reviewed
 
+### Part VI — in progress
+- Chapter 1: reviewed
+- Chapter 2: reviewed
+- Chapter 3: reviewed
+- Chapter 4: reviewed
+- Chapter 5: reviewed
+- Chapter 6: reviewed
+- Chapter 7: reviewed
+- Chapter 8: reviewed
+- Chapters 9–33: not yet sequentially reviewed
+
 ### Remaining
-- Parts VI–VIII: not yet sequentially reviewed
+- Part VI Chapters 9–33
+- Parts VII–VIII
 
 ## Main vocabulary established so far
 
@@ -40,6 +52,9 @@ Planetary Nature; Planetary Property; Benefic; Malefic; Mixed Planet; In the Nat
 
 ### Part V — shares, dignities, subdivisions and degree doctrines
 Planetary Share in a Sign; Domicile / House; Detriment; Lot of the Nature of the Planets; Exaltation; Fall; Exaltation Degree; Terms / Bounds; Egyptian Terms; Ptolemaic Terms; Chaldean Terms; Terms of Asṭraṭū; Indian Terms; Triplicity Rulers; Face / Decan; Darīǧān (Indian Decan); Ninth / Nawbahar; Dodecatemorion; Degree Sign-Nature; Masculine and Feminine Degrees; Bright Degree; Dusky Degree; Dark / Shadowy Degree; Empty Degree; Planetary Well; Degrees Increasing Good Fortune.
+
+### Part VI Chapters 1–8 — decan figures, rising times, aspects and sign relations
+Figure Ascending in a Decan; Rising Times; Clime; Aspect; Opposition; Trine; Quartile; Sextile; Signs that Love Each Other; Signs that Hate Each Other; Signs Hostile to Each Other; Straight-Rising Signs; Crooked-Rising Signs; Obedient Signs; Signs Agreeing in Zone; Signs Agreeing in Power; Signs Agreeing in Path; Natural Opposition; Natural Sextile; Years, Months, Days and Hours of the Signs.
 
 ## Part V extraction notes
 
@@ -79,6 +94,32 @@ Specific degrees are called wells. A planet exactly in one is said to lose splen
 ### Chapter 22 — degrees increasing good fortune
 Certain degrees are described as amplifying already fortunate indications when occupied by relevant points such as the Moon, ascendant, or Lot of Fortune. The doctrine is conditional and multiple lists are preserved; these degrees are not treated as automatic guarantees of fortune.
 
+## Part VI extraction notes
+
+### Chapter 1 — figures ascending in decans
+This very long chapter is iconographic and comparative rather than a simple list of definitions. Abū Maʿshar distinguishes traditional symbolic figures fixed to decans from stellar constellations whose actual ascensions change with time. He explicitly says the symbolic figures are not meant as literal sky drawings and records Persian/Babylonian/Egyptian, Indian, and Ptolemaic materials. Individual pictured figures are not automatically promoted to standalone lexicon terms.
+
+### Chapter 2 — rising times and climes
+Rising times are given on the equator and across seven climes. They vary with terrestrial latitude and become a technical basis for several later sign relationships. Persian and Byzantine planetary assignments to climes sometimes disagree; those attributions remain source-specific.
+
+### Chapter 3 — aspects
+Abū Maʿshar gives a geometrical and numerical rationale for opposition, trine, quartile and sextile. He explicitly argues against adding quintile, octavile, nonile, decimile and similar divisions merely because their numbers divide 360. In this chapter opposition ranks strongest by magnitude, followed by quartile, trine and sextile. Trine and sextile are associated with agreement; quartile and opposition ordinarily with contrariety.
+
+### Chapter 4 — loving, hating, hostile, straight/crooked and obedient signs
+The source uses explicit relational classifications: signs connected by trine/sextile love one another, quartile signs hate one another, and opposed signs are hostile. Straight-rising signs are Cancer through Sagittarius and crooked-rising signs Capricorn through Gemini. Obedience is attached to the crooked/straight relation but is later reused in connection with signs agreeing in power.
+
+### Chapter 5 — agreement in zone, power and path
+Abū Maʿshar describes three non-aspect modes of sign agreement. Agreement in zone is based on equal distance from the equatorial zone and corresponding rising times. Agreement in power is based on equal daytime hours and is also called possessing power. Agreement in path pairs the two houses of one planet, while Cancer and Leo form a path through the two luminaries.
+
+### Chapter 6 — natural opposition and natural sextile
+These are explicitly non-aspecting relations. Natural opposition applies to distant signs that agree by rising times, power or path and can indicate friendship despite the name. Natural sextile applies to nearby non-aspecting signs with the same kinds of agreement. The editors note that a Latin translation reverses the effect assigned to natural sextile, so the disagreement is retained.
+
+### Chapter 7 — concordant quartiles
+Not every quartile is hostile. Some quartile pairs indicate agreement because they also agree in rising times, length of day, or planetary path. This is a useful warning against flattening Abū Maʿshar’s sign doctrine into a simple aspect-good/aspect-bad table.
+
+### Chapter 8 — years, months, days and hours of signs
+Two procedures are preserved. One converts rising-time degrees in a chosen clime into time units; the other derives sign time measures from the minor years of the sign’s ruler. These remain two methods rather than being reconciled into a single later rule.
+
 ## Editorial observations
 
 1. `Planetary Share` is an important umbrella concept and must not be equated simply with essential dignity.
@@ -90,10 +131,15 @@ Certain degrees are described as amplifying already fortunate indications when o
 7. Dodecatemoria and the separate degree-by-degree sign-nature cycle are distinct procedures.
 8. The terminology of bright/dusky/dark/shadowy/smoky degrees is textually unstable in the translation tradition and should carry editorial warnings.
 9. Degree lists are stored as source-specific doctrine. Where Abū Maʿshar reports disagreement, the public lexicon should say so.
-10. `Joy` is named in Part V Chapter 1 as a share but not defined sufficiently in this Part to justify a full source-specific definition yet; defer expansion until a dedicated explanation is encountered.
-11. Historical natural, medical, geographical, and cosmological claims are represented as historical source doctrine, not as modern scientific claims.
-12. The source edition is copyrighted; extracted public material is paraphrased and cited rather than reproduced at length.
+10. `Joy` is named in Part V Chapter 1 as a share but not defined sufficiently in Part V to justify a full source-specific definition yet; defer expansion until a dedicated explanation is encountered.
+11. Decan iconography is source evidence, not automatically a list of hundreds of lexicon terms.
+12. Stellar constellations and symbolic decan figures must stay distinct: Abū Maʿshar himself distinguishes movable stellar ascensions from fixed traditional decan images.
+13. Aspect doctrine and sign-relationship doctrine overlap but are not identical. Part VI explicitly allows concordant quartiles and friendly non-aspecting relations.
+14. `Natural opposition` and `natural sextile` must not be treated as ordinary aspects; the text defines them precisely through signs that do not aspect one another.
+15. The word `obedient` is used in more than one closely related sign-relation context and should not be normalized prematurely.
+16. Historical natural, medical, geographical, and cosmological claims are represented as historical source doctrine, not as modern scientific claims.
+17. The source edition is copyrighted; extracted public material is paraphrased and cited rather than reproduced at length.
 
 ## Next reading position
 
-Part VI begins at original p. 540 / PDF p. 554. It has 33 chapters and is extremely lexicon-dense: sign figures, rising times, sign relationships, signs that love/hate/obey one another, sign-based time measures, geographical and bodily correspondences, voiced signs, fertility classifications, sign indications for animals/plants/waters, directions, cardines, quadrants, the twelve places, and planetary rulers of days and hours. Because Part VI is much larger than Part V, it should probably be read in several coherent sequential batches rather than forced into one pass.
+Part VI Chapter 9 begins after the sign time-measure material, around original p. 635 / PDF p. 649. Chapters 9–25 move through geographical correspondences and many proper sign indications; Chapters 26–33 then turn to cardines, quadrants, twelve places, elemental distributions, the day/night quarters, and rulers of days and hours.

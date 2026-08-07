@@ -52,9 +52,14 @@ p { margin: .7rem 0 1rem; }
 .search-result small { font: .72rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--muted); text-transform: uppercase; }
 
 .alpha { display: flex; flex-wrap: wrap; gap: .3rem .72rem; margin: 1rem 0 2rem; font: .84rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-.alpha a { color: var(--ink); }
+.alpha a { color: var(--ink); cursor: pointer; }
+.alpha a.active { color: var(--accent); font-weight: 700; text-decoration-thickness: 2px; }
+.alpha .alpha-all { margin-right: .3rem; }
+.alpha .is-empty { color: var(--line); cursor: default; user-select: none; }
+.browse-empty { margin: .35rem 0 1rem; }
 .list-clean { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
 .list-clean li { border-bottom: 1px solid var(--line); padding: .72rem 0; display: flex; justify-content: space-between; gap: 1rem; }
+.list-clean li[hidden] { display: none; }
 .list-clean .count { color: var(--muted); font: .72rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
 .source-block { padding: 1rem 0 1.25rem; border-top: 1px solid var(--line); }

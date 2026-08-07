@@ -29,6 +29,6 @@ export const definitionOverrides: Record<string, string> = {
   'lunar-mansions': 'Twenty-eight stations of the Moon used as an observational division of its path. Abū Maʿshar cites them as part of an experienced tradition for inferring weather and other terrestrial conditions.',
   'zodiac': 'The central belt of the celestial sphere divided into 360 degrees and twelve equal thirty-degree signs. It is the geometrical zodiacal framework and should not be confused with the unequal pictorial constellations.',
   'zodiac-sign': 'One of twelve equal thirty-degree divisions of the zodiacal belt. Abū Maʿshar treats the signs as principal places of universal indication, distinct from the stellar constellation figures that share their names.',
-  'science-of-stars': 'The broader science concerning the stars, divided by Abū Maʿshar into the astronomical “science of the universe” and astrology, the art of judging stellar indications.',
+  'science-of-the-stars': 'The broader science concerning the stars, divided by Abū Maʿshar into the astronomical “science of the universe” and astrology, the art of judging stellar indications.',
   'science-of-the-universe': 'Abū Maʿshar’s astronomical branch of the science of the stars: the study of celestial spheres, dimensions, distances, motions, planetary order and speed, occultations and eclipses, which he treats as the technical basis for astrology.'
 };

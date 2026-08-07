@@ -1,10 +1,10 @@
-# Extraction Specification v0.1
+# Extraction Specification v0.2
 
 ## Purpose
 
 This specification defines how source material is converted into candidate encyclopedia records.
 
-The extraction system must favor precision over coverage. Missing a candidate term is preferable to inventing one.
+The extraction system must favor precision over coverage. Missing a candidate term is preferable to inventing one, and a mere mention is preferable to store only in full-text search rather than promote into the lexicon.
 
 ## Phase 1 — source registration
 
@@ -55,26 +55,45 @@ A candidate record should include:
 }
 ```
 
-## Phase 4 — source interpretation
+Candidate discovery is deliberately broader than database promotion. Finding a term does not mean the source has earned a lexicon interpretation for it.
 
-For each candidate, answer only from the retrieved source passages:
+## Phase 4 — source interpretation and evidence grade
+
+For each candidate, answer only from the source passages:
 - Is the term explicitly technical here?
 - Does the author define it?
-- Does the author describe effects, conditions, exceptions, or subtypes?
-- Is the passage merely mentioning the term?
+- Does the author provide a recognition rule, calculation, mechanism, subtype, exception, or worked example?
+- Is the passage merely mentioning or using the term?
 - Does the wording suggest an alias or a distinct concept?
+- Does this occurrence add anything substantive beyond stronger evidence already stored from another author?
 
-Do not import doctrine from other authors during this phase.
+Assign one evidence grade:
+
+### A — definition-level
+The source explains what the concept is well enough to define and distinguish it. Promote to a source interpretation and, if appropriate, use it to create or improve the canonical term.
+
+### B — substantial explanation
+The source does not give a compact formal definition but contributes enough mechanism, criteria, subtypes, examples, exceptions, or doctrine to be independently useful. Promote to a source interpretation.
+
+### C — mention/context only
+The source only names, lists, casually uses, or associates effects with the term without explaining what it is. **Do not create an interpretation. Do not create a canonical term solely from this evidence.** Keep the occurrence available through source full-text/indexing if useful.
+
+This rule applies even when no better definition has yet been found. The absence of a good definition is not a reason to manufacture a vague one.
+
+It also applies when a good definition already exists. If the new author merely mentions the concept, skip the occurrence rather than adding a weaker duplicate interpretation.
 
 ## Phase 5 — cross-source comparison
 
-Only after source-specific interpretations exist:
+Only after substantive source-specific interpretations exist:
 - compare definitions;
 - identify shared core meaning;
 - identify disagreements;
 - identify translation problems;
 - propose aliases and term relations;
-- flag possible historical development.
+- flag possible historical development;
+- identify old interpretations that were promoted from weak evidence and should now be pruned.
+
+A later, stronger source may improve the canonical definition without requiring every earlier mention to remain attached to the term.
 
 ## Phase 6 — editorial decision
 
@@ -84,7 +103,22 @@ A human editor confirms:
 - aliases;
 - relations;
 - final summary;
-- publication status.
+- publication status;
+- which source interpretations add independent value and which should be deleted as redundant or mention-only.
+
+The goal is not exhaustive author-occurrence tracking. The goal is a useful encyclopedia with source-specific accounts only where the sources actually explain something.
+
+## Pruning rule
+
+Delete an existing source interpretation when all of the following are true:
+- it is based only on mention/context-level evidence;
+- it does not define or substantially explain the concept;
+- it adds no meaningful variant, disagreement, attribution, example, terminology, or historical information;
+- stronger evidence now exists, or the entry never met the evidence threshold in the first place.
+
+If deleting that interpretation leaves a canonical term with no substantive evidence at all, delete the term as well. A later source may recreate it when proper evidence appears.
+
+Do **not** delete an earlier interpretation merely because a later author is clearer if the earlier author independently provides a real definition, distinctive rule, variant, or historically useful explanation.
 
 ## Failure conditions
 
@@ -96,8 +130,10 @@ Flag for manual review when:
 - page numbering cannot be verified;
 - the source passage is too fragmentary to support a definition.
 
+Fragmentary or mention-only evidence should normally remain unpromoted rather than receiving a guessed definition.
+
 ## Model-use rule
 
-Small local models may perform constrained extraction and matching, but should not be trusted to decide canonical identity or historical equivalence.
+Small local models may perform constrained extraction and matching, but should not be trusted to decide canonical identity, historical equivalence, evidence grade in difficult cases, or whether a vague occurrence should survive editorial pruning.
 
-Stronger reasoning models are reserved for cross-source comparison, ontology decisions, and difficult editorial review.
+Stronger reasoning models are reserved for cross-source comparison, ontology decisions, evidence grading, definition revision, and difficult editorial review.

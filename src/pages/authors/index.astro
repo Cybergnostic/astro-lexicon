@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import corpus from '../../data/generated/corpus.json';
+const { authors } = corpus;
+---
+<BaseLayout title="Authors — Astrological Lexicon">
+  <header class="page-header"><div class="shell"><p class="hero-kicker">Historical witnesses</p><h1>Authors</h1><p class="page-deck">The initial corpus is organized around five authors whose terminology forms the evidence base for the current lexicon.</p></div></header>
+  <section class="section"><div class="shell card-grid">{authors.map((author)=><a class="card" href={`/authors/${author.slug}/`}><p class="micro-label">{author.historical_layer}</p><h2>{author.name}</h2>{author.original_name && <p>{author.original_name}</p>}<p><em>{author.works[0]?.title}</em></p></a>)}</div></section>
+</BaseLayout>

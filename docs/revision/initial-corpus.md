@@ -100,18 +100,72 @@ Short quotations were added only where wording is unusually useful. The first ba
 
 This is intentionally sparse. Modern translated sources will receive quotations only where terminology, ambiguity or disagreement genuinely benefits from showing the wording.
 
+## Batch 2 — dignity, sect and clear synonym families
+
+Implemented in `db/seed/0048_cross_source_revision_dignity_sect.sql`.
+
+### Clear synonym normalizations
+
+The completed corpus now supports several merges that were deliberately postponed during extraction:
+
+- Abū Maʿshar’s translated **Domain / ḥayyiz** → canonical **Hayz**.
+- al-Bīrūnī’s **Mubtazz** → canonical **Almuten**.
+- Antiochus’ **Reciprocal Mastership** → a source-specific reciprocal form of **Reception**.
+- Abū Maʿshar’s **Solitary Motion** → **Void of Course**.
+- Abū Maʿshar’s **Wild / Wildness** → **Feral**.
+- Abū Maʿshar’s **Besieging** → **Besiegement**.
+
+The superseded labels are retained as aliases where useful; the duplicate canonical terms are removed.
+
+### Dignity and debility definitions revised
+
+Publication-quality definitions were written for:
+
+- Domicile
+- Exaltation
+- Fall
+- Detriment
+- Face / Decan
+- Triplicity Rulers
+
+`Planetary Share` remains a strong source-specific draft rather than being forced into the ordinary essential-dignity hierarchy, because Abū Maʿshar uses the umbrella category more broadly.
+
+### Sect family revised
+
+The revision now cleanly separates:
+
+- Sect — the general diurnal/nocturnal division;
+- Diurnal Planet / Nocturnal Planet — membership in the two planetary groups;
+- Halb — sect plus correct side of the horizon;
+- Hayz — the halb structure plus planetary/sign gender conformity;
+- Bonatti’s Own Similitude / Aym — structurally very close to hayz, but retained as a separate source-visible term because the historical naming/equivalence is not clean enough to erase.
+
+Relations now record that halb is a component of hayz and that Bonatti’s own similitude closely corresponds to hayz without asserting an unsupported absolute identity.
+
+### Almuten family revised
+
+Bonatti’s `Almutes / Victor` and al-Bīrūnī’s `Mubtazz` are normalized under **Almuten**: the planet prevailing in a degree, house or topic by the greatest relevant dignity/testimony total.
+
+Lilly’s **Almuten of the Figure** remains a specialization for the planet strongest in the chart as a whole rather than a synonym for every topic-specific almuten.
+
+### Other revised concepts
+
+- Accidental Fortitude — publication-quality definition.
+- Besiegement — bodily and ray-based forms are retained as source variants.
+- Feral — kept distinct from Void of Course because its no-aspect criterion is stricter.
+- Planetary Joy — retained as a strong draft because authors use the language of joy at different levels of breadth.
+
 ## Remaining revision sequence
 
-1. dignity / debility / sect families;
-2. signs, houses, aspects, ascensions and sign relations;
-3. perfection and impediment families beyond the already revised core;
-4. lots, degree doctrines and sign subdivisions;
-5. horary/interrogational vocabulary;
-6. natal, rectification and longevity terminology;
-7. predictive/time-lord systems;
-8. mundane, electional and weather terminology;
-9. author-specific rare terms and uncertain equivalences;
-10. final orphan/duplicate/alias/citation audit;
-11. frontend generation from canonical reviewed data.
+1. signs, houses, aspects, ascensions and sign relations;
+2. perfection and impediment families beyond the already revised core;
+3. lots, degree doctrines and sign subdivisions;
+4. horary/interrogational vocabulary;
+5. natal, rectification and longevity terminology;
+6. predictive/time-lord systems;
+7. mundane, electional and weather terminology;
+8. author-specific rare terms and uncertain equivalences;
+9. final orphan/duplicate/alias/citation audit;
+10. frontend generation from canonical reviewed data.
 
 The final pass should leave only A/B interpretations, definitions at quality 4–5 for public entries, and explicit unresolved notes where the corpus genuinely does not permit a clean identification.

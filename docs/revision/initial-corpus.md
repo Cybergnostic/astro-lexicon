@@ -206,16 +206,79 @@ Lilly’s Book I explicitly defines **Dexter Aspect** and **Sinister Aspect**, b
 
 This is exactly the kind of recovery the revision is intended to catch: a real definition omitted during extraction is added, while weak catalogued labels are removed.
 
+## Batch 4 — perfection, mediation and impediment
+
+Implemented in `db/seed/0050_cross_source_revision_perfection_impediments.sql`.
+
+This batch deliberately re-opened the densest perfection passages instead of normalizing from English labels alone.
+
+### Clear normalizations
+
+- Bonatti/Alchabitius **Alitifal / Continuation** → historical aliases of **Application**. Bonatti explicitly defines it as bodily or aspectual application.
+- Abū Maʿshar’s **Returning**, al-Bīrūnī’s **Return / radd**, and Bonatti’s **Return of Virtue / Disposition** → one canonical **Return of Virtue / Return (Radd)** mechanism: a debilitated receiver cannot retain what has been given and returns it to the donor.
+- Abū Maʿshar’s **Cutting the Light** → canonical **Abscission / Cutting of Light**, together with al-Bīrūnī’s equivalent terminology. The sources preserve several geometries inside this family rather than one universal diagram.
+- al-Bīrūnī’s translated **Prevention** is normalized as an alias/form of **Prohibition**, because its direct mechanism matches the interposing-planet doctrine found in the later sources.
+
+### False friends deliberately split
+
+Two cases were previously over-normalized because translators used the same English word:
+
+- **Intervention**: Antiochus defines intervention by a third star casting rays into the intermediate degrees of an application; al-Bīrūnī defines a retrograde three-planet sequence. Antiochus now has the separate entry **Intervention by Rays (Antiochus)**.
+- **Frustration**: Lilly’s target perfects another conjunction first; Bonatti’s target leaves the sign and encounters another planet’s rays in the next sign before the original applicant can catch it. Bonatti now has **Frustration (Bonatti)** rather than being forced into Lilly’s definition.
+
+These are explicit examples of the rule that identical translated vocabulary does not prove historical technical identity.
+
+### Important terms revised
+
+Publication-ready definitions now cover:
+
+- Contact / Kollesis
+- Natural Application
+- Joining by Latitude
+- Reflecting the Light
+- Giving Nature
+- Giving Power
+- Giving Two Natures
+- Giving Management
+- Return of Virtue / radd
+- Evasion
+- Resistance
+- Bonatti’s Contrariety
+- al-Bīrūnī’s Intervention
+- Antiochus’ Intervention by Rays
+- Favour and Recompense
+- Lilly’s Frustration and Bonatti’s distinct Frustration
+
+**Abscission / Cutting of Light** remains quality 4 rather than being forced to 5 because the sources clearly use the family for several related interruption geometries.
+
+### Bonatti’s Return of Light corrected
+
+The first extraction represented only one use of **Return of Light**. Re-reading Chapters XI–XII showed that Bonatti uses the label in at least two related but non-identical ways:
+
+1. a collecting planet projects gathered light onward to a zodiacal place it aspects;
+2. an intended receiver gives back an earlier applicant’s light after a nearer third planet reaches it first — a configuration Bonatti explicitly also calls **Abscission of Light**.
+
+The old narrow interpretation was removed and replaced with two separate A-grade interpretations. Return of Light therefore remains a source-specific quality-4 entry rather than being falsely merged into either Reflecting the Light or Return of Virtue.
+
+### Related but not merged
+
+Abū Maʿshar’s **Resistance** and Bonatti’s **Contrariety** have an almost identical three-planet retrograde mechanism. They are linked as mechanically corresponding, but remain separate because the current corpus does not establish that the historical terms themselves are identical.
+
+Likewise, Bonatti’s **Opening of the Gates** and al-Bīrūnī’s **Opening the Doors** are explicitly marked distinct: the first concerns reception overcoming planetary hostility, the second is meteorological.
+
+### Quotations
+
+No new public quotations were added in this batch. The key passages are mostly modern translations, and precise locators plus paraphrase are sufficient.
+
 ## Remaining revision sequence
 
-1. perfection and impediment families beyond the already revised core;
-2. lots, degree doctrines and sign subdivisions;
-3. horary/interrogational vocabulary;
-4. natal, rectification and longevity terminology;
-5. predictive/time-lord systems;
-6. mundane, electional and weather terminology;
-7. author-specific rare terms and uncertain equivalences;
-8. final orphan/duplicate/alias/citation audit;
-9. frontend generation from canonical reviewed data.
+1. lots, degree doctrines and sign subdivisions;
+2. horary/interrogational vocabulary;
+3. natal, rectification and longevity terminology;
+4. predictive/time-lord systems;
+5. mundane, electional and weather terminology;
+6. author-specific rare terms and uncertain equivalences;
+7. final orphan/duplicate/alias/citation audit;
+8. frontend generation from canonical reviewed data.
 
 The final pass should leave only A/B interpretations, definitions at quality 4–5 for public entries, and explicit unresolved notes where the corpus genuinely does not permit a clean identification.

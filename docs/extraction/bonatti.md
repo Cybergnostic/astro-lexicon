@@ -22,6 +22,7 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 643–736: Treatise 6, *On Horary*, Part I, reviewed sequentially and completely. The included Part I ends explicitly on PDF p. 736.
 - PDF pp. 749–803: Treatise 7, *Elections*, Part 1, general electional doctrine, reviewed sequentially and completely.
 - PDF pp. 804–899: Treatise 7, Part 2, particular elections arranged by the twelve houses, reviewed sequentially and completely. PDF p. 900 begins bibliography/editorial apparatus, so the substantive Treatise 7 text is complete.
+- PDF pp. 940–1001: Treatise 8, Part 2, *Projection of Parts and Their Significations*, Chapters 1–19 plus the concluding royal Parts, reviewed sequentially and completely. PDF p. 1002 begins the bibliography, so Treatise 8.2 is complete.
 
 ## Editorial rule applied
 
@@ -47,6 +48,8 @@ Treatise 6 Part I adds Bonatti’s explicit distinction between absolute and det
 
 Treatise 7 adds a direct definition of an election as the deliberate choice of a fitting beginning for an intended action rather than a cause which produces the action itself. It distinguishes the root of an election (preferably a nativity or horary question), the adaptation of signs and planets, and the exact inception of a work as its first intrinsic act rather than a preparatory act. It also gives a substantial timing doctrine in which planetary motion, modality, ascensional type, element, angularity and the distance between significators are judged relative to the natural timescale of the matter. The extensive house-by-house recipes were reviewed but not converted into weak standalone lexicon entries.
 
+Treatise 8.2 substantially reworks Abū Maʿshar’s lot doctrine. Bonatti explicitly defines the two natural significators as immovable and the projection point as the movable significator; preserves the equal-degree projection procedure; names Fortune the Part of the Moon and its reverse luminary counterpart the Part of Things to Be or Part of the Sun; and treats the Part of the Hilaj as a distinct predictive point rather than the hilaj itself. His strongest independent refinement is in Chapter 19, where a Part can have one through four formal significators depending on overlap between the two formula points, the ruler of the Part’s sign, and the ruler of the projection place. The extensive house-specific and commodity Part catalogues were reviewed but not promoted wholesale into standalone entries.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -60,16 +63,16 @@ Treatise 7 adds a direct definition of an election as the deliberate choice of a
 - `db/seed/0027_bonatti_146_considerations.sql`
 - `db/seed/0028_bonatti_horary_part1.sql`
 - `db/seed/0029_bonatti_elections.sql`
+- `db/seed/0030_bonatti_lots.sql`
 
 ## Remaining sections in this compiled PDF
 
 The PDF is a compilation and its sections are not in numerical treatise order. The substantive Bonatti material still present in this file is:
 
-- Treatise 8.2, *Lots*, beginning around PDF p. 940.
 - Treatise 9, *Nativities*, beginning around PDF p. 1018 and continuing to the end of the compiled PDF.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 8, Part 2, *Lots*, beginning around PDF p. 940.
+Continue sequentially with Treatise 9, *Nativities*, beginning around PDF p. 1018.

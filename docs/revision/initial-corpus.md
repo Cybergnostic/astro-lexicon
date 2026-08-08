@@ -334,14 +334,55 @@ These alternative systems remain systems *of* terms/bounds, not separate kinds o
 
 No new quotations were added. Formula differences and degree-catalogue uncertainty are clearer through source-specific paraphrase and precise locators, and most of the relevant texts are modern translations.
 
+## Batch 6 — horary / interrogational vocabulary
+
+Implemented in `db/seed/0052_cross_source_revision_horary.sql`.
+
+### Mention-level material pruned
+
+Abū Maʿshar’s provisional **Astrological Question** entry was removed. Part I merely names questions alongside nativities and annual revolutions; it does not yet define the interrogational technique, so it does not deserve an interpretation once stronger question doctrine is available elsewhere.
+
+### Rooted / radical question normalized
+
+Bonatti’s **Rooted Question** and Lilly’s **Radical Question** use the same core radicality test: agreement between the lord of the hour and the Ascendant or its ruler by identity, triplicity or compatible nature. They are now one canonical **Radical Question**, with Bonatti’s rooted terminology retained as an alias.
+
+### Basic role terms recovered
+
+Lilly gives unusually explicit dictionary-like definitions that had not been promoted as standalone terms. The revision therefore adds:
+
+- **Querent** — the person asking the question;
+- **Quesited** — the person, thing or matter sought;
+- **Significator** — the appointed planetary factor representing the person or matter in judgment.
+
+**Cosignificator** is also revised as the secondary factor participating alongside a principal significator.
+
+One short Lilly quotation is retained for Querent/Quesited because the wording is genuinely lexical; no additional decorative quotations are added.
+
+### Horary definition and root time revised
+
+**Horary / Interrogational Question** is now defined from actual method rather than by a vague branch label: the figure is rooted in the presented question, the Ascendant and its ruler signify the querent, the relevant house and its ruler signify the matter, and the Moon and other source-specific factors participate.
+
+Lilly’s **Time of the Horary Question** remains a separate technique-level entry. His rule uses the moment the astrologer actually receives and understands the question or intention rather than merely the querent’s arrival or the physical delivery of a letter.
+
+### Bonatti’s question classes preserved without flattening
+
+- **Absolute Question** — asks about a subject generally without specifying a particular instance/source/person.
+- **Determinate Question** — restricts the inquiry to a particular instance/source/person.
+- **Universal Question** — retained separately at quality 4 because Bonatti’s usage emphasizes breadth and temporal scope; it overlaps with but is not identical to an absolute question.
+
+### Specialized question vocabulary
+
+- **Participator of a Question** — publication-ready source-specific procedure from Bonatti’s 146th Consideration.
+- **Abscissor / Destroyer / Obstructor** — retained as a broader destructive planetary role, explicitly distinguished from the individual mechanisms Prohibition, Frustration and Abscission of Light.
+- **Thought Reading** — retained only as a contextual boundary entry because al-Bīrūnī explicitly names and criticizes attempts to infer an unstated hidden object or secret thought. It is not presented as standard horary doctrine.
+
 ## Remaining revision sequence
 
-1. horary/interrogational vocabulary;
-2. natal, rectification and longevity terminology;
-3. predictive/time-lord systems;
-4. mundane, electional and weather terminology;
-5. author-specific rare terms and uncertain equivalences;
-6. final orphan/duplicate/alias/citation audit;
-7. frontend generation from canonical reviewed data.
+1. natal, rectification and longevity terminology;
+2. predictive/time-lord systems;
+3. mundane, electional and weather terminology;
+4. author-specific rare terms and uncertain equivalences;
+5. final orphan/duplicate/alias/citation audit;
+6. frontend generation from canonical reviewed data.
 
 The final pass should leave only A/B interpretations, definitions at quality 4–5 for public entries, and explicit unresolved notes where the corpus genuinely does not permit a clean identification.

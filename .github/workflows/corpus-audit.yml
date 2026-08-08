@@ -1,0 +1,29 @@
+name: Corpus database audit
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'db/**'
+      - 'scripts/audit_initial_corpus.sh'
+      - 'package.json'
+      - '.github/workflows/corpus-audit.yml'
+  pull_request:
+    paths:
+      - 'db/**'
+      - 'scripts/audit_initial_corpus.sh'
+      - 'package.json'
+      - '.github/workflows/corpus-audit.yml'
+
+jobs:
+  fresh-sqlite-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install SQLite CLI
+        run: sudo apt-get update && sudo apt-get install -y sqlite3
+
+      - name: Build fresh database and audit corpus
+        run: npm run audit:corpus

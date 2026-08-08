@@ -155,17 +155,67 @@ Lilly’s **Almuten of the Figure** remains a specialization for the planet stro
 - Feral — kept distinct from Void of Course because its no-aspect criterion is stricter.
 - Planetary Joy — retained as a strong draft because authors use the language of joy at different levels of breadth.
 
+## Batch 3 — signs, houses, aspects and ascensional relations
+
+Implemented in `db/seed/0049_cross_source_revision_signs_houses_aspects.sql`.
+
+### Normalized terminology
+
+- Bonatti’s **Signs of Direct Ascension** → **Straight / Direct Ascension Signs** with Abū Maʿshar’s straight-rising terminology.
+- Bonatti’s **Signs of Crooked Ascension** → **Crooked / Short Ascension Signs** with Abū Maʿshar’s crooked-rising terminology.
+- Bonatti’s **Harmonious in Journeys** is normalized as an alias/source form of Abū Maʿshar’s equal-ascensional **Signs Agreeing in Zone** relation because the sign-pairs and structural criterion agree.
+- `Movable` is retained as a historical equivalent of **Tropical Sign**; `Common` as a historical equivalent of **Bicorporeal Sign**. Later `Cardinal` and `Mutable` terminology is recorded only as later aliases.
+
+### Pruned as redundant/non-lexical
+
+- Signs that Love Each Other
+- Signs that Hate Each Other
+- Signs Hostile to Each Other
+
+These labels merely restated trine/sextile, square and opposition by attributed effect and supplied no independent recognition rule.
+
+The provisional `Years, Months, Days and Hours of the Signs` extraction label was also removed as a bundled procedure rather than a stable term; its underlying rising-time and period doctrines remain.
+
+### Definitions revised
+
+Publication-ready or strong definitions now cover:
+
+- Zodiac and Zodiacal Sign
+- Triplicity and the three seasonal modalities
+- masculine/feminine and diurnal/nocturnal sign classes
+- northern/southern signs
+- Rising Times and Clime
+- straight/direct and crooked/short ascension signs
+- agreement in zone, power and path
+- obedience, natural sextile and natural opposition
+- Antiochus’ co-rising and hearing/seeing relations without forcing uncertain equivalence
+- Aspect, Opposition, Trine, Square/Quartile and Sextile
+- Partile and Platic/Platick aspects
+- Antiscion and Contra-antiscion
+- Inconjunct signs
+- Twelve Houses / Places
+- Angle/Cardine, Succedent and Cadent places
+- Derived House
+- Antiochus’ places for/without dealings
+- First Motion and Second Motion
+- Via Combusta
+
+### Missed strong term recovered
+
+Lilly’s Book I explicitly defines **Dexter Aspect** and **Sinister Aspect**, but the extraction pass had not promoted them. They are now first-class terms with A-grade source interpretations and one short public-domain quotation shared by the two entries.
+
+This is exactly the kind of recovery the revision is intended to catch: a real definition omitted during extraction is added, while weak catalogued labels are removed.
+
 ## Remaining revision sequence
 
-1. signs, houses, aspects, ascensions and sign relations;
-2. perfection and impediment families beyond the already revised core;
-3. lots, degree doctrines and sign subdivisions;
-4. horary/interrogational vocabulary;
-5. natal, rectification and longevity terminology;
-6. predictive/time-lord systems;
-7. mundane, electional and weather terminology;
-8. author-specific rare terms and uncertain equivalences;
-9. final orphan/duplicate/alias/citation audit;
-10. frontend generation from canonical reviewed data.
+1. perfection and impediment families beyond the already revised core;
+2. lots, degree doctrines and sign subdivisions;
+3. horary/interrogational vocabulary;
+4. natal, rectification and longevity terminology;
+5. predictive/time-lord systems;
+6. mundane, electional and weather terminology;
+7. author-specific rare terms and uncertain equivalences;
+8. final orphan/duplicate/alias/citation audit;
+9. frontend generation from canonical reviewed data.
 
 The final pass should leave only A/B interpretations, definitions at quality 4–5 for public entries, and explicit unresolved notes where the corpus genuinely does not permit a clean identification.

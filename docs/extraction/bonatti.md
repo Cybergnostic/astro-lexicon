@@ -34,6 +34,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 1136–1151: Treatise 9, Part 3, Seventh House, Chapters 1–7, reviewed sequentially and completely. PDF p. 1151 begins the Eighth House.
 - PDF pp. 1151–1158: Treatise 9, Part 3, Eighth House, Chapter 1, reviewed sequentially and completely. PDF p. 1158 begins the Ninth House.
 - PDF pp. 1158–1169: Treatise 9, Part 3, Ninth House, Chapters 1–4, reviewed sequentially and completely. PDF p. 1169 begins the Tenth House.
+- PDF pp. 1169–1184: Treatise 9, Part 3, Tenth House, Chapters 1–3, reviewed sequentially and completely. PDF p. 1184 begins the Eleventh House.
+- PDF pp. 1184–1191: Treatise 9, Part 3, Eleventh House, Chapters 1–2, reviewed sequentially and completely. PDF p. 1191 begins the Twelfth House.
 
 ## Editorial rule applied
 
@@ -81,6 +83,10 @@ The Eighth House section explicitly calls the eighth the house of death. Bonatti
 
 The Ninth House section explicitly assigns religion and faith, knowledge, pilgrimages and long journeys to the ninth. For religion and knowledge Bonatti combines the ninth and its lord with Mercury, the Part of Faith and other supporting testimonies; for journeys he combines the ninth and its lord with planets in the ninth, Mars, the Part of Pilgrimage and their relations with the Ascendant. He again applies triplicity rulers serially to successive periods of life, both for religious condition and for the quality of journeys. The many planet-by-planet religious types and travel-event catalogues were reviewed but not promoted as standalone entries.
 
+The Tenth House section assigns profession, work, offices or duties, power/prosperity, rulership and the mother to the tenth. Bonatti uses a layered hierarchy rather than the tenth ruler alone when selecting a professional significator, preferring planets that combine several relevant testimonies. He also explicitly derives the mother from the tenth because it is the seventh from the fourth, and again uses triplicity rulers to divide honors and maternal condition into successive periods.
+
+The Eleventh House section assigns friends, good fortune and hope to the eleventh and uses a broad hierarchy of friendship significators. In comparing two nativities Bonatti also applies transfer of light between the two charts’ significators: a well-disposed translating planet can produce friendship even without direct contact, although he describes it as temporary rather than permanent. The long friend-type and synastry catalogues were reviewed but not promoted into weak standalone terms.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -102,13 +108,14 @@ The Ninth House section explicitly assigns religion and faith, knowledge, pilgri
 - `db/seed/0035_bonatti_nativities_seventh_house.sql`
 - `db/seed/0036_bonatti_nativities_eighth_house.sql`
 - `db/seed/0037_bonatti_nativities_ninth_house.sql`
+- `db/seed/0038_bonatti_nativities_tenth_eleventh_house.sql`
 
 ## Remaining sections in this compiled PDF
 
-The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Tenth House on PDF p. 1169 and continuing to the end of the compilation.
+The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Twelfth House on PDF p. 1191 and continuing to the end of the substantive text.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 9, Part 3, Tenth House from PDF p. 1169.
+Continue sequentially with Treatise 9, Part 3, Twelfth House from PDF p. 1191.

@@ -15,6 +15,9 @@ on:
       - 'package.json'
       - '.github/workflows/corpus-audit.yml'
 
+permissions:
+  contents: write
+
 jobs:
   fresh-sqlite-audit:
     runs-on: ubuntu-latest
@@ -26,4 +29,27 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y sqlite3
 
       - name: Build fresh database and audit corpus
-        run: npm run audit:corpus
+        id: audit
+        shell: bash
+        run: |
+          set +e
+          npm run audit:corpus > audit-results.txt 2>&1
+          status=$?
+          echo "$status" > audit-exit-code.txt
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          cat audit-results.txt
+          exit 0
+
+      - name: Persist audit output on audit branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/audit/fresh-sqlite-seed'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add audit-results.txt audit-exit-code.txt
+          git commit -m 'Record fresh SQLite corpus audit result' || exit 0
+          git push
+
+      - name: Fail if corpus audit failed
+        if: steps.audit.outputs.status != '0'
+        run: exit 1

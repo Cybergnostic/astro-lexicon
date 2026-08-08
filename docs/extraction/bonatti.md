@@ -14,7 +14,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 349–359: title matter and table of contents for the Cazimi Press mundane-astrology volume inspected as the transition to the next source section.
 - PDF pp. 360–368: Treatise 4, *Conjunctions*, Chapters 1–8, reviewed completely.
 - PDF pp. 369–440: Treatise 8, Part 1, *Revolutions of the Years of the World*, Preface and Chapters 1–74, reviewed sequentially.
-- PDF pp. 441–503: Treatise 8, Part 1, Chapters 75–116 remain to be reviewed. Treatise 10 begins at PDF p. 504.
+- PDF pp. 441–502: Treatise 8, Part 1, Chapters 75–116, reviewed sequentially. PDF p. 503 is blank. Treatise 8.1 is complete.
+- PDF p. 504: Treatise 10, *Heavy Rains*, begins; this is the next substantive reading boundary.
 
 ## Editorial rule applied
 
@@ -28,7 +29,9 @@ The Third Tractatus adds especially important operational definitions for Almugu
 
 Treatise 4 adds the conjunction hierarchy used in mundane astrology, the special Saturn–Mars conjunction in Cancer, the distinct combust/incombust hour cycle after a lunation, the Moon’s temporal duodena, and Bonatti’s syzygy-based Ascendant rectification procedure. The combust-hour doctrine is kept separate from planetary combustion, and the Moon’s duodena is kept separate from zodiacal twelfth-parts.
 
-Treatise 8.1 so far adds explicit definitions of annual revolution, the world-year revolution and nativity-year revolution; a detailed hierarchy for selecting the Lord of the Year and the significator of the king; the seven-clime framework; and Bonatti’s explicit distinction between a Lord of the whole Year and a Lord of a shorter half-year or quarterly Revolution. Long mundane catalogues are reviewed but not promoted into a large number of weak lexicon entries.
+Treatise 8.1 adds explicit definitions of annual revolution, the world-year revolution and nativity-year revolution; a detailed hierarchy for selecting the Lord of the Year and the significator of the king; the seven-clime framework; and Bonatti’s explicit distinction between a Lord of the whole Year and a Lord of a shorter half-year or quarterly Revolution.
+
+The final chapters of Treatise 8.1 add usable doctrines for exact fixed-star conjunction, benefic and malefic fixed-star classes, comet judgment, eclipse-duration timing, and the modifying role of reception in annual judgment. The extensive planet-in-sign/house, fixed-star, regional, weather, disease and political prediction catalogues were reviewed but not promoted into a large number of weak lexicon entries. Historical fixed-star coordinates are treated as epoch-dependent data rather than timeless positions. `al-mubtazz` is mentioned but not defined sufficiently here, so no interpretation was created from this occurrence.
 
 ## Current seeds
 
@@ -38,10 +41,11 @@ Treatise 8.1 so far adds explicit definitions of annual revolution, the world-ye
 - `db/seed/0022_bonatti_tractatus3.sql`
 - `db/seed/0023_bonatti_tractate4.sql`
 - `db/seed/0024_bonatti_tractate8_part1_ch1_74.sql`
+- `db/seed/0025_bonatti_tractate8_part1_ch75_116.sql`
 
 ## Remaining sections in this compiled PDF
 
-The PDF is a compilation and its sections are not in numerical treatise order. After completing Treatise 8.1, the substantive Bonatti material still present in this file is:
+The PDF is a compilation and its sections are not in numerical treatise order. The substantive Bonatti material still present in this file is:
 
 - Treatise 10, *Heavy Rains*, beginning PDF p. 504.
 - Treatise 5, *146 Considerations*, beginning PDF p. 565; substantive text begins around p. 569.
@@ -52,4 +56,4 @@ The PDF is a compilation and its sections are not in numerical treatise order. A
 
 ## Next
 
-Continue Treatise 8.1 sequentially with Chapter 75 at PDF p. 441 and finish Chapter 116 before moving to the next compiled section.
+Continue sequentially with Treatise 10, *Heavy Rains*, from PDF p. 504.

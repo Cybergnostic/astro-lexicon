@@ -29,6 +29,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 1076–1101: Treatise 9, Part 3, Second House, Chapters 1–13, reviewed sequentially and completely. PDF p. 1101 begins the Third House.
 - PDF pp. 1101–1108: Treatise 9, Part 3, Third House, Chapters 1–6, reviewed sequentially and completely.
 - PDF pp. 1108–1116: Treatise 9, Part 3, Fourth House, Chapters 1–9, reviewed sequentially and completely. PDF p. 1116 begins the Fifth House.
+- PDF pp. 1116–1121: Treatise 9, Part 3, Fifth House, Chapters 1–4, reviewed sequentially and completely.
+- PDF pp. 1121–1136: Treatise 9, Part 3, Sixth House, Chapters 1–7, reviewed sequentially and completely. PDF p. 1136 begins the Seventh House.
 
 ## Editorial rule applied
 
@@ -66,6 +68,10 @@ The Third House section applies triplicity rulership serially to siblings: the f
 
 The Fourth House section extends Bonatti’s natal hyleg/kadkhuda framework to parental significators. He uses sect-dependent father and mother indicators together with their Parts and relevant house degrees, and can select a parental hyleg with a corresponding kadkhuda as giver of years. The detailed parental mortality recipes are preserved only as historical source evidence. The source also uses `dastūrīya`, but this passage does not define it cleanly enough for a new lexicon entry, so it was not promoted.
 
+The Fifth House section is mainly a large catalogue of child-signification rules. The reusable doctrine retained is Bonatti’s serial timing use of triplicity rulers: one formulation assigns the first triplicity ruler of Jupiter to youth, the second to middle age and the third to old age. The many fertility, sterility, sex and quantity rules were reviewed but not promoted as separate terms.
+
+The Sixth House contains several unusually explicit definitions. Bonatti distinguishes an `infirmity` as a bodily weakness or accident that comes and goes from a `disease`, which comes and does not go away; later he distinguishes a bodily `impediment` as a discrete injury or impairment rather than a continuing or recurring infirmity. He also sets out historical categories of infirmities and impediments of the soul. These are stored as medieval technical vocabulary only, without treating the astrological medical or psychological claims as modern clinical fact. Detailed disease, injury, body-part and sexual-morality catalogues were reviewed but not promoted.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -83,13 +89,14 @@ The Fourth House section extends Bonatti’s natal hyleg/kadkhuda framework to p
 - `db/seed/0031_bonatti_nativities_parts1_2.sql`
 - `db/seed/0032_bonatti_nativities_part3_first_second_house.sql`
 - `db/seed/0033_bonatti_nativities_third_fourth_house.sql`
+- `db/seed/0034_bonatti_nativities_fifth_sixth_house.sql`
 
 ## Remaining sections in this compiled PDF
 
-The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Fifth House on PDF p. 1116 and continuing to the end of the compilation.
+The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Seventh House on PDF p. 1136 and continuing to the end of the compilation.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 9, Part 3, Fifth House from PDF p. 1116.
+Continue sequentially with Treatise 9, Part 3, Seventh House from PDF p. 1136.

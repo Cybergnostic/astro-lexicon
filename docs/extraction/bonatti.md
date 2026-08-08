@@ -18,6 +18,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 504–527: Treatise 10, *Heavy Rains*, reviewed completely. PDF p. 528 begins the bibliography/editorial apparatus for this volume.
 - PDF pp. 565–568: title matter, publisher note and abbreviations for Treatise 5 inspected.
 - PDF pp. 569–615: Treatise 5, *146 Considerations*, reviewed sequentially and completely. PDF p. 616 begins bibliography/editorial apparatus.
+- PDF pp. 629–642: title matter, contents and editorial introduction to Treatise 6 inspected but not attributed to Bonatti.
+- PDF pp. 643–736: Treatise 6, *On Horary*, Part I, reviewed sequentially and completely. The included Part I ends explicitly on PDF p. 736.
 
 ## Editorial rule applied
 
@@ -39,6 +41,8 @@ Treatise 10 adds a compact meteorological vocabulary: Mercury and the Moon as co
 
 Treatise 5 adds source-level definitions and refinements for rooted/radical questions, Bonatti’s “own light,” planetary impediment and escape from malefic contact, void course versus ferality, reception, transfer of light, cazimi, under-the-rays conditions, peregrination, and the specialized participators derived in the 146th Consideration. It also gives a substantial doctrine of fixed-star gifts: unusually large elevations that are less durable in human subjects than planetary gifts. The many repeated aphorisms, natal catalogues and biographical anecdotes were read but not promoted into weak standalone terms.
 
+Treatise 6 Part I adds Bonatti’s explicit distinction between absolute and determinate questions, a source-defined universal question, and the abscissor or planet which cuts off. Its introductory chapters give the three principal modes of perfection—direct joining of significators, transfer of light, and collection of light—and repeatedly qualify perfection by reception, planetary condition and the state of the receiving planet. The house-specific chapters were reviewed as applications of these principles rather than converted into a large catalogue of weak entries. The illness section also gives a substantive critical-day procedure using the Moon at seventh-day intervals; this is retained as a Bonatti interpretation of the existing `critical-days` term rather than as a new generic medical rule.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -50,16 +54,18 @@ Treatise 5 adds source-level definitions and refinements for rooted/radical ques
 - `db/seed/0025_bonatti_tractate8_part1_ch75_116.sql`
 - `db/seed/0026_bonatti_tractate10_heavy_rains.sql`
 - `db/seed/0027_bonatti_146_considerations.sql`
+- `db/seed/0028_bonatti_horary_part1.sql`
 
 ## Remaining sections in this compiled PDF
 
 The PDF is a compilation and its sections are not in numerical treatise order. The substantive Bonatti material still present in this file is:
 
-- Treatise 6, *Horary*, **Part I only** in this PDF, substantive text beginning after the editorial introduction around PDF p. 643 and ending p. 736. The included Part I treats introductory doctrine and houses 1–6. The other projected horary booklets described by Robert Hand are not present here, so this PDF cannot support a claim that all of Treatise 6 has been reviewed.
 - Treatise 7, *Elections*, beginning PDF p. 749.
 - Treatise 8.2, *Lots*, beginning PDF p. 940.
 - Treatise 9, *Nativities*, beginning PDF p. 1018 and continuing to the end of the compiled PDF.
 
+The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
+
 ## Next
 
-Continue sequentially with Treatise 6, *Horary*, First Part, after its editorial introduction and table of contents.
+Continue sequentially with Treatise 7, *Elections*, beginning around PDF p. 749.

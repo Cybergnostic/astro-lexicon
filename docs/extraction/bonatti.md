@@ -16,6 +16,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 369–440: Treatise 8, Part 1, *Revolutions of the Years of the World*, Preface and Chapters 1–74, reviewed sequentially.
 - PDF pp. 441–502: Treatise 8, Part 1, Chapters 75–116, reviewed sequentially. PDF p. 503 is blank. Treatise 8.1 is complete.
 - PDF pp. 504–527: Treatise 10, *Heavy Rains*, reviewed completely. PDF p. 528 begins the bibliography/editorial apparatus for this volume.
+- PDF pp. 565–568: title matter, publisher note and abbreviations for Treatise 5 inspected.
+- PDF pp. 569–615: Treatise 5, *146 Considerations*, reviewed sequentially and completely. PDF p. 616 begins bibliography/editorial apparatus.
 
 ## Editorial rule applied
 
@@ -35,6 +37,8 @@ The final chapters of Treatise 8.1 add usable doctrines for exact fixed-star con
 
 Treatise 10 adds a compact meteorological vocabulary: Mercury and the Moon as convertible planets in this context, wet/dry/common lunar mansions, and the four lunar dichotomies used as weather checkpoints. The many mansion names, weather recipes, cloud/halo/rainbow observations and repeated planet combinations were reviewed but not promoted into separate entries unless they supplied reusable technical doctrine.
 
+Treatise 5 adds source-level definitions and refinements for rooted/radical questions, Bonatti’s “own light,” planetary impediment and escape from malefic contact, void course versus ferality, reception, transfer of light, cazimi, under-the-rays conditions, peregrination, and the specialized participators derived in the 146th Consideration. It also gives a substantial doctrine of fixed-star gifts: unusually large elevations that are less durable in human subjects than planetary gifts. The many repeated aphorisms, natal catalogues and biographical anecdotes were read but not promoted into weak standalone terms.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -45,17 +49,17 @@ Treatise 10 adds a compact meteorological vocabulary: Mercury and the Moon as co
 - `db/seed/0024_bonatti_tractate8_part1_ch1_74.sql`
 - `db/seed/0025_bonatti_tractate8_part1_ch75_116.sql`
 - `db/seed/0026_bonatti_tractate10_heavy_rains.sql`
+- `db/seed/0027_bonatti_146_considerations.sql`
 
 ## Remaining sections in this compiled PDF
 
 The PDF is a compilation and its sections are not in numerical treatise order. The substantive Bonatti material still present in this file is:
 
-- Treatise 5, *146 Considerations*, beginning PDF p. 565; substantive text begins around p. 569.
-- Treatise 6, *Horary*, **Part I only** in this PDF, substantive text beginning PDF p. 643 and ending p. 736. The included Part I treats introductory doctrine and houses 1–6. The other projected horary booklets described by Robert Hand are not present here, so this PDF cannot support a claim that all of Treatise 6 has been reviewed.
+- Treatise 6, *Horary*, **Part I only** in this PDF, substantive text beginning after the editorial introduction around PDF p. 643 and ending p. 736. The included Part I treats introductory doctrine and houses 1–6. The other projected horary booklets described by Robert Hand are not present here, so this PDF cannot support a claim that all of Treatise 6 has been reviewed.
 - Treatise 7, *Elections*, beginning PDF p. 749.
 - Treatise 8.2, *Lots*, beginning PDF p. 940.
 - Treatise 9, *Nativities*, beginning PDF p. 1018 and continuing to the end of the compiled PDF.
 
 ## Next
 
-Continue sequentially with Treatise 5, *146 Considerations*, from the substantive text around PDF p. 569.
+Continue sequentially with Treatise 6, *Horary*, First Part, after its editorial introduction and table of contents.

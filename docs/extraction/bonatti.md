@@ -31,6 +31,7 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 1108–1116: Treatise 9, Part 3, Fourth House, Chapters 1–9, reviewed sequentially and completely. PDF p. 1116 begins the Fifth House.
 - PDF pp. 1116–1121: Treatise 9, Part 3, Fifth House, Chapters 1–4, reviewed sequentially and completely.
 - PDF pp. 1121–1136: Treatise 9, Part 3, Sixth House, Chapters 1–7, reviewed sequentially and completely. PDF p. 1136 begins the Seventh House.
+- PDF pp. 1136–1151: Treatise 9, Part 3, Seventh House, Chapters 1–7, reviewed sequentially and completely. PDF p. 1151 begins the Eighth House.
 
 ## Editorial rule applied
 
@@ -72,6 +73,8 @@ The Fifth House section is mainly a large catalogue of child-signification rules
 
 The Sixth House contains several unusually explicit definitions. Bonatti distinguishes an `infirmity` as a bodily weakness or accident that comes and goes from a `disease`, which comes and does not go away; later he distinguishes a bodily `impediment` as a discrete injury or impairment rather than a continuing or recurring infirmity. He also sets out historical categories of infirmities and impediments of the soul. These are stored as medieval technical vocabulary only, without treating the astrological medical or psychological claims as modern clinical fact. Detailed disease, injury, body-part and sexual-morality catalogues were reviewed but not promoted.
 
+The Seventh House section explicitly assigns marriage, partners or participators, and openly opposing enemies to the seventh. Bonatti’s partnership procedure uses the Ascendant and its lord for the native, the seventh and its lord for the partner, the tenth and its lord for the condition or course of the partnership, and the fourth and its lord for the end. The extensive marriage, sexual-morality, spouse-description and enemy catalogues were reviewed but not promoted into weak standalone terms.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -90,13 +93,14 @@ The Sixth House contains several unusually explicit definitions. Bonatti disting
 - `db/seed/0032_bonatti_nativities_part3_first_second_house.sql`
 - `db/seed/0033_bonatti_nativities_third_fourth_house.sql`
 - `db/seed/0034_bonatti_nativities_fifth_sixth_house.sql`
+- `db/seed/0035_bonatti_nativities_seventh_house.sql`
 
 ## Remaining sections in this compiled PDF
 
-The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Seventh House on PDF p. 1136 and continuing to the end of the compilation.
+The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Eighth House on PDF p. 1151 and continuing to the end of the compilation.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 9, Part 3, Seventh House from PDF p. 1136.
+Continue sequentially with Treatise 9, Part 3, Eighth House from PDF p. 1151.

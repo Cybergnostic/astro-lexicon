@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import corpus from '../../data/generated/corpus.json';
+
+export function getStaticPaths() {
+  return corpus.works.map((work) => ({ params: { slug: work.slug }, props: { work } }));
+}
+const { work } = Astro.props;
+const terms = corpus.terms.filter((term) => term.interpretations.some((item) => item.work_slug === work.slug));
+---
+<BaseLayout title={`${work.title} — Astrological Lexicon`}>
+  <div class="shell page-grid">
+    <aside class="article-rail"><div class="rail-group"><span class="micro-label">Author</span><span class="rail-value"><a href={`/authors/${work.author_slug}/`}>{work.author_name}</a></span></div><div class="rail-group"><span class="micro-label">Historical layer</span><span class="rail-value">{work.historical_layer}</span></div><div class="rail-group"><span class="micro-label">Indexed terms</span><span class="rail-value">{terms.length}</span></div></aside>
+    <article class="article"><p class="eyebrow">Work index · {work.historical_layer}</p><h1>{work.title}</h1>{work.original_title && <p class="lede">{work.original_title}</p>}
+      <section id="bibliography"><h2>Bibliographic record</h2>{work.editions.map((edition)=><div class="source-block"><div class="source-head"><h3>{edition.label}</h3><span class="source-label">{edition.publication_year || 'edition'}</span></div><p>{[edition.translator && `Translator: ${edition.translator}`,edition.editor && `Editor: ${edition.editor}`,edition.publisher,edition.publication_place].filter(Boolean).join(' · ')}</p>{edition.copyright_note && <p class="source-cite">{edition.copyright_note}</p>}</div>)}</section>
+      <section id="terms"><h2>Terms evidenced by this work</h2><ul class="index-list compact-list">{terms.map((term)=><li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}</ul></section>
+      {work.notes && <section id="note"><h2>Editorial note</h2><p>{work.notes}</p></section>}
+    </article>
+    <aside class="toc"><strong>Work index</strong><a href="#bibliography">Bibliography</a><a href="#terms">Indexed terms</a>{work.notes && <a href="#note">Editorial note</a>}</aside>
+  </div>
+</BaseLayout>

@@ -1,67 +1,88 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Reception — Astrological Lexicon">
+<BaseLayout title="Reception — Astrological Lexicon" description="Reception in traditional astrology, compared across historical sources.">
   <div class="shell page-grid">
+    <aside class="article-rail" aria-label="Entry metadata">
+      <div class="rail-group">
+        <span class="micro-label">Entry type</span>
+        <span class="rail-value">Technical term</span>
+      </div>
+      <div class="rail-group">
+        <span class="micro-label">Subject</span>
+        <span class="rail-value">Dignity & planetary relation</span>
+      </div>
+      <div class="rail-group">
+        <span class="micro-label">Evidence</span>
+        <span class="rail-value">Direct definitions</span>
+      </div>
+    </aside>
+
     <article class="article">
-      <p class="eyebrow">Planetary relation · Draft entry</p>
+      <p class="eyebrow">Lexicon entry · planetary relation</p>
       <h1>Reception</h1>
-      <p class="lede">A relationship in which one planet is received through a dignity belonging to another. Historical authors do not formulate the doctrine in exactly the same way, so the entry keeps each source account separate.</p>
+      <p class="lede">A relationship in which one planet is received through a dignity belonging to another. Historical authors do not formulate the doctrine in exactly the same way, so their accounts remain separately attributable.</p>
 
       <div class="mode-switch" aria-label="Display mode">
         <button class="active" data-mode="reading">Reading</button>
-        <button data-mode="sources">Sources</button>
+        <button data-mode="sources">Editorial detail</button>
       </div>
 
-      <section id="definition">
-        <h2>Working definition</h2>
-        <p>Reception concerns the relation created when a planet occupies a place that belongs, by dignity, to another planet. Mutual reception occurs when that relationship is reciprocal. The strength and practical consequences of reception vary by author and by the dignity involved.</p>
-        <p class="sources-only meta">Editorial status: draft synthesis. This paragraph is intentionally broader than any single source definition and must remain tied to the source accounts below.</p>
+      <div class="definition-panel" id="definition">
+        <p class="micro-label">Canonical definition</p>
+        <p>Reception is the relation created when a planet occupies a dignity belonging to another planet. Mutual reception occurs when the relationship is reciprocal. Historical authors differ over which dignities qualify, how strongly they operate, and what reception accomplishes in judgment.</p>
+        <p class="sources-only meta">Editorial synthesis: the public definition is deliberately broader than any one witness and must remain traceable to the reviewed source accounts below.</p>
+      </div>
+
+      <section id="names">
+        <h2>Names & related forms</h2>
+        <div class="term-links">
+          <span>Reception</span>
+          <span>Mutual reception</span>
+        </div>
       </section>
 
-      <section id="biruni">
-        <h2>al-Bīrūnī</h2>
-        <div class="source-block">
+      <section id="sources">
+        <h2>Source accounts</h2>
+
+        <div class="source-block" id="biruni">
           <div class="source-head">
-            <h3>Book of Instruction</h3>
+            <h3>al-Bīrūnī · <em>Book of Instruction</em></h3>
             <span class="source-label">§507 · pp. 330–331</span>
           </div>
-          <p>al-Bīrūnī describes reception through a planet arriving in a dignity proper to another planet. If the second planet is likewise in a place proper to the first, the relationship becomes mutual reception. He adds that the condition is strengthened when the relevant places are richer in dignities and when the aspect does not indicate hostility.</p>
-          <p class="source-cite">R. Ramsay Wright translation, §507.</p>
+          <p>al-Bīrūnī describes reception through a planet arriving in a dignity proper to another planet. If the second planet is likewise in a place proper to the first, the relationship becomes mutual reception. He adds that the condition is strengthened when the relevant places contain richer dignities and that hostile configurations can qualify the relationship.</p>
+          <p class="source-cite"><span class="evidence">A</span>R. Ramsay Wright translation · direct source definition.</p>
           <div class="sources-only">
-            <p class="meta">Evidence type: direct source definition. Public wording: paraphrase. Related section §508 immediately continues with application and donor terminology.</p>
+            <p class="meta">The database stores the interpretation separately from the source passage and links them through a citation record. Public wording is paraphrase rather than reproduced source text.</p>
           </div>
         </div>
-      </section>
 
-      <section id="lilly">
-        <h2>William Lilly</h2>
-        <div class="source-block">
+        <div class="source-block" id="lilly">
           <div class="source-head">
-            <h3>Christian Astrology</h3>
-            <span class="source-label">Book I · p. 112</span>
+            <h3>William Lilly · <em>Christian Astrology</em></h3>
+            <span class="source-label">Book I · Ch. XIX · p. 112</span>
           </div>
-          <p>Lilly defines reception between significators through their being in one another's dignities. He explicitly allows reception by house, triplicity, term, face, or another essential dignity, while treating reception by house as the strongest form in the examples given there.</p>
-          <p>For horary judgment he gives mutual reception substantial practical weight, including cases where the ordinary aspectual testimony is difficult or absent.</p>
-          <p class="source-cite">William Lilly, <em>Christian Astrology</em>, Book I, p. 112 in the digital retype used by this project.</p>
+          <p>Lilly presents reception as a reciprocal relation between significators occupying one another’s dignities. Reception by house is treated as the strongest form in this discussion, while he also allows reception through triplicity, term, face and other essential dignity. In horary judgment he gives mutual reception substantial practical weight.</p>
+          <p class="source-cite"><span class="evidence">A</span>1647 text, digital retype · direct source definition.</p>
           <div class="sources-only">
-            <p class="meta">Evidence type: direct source definition. Compare Lilly's dignity table, where mutual reception by house is given the same score as domicile and reception by exaltation the same score as exaltation.</p>
+            <p class="meta">The final database-driven page will render the exact edition metadata, passage locator, evidence grade and any additional reviewed witnesses automatically.</p>
           </div>
         </div>
       </section>
 
-      <section id="variation">
-        <h2>Variation between authors</h2>
-        <p>The current corpus already shows why reception should not be reduced to a single modern sentence. al-Bīrūnī explains the relationship through the receiving planet's dignities and emphasizes mutuality and qualitative strengthening. Lilly presents a practical hierarchy of receptions and uses the doctrine directly in horary perfection.</p>
-        <p class="sources-only meta">This comparison is provisional until Bonatti, Antiochus, and Abū Maʿshar passages have been verified and added.</p>
+      <section id="comparison">
+        <h2>Historical comparison</h2>
+        <p>The current witnesses already show why reception should not be compressed into a single modern rule. al-Bīrūnī emphasizes reception through another planet’s dignity, reciprocal reception and qualitative strengthening. Lilly frames the doctrine in a more explicitly practical hierarchy and applies it directly to horary perfection.</p>
+        <p class="meta">The complete database contains later cross-source revision work, so this manually written showcase will ultimately be replaced by the same query-driven template as every other term.</p>
       </section>
 
       <section id="related">
-        <h2>Related terms</h2>
+        <h2>Related concepts</h2>
         <div class="term-links">
-          <a href="/terms/application">Application</a>
+          <a href="/terms/domicile">Domicile / House</a>
+          <a href="/terms/exaltation">Exaltation</a>
           <a href="/terms/peregrine">Peregrine</a>
-          <a href="/terms/terms">Terms / Bounds</a>
+          <a href="/terms/application">Application</a>
           <a href="/terms/translation-of-light">Translation of Light</a>
           <a href="/terms/collection-of-light">Collection of Light</a>
         </div>
@@ -69,12 +90,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     </article>
 
     <aside class="toc">
-      <strong>On this page</strong>
+      <strong>On this entry</strong>
       <a href="#definition">Definition</a>
+      <a href="#names">Names & forms</a>
       <a href="#biruni">al-Bīrūnī</a>
       <a href="#lilly">William Lilly</a>
-      <a href="#variation">Variation</a>
-      <a href="#related">Related terms</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#related">Related concepts</a>
     </aside>
   </div>
 </BaseLayout>

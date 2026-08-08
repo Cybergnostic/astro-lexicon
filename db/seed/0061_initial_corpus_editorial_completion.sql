@@ -104,293 +104,67 @@ UPDATE term_relations SET status='reviewed' WHERE status='draft';
 -- -----------------------------------------------------------------------------
 -- CITATION BACKFILL
 -- -----------------------------------------------------------------------------
--- The mappings below were generated from a fresh post-0060 SQLite build. Each
--- interpretation already records a source scope; each target passage is the reviewed
--- source block covering that scope. Multiple citations are retained where one
--- interpretation spans more than one source block.
+-- This mapping was generated and validated from a fresh post-0060 SQLite build.
+-- Each pair is (interpretation_id, source_passage_id). The interpretation's recorded
+-- scope was matched to the reviewed passage block that contains that chapter/section.
+-- Multiple rows are intentional when an interpretation spans more than one block.
+CREATE TEMP TABLE _citation_backfill (
+  interpretation_id INTEGER NOT NULL,
+  source_passage_id INTEGER NOT NULL,
+  PRIMARY KEY (interpretation_id, source_passage_id)
+);
 
--- source_passage_id 1
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 1, 'primary' FROM interpretations WHERE id IN (242);
--- source_passage_id 5
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 5, 'primary' FROM interpretations WHERE id IN (26,27,239,240,241);
--- source_passage_id 8
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 8, 'primary' FROM interpretations WHERE id IN (40,41);
--- source_passage_id 20
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 20, 'primary' FROM interpretations WHERE id IN (250);
--- source_passage_id 21
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 21, 'primary' FROM interpretations WHERE id IN (34,37,235,236);
--- source_passage_id 26
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 26, 'primary' FROM interpretations WHERE id IN (34,35,37,235,236);
--- source_passage_id 27
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 27, 'primary' FROM interpretations WHERE id IN (38,39,42,485);
--- source_passage_id 28
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 28, 'primary' FROM interpretations WHERE id IN (43,44);
--- source_passage_id 30
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 30, 'primary' FROM interpretations WHERE id IN (48,52);
--- source_passage_id 31
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 31, 'primary' FROM interpretations WHERE id IN (49,50,51,52,53,54,55,56,57);
--- source_passage_id 32
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 32, 'primary' FROM interpretations WHERE id IN (60,61);
--- source_passage_id 33
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 33, 'primary' FROM interpretations WHERE id IN (62,63,64,65);
--- source_passage_id 34
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 34, 'primary' FROM interpretations WHERE id IN (66,67,68,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90);
--- source_passage_id 35
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 35, 'primary' FROM interpretations WHERE id IN (69,70,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90);
--- source_passage_id 36
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 36, 'primary' FROM interpretations WHERE id IN (91,92,93);
--- source_passage_id 37
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 37, 'primary' FROM interpretations WHERE id IN (94,95,96,97,98,99);
--- source_passage_id 38
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 38, 'primary' FROM interpretations WHERE id IN (100,101,104,105,106,107);
--- source_passage_id 39
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 39, 'primary' FROM interpretations WHERE id IN (104,105,106,107);
--- source_passage_id 40
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 40, 'primary' FROM interpretations WHERE id IN (110);
--- source_passage_id 41
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 41, 'primary' FROM interpretations WHERE id IN (111,112,113,114,115,116);
--- source_passage_id 42
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 42, 'primary' FROM interpretations WHERE id IN (117,118);
--- source_passage_id 43
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 43, 'primary' FROM interpretations WHERE id IN (120,121,122,123,124,125,126);
--- source_passage_id 44
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 44, 'primary' FROM interpretations WHERE id IN (127);
--- source_passage_id 45
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 45, 'primary' FROM interpretations WHERE id IN (128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144);
--- source_passage_id 46
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 46, 'primary' FROM interpretations WHERE id IN (102,103,145,146,147,148);
--- source_passage_id 47
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 47, 'primary' FROM interpretations WHERE id IN (108,109,149,150);
--- source_passage_id 48
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 48, 'primary' FROM interpretations WHERE id IN (151,152,153,154);
--- source_passage_id 49
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 49, 'primary' FROM interpretations WHERE id IN (33,155,156,157,158,159,160,161,162,163,164);
--- source_passage_id 50
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 50, 'primary' FROM interpretations WHERE id IN (29,119,165,166,167,168,169,170,171);
--- source_passage_id 51
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 51, 'primary' FROM interpretations WHERE id IN (172,173,174,175,176,177);
--- source_passage_id 52
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 52, 'primary' FROM interpretations WHERE id IN (178,180,181,182);
--- source_passage_id 53
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 53, 'primary' FROM interpretations WHERE id IN (46,128,129,130,184,185,186,187,188,189,190,191,192,193,194);
--- source_passage_id 54
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 54, 'primary' FROM interpretations WHERE id IN (196,197,198);
--- source_passage_id 55
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 55, 'primary' FROM interpretations WHERE id IN (199,200,201,202,203,204,205);
--- source_passage_id 56
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 56, 'primary' FROM interpretations WHERE id IN (206,207,208);
--- source_passage_id 57
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 57, 'primary' FROM interpretations WHERE id IN (209,210);
--- source_passage_id 58
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 58, 'primary' FROM interpretations WHERE id IN (131,132,133,134,135,136,137,138,139,140,141,142,143,144,212,213,214,215,216,217);
--- source_passage_id 59
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 59, 'primary' FROM interpretations WHERE id IN (145,146,147,148);
--- source_passage_id 60
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 60, 'primary' FROM interpretations WHERE id IN (151,152,153,154);
--- source_passage_id 61
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 61, 'primary' FROM interpretations WHERE id IN (151,152,153,154);
--- source_passage_id 63
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 63, 'primary' FROM interpretations WHERE id IN (167,168,169,170,171,172,173,174,175,176,177,178,180,181,182,184,185,186,187,188,189,190,191,192,193,194,196,197,198,199,200,201,202,203,204,205,206,207,208);
--- source_passage_id 64
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 64, 'primary' FROM interpretations WHERE id IN (179);
--- source_passage_id 65
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 65, 'primary' FROM interpretations WHERE id IN (183);
--- source_passage_id 67
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 67, 'primary' FROM interpretations WHERE id IN (195,209,210,211,212,213,214,215,216,217);
--- source_passage_id 68
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 68, 'primary' FROM interpretations WHERE id IN (195,209,210,211,212,213,214,215,216,217);
--- source_passage_id 69
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 69, 'primary' FROM interpretations WHERE id IN (195,209,210,211,212,213,214,215,216,217);
--- source_passage_id 70
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 70, 'primary' FROM interpretations WHERE id IN (195,209,210,211,212,213,214,215,216,217);
--- source_passage_id 71
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 71, 'primary' FROM interpretations WHERE id IN (29,195,209,210,211,212,213,214,215,216,217);
--- source_passage_id 72
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 72, 'primary' FROM interpretations WHERE id IN (195,209,210,211,212,213,214,215,216,217);
--- source_passage_id 73
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 73, 'primary' FROM interpretations WHERE id IN (195,209,210,211,212,213,214,215,216,217);
--- source_passage_id 74
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 74, 'primary' FROM interpretations WHERE id IN (218,219,220,221,222);
--- source_passage_id 75
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 75, 'primary' FROM interpretations WHERE id IN (223,224,225,226,227);
--- source_passage_id 76
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 76, 'primary' FROM interpretations WHERE id IN (226,227,228);
--- source_passage_id 77
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 77, 'primary' FROM interpretations WHERE id IN (35,36,229,230,231,232,233,234);
--- source_passage_id 78
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 78, 'primary' FROM interpretations WHERE id IN (237,238);
--- source_passage_id 79
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 79, 'primary' FROM interpretations WHERE id IN (241);
--- source_passage_id 80
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 80, 'primary' FROM interpretations WHERE id IN (243,244,245,246,247,248,249,251,252,253,254,255,256,257,258,259,260,261,262,263);
--- source_passage_id 81
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 81, 'primary' FROM interpretations WHERE id IN (261,262,263);
--- source_passage_id 82
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 82, 'primary' FROM interpretations WHERE id IN (264,265,266,267,268,269);
--- source_passage_id 83
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 83, 'primary' FROM interpretations WHERE id IN (270,271,272);
--- source_passage_id 84
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 84, 'primary' FROM interpretations WHERE id IN (273,274,275,276,277,278,279);
--- source_passage_id 85
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 85, 'primary' FROM interpretations WHERE id IN (280,281,282);
--- source_passage_id 86
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 86, 'primary' FROM interpretations WHERE id IN (47,283,284,285,286,288,289,290);
--- source_passage_id 87
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 87, 'primary' FROM interpretations WHERE id IN (291,292,293,294,295,296,297,298);
--- source_passage_id 88
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 88, 'primary' FROM interpretations WHERE id IN (299,301);
--- source_passage_id 89
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 89, 'primary' FROM interpretations WHERE id IN (300);
--- source_passage_id 91
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 91, 'primary' FROM interpretations WHERE id IN (301,302,303);
--- source_passage_id 92
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 92, 'primary' FROM interpretations WHERE id IN (304,307);
--- source_passage_id 93
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 93, 'primary' FROM interpretations WHERE id IN (305);
--- source_passage_id 94
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 94, 'primary' FROM interpretations WHERE id IN (306);
--- source_passage_id 95
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 95, 'primary' FROM interpretations WHERE id IN (308,309,310);
--- source_passage_id 96
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 96, 'primary' FROM interpretations WHERE id IN (311,312,313);
--- source_passage_id 97
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 97, 'primary' FROM interpretations WHERE id IN (315,316,317,318,319,320,321,322,323);
--- source_passage_id 98
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 98, 'primary' FROM interpretations WHERE id IN (324,325,326,327,328,329,330,331);
--- source_passage_id 99
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 99, 'primary' FROM interpretations WHERE id IN (332,333,334,335);
--- source_passage_id 100
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 100, 'primary' FROM interpretations WHERE id IN (336);
--- source_passage_id 101
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 101, 'primary' FROM interpretations WHERE id IN (337);
--- source_passage_id 102
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 102, 'primary' FROM interpretations WHERE id IN (338,339,340);
--- source_passage_id 103
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 103, 'primary' FROM interpretations WHERE id IN (341,342,343,344,345,346);
--- source_passage_id 104
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 104, 'primary' FROM interpretations WHERE id IN (347);
--- source_passage_id 105
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 105, 'primary' FROM interpretations WHERE id IN (348,349,350,351,352,353);
--- source_passage_id 106
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 106, 'primary' FROM interpretations WHERE id IN (354);
--- source_passage_id 107
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 107, 'primary' FROM interpretations WHERE id IN (355,356,357,358,359);
--- source_passage_id 108
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 108, 'primary' FROM interpretations WHERE id IN (360,361,362,363);
--- source_passage_id 109
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 109, 'primary' FROM interpretations WHERE id IN (364,365,366,367);
--- source_passage_id 110
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 110, 'primary' FROM interpretations WHERE id IN (368,369);
--- source_passage_id 111
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 111, 'primary' FROM interpretations WHERE id IN (370,372,374,375,376,377,378,379,380,381);
--- source_passage_id 112
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 112, 'primary' FROM interpretations WHERE id IN (371,373,374,375,376,377,378,379,380,381);
--- source_passage_id 113
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 113, 'primary' FROM interpretations WHERE id IN (371,374,375,376,377,378,379,380,381);
--- source_passage_id 154
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 154, 'primary' FROM interpretations WHERE id IN (466);
--- source_passage_id 158
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 158, 'primary' FROM interpretations WHERE id IN (482,483);
--- source_passage_id 159
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 159, 'primary' FROM interpretations WHERE id IN (484,486,487);
--- source_passage_id 160
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 160, 'primary' FROM interpretations WHERE id IN (484,494);
--- source_passage_id 161
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 161, 'primary' FROM interpretations WHERE id IN (483,494,562);
--- source_passage_id 170
-INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
-SELECT id, 170, 'primary' FROM interpretations WHERE id IN (564);
+INSERT INTO _citation_backfill (interpretation_id, source_passage_id) VALUES
+  (26,5), (27,5), (29,50), (29,71), (33,49), (34,26), (35,26), (35,77),
+  (36,77), (37,26), (38,27), (39,27), (40,8), (41,8), (42,27), (43,28),
+  (44,28), (46,53), (47,86), (48,30), (49,31), (50,31), (51,31), (52,30),
+  (52,31), (53,31), (54,31), (55,31), (56,31), (57,31), (60,32), (61,32),
+  (66,34), (67,34), (68,34), (69,35), (70,34), (70,35), (71,34), (71,35),
+  (73,36), (74,36), (75,36), (76,37), (77,37), (78,37), (79,37), (80,37),
+  (80,38), (81,38), (82,38), (83,38), (84,38), (85,39), (86,39), (87,39),
+  (88,39), (89,40), (90,40), (91,41), (92,41), (93,41), (94,41), (96,43),
+  (100,44), (101,45), (102,46), (103,46), (104,46), (105,46), (106,47), (107,47),
+  (108,47), (109,47), (110,48), (111,48), (112,48), (113,25), (113,48), (114,25),
+  (114,48), (115,49), (116,49), (117,49), (118,49), (119,50), (120,51), (121,51),
+  (122,51), (123,52), (124,52), (125,52), (126,53), (127,53), (128,53), (129,53),
+  (130,53), (131,53), (132,54), (133,55), (134,55), (135,56), (136,56), (137,56),
+  (138,57), (139,57), (140,57), (141,57), (142,57), (143,57), (144,57), (145,58),
+  (146,59), (147,59), (148,60), (149,60), (150,60), (151,60), (151,61), (152,60),
+  (152,61), (156,61), (157,61), (158,61), (159,61), (160,61), (161,61), (162,61),
+  (163,61), (166,63), (167,63), (169,63), (170,63), (175,64), (176,64), (177,64),
+  (178,64), (179,64), (183,65), (185,66), (186,66), (187,67), (189,68), (190,68),
+  (191,68), (194,70), (195,70), (196,70), (197,70), (198,70), (199,70), (200,70),
+  (201,70), (202,70), (203,70), (204,70), (205,70), (206,70), (207,70), (208,70),
+  (209,70), (210,70), (211,70), (212,70), (213,71), (214,71), (215,72), (216,72),
+  (217,72), (218,74), (219,74), (220,74), (221,74), (222,74), (223,75), (224,75),
+  (225,75), (226,75), (226,76), (227,75), (227,76), (228,76), (229,77), (230,77),
+  (231,77), (232,77), (233,77), (234,77), (235,77), (236,77), (237,78), (238,78),
+  (239,5), (240,5), (240,79), (241,5), (241,79), (242,1), (242,80), (243,80),
+  (244,80), (245,80), (245,188), (246,80), (247,80), (248,80), (249,80), (250,20),
+  (251,20), (252,20), (253,20), (254,80), (255,80), (256,80), (257,80), (261,81),
+  (262,81), (263,81), (264,82), (265,82), (266,82), (267,82), (268,82), (269,82),
+  (270,83), (271,83), (272,83), (273,84), (274,84), (275,84), (276,84), (277,84),
+  (278,84), (279,84), (280,85), (281,85), (282,85), (283,86), (284,86), (285,86),
+  (286,86), (288,86), (289,86), (290,86), (291,87), (292,87), (293,87), (294,87),
+  (295,87), (296,87), (297,87), (298,88), (299,88), (300,88), (300,91), (301,88),
+  (301,91), (302,89), (303,89), (304,91), (305,91), (306,91), (307,92), (308,93),
+  (309,94), (310,95), (311,95), (312,95), (313,96), (315,97), (316,97), (317,97),
+  (318,97), (319,97), (320,97), (321,97), (322,97), (323,97), (325,98), (326,98),
+  (327,98), (328,98), (329,98), (330,98), (331,99), (332,99), (333,99), (334,99),
+  (335,100), (337,101), (338,101), (339,101), (340,102), (341,102), (342,102), (343,103),
+  (344,103), (345,103), (346,103), (347,103), (347,104), (348,103), (349,104), (350,105),
+  (351,105), (352,105), (353,105), (354,106), (355,107), (356,107), (357,107), (358,107),
+  (359,107), (361,108), (362,108), (363,108), (365,108), (366,109), (367,109), (368,109),
+  (369,109), (370,110), (371,110), (372,111), (372,113), (373,112), (374,111), (376,113),
+  (377,111), (377,112), (378,111), (378,112), (379,111), (379,112), (379,113), (380,111),
+  (380,112), (381,112), (382,111), (382,112), (466,154), (482,158), (483,158), (483,161),
+  (484,159), (484,160), (485,27), (486,159), (487,159), (494,160), (494,161), (562,161),
+  (564,170), (568,77), (569,77), (570,98);
+
+INSERT OR IGNORE INTO citations (interpretation_id, source_passage_id, citation_role)
+SELECT b.interpretation_id, b.source_passage_id, 'primary'
+FROM _citation_backfill b
+JOIN interpretations i ON i.id=b.interpretation_id
+JOIN source_passages sp ON sp.id=b.source_passage_id;
+
+DROP TABLE _citation_backfill;

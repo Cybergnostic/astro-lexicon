@@ -1,139 +1,74 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { terms, authors } from '../data/preview';
+import corpus from '../data/generated/corpus.json';
 
-const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUpperCase()));
+const { terms, authors, works, meta } = corpus;
+const featuredSlugs = [
+  'reception','application','sect','hayz','domicile','exaltation','terms','face',
+  'combustion','retrogradation','translation-of-light','collection-of-light',
+  'prohibition','lot-of-fortune','annual-profection','firdaria','horary-astrology','election'
+];
+const featured = featuredSlugs.map((slug) => terms.find((term) => term.slug === slug)).filter(Boolean).slice(0,18);
+const subjects = [
+  ['Dignities & Debilities','Domicile, exaltation, terms, faces, fall, detriment and related conditions'],
+  ['Planetary Motion','Application, separation, retrogradation, orientality and solar phase'],
+  ['Perfection & Impediments','Translation, collection, prohibition, refranation and frustration'],
+  ['Signs & Divisions','Signs, triplicities, decans, lunar mansions and zodiacal subdivisions'],
+  ['Sect & Planetary Condition','Diurnal and nocturnal doctrine, hayz and related conditions'],
+  ['Horary & Questions','Interrogational doctrine, significators and judgment of questions'],
+  ['Natal Astrology','Nativities, profession, longevity and rectification terminology'],
+  ['Predictive Techniques','Revolutions, time-lord methods and annual techniques'],
+  ['Mundane & Electional','World-year doctrine, elections, weather and collective indications']
+];
 ---
 <BaseLayout>
-  <div class="shell page-grid">
-    <article class="article">
-      <p class="eyebrow">Source-based reference work</p>
-      <h1>Astrological<br />Lexicon</h1>
-      <p class="lede">A source-based encyclopedia of traditional astrological terminology, built from historical texts rather than flattened modern definitions.</p>
-
-      <div class="search">
-        <input id="term-search" type="search" autocomplete="off" placeholder="Search terms, authors, works…" aria-label="Search lexicon" />
-        <div id="search-results" class="search-results"></div>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="hero-kicker">Historical dictionary · traditional astrology</p>
+        <h1>Astrological Lexicon</h1>
+        <p class="hero-deck">A source-based reference work tracing technical astrological language across foundational texts from Late Antiquity through the seventeenth century.</p>
+        <div class="search-wrap">
+          <div class="search-label"><span class="micro-label">Search the lexicon</span><span>terms · authors · works</span></div>
+          <div class="search"><input id="term-search" type="search" autocomplete="off" placeholder="Try reception, bounds, Bonatti, Christian Astrology…" aria-label="Search lexicon" /><div id="search-results" class="search-results"></div></div>
+        </div>
       </div>
-
-      <p class="eyebrow">Browse</p>
-      <div class="alpha" aria-label="Alphabetical index">
-        <a href="#terms" data-letter="ALL" class="alpha-all">All</a>
-        {alphabet.map((letter) => (
-          availableLetters.has(letter)
-            ? <a href={`#${letter}`} data-letter={letter}>{letter}</a>
-            : <span class="is-empty" aria-disabled="true">{letter}</span>
-        ))}
+      <div>
+        <div class="corpus-stats">
+          <div class="stat"><span class="stat-value">{meta.terms}</span><span class="stat-label">reviewed entries</span></div>
+          <div class="stat"><span class="stat-value">{meta.interpretations}</span><span class="stat-label">source accounts</span></div>
+          <div class="stat"><span class="stat-value">{meta.works}</span><span class="stat-label">foundational works</span></div>
+        </div>
+        <p class="hero-note"><strong>Not a modernized glossary.</strong> Definitions are synthesized from reviewed source evidence while disagreements, aliases, translator choices and historical differences remain visible.</p>
       </div>
+    </div>
+  </section>
 
-      <section id="terms">
-        <h2 id="terms-heading">Current terms</h2>
-        <p id="no-letter-results" class="meta browse-empty" hidden>No terms under this letter yet.</p>
-        <ul id="term-list" class="list-clean">
-          {terms.map((term) => (
-            <li data-term-letter={term.label.charAt(0).toUpperCase()}>
-              <a href={`/terms/${term.slug}`}>{term.label}</a>
-              <span class="count">{term.category}</span>
-            </li>
-          ))}
+  <section class="section" id="lexicon">
+    <div class="shell section-grid">
+      <div class="section-intro"><p class="micro-label">01 · Lexicon</p><h2>Selected entries</h2><p>A compact doorway into the corpus. The complete A–Z index lives on its own page.</p></div>
+      <div class="section-body">
+        <ul class="index-list compact-list">
+          {featured.map((term) => <li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}
         </ul>
-      </section>
+        <p class="more-link"><a href="/terms/">Browse all {meta.terms} entries →</a></p>
+      </div>
+    </div>
+  </section>
 
-      <section id="sources">
-        <h2>Sources in the initial corpus</h2>
-        <ul class="list-clean">
-          {authors.map((author) => (
-            <li>
-              <span>{author.name} — <em>{author.work}</em></span>
-              <span class="count">{author.layer}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+  <section class="section" id="subjects"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">02 · Subjects</p><h2>Browse by doctrine</h2><p>These are editorial browsing groups; the canonical database retains the more granular source categories.</p></div><div class="section-body subject-grid">{subjects.map(([name,detail]) => <a class="subject" href="/terms/"><strong>{name}</strong><span>{detail}</span></a>)}</div></div></section>
 
-      <section id="method">
-        <h2>Method</h2>
-        <p>Entries distinguish source evidence from editorial synthesis. Historical variants are preserved rather than silently merged. Short quotations may be used where necessary, while the public text is primarily paraphrase, bibliography, and source location.</p>
-      </section>
-    </article>
+  <section class="section" id="tradition"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">03 · Tradition</p><h2>Source witnesses</h2><p>The initial corpus spans several linguistic and historical layers of the tradition.</p></div><div class="section-body timeline">{authors.map((author) => <div class="timeline-row"><span class="timeline-era">{author.historical_layer}</span><span class="timeline-author"><a href={`/authors/${author.slug}/`}>{author.name}</a></span><span class="timeline-work"><em>{author.works[0]?.title}</em></span></div>)}</div></div></section>
 
-    <aside class="toc">
-      <strong>Index</strong>
-      <a href="#terms">Current terms</a>
-      <a href="#sources">Sources</a>
-      <a href="#method">Method</a>
-    </aside>
-  </div>
+  <section class="section" id="method"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">04 · Method</p><h2>How entries are built</h2><p>The public site is generated from the reviewed canonical SQLite corpus.</p></div><div class="section-body method-grid"><div class="method-item"><strong>Canonical definition</strong><p>A concise recognition rule explaining what the term is.</p></div><div class="method-item"><strong>Source accounts</strong><p>Every historical explanation remains tied to an author, work, edition and locator.</p></div><div class="method-item"><strong>Differences preserved</strong><p>False friends, competing rules and translator-dependent labels are not silently flattened.</p></div></div></div></section>
 
-  <script define:vars={{ terms, authors }} is:inline>
-    const input = document.getElementById('term-search');
-    const box = document.getElementById('search-results');
-    const index = [
-      ...terms.map((x) => ({ label: x.label, kind: 'term', detail: x.category, href: `/terms/${x.slug}` })),
-      ...authors.map((x) => ({ label: x.name, kind: 'author', detail: x.work, href: x.name === 'Guido Bonatti' ? '/authors/guido-bonatti' : '#sources' }))
+  <script define:vars={{ terms, authors, works }} is:inline>
+    const input=document.getElementById('term-search'); const box=document.getElementById('search-results');
+    const index=[
+      ...terms.map(x=>({label:x.label,kind:'term',detail:[x.category,...x.aliases.map(a=>a.label)].join(' · '),href:`/terms/${x.slug}/`})),
+      ...authors.map(x=>({label:x.name,kind:'author',detail:x.historical_layer||'',href:`/authors/${x.slug}/`})),
+      ...works.map(x=>({label:x.title,kind:'work',detail:x.author_name,href:`/works/${x.slug}/`}))
     ];
-
-    input?.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      if (!q) {
-        box.classList.remove('is-open');
-        box.innerHTML = '';
-        return;
-      }
-      const results = index.filter((x) => `${x.label} ${x.detail}`.toLowerCase().includes(q)).slice(0, 8);
-      box.innerHTML = results.length
-        ? results.map((x) => `<a class="search-result" href="${x.href}"><small>${x.kind}</small><span><strong>${x.label}</strong><br><span class="meta">${x.detail}</span></span></a>`).join('')
-        : `<div class="search-result"><small>search</small><span>No indexed result yet.</span></div>`;
-      box.classList.add('is-open');
-    });
-
-    const alphaLinks = Array.from(document.querySelectorAll('.alpha a[data-letter]'));
-    const termRows = Array.from(document.querySelectorAll('#term-list li[data-term-letter]'));
-    const termsHeading = document.getElementById('terms-heading');
-    const emptyMessage = document.getElementById('no-letter-results');
-
-    function applyLetterFilter(letter, { updateHash = false } = {}) {
-      const normalized = letter === 'ALL' ? 'ALL' : String(letter || '').toUpperCase();
-      const filter = /^[A-Z]$/.test(normalized) ? normalized : 'ALL';
-      let visibleCount = 0;
-
-      termRows.forEach((row) => {
-        const visible = filter === 'ALL' || row.dataset.termLetter === filter;
-        row.hidden = !visible;
-        if (visible) visibleCount += 1;
-      });
-
-      alphaLinks.forEach((link) => {
-        link.classList.toggle('active', link.dataset.letter === filter);
-        if (link.dataset.letter === filter) link.setAttribute('aria-current', 'true');
-        else link.removeAttribute('aria-current');
-      });
-
-      if (termsHeading) termsHeading.textContent = filter === 'ALL' ? 'Current terms' : `Current terms — ${filter}`;
-      if (emptyMessage) emptyMessage.hidden = visibleCount !== 0;
-
-      if (updateHash) {
-        const nextHash = filter === 'ALL' ? '#terms' : `#${filter}`;
-        history.replaceState(null, '', nextHash);
-      }
-    }
-
-    alphaLinks.forEach((link) => {
-      link.addEventListener('click', (event) => {
-        event.preventDefault();
-        applyLetterFilter(link.dataset.letter, { updateHash: true });
-        document.getElementById('terms')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-
-    function filterFromHash() {
-      const hash = window.location.hash.replace('#', '').toUpperCase();
-      if (/^[A-Z]$/.test(hash)) applyLetterFilter(hash);
-      else if (hash === 'TERMS' || !hash) applyLetterFilter('ALL');
-    }
-
-    window.addEventListener('hashchange', filterFromHash);
-    filterFromHash();
+    input?.addEventListener('input',()=>{const q=input.value.trim().toLowerCase(); if(!q){box.classList.remove('is-open');box.innerHTML='';return;} const results=index.filter(x=>`${x.label} ${x.detail}`.toLowerCase().includes(q)).slice(0,9); box.innerHTML=results.length?results.map(x=>`<a class="search-result" href="${x.href}"><small>${x.kind}</small><span><strong>${x.label}</strong><br><span class="meta">${x.detail}</span></span></a>`).join(''):`<div class="search-result"><small>search</small><span>No indexed result.</span></div>`; box.classList.add('is-open');});
   </script>
 </BaseLayout>

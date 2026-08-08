@@ -20,6 +20,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 569–615: Treatise 5, *146 Considerations*, reviewed sequentially and completely. PDF p. 616 begins bibliography/editorial apparatus.
 - PDF pp. 629–642: title matter, contents and editorial introduction to Treatise 6 inspected but not attributed to Bonatti.
 - PDF pp. 643–736: Treatise 6, *On Horary*, Part I, reviewed sequentially and completely. The included Part I ends explicitly on PDF p. 736.
+- PDF pp. 749–803: Treatise 7, *Elections*, Part 1, general electional doctrine, reviewed sequentially and completely.
+- PDF pp. 804–899: Treatise 7, Part 2, particular elections arranged by the twelve houses, reviewed sequentially and completely. PDF p. 900 begins bibliography/editorial apparatus, so the substantive Treatise 7 text is complete.
 
 ## Editorial rule applied
 
@@ -43,6 +45,8 @@ Treatise 5 adds source-level definitions and refinements for rooted/radical ques
 
 Treatise 6 Part I adds Bonatti’s explicit distinction between absolute and determinate questions, a source-defined universal question, and the abscissor or planet which cuts off. Its introductory chapters give the three principal modes of perfection—direct joining of significators, transfer of light, and collection of light—and repeatedly qualify perfection by reception, planetary condition and the state of the receiving planet. The house-specific chapters were reviewed as applications of these principles rather than converted into a large catalogue of weak entries. The illness section also gives a substantive critical-day procedure using the Moon at seventh-day intervals; this is retained as a Bonatti interpretation of the existing `critical-days` term rather than as a new generic medical rule.
 
+Treatise 7 adds a direct definition of an election as the deliberate choice of a fitting beginning for an intended action rather than a cause which produces the action itself. It distinguishes the root of an election (preferably a nativity or horary question), the adaptation of signs and planets, and the exact inception of a work as its first intrinsic act rather than a preparatory act. It also gives a substantial timing doctrine in which planetary motion, modality, ascensional type, element, angularity and the distance between significators are judged relative to the natural timescale of the matter. The extensive house-by-house recipes were reviewed but not converted into weak standalone lexicon entries.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -55,17 +59,17 @@ Treatise 6 Part I adds Bonatti’s explicit distinction between absolute and det
 - `db/seed/0026_bonatti_tractate10_heavy_rains.sql`
 - `db/seed/0027_bonatti_146_considerations.sql`
 - `db/seed/0028_bonatti_horary_part1.sql`
+- `db/seed/0029_bonatti_elections.sql`
 
 ## Remaining sections in this compiled PDF
 
 The PDF is a compilation and its sections are not in numerical treatise order. The substantive Bonatti material still present in this file is:
 
-- Treatise 7, *Elections*, beginning PDF p. 749.
-- Treatise 8.2, *Lots*, beginning PDF p. 940.
-- Treatise 9, *Nativities*, beginning PDF p. 1018 and continuing to the end of the compiled PDF.
+- Treatise 8.2, *Lots*, beginning around PDF p. 940.
+- Treatise 9, *Nativities*, beginning around PDF p. 1018 and continuing to the end of the compiled PDF.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 7, *Elections*, beginning around PDF p. 749.
+Continue sequentially with Treatise 8, Part 2, *Lots*, beginning around PDF p. 940.

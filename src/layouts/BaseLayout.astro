@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
-const { title = 'Astrological Lexicon', description = 'A source-based encyclopedia of traditional astrological terminology.' } = Astro.props;
+const {
+  title = 'Astrological Lexicon',
+  description = 'A source-based encyclopedia of traditional astrological terminology.'
+} = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -8,35 +11,44 @@ const { title = 'Astrological Lexicon', description = 'A source-based encycloped
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#efe9dc" />
     <title>{title}</title>
   </head>
   <body>
+    <div class="top-rule" aria-hidden="true"></div>
     <header class="site-header">
       <div class="shell site-header__inner">
-        <a class="wordmark" href="/">Astrological Lexicon</a>
+        <a class="wordmark" href="/" aria-label="Astrological Lexicon home">
+          <span class="wordmark-mark">✶</span>
+          <span>Astrological Lexicon</span>
+        </a>
         <nav class="nav" aria-label="Primary">
-          <a href="/terms/reception">Terms</a>
-          <a href="/authors/guido-bonatti">Authors</a>
-          <a href="/#sources">Sources</a>
+          <a href="/terms/">Lexicon</a>
+          <a href="/authors/">Authors</a>
+          <a href="/works/">Works</a>
+          <a href="/#subjects">Subjects</a>
           <a href="/#method">Method</a>
         </nav>
       </div>
     </header>
+
     <main><slot /></main>
+
     <footer class="footer">
-      <div class="shell">
-        <span>Source-based traditional astrology reference</span>
-        <span>Research preview</span>
+      <div class="shell footer-grid">
+        <div>
+          <strong>Astrological Lexicon</strong>
+          <p>A historical reference work for traditional astrological terminology.</p>
+        </div>
+        <div>
+          <span class="micro-label">Initial corpus</span>
+          <p>Antiochus · Abū Maʿshar · al-Bīrūnī · Bonatti · Lilly</p>
+        </div>
+        <div class="footer-status">
+          <span class="micro-label">Status</span>
+          <p>Research edition · generated from the reviewed canonical corpus</p>
+        </div>
       </div>
     </footer>
-    <script is:inline>
-      document.querySelectorAll('[data-mode]').forEach((button) => {
-        button.addEventListener('click', () => {
-          const mode = button.getAttribute('data-mode');
-          document.body.classList.toggle('sources-mode', mode === 'sources');
-          document.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('active', b === button));
-        });
-      });
-    </script>
   </body>
 </html>

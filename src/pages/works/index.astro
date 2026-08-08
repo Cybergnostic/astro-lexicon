@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import corpus from '../../data/generated/corpus.json';
+const { works } = corpus;
+---
+<BaseLayout title="Works — Astrological Lexicon">
+  <header class="page-header"><div class="shell"><p class="hero-kicker">Bibliography · source corpus</p><h1>Works</h1><p class="page-deck">The literature layer records works and editions even when the public site does not reproduce the books themselves. This can expand into a broader bibliography as the project grows.</p></div></header>
+  <section class="section"><div class="shell">{works.map((work)=><div class="literature-group"><p class="micro-label">{work.historical_layer}</p><h2>{work.author_name}</h2><div class="work-row"><div><a href={`/works/${work.slug}/`}><strong><em>{work.title}</em></strong></a>{work.original_title && <p>{work.original_title}</p>}<p>{work.interpretation_count} reviewed source accounts in the current lexicon.</p></div><span class="count">{work.language || 'source work'}</span></div></div>)}</div></section>
+</BaseLayout>

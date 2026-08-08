@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import corpus from '../../data/generated/corpus.json';
+
+export function getStaticPaths() {
+  return corpus.authors.map((author) => ({ params: { slug: author.slug }, props: { author } }));
+}
+const { author } = Astro.props;
+const terms = corpus.terms.filter((term) => term.interpretations.some((item) => item.author_slug === author.slug));
+---
+<BaseLayout title={`${author.name} — Astrological Lexicon`}>
+  <div class="shell page-grid">
+    <aside class="article-rail"><div class="rail-group"><span class="micro-label">Historical layer</span><span class="rail-value">{author.historical_layer}</span></div><div class="rail-group"><span class="micro-label">Indexed terms</span><span class="rail-value">{terms.length}</span></div></aside>
+    <article class="article"><p class="eyebrow">Author index · {author.historical_layer}</p><h1>{author.name}</h1>{author.original_name && <p class="lede">{author.original_name}</p>}
+      <section id="works"><h2>Works in the corpus</h2>{author.works.map((work)=><div class="source-block"><div class="source-head"><h3><a href={`/works/${work.slug}/`}><em>{work.title}</em></a></h3><span class="source-label">{work.language || 'Source work'}</span></div>{work.notes && <p>{work.notes}</p>}</div>)}</section>
+      <section id="terms"><h2>Indexed terminology</h2><ul class="index-list compact-list">{terms.map((term)=><li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}</ul></section>
+      {author.notes && <section id="note"><h2>Editorial note</h2><p>{author.notes}</p></section>}
+    </article>
+    <aside class="toc"><strong>Author index</strong><a href="#works">Works</a><a href="#terms">Terminology</a>{author.notes && <a href="#note">Editorial note</a>}</aside>
+  </div>
+</BaseLayout>

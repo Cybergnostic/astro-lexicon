@@ -2,7 +2,7 @@
 
 A source-based encyclopedia of traditional astrological terminology.
 
-The project is designed to compare how technical terms are defined and used across historical astrological sources without flattening differences between authors, periods, languages, or traditions.
+The project compares how technical terms are defined and used across historical astrological sources without flattening differences between authors, periods, languages, translators, or traditions.
 
 ## Initial corpus
 
@@ -16,21 +16,46 @@ Source PDFs are not stored in this repository.
 
 ## Project principles
 
-- Every substantive claim should be traceable to a source.
+- Every substantive encyclopedia claim should be traceable to a source.
+- A mention is not an interpretation: public interpretations must contain definition-level evidence or substantial explanation.
 - Historical terminology is preserved rather than silently modernized.
-- Similar terms are not merged unless the evidence supports equivalence.
-- Author-specific disagreements and doctrinal differences are shown explicitly.
-- Short quotations may be used where useful, but encyclopedia prose should primarily be original synthesis with precise references.
-- Editorial review is required before generated or extracted material is treated as canonical.
+- Similar translated labels are not merged unless their recognition rules support equivalence.
+- False friends, author disagreements and doctrinal differences remain visible.
+- Canonical definitions describe what a term **is** and how it is recognized; attributed effects belong in source-specific interpretations.
+- Quotations are selective. Public prose is primarily original synthesis with precise source locators.
+- Translator and editor commentary is not attributed to the historical author.
+- Editorial review is required before extracted material is treated as canonical.
 
-## Planned architecture
+## Editorial evidence standard
 
-- `app/` — public Cloudflare application
-- `db/` — D1 schema, migrations, and seed data
-- `data/` — curated structured records for authors, works, and terms
-- `pipeline/` — local extraction/import tooling
-- `docs/` — ontology, editorial policy, citation rules, and extraction specification
+- **A — definition:** the source gives an actual definition, recognition rule or technical mechanism.
+- **B — substantial explanation:** the source does not give a compact definition but adds enough criteria, structure, distinctions or exceptions to materially explain the concept.
+- **C — mention/context only:** retained in the searchable source corpus when useful, but not stored as an encyclopedia interpretation.
+
+Public entries are expected to have definition quality 4–5 and reviewed A/B evidence.
+
+## Repository structure
+
+- `db/migrations/` — canonical SQLite/D1 schema and editorial-review fields
+- `db/seed/` — source extraction and cross-source editorial revision seeds
+- `db/audit/` — read-only editorial/integrity audits
+- `docs/extraction/` — sequential source-coverage ledgers
+- `docs/revision/` — cross-source editorial decisions
+- `docs/` — ontology, definition, citation and extraction policies
+- `src/` — current public-site prototype
 
 ## Status
 
-Early research and schema-design phase. The first milestone is a small set of difficult representative terms used to test the ontology before scaling to the full corpus.
+The substantive text of all five initial sources has been read sequentially and extracted. The project is now in the post-extraction editorial phase.
+
+Completed work includes:
+
+- source-by-source extraction of the initial corpus;
+- cross-source normalization of core terminology, dignities, sect, signs, houses, aspects, perfection/impediment, lots, horary, natal/rectification, predictive methods, mundane/electional/weather terminology and rare source-specific vocabulary;
+- explicit preservation of technical disagreements and false friends;
+- removal of mention-only interpretations and extraction-heading artifacts;
+- recovery of missed definition-level terms and silent seed mismatches;
+- source-specific edition provenance repair for the compiled Bonatti PDF;
+- reproducible SQL audit queries for definition quality, A/B evidence, citation coverage, alias collisions, orphan terms and superseded slugs.
+
+The next milestone is to run the complete seed chain against a fresh database, resolve every remaining audit result, and generate the public frontend from the reviewed canonical data rather than maintaining a separate hand-written preview dataset.

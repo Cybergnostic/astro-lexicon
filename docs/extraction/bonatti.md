@@ -23,6 +23,9 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 749–803: Treatise 7, *Elections*, Part 1, general electional doctrine, reviewed sequentially and completely.
 - PDF pp. 804–899: Treatise 7, Part 2, particular elections arranged by the twelve houses, reviewed sequentially and completely. PDF p. 900 begins bibliography/editorial apparatus, so the substantive Treatise 7 text is complete.
 - PDF pp. 940–1001: Treatise 8, Part 2, *Projection of Parts and Their Significations*, Chapters 1–19 plus the concluding royal Parts, reviewed sequentially and completely. PDF p. 1002 begins the bibliography, so Treatise 8.2 is complete.
+- PDF pp. 1018–1028: Treatise 9, *Nativities*, Preface and Part 1, Chapters 1–6, reviewed sequentially and completely.
+- PDF pp. 1028–1047: Treatise 9, Part 2, Chapters 1–6, reviewed sequentially and completely.
+- PDF pp. 1047–1067: Treatise 9, Part 3, body-form doctrine and the beginning of First House soul doctrine, reviewed sequentially; Part 3 remains in progress.
 
 ## Editorial rule applied
 
@@ -50,6 +53,8 @@ Treatise 7 adds a direct definition of an election as the deliberate choice of a
 
 Treatise 8.2 substantially reworks Abū Maʿshar’s lot doctrine. Bonatti explicitly defines the two natural significators as immovable and the projection point as the movable significator; preserves the equal-degree projection procedure; names Fortune the Part of the Moon and its reverse luminary counterpart the Part of Things to Be or Part of the Sun; and treats the Part of the Hilaj as a distinct predictive point rather than the hilaj itself. His strongest independent refinement is in Chapter 19, where a Part can have one through four formal significators depending on overlap between the two formula points, the ruler of the Part’s sign, and the ruler of the projection place. The extensive house-specific and commodity Part catalogues were reviewed but not promoted wholesale into standalone entries.
 
+Treatise 9 Parts 1–2 establish Bonatti’s natal framework. He distinguishes conception as an incomplete first beginning limited to gestation from the nativity as the complete second beginning governing the native’s postnatal life. He gives a detailed Animodar rectification procedure from the prenatal syzygy, distinguishes the specialized `almudabit` in early-life judgments, defines the hyleg as the formal/root significator of life and the kadkhuda as its effective giver of years, and identifies the directed Ascendant through the bounds as the `jarbakhtar` or divisor. The numerical longevity recipes are kept as historical source evidence rather than multiplied into weak standalone terms.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -64,15 +69,14 @@ Treatise 8.2 substantially reworks Abū Maʿshar’s lot doctrine. Bonatti expli
 - `db/seed/0028_bonatti_horary_part1.sql`
 - `db/seed/0029_bonatti_elections.sql`
 - `db/seed/0030_bonatti_lots.sql`
+- `db/seed/0031_bonatti_nativities_parts1_2.sql`
 
 ## Remaining sections in this compiled PDF
 
-The PDF is a compilation and its sections are not in numerical treatise order. The substantive Bonatti material still present in this file is:
-
-- Treatise 9, *Nativities*, beginning around PDF p. 1018 and continuing to the end of the compiled PDF.
+The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, from Part 3 onward.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 9, *Nativities*, beginning around PDF p. 1018.
+Continue sequentially with Treatise 9, Part 3 from PDF p. 1068.

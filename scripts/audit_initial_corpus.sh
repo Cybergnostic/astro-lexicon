@@ -3,6 +3,7 @@ set -euo pipefail
 
 # Build the entire lexicon database from scratch, print the editorial audit,
 # and fail if any blocking integrity/editorial check is non-zero.
+# This is the canonical pre-publication database gate for the initial corpus.
 # Usage:
 #   ./scripts/audit_initial_corpus.sh
 #   ./scripts/audit_initial_corpus.sh /tmp/astro-lexicon-audit.sqlite

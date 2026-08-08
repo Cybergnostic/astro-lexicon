@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import corpus from '../../data/generated/corpus.json';
+
+const { terms, meta } = corpus;
+const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const availableLetters=new Set(terms.map((term)=>term.label.charAt(0).toUpperCase()));
+---
+<BaseLayout title="Lexicon A–Z — Astrological Lexicon" description={`Browse ${meta.terms} reviewed traditional astrological terms.`}>
+  <header class="page-header"><div class="shell"><p class="hero-kicker">Canonical corpus · A–Z</p><h1>Lexicon</h1><p class="page-deck">{meta.terms} reviewed entries generated directly from the canonical source database.</p></div></header>
+  <section class="section"><div class="shell">
+    <div class="search-wrap"><div class="search-label"><span class="micro-label">Filter entries</span><span>definitions · categories · aliases</span></div><div class="search"><input id="filter" type="search" autocomplete="off" placeholder="Type a term, alias, or category…" /></div></div>
+    <div class="alpha" aria-label="Alphabetical index"><a href="#" data-letter="ALL" class="active">All</a>{alphabet.map((letter)=>availableLetters.has(letter)?<a href={`#${letter}`} data-letter={letter}>{letter}</a>:<span class="is-empty">{letter}</span>)}</div>
+    <p id="result-count" class="meta">Showing all {meta.terms} entries.</p>
+    <ul id="term-list" class="index-list">{terms.map((term)=><li data-letter={term.label.charAt(0).toUpperCase()} data-search={`${term.label} ${term.short_definition} ${term.category} ${term.aliases.map(a=>a.label).join(' ')}`.toLowerCase()}><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="index-definition">{term.short_definition}</span><span class="count">{term.category}</span></li>)}</ul>
+  </div></section>
+  <script define:vars={{ total: meta.terms }} is:inline>
+    const rows=Array.from(document.querySelectorAll('#term-list li')); const input=document.getElementById('filter'); const links=Array.from(document.querySelectorAll('.alpha a[data-letter]')); const count=document.getElementById('result-count'); let letter='ALL';
+    function apply(){const q=(input?.value||'').trim().toLowerCase(); let n=0; rows.forEach(row=>{const show=(letter==='ALL'||row.dataset.letter===letter)&&(!q||row.dataset.search.includes(q)); row.hidden=!show;if(show)n++;}); links.forEach(a=>a.classList.toggle('active',a.dataset.letter===letter)); if(count)count.textContent=`Showing ${n} of ${total} entries.`;}
+    links.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();letter=a.dataset.letter||'ALL';apply();})); input?.addEventListener('input',apply); apply();
+  </script>
+</BaseLayout>

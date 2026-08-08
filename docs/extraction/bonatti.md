@@ -33,6 +33,7 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 1121–1136: Treatise 9, Part 3, Sixth House, Chapters 1–7, reviewed sequentially and completely. PDF p. 1136 begins the Seventh House.
 - PDF pp. 1136–1151: Treatise 9, Part 3, Seventh House, Chapters 1–7, reviewed sequentially and completely. PDF p. 1151 begins the Eighth House.
 - PDF pp. 1151–1158: Treatise 9, Part 3, Eighth House, Chapter 1, reviewed sequentially and completely. PDF p. 1158 begins the Ninth House.
+- PDF pp. 1158–1169: Treatise 9, Part 3, Ninth House, Chapters 1–4, reviewed sequentially and completely. PDF p. 1169 begins the Tenth House.
 
 ## Editorial rule applied
 
@@ -78,6 +79,8 @@ The Seventh House section explicitly assigns marriage, partners or participators
 
 The Eighth House section explicitly calls the eighth the house of death. Bonatti does not reduce mortality judgment to the eighth or its ruler alone, but combines them with the hyleg and its directions, the Part of Death, planets connected with the eighth, and additional supporting testimonies. The extensive catalogue of particular manners and circumstances of death was reviewed as historical doctrine but intentionally not promoted into public lexicon entries.
 
+The Ninth House section explicitly assigns religion and faith, knowledge, pilgrimages and long journeys to the ninth. For religion and knowledge Bonatti combines the ninth and its lord with Mercury, the Part of Faith and other supporting testimonies; for journeys he combines the ninth and its lord with planets in the ninth, Mars, the Part of Pilgrimage and their relations with the Ascendant. He again applies triplicity rulers serially to successive periods of life, both for religious condition and for the quality of journeys. The many planet-by-planet religious types and travel-event catalogues were reviewed but not promoted as standalone entries.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -98,13 +101,14 @@ The Eighth House section explicitly calls the eighth the house of death. Bonatti
 - `db/seed/0034_bonatti_nativities_fifth_sixth_house.sql`
 - `db/seed/0035_bonatti_nativities_seventh_house.sql`
 - `db/seed/0036_bonatti_nativities_eighth_house.sql`
+- `db/seed/0037_bonatti_nativities_ninth_house.sql`
 
 ## Remaining sections in this compiled PDF
 
-The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Ninth House on PDF p. 1158 and continuing to the end of the compilation.
+The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Tenth House on PDF p. 1169 and continuing to the end of the compilation.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 9, Part 3, Ninth House from PDF p. 1158.
+Continue sequentially with Treatise 9, Part 3, Tenth House from PDF p. 1169.

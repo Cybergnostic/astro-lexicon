@@ -4,7 +4,7 @@
 -- Repeated aphorisms, long natal catalogues, biographical anecdotes, and mere mentions are not promoted into separate lexicon entries.
 
 INSERT OR IGNORE INTO terms (slug, label, short_definition, category, status, editorial_notes) VALUES
-  ('rooted-question', 'Rooted Question', 'A horary question whose chart shows concordance between the Ascendant and the planetary lord of the hour, indicating that the question is genuinely grounded in the querent\'s intention.', 'horary astrology', 'draft', 'Bonatti also treats an Ascendant at the extreme end or beginning of a sign as evidence that the question may not be rooted. Preserve this as Bonatti\'s source-specific radicality doctrine rather than assuming later authors use identical criteria.'),
+  ('rooted-question', 'Rooted Question', 'A horary question whose chart shows concordance between the Ascendant and the planetary lord of the hour, indicating that the question is genuinely grounded in the querent''s intention.', 'horary astrology', 'draft', 'Bonatti also treats an Ascendant at the extreme end or beginning of a sign as evidence that the question may not be rooted. Preserve this as Bonatti''s source-specific radicality doctrine rather than assuming later authors use identical criteria.'),
   ('own-light', 'Own Light', 'A sect-based condition in which a diurnal planet is above the earth by day and below it by night, while a nocturnal planet is above the earth by night and below it by day.', 'planetary condition', 'draft', 'Bonatti explicitly defines this condition in the 47th Consideration. The translator identifies the condition with halb, while Bonatti elsewhere distinguishes “own light” from haym; do not silently collapse these terms.'),
   ('planetary-impediment', 'Planetary Impediment', 'An affliction in which a malefic reaches a significator with its rays within the operative orb, constraining or obstructing what that significator promises until the contact has separated.', 'planetary condition', 'draft', 'Bonatti gives a specific separation threshold and distinguishes actual impediment from residual fear after separation.'),
   ('fixed-star-gift', 'Gift of a Fixed Star', 'An extraordinary elevation, fortune, or distinction attributed to a fixed star, potentially greater in scale than ordinary planetary gifts but usually less durable in human subjects.', 'fixed stars', 'draft', 'Bonatti explains the short duration through a mismatch between the extremely slow timescale of fixed stars and the rapid changeability of human life. This is a source-specific doctrine, not a generic modern rule.'),
@@ -13,7 +13,7 @@ INSERT OR IGNORE INTO terms (slug, label, short_definition, category, status, ed
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
 SELECT id, 'Radical Question', 'English', 'later-equivalent', 'Common later English wording for a rooted horary question; equivalence should remain source-aware.' FROM terms WHERE slug='rooted-question';
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
-SELECT id, 'In Its Own Light', 'English', 'source-phrase', 'Bonatti\'s wording for the sect-based condition defined in Consideration 47.' FROM terms WHERE slug='own-light';
+SELECT id, 'In Its Own Light', 'English', 'source-phrase', 'Bonatti''s wording for the sect-based condition defined in Consideration 47.' FROM terms WHERE slug='own-light';
 
 INSERT INTO source_passages (edition_id, page_start, page_end, book, chapter, locator_text, quote, internal_notes)
 SELECT e.id, '569', '580', 'Treatise 5: 146 Considerations', 'Considerations 1-23',
@@ -47,7 +47,7 @@ FROM terms t CROSS JOIN works w WHERE t.slug='own-light' AND w.slug='bonatti-lib
 
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
 SELECT t.id, w.id,
-       'For Bonatti, a significator becomes impeded when a malefic reaches it by ray within the operative orb. He follows Sahl in treating the malefic contact as obstructive, but argues that once the malefic has passed the significator by one minute the actual impediment has ended, although fear or anxiety can remain; by one full degree it is fully safe from the malefic\'s action.',
+       'For Bonatti, a significator becomes impeded when a malefic reaches it by ray within the operative orb. He follows Sahl in treating the malefic contact as obstructive, but argues that once the malefic has passed the significator by one minute the actual impediment has ended, although fear or anxiety can remain; by one full degree it is fully safe from the malefic''s action.',
        'Treatise 5, Considerations 16 and 18', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='planetary-impediment' AND w.slug='bonatti-liber-astronomiae';
 
@@ -84,13 +84,13 @@ FROM terms t CROSS JOIN works w WHERE t.slug='translation-of-light' AND w.slug='
 
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
 SELECT t.id, w.id,
-       'Bonatti states that a planet within 16 minutes of the Sun is in the Sun\'s heart and is strengthened rather than weakened. This explicitly distinguishes cazimi from the broader condition of being under the Sun\'s rays.',
+       'Bonatti states that a planet within 16 minutes of the Sun is in the Sun''s heart and is strengthened rather than weakened. This explicitly distinguishes cazimi from the broader condition of being under the Sun''s rays.',
        'Treatise 5, Considerations 13 and 53', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='cazimi' AND w.slug='bonatti-liber-astronomiae';
 
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
 SELECT t.id, w.id,
-       'Bonatti defines a planet as under the Sun\'s rays when its distance from the Sun is 12 degrees or less but more than 16 minutes. Between more than 12 and less than 15 degrees he describes it as going out from under the rays; the exact phasis and strength rules differ for superior and inferior planets.',
+       'Bonatti defines a planet as under the Sun''s rays when its distance from the Sun is 12 degrees or less but more than 16 minutes. Between more than 12 and less than 15 degrees he describes it as going out from under the rays; the exact phasis and strength rules differ for superior and inferior planets.',
        'Treatise 5, Considerations 52-54', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='under-the-rays' AND w.slug='bonatti-liber-astronomiae';
 

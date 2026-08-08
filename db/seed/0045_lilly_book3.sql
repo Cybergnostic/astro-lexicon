@@ -13,7 +13,7 @@ INSERT OR IGNORE INTO terms (slug, label, short_definition, category, status, ed
   ('hyleg', 'Hyleg', 'The aphetic planet or place whose direction is used in traditional longevity doctrine to judge the state or continuation of life.', 'natal technique', 'draft', 'Lilly gives the traditional doctrine but repeatedly expresses dissatisfaction with the certainty of the received rules.'),
   ('anareta', 'Anareta', 'The destroying or interficient planet in traditional longevity doctrine, treated as the principal afflicter capable of terminating the life-signifying direction.', 'natal technique', 'draft', 'Historical longevity doctrine only. Lilly gives competing rules for identifying it and is openly skeptical of their certainty.'),
   ('alcochodon', 'Alcochodon', 'In traditional longevity doctrine, the planet having the strongest essential dignity in the Hylegic place and a qualifying aspect to the Hyleg, used as a giver of years.', 'natal technique', 'draft', 'Historical longevity doctrine only. Lilly records the method but states that he is not fully satisfied with it.'),
-  ('lord-of-geniture', 'Lord of the Geniture', 'The planet judged strongest in the whole nativity by the combined weight of essential and accidental dignity, with a secondary strong planet participating in the judgment.', 'natal technique', 'draft', 'This is Lilly\'s preferred definition after noting competing older definitions.'),
+  ('lord-of-geniture', 'Lord of the Geniture', 'The planet judged strongest in the whole nativity by the combined weight of essential and accidental dignity, with a secondary strong planet participating in the judgment.', 'natal technique', 'draft', 'This is Lilly''s preferred definition after noting competing older definitions.'),
   ('magistry', 'Magistry', 'The study, art, trade, profession or principal occupation by which a person chiefly conducts life, gains a living and maintains worldly estimation.', 'natal topic', 'draft', 'Lilly directly defines Magistry in his profession chapter.'),
   ('primary-direction', 'Direction', 'A predictive technique that moves a significator toward a promittor in order to measure when a natal promise is expected to become active.', 'predictive technique', 'draft', 'Lilly distinguishes the natal judgment of what is promised from direction as the measurement of when it is expected.'),
   ('profection', 'Profection', 'A regular progression of significators through the zodiac in sign order; in annual profection one whole sign, or thirty degrees, is allotted to each solar year.', 'time lordship', 'draft', 'Lilly explicitly says profection and progression are the same in this context and distinguishes annual, monthly and daily forms.'),
@@ -43,7 +43,7 @@ SELECT id, 'Destroying Planet', 'English', 'source-name', 'Descriptive Lilly equ
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
 SELECT id, 'Giver of Years', 'English', 'source-equivalent', 'Lilly describes the Alcochodon by this function.' FROM terms WHERE slug='alcochodon';
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
-SELECT id, 'Progression', 'English', 'source-equivalent', 'In Lilly\'s profection chapter, profection and progression are stated to be the same.' FROM terms WHERE slug='profection';
+SELECT id, 'Progression', 'English', 'source-equivalent', 'In Lilly''s profection chapter, profection and progression are stated to be the same.' FROM terms WHERE slug='profection';
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
 SELECT id, 'Annual Conversion', 'English', 'source-name', 'Lilly synonym for the annual solar revolution.' FROM terms WHERE slug='solar-revolution';
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
@@ -51,7 +51,7 @@ SELECT id, 'Chronocrator', 'Greek/Latinized', 'source-equivalent', 'Lilly states
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
 SELECT id, 'Chroneverator', 'English/Latinized', 'source-variant', 'Lilly variant printed beside Chronocrator.' FROM terms WHERE slug='lord-of-year';
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
-SELECT id, 'Lord of the Alfridary', 'English', 'source-name', 'Ruler of one of Lilly\'s septennial Alfridary periods.' FROM terms WHERE slug='alfridary';
+SELECT id, 'Lord of the Alfridary', 'English', 'source-name', 'Ruler of one of Lilly''s septennial Alfridary periods.' FROM terms WHERE slug='alfridary';
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
 SELECT id, 'Radix', 'Latin', 'source-name', 'Lilly says Radix is the more proper expression for the root of the nativity.' FROM terms WHERE slug='nativity';
 
@@ -72,7 +72,7 @@ INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status
 SELECT t.id, w.id, 'Lilly calls rectification by accidents the most certain of the methods he presents. Dated events are compared with appropriate primary directions, and the proposed birth time is adjusted until the directed angles or other principal places agree with the observed chronology.', 'Book III, rectification by accidents', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='rectification-by-accidents' AND w.slug='lilly-christian-astrology';
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
-SELECT t.id, w.id, 'In Lilly\'s directional terminology the point being moved is the significator, while the planet, aspect or point toward which it is directed is the promittor. The promittor characterizes the event or cause manifested when the direction perfects.', 'Book III, rectification by accidents and directions', 'direct', 'draft'
+SELECT t.id, w.id, 'In Lilly''s directional terminology the point being moved is the significator, while the planet, aspect or point toward which it is directed is the promittor. The promittor characterizes the event or cause manifested when the direction perfects.', 'Book III, rectification by accidents and directions', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='promittor' AND w.slug='lilly-christian-astrology';
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
 SELECT t.id, w.id, 'Lilly equates Hyleg, Hylech and Apheta in the traditional doctrine of a life-signifying planet or place whose directions are examined for the state of life. He reports the received selection hierarchy but explicitly says he is not satisfied with the certainty of the doctrine.', 'Book III, Chapter CIV', 'direct', 'draft'
@@ -115,7 +115,7 @@ INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status
 SELECT t.id, w.id, 'Lilly uses annual profections chiefly to narrow the timing of primary directions. A direction is most forceful when the annual profections of its significator and promittor concur with it, while contrary profections and transits can weaken, obscure or defer the manifestation.', 'Book III, Chapter CLXVII', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='profection' AND w.slug='lilly-christian-astrology';
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
-SELECT t.id, w.id, 'In Lilly\'s profectional practice the Lord of the Year is the ruler of the sign reached by the profected ascendant. When the profected ascendant spans portions governed by two signs in the year, he divides the year between the two rulers. He also explicitly equates Lord of the Year with Chronocrator.', 'Book III, Chapters CLXVII-CLXVIII', 'direct', 'draft'
+SELECT t.id, w.id, 'In Lilly''s profectional practice the Lord of the Year is the ruler of the sign reached by the profected ascendant. When the profected ascendant spans portions governed by two signs in the year, he divides the year between the two rulers. He also explicitly equates Lord of the Year with Chronocrator.', 'Book III, Chapters CLXVII-CLXVIII', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='lord-of-year' AND w.slug='lilly-christian-astrology';
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
 SELECT t.id, w.id, 'Lilly describes the Lords of the Alfridary as successive seven-year planetary rulers. In a day nativity the sequence begins with the Sun and then Venus and Mercury; in a night nativity it begins with the Moon and then Saturn and Jupiter, continuing through the planetary order.', 'Book III, end of profections', 'direct', 'draft'
@@ -153,7 +153,7 @@ FROM terms t CROSS JOIN works w WHERE t.slug IN ('semisquare','sesquiquadrate') 
 -- Final authorial apparatus: city table, bibliography and Lilly's Finis.
 INSERT INTO source_passages (edition_id, page_start, page_end, book, chapter, locator_text, quote, internal_notes)
 SELECT e.id, '894', '910', 'Book III', 'Closing apparatus',
-       'English city coordinates; Lilly\'s catalogue of astrological authors; final remarks and Finis', NULL,
+       'English city coordinates; Lilly''s catalogue of astrological authors; final remarks and Finis', NULL,
        'Reviewed sequentially for terminology and provenance. The bibliography is not converted into term records. Lilly prints Finis on PDF p. 910.'
 FROM editions e JOIN works w ON w.id=e.work_id WHERE w.slug='lilly-christian-astrology';
 

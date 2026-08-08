@@ -27,6 +27,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 1028–1047: Treatise 9, Part 2, Chapters 1–6, reviewed sequentially and completely.
 - PDF pp. 1047–1076: Treatise 9, Part 3 opening and First House doctrine, including body-form material and the qualities of the soul, reviewed sequentially.
 - PDF pp. 1076–1101: Treatise 9, Part 3, Second House, Chapters 1–13, reviewed sequentially and completely. PDF p. 1101 begins the Third House.
+- PDF pp. 1101–1108: Treatise 9, Part 3, Third House, Chapters 1–6, reviewed sequentially and completely.
+- PDF pp. 1108–1116: Treatise 9, Part 3, Fourth House, Chapters 1–9, reviewed sequentially and completely. PDF p. 1116 begins the Fifth House.
 
 ## Editorial rule applied
 
@@ -60,6 +62,10 @@ Treatise 9 Part 3 begins with physical-form catalogues and then gives a reusable
 
 The Second House section gives an unusually explicit hierarchy for selecting a significator of substance rather than reducing wealth judgment to the ruler of the second alone. Bonatti identifies the house of substance as the second sign from the Ascendant, ranks the Part of Fortune, Part of Substance, the second and its lord, Jupiter and further fallback testimonies, and uses triplicity rulers to divide topic-specific prosperity into successive thirds of life. The long house-by-house and planet-by-planet wealth catalogues were reviewed as applications rather than separate lexicon entries.
 
+The Third House section applies triplicity rulership serially to siblings: the first ruler signifies elder siblings, the second middle siblings, and the third younger siblings. The many sibling-counting, sex, survival and condition rules were reviewed but not promoted into standalone terms.
+
+The Fourth House section extends Bonatti’s natal hyleg/kadkhuda framework to parental significators. He uses sect-dependent father and mother indicators together with their Parts and relevant house degrees, and can select a parental hyleg with a corresponding kadkhuda as giver of years. The detailed parental mortality recipes are preserved only as historical source evidence. The source also uses `dastūrīya`, but this passage does not define it cleanly enough for a new lexicon entry, so it was not promoted.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -76,13 +82,14 @@ The Second House section gives an unusually explicit hierarchy for selecting a s
 - `db/seed/0030_bonatti_lots.sql`
 - `db/seed/0031_bonatti_nativities_parts1_2.sql`
 - `db/seed/0032_bonatti_nativities_part3_first_second_house.sql`
+- `db/seed/0033_bonatti_nativities_third_fourth_house.sql`
 
 ## Remaining sections in this compiled PDF
 
-The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Third House on PDF p. 1101 and continuing to the end of the compilation.
+The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Fifth House on PDF p. 1116 and continuing to the end of the compilation.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 9, Part 3, Third House from PDF p. 1101.
+Continue sequentially with Treatise 9, Part 3, Fifth House from PDF p. 1116.

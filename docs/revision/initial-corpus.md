@@ -270,15 +270,78 @@ Likewise, Bonatti’s **Opening of the Gates** and al-Bīrūnī’s **Opening th
 
 No new public quotations were added in this batch. The key passages are mostly modern translations, and precise locators plus paraphrase are sufficient.
 
+## Batch 5 — lots, degree doctrines and sign subdivisions
+
+Implemented in `db/seed/0051_cross_source_revision_lots_subdivisions.sql`.
+
+### Important repair: Abū Maʿshar Part VIII
+
+The original `0014_abumashar_part8.sql` used the obsolete work slug `great-introduction` for its source-passage and interpretation inserts. The canonical work slug is `abu-mashar-great-introduction`, so those inserts had never attached to Abū Maʿshar even though the term rows themselves existed.
+
+The revision repairs the missing Part VIII passages, interpretations and citation links under the correct work slug rather than hiding the historical seed error.
+
+### Clear normalizations
+
+- al-Bīrūnī’s provisional **Part of Fortune** → canonical **Lot / Part of Fortune**.
+- Antiochus’ **Twelfth-part** → canonical **Dodecatemorion / Twelfth-part**. Abū Maʿshar and al-Bīrūnī independently give the same twelvefold 2°30′ structure and multiplication-by-twelve procedure.
+
+The erroneous Antiochus **Ninth-part** remains deleted by `0041_antiochus_correction.sql`; this revision does not reintroduce it.
+
+### Missed strong term recovered
+
+The formal lot doctrine clearly distinguishes two **Natural / Immovable Significators** from the third **Movable Significator / Projection Point**. This was structurally central in Abū Maʿshar and Bonatti but had not been promoted as its own term. It is now a first-class A-grade entry with interpretations from both authors.
+
+### Lot ontology revised
+
+Publication-ready definitions now cover:
+
+- Astrological Lot / Part
+- Lot Extraction
+- Natural / Immovable Significators
+- Movable Significator / Projection Point
+- Significators of a Lot
+- Planetary Lots
+- Lots of the Twelve Places
+- Lot / Part of Fortune
+- Lot of Absence / Part of the Sun
+- Lot / Part of the Haylāǧ
+
+The **Lot of Fortune** definition explicitly preserves formula disagreement rather than pretending that one rule is universal: Abū Maʿshar and Bonatti reverse the luminaries by night, Lilly explicitly keeps the same procedure by day and night, and al-Bīrūnī records both Ptolemy’s unreversed method and the reversing practice of other astrologers.
+
+### Sign subdivisions revised
+
+Publication-ready or strong definitions now cover:
+
+- Dodecatemorion / Twelfth-part
+- Ninth / Nawbahar
+- Darīǧān / Indian Decan
+- Degree Sign-Nature
+- Masculine/Feminine Degrees
+- Egyptian, Ptolemaic, Chaldean, Asṭraṭū and Indian systems of Terms / Bounds
+
+These alternative systems remain systems *of* terms/bounds, not separate kinds of dignity.
+
+### Degree doctrines revised
+
+- Exaltation Degree — quality 5.
+- Planetary Well / Puteal Degree — quality 5, with Bonatti’s puteal/deep terminology retained as aliases.
+- Bright, Dusky, Dark and Empty Degrees — quality 4 because the source tradition is explicitly unstable over the dark/dusky/shadowy/smoky vocabulary.
+- Degrees Increasing Good Fortune — retained as a named transmitted catalogue category, quality 4.
+- Azemene Degree — retained as historical medieval astrological terminology only, quality 4.
+- Equal-Power Degrees — quality 4 because Bonatti’s geometric principle is clearer than the inconsistent transmitted numerical examples.
+
+### Quotations
+
+No new quotations were added. Formula differences and degree-catalogue uncertainty are clearer through source-specific paraphrase and precise locators, and most of the relevant texts are modern translations.
+
 ## Remaining revision sequence
 
-1. lots, degree doctrines and sign subdivisions;
-2. horary/interrogational vocabulary;
-3. natal, rectification and longevity terminology;
-4. predictive/time-lord systems;
-5. mundane, electional and weather terminology;
-6. author-specific rare terms and uncertain equivalences;
-7. final orphan/duplicate/alias/citation audit;
-8. frontend generation from canonical reviewed data.
+1. horary/interrogational vocabulary;
+2. natal, rectification and longevity terminology;
+3. predictive/time-lord systems;
+4. mundane, electional and weather terminology;
+5. author-specific rare terms and uncertain equivalences;
+6. final orphan/duplicate/alias/citation audit;
+7. frontend generation from canonical reviewed data.
 
 The final pass should leave only A/B interpretations, definitions at quality 4–5 for public entries, and explicit unresolved notes where the corpus genuinely does not permit a clean identification.

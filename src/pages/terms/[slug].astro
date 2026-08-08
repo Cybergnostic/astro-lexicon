@@ -1,57 +1,59 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { terms } from '../../data/preview';
-import { definitionOverrides } from '../../data/definitionOverrides';
+import corpus from '../../data/generated/corpus.json';
 
 export function getStaticPaths() {
-  return terms
-    .filter((term) => term.slug !== 'reception')
-    .map((term) => ({ params: { slug: term.slug }, props: { term } }));
+  return corpus.terms.map((term) => ({ params: { slug: term.slug }, props: { term } }));
 }
 
 const { term } = Astro.props;
-const definition = definitionOverrides[term.slug] ?? term.definition;
+const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
+const citationLabel=(citation) => {
+  const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
+  const pages=citation.page_start ? `pp. ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}` : '';
+  return [locus,pages,citation.locator_text].filter(Boolean).join(' · ');
+};
 ---
-<BaseLayout title={`${term.label} — Astrological Lexicon`}>
+<BaseLayout title={`${term.label} — Astrological Lexicon`} description={term.short_definition}>
   <div class="shell page-grid">
+    <aside class="article-rail" aria-label="Entry metadata">
+      <div class="rail-group"><span class="micro-label">Entry type</span><span class="rail-value">{term.entry_type}</span></div>
+      <div class="rail-group"><span class="micro-label">Subject</span><span class="rail-value">{term.category}</span></div>
+      <div class="rail-group"><span class="micro-label">Definition quality</span><span class="rail-value">{term.definition_quality}/5</span></div>
+      <div class="rail-group"><span class="micro-label">Source witnesses</span><span class="rail-value">{sourceAuthors.length}</span></div>
+    </aside>
+
     <article class="article">
-      <p class="eyebrow">{term.category} · Draft entry</p>
+      <p class="eyebrow">Lexicon entry · {term.category}</p>
       <h1>{term.label}</h1>
-      <p class="lede">{definition}</p>
+      <p class="lede">{term.short_definition}</p>
 
-      <section id="definition">
-        <h2>Working definition</h2>
-        <p>{definition}</p>
-        <p class="meta">This entry is currently in the research-preview stage. The concept has been extracted and seeded in the project database, but the full author-by-author source presentation has not yet been promoted into the frontend.</p>
+      <div class="definition-panel" id="definition"><p class="micro-label">Canonical definition</p><p>{term.short_definition}</p></div>
+
+      <section id="names">
+        <h2>Names & historical forms</h2>
+        {term.aliases.length ? <div class="term-links">{term.aliases.map((alias)=><span title={alias.scope_note || undefined}>{alias.label}</span>)}</div> : <p class="meta">No separate alias is currently recorded for this entry.</p>}
       </section>
 
-      <section id="status">
-        <h2>Research status</h2>
-        <div class="source-block">
-          <div class="source-head">
-            <h3>Draft extraction</h3>
-            <span class="source-label">{term.status}</span>
-          </div>
-          <p>The term is part of the verified extraction set. Detailed source accounts, locators, historical variants and cross-author comparisons will appear here as the research data is connected directly to the frontend.</p>
-        </div>
+      <section id="sources">
+        <h2>Source accounts</h2>
+        {term.interpretations.map((item)=><div class="source-block">
+          <div class="source-head"><h3>{item.author_name} · <em>{item.work_title}</em></h3><span class="source-label">Evidence {item.evidence_grade}</span></div>
+          <p>{item.summary}</p>
+          {item.citations.map((citation)=><p class="source-cite"><span class="evidence">{item.evidence_grade}</span>{citationLabel(citation)}{citation.edition_label ? ` · ${citation.edition_label}` : ''}</p>)}
+        </div>)}
       </section>
 
-      <section id="browse">
-        <h2>Browse related material</h2>
-        <div class="term-links">
-          <a href="/">All terms</a>
-          <a href="/terms/reception">Reception</a>
-          <a href="/terms/application">Application</a>
-          <a href="/terms/combustion">Combustion</a>
-        </div>
+      {term.interpretations.length > 1 && <section id="comparison"><h2>Historical comparison</h2><p>This concept is attested by {sourceAuthors.length} source witness{sourceAuthors.length === 1 ? '' : 'es'} in the current corpus. Their accounts are kept separately above so differences in terminology, mechanism and emphasis remain attributable rather than being collapsed into the canonical definition.</p></section>}
+
+      <section id="related">
+        <h2>Related concepts</h2>
+        {term.relations.length ? <div class="term-links">{term.relations.map((relation)=><a href={`/terms/${relation.target_slug}/`} title={relation.note || undefined}>{relation.target_label}</a>)}</div> : <p class="meta">No reviewed term relations are currently recorded.</p>}
       </section>
+
+      {term.editorial_notes && <section id="editorial"><h2>Editorial note</h2><p>{term.editorial_notes}</p></section>}
     </article>
 
-    <aside class="toc">
-      <strong>On this page</strong>
-      <a href="#definition">Definition</a>
-      <a href="#status">Research status</a>
-      <a href="#browse">Related material</a>
-    </aside>
+    <aside class="toc"><strong>On this entry</strong><a href="#definition">Definition</a><a href="#names">Names & forms</a><a href="#sources">Source accounts</a>{term.interpretations.length > 1 && <a href="#comparison">Comparison</a>}<a href="#related">Related concepts</a>{term.editorial_notes && <a href="#editorial">Editorial note</a>}</aside>
   </div>
 </BaseLayout>

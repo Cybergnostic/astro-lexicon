@@ -26,6 +26,12 @@ Source: *Christian Astrology*, all three books, digital retype of the 1647 editi
 - PDF pp. 497–504: planetary-hour tables reviewed as supporting apparatus.
 - PDF pp. 505–509: Book II, Chapter XCVII and conclusion, reviewed sequentially. Lilly explicitly defines the unequal astrological/planetary hour and closes the second part of the work on p. 509.
 - PDF p. 510 begins a modern appendix and is not Lilly's substantive Book II text.
+- PDF pp. 550–613: Book III opening and early natal doctrine, including the Trutine/Scrutiny of Hermes, Animodar, rectification by accidents, significator/promittor distinction, Hyleg, Anareta, Alcochodon and Lord of the Geniture, reviewed sequentially. Lilly's reservations about the certainty of received longevity doctrine are preserved.
+- PDF pp. 614–776: Book III natal topics and theory/effects of directions, reviewed sequentially. Riches, relatives, parents, disease, marriage, children, journeys, religion, honour, profession, friends and enemies are treated primarily as topical application material. Lilly's direct definition of Magistry and his theory of Direction are retained. Medical, fertility, sexual and violent-death catalogues were not promoted operationally.
+- PDF pp. 777–803: Book III, Chapters CLXVI–CLXXIV, profections, Lord of the Year, Alfridary, solar revolutions, planetary returns and transits, reviewed sequentially. Lilly explicitly equates profection with progression in this context, defines annual profection as one sign per solar year, defines the solar revolution as the Sun's return to its radical degree and minute, and describes transits through radical places.
+- PDF pp. 804–892: Book III extended worked nativity, reviewed sequentially. The example demonstrates Lilly's combination of directions, revolutions, profections and transits; its many annual predictions were retained as methodological evidence rather than fragmented into separate lexicon entries. Lilly closes the main work on p. 892 and directly defines several minor aspects there.
+- PDF p. 893: supporting circles-of-position data for the worked nativity, reviewed.
+- PDF pp. 894–910: Lilly's closing authorial apparatus, including English city coordinates, catalogue of astrological authors and final remarks, reviewed sequentially. The bibliography was not term-exploded. Lilly prints the final `Finis` on p. 910.
 
 ## Editorial notes
 
@@ -39,11 +45,17 @@ Book II adds an explicit source-specific rule for the moment a horary question i
 
 A significant internal inconsistency is preserved rather than normalized away: Book I gives seventeen degrees for under the Sun's beams and seventeen minutes for cazimi, while the Seventh-House aphorisms in Book II give twelve degrees and sixteen minutes respectively.
 
+Book III adds Lilly's rectification vocabulary, natal longevity terminology with his explicit cautions, Lord of the Geniture, Magistry, primary Direction, annual Profection, Solar Revolution, Transit, Alfridary and several minor aspects. `Radix` is retained as the root/original figure rather than flattened into a synonym for the abstract concept of nativity.
+
+The worked nativity is especially useful methodologically: Lilly repeatedly compares directions with profections, revolutions and transits, allowing concurrence or contradiction among techniques to strengthen, weaken or defer a promised event. Its long yearly forecast catalogue is therefore kept chiefly as evidence of method rather than as hundreds of independent definitions.
+
 ## Current seeds
 
 - `db/seed/0042_lilly_book1.sql`
 - `db/seed/0043_lilly_book2_houses1_4.sql`
 - `db/seed/0044_lilly_book2_houses5_12.sql`
+- `db/seed/0045_lilly_book3.sql`
+- `db/seed/0046_lilly_book3_radix_revision.sql`
 
 ## Status
 
@@ -51,6 +63,10 @@ Book I: complete.
 
 Book II: complete through Lilly's own conclusion on PDF p. 509.
 
+Book III: complete through the worked nativity and closing note on PDF p. 892, with Lilly's authorial closing apparatus reviewed through the final `Finis` on PDF p. 910.
+
+William Lilly, *Christian Astrology*: complete.
+
 ## Next
 
-Continue sequentially with Book III, Nativities. The modern Appendix A begins at PDF p. 510; locate the exact beginning of Lilly's substantive Book III text after the appendix material before extracting.
+The initial corpus extraction is complete. Proceed to the cross-source editorial pass: normalize aliases and canonical terms, compare competing definitions, preserve genuine disagreements, prune weak or mention-only interpretations, audit citation joins and then synchronize the frontend with the canonical database.

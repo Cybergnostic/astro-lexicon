@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { authors } from '../../data/preview';
+---
+<BaseLayout title="Works — Astrological Lexicon" description="Source works represented in the Astrological Lexicon initial corpus.">
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="hero-kicker">Corpus index</p>
+        <h1>Works</h1>
+        <p class="hero-deck">The lexicon is built from a defined source corpus. Every public interpretation is intended to remain traceable to a work, edition and passage locator.</p>
+      </div>
+      <p class="hero-note"><strong>Edition matters.</strong> Translator, editor and publication provenance are kept separate because translated technical vocabulary can materially affect how historical concepts appear in English.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell section-grid">
+      <div class="section-intro">
+        <p class="micro-label">Initial corpus</p>
+        <h2>Five foundational texts</h2>
+        <p>The frontend will later derive full edition metadata and source coverage directly from the canonical database.</p>
+      </div>
+      <div class="section-body timeline">
+        {authors.map((author) => (
+          <div class="timeline-row">
+            <span class="timeline-era">{author.layer}</span>
+            <span class="timeline-author"><em>{author.work}</em></span>
+            <span class="timeline-work">{author.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

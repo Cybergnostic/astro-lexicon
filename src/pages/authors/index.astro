@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { authors } from '../../data/preview';
+---
+<BaseLayout title="Authors — Astrological Lexicon" description="Authors represented in the Astrological Lexicon source corpus.">
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="hero-kicker">Corpus index</p>
+        <h1>Authors</h1>
+        <p class="hero-deck">The initial lexicon follows technical language across five major witnesses spanning Late Antiquity, the Arabic/Persian tradition, medieval Latin astrology and early modern England.</p>
+      </div>
+      <p class="hero-note"><strong>Author pages are not biographies first.</strong> They are indexes into terminology, works, passages and source-specific doctrine represented in the lexicon.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell section-grid">
+      <div class="section-intro">
+        <p class="micro-label">Initial corpus</p>
+        <h2>Historical witnesses</h2>
+        <p>Each author remains attached to the precise work and edition from which the project’s evidence was extracted.</p>
+      </div>
+      <div class="section-body timeline">
+        {authors.map((author) => (
+          <div class="timeline-row">
+            <span class="timeline-era">{author.layer}</span>
+            <span class="timeline-author">
+              {author.name === 'Guido Bonatti' ? <a href="/authors/guido-bonatti">{author.name}</a> : author.name}
+            </span>
+            <span class="timeline-work"><em>{author.work}</em></span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

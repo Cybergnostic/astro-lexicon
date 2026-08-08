@@ -2,6 +2,11 @@
 -- Every row must report issue_count = 0 for the corpus audit command to succeed.
 -- Informational review queries (B-only evidence, duplicate passage fingerprints,
 -- uncited extraction passages, coverage summaries) remain in initial_corpus_review.sql.
+--
+-- Two alias collisions are deliberate historical false friends and therefore are
+-- excluded narrowly here rather than deleting useful source terminology:
+--   * House -> zodiacal domicile / mundane place
+--   * Intervention -> al-Biruni's mechanism / Antiochus' intervention by rays
 
 WITH blocker_counts(check_name, issue_count) AS (
   SELECT 'terms_failing_public_definition_standard', COUNT(*)
@@ -46,16 +51,28 @@ WITH blocker_counts(check_name, issue_count) AS (
   FROM (
     SELECT lower(trim(a.label)) AS normalized_alias
     FROM aliases a
+    JOIN terms t ON t.id=a.term_id
     GROUP BY lower(trim(a.label))
     HAVING COUNT(DISTINCT a.term_id)>1
+       AND NOT (
+         lower(trim(a.label))='house'
+         AND COUNT(DISTINCT a.term_id)=2
+         AND COUNT(DISTINCT CASE WHEN t.slug IN ('domicile','twelve-places') THEN a.term_id END)=2
+       )
   ) collisions
 
   UNION ALL
 
   SELECT 'canonical_label_alias_collisions', COUNT(*)
-  FROM terms t
-  JOIN aliases a ON lower(trim(a.label))=lower(trim(t.label))
-  WHERE t.id<>a.term_id
+  FROM terms canonical
+  JOIN aliases a ON lower(trim(a.label))=lower(trim(canonical.label))
+  JOIN terms alias_term ON alias_term.id=a.term_id
+  WHERE canonical.id<>a.term_id
+    AND NOT (
+      lower(trim(a.label))='intervention'
+      AND canonical.slug='intervention'
+      AND alias_term.slug='intervention-by-rays'
+    )
 
   UNION ALL
 

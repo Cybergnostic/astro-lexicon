@@ -42,11 +42,11 @@ Public entries are expected to have definition quality 4–5 and reviewed A/B ev
 - `docs/extraction/` — sequential source-coverage ledgers
 - `docs/revision/` — cross-source editorial decisions
 - `docs/` — ontology, definition, citation and extraction policies
-- `src/` — current public-site prototype
+- `src/` — public-site frontend
 
 ## Status
 
-The substantive text of all five initial sources has been read sequentially and extracted. The project is now in the post-extraction editorial phase.
+The substantive text of all five initial sources has been read sequentially, extracted and cross-source reviewed. The initial canonical corpus now passes a reproducible fresh-database audit from an empty SQLite file.
 
 Completed work includes:
 
@@ -56,6 +56,9 @@ Completed work includes:
 - removal of mention-only interpretations and extraction-heading artifacts;
 - recovery of missed definition-level terms and silent seed mismatches;
 - source-specific edition provenance repair for the compiled Bonatti PDF;
-- reproducible SQL audit queries for definition quality, A/B evidence, citation coverage, alias collisions, orphan terms and superseded slugs.
+- complete citation linkage for every reviewed A/B interpretation in the initial corpus;
+- reviewed term relations and documented exceptions for intentional historical alias collisions;
+- a fresh SQLite build applying both migrations and all 61 seed files with foreign-key enforcement on every connection;
+- passing SQLite integrity, foreign-key and blocking editorial checks in CI.
 
-The next milestone is to run the complete seed chain against a fresh database, resolve every remaining audit result, and generate the public frontend from the reviewed canonical data rather than maintaining a separate hand-written preview dataset.
+The next milestone is frontend generation from the reviewed canonical database: replace the hand-written preview dataset with a database-backed data layer and generate term, author and work pages from the source records, citations, aliases and relations.

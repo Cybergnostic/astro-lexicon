@@ -12,34 +12,63 @@ export function getStaticPaths() {
 const { term } = Astro.props;
 const definition = definitionOverrides[term.slug] ?? term.definition;
 ---
-<BaseLayout title={`${term.label} — Astrological Lexicon`}>
+<BaseLayout title={`${term.label} — Astrological Lexicon`} description={`${term.label}: ${definition}`}>
   <div class="shell page-grid">
+    <aside class="article-rail" aria-label="Entry metadata">
+      <div class="rail-group">
+        <span class="micro-label">Entry type</span>
+        <span class="rail-value">Technical term</span>
+      </div>
+      <div class="rail-group">
+        <span class="micro-label">Subject</span>
+        <span class="rail-value">{term.category}</span>
+      </div>
+      <div class="rail-group">
+        <span class="micro-label">Edition</span>
+        <span class="rail-value">Research preview</span>
+      </div>
+    </aside>
+
     <article class="article">
-      <p class="eyebrow">{term.category} · Draft entry</p>
+      <p class="eyebrow">Lexicon entry · {term.category}</p>
       <h1>{term.label}</h1>
       <p class="lede">{definition}</p>
 
-      <section id="definition">
-        <h2>Working definition</h2>
+      <div class="definition-panel" id="definition">
+        <p class="micro-label">Canonical definition</p>
         <p>{definition}</p>
-        <p class="meta">This entry is currently in the research-preview stage. The concept has been extracted and seeded in the project database, but the full author-by-author source presentation has not yet been promoted into the frontend.</p>
-      </section>
+      </div>
 
-      <section id="status">
-        <h2>Research status</h2>
-        <div class="source-block">
-          <div class="source-head">
-            <h3>Draft extraction</h3>
-            <span class="source-label">{term.status}</span>
-          </div>
-          <p>The term is part of the verified extraction set. Detailed source accounts, locators, historical variants and cross-author comparisons will appear here as the research data is connected directly to the frontend.</p>
+      <section id="names">
+        <h2>Names & historical forms</h2>
+        <p class="meta">Aliases, translated forms and author-specific terminology will be generated here from the canonical database.</p>
+        <div class="term-links">
+          <span>{term.label}</span>
         </div>
       </section>
 
-      <section id="browse">
-        <h2>Browse related material</h2>
+      <section id="sources">
+        <h2>Source accounts</h2>
+        <div class="source-block">
+          <div class="source-head">
+            <h3>Reviewed source witnesses</h3>
+            <span class="source-label">Database integration pending</span>
+          </div>
+          <p>The extraction corpus already contains source-specific interpretations, editions and locators for this term where definition-level evidence was found. This redesigned section is the target for those records once the canonical SQLite/D1 data layer replaces the temporary preview dataset.</p>
+          <p class="source-cite"><span class="evidence">A/B</span>Only reviewed definition-level or substantial explanatory evidence is intended for public source accounts.</p>
+        </div>
+      </section>
+
+      <section id="comparison">
+        <h2>Historical comparison</h2>
+        <p>Where multiple authors define or materially explain the same concept, this section will distinguish shared recognition rules from historical differences, competing doctrines and translator-dependent terminology.</p>
+      </section>
+
+      <section id="related">
+        <h2>Related concepts</h2>
+        <p class="meta">These links will be generated from reviewed term relations rather than a hand-maintained list.</p>
         <div class="term-links">
-          <a href="/">All terms</a>
+          <a href="/">Browse all terms</a>
           <a href="/terms/reception">Reception</a>
           <a href="/terms/application">Application</a>
           <a href="/terms/combustion">Combustion</a>
@@ -48,10 +77,12 @@ const definition = definitionOverrides[term.slug] ?? term.definition;
     </article>
 
     <aside class="toc">
-      <strong>On this page</strong>
+      <strong>On this entry</strong>
       <a href="#definition">Definition</a>
-      <a href="#status">Research status</a>
-      <a href="#browse">Related material</a>
+      <a href="#names">Names & forms</a>
+      <a href="#sources">Source accounts</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#related">Related concepts</a>
     </aside>
   </div>
 </BaseLayout>

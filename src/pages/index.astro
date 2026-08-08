@@ -4,74 +4,158 @@ import { terms, authors } from '../data/preview';
 
 const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUpperCase()));
+const subjects = [
+  ['Dignities & Debilities', 'Domicile, exaltation, terms, faces, fall, detriment and related conditions'],
+  ['Planetary Motion', 'Application, separation, retrogradation, orientality and solar phase'],
+  ['Perfection & Impediments', 'Translation, collection, prohibition, refranation and frustration'],
+  ['Signs & Divisions', 'Signs, triplicities, decans, lunar mansions and zodiacal subdivisions'],
+  ['Sect & Planetary Condition', 'Diurnal and nocturnal doctrine, hayz and related conditions'],
+  ['Horary & Questions', 'Interrogational doctrine, significators and judgment of questions'],
+  ['Natal Astrology', 'Nativities, profession, longevity and rectification terminology'],
+  ['Predictive Techniques', 'Revolutions, time-lord methods and annual techniques'],
+  ['Mundane & Electional', 'World-year doctrine, elections, weather and collective indications']
+];
 ---
 <BaseLayout>
-  <div class="shell page-grid">
-    <article class="article">
-      <p class="eyebrow">Source-based reference work</p>
-      <h1>Astrological<br />Lexicon</h1>
-      <p class="lede">A source-based encyclopedia of traditional astrological terminology, built from historical texts rather than flattened modern definitions.</p>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="hero-kicker">Historical dictionary · traditional astrology</p>
+        <h1>Astrological Lexicon</h1>
+        <p class="hero-deck">A source-based reference work tracing technical astrological language across foundational texts from Late Antiquity through the seventeenth century.</p>
 
-      <div class="search">
-        <input id="term-search" type="search" autocomplete="off" placeholder="Search terms, authors, works…" aria-label="Search lexicon" />
-        <div id="search-results" class="search-results"></div>
+        <div class="search-wrap">
+          <div class="search-label">
+            <span class="micro-label">Search the lexicon</span>
+            <span>terms · authors · works</span>
+          </div>
+          <div class="search">
+            <input id="term-search" type="search" autocomplete="off" placeholder="Try reception, bounds, Bonatti, Christian Astrology…" aria-label="Search lexicon" />
+            <div id="search-results" class="search-results"></div>
+          </div>
+        </div>
       </div>
 
-      <p class="eyebrow">Browse</p>
-      <div class="alpha" aria-label="Alphabetical index">
-        <a href="#terms" data-letter="ALL" class="alpha-all">All</a>
-        {alphabet.map((letter) => (
-          availableLetters.has(letter)
-            ? <a href={`#${letter}`} data-letter={letter}>{letter}</a>
-            : <span class="is-empty" aria-disabled="true">{letter}</span>
-        ))}
+      <div>
+        <div class="corpus-stats" aria-label="Initial corpus summary">
+          <div class="stat">
+            <span class="stat-value">5</span>
+            <span class="stat-label">foundational works</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">4</span>
+            <span class="stat-label">historical layers</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">A–B</span>
+            <span class="stat-label">evidence standard</span>
+          </div>
+        </div>
+        <p class="hero-note"><strong>Not a modernized glossary.</strong> Definitions are synthesized from reviewed source evidence while disagreements, aliases, translator choices and historical differences remain visible.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="lexicon">
+    <div class="shell section-grid">
+      <div class="section-intro">
+        <p class="micro-label">01 · Lexicon</p>
+        <h2>Browse A–Z</h2>
+        <p>Canonical entries with source-specific interpretation, historical terminology and cross-references.</p>
       </div>
 
-      <section id="terms">
-        <h2 id="terms-heading">Current terms</h2>
-        <p id="no-letter-results" class="meta browse-empty" hidden>No terms under this letter yet.</p>
-        <ul id="term-list" class="list-clean">
+      <div class="section-body">
+        <div class="alpha" aria-label="Alphabetical index">
+          <a href="#lexicon" data-letter="ALL" class="alpha-all">All</a>
+          {alphabet.map((letter) => (
+            availableLetters.has(letter)
+              ? <a href={`#${letter}`} data-letter={letter}>{letter}</a>
+              : <span class="is-empty" aria-disabled="true">{letter}</span>
+          ))}
+        </div>
+
+        <p id="no-letter-results" class="meta" hidden>No terms under this letter yet.</p>
+        <ul id="term-list" class="index-list">
           {terms.map((term) => (
             <li data-term-letter={term.label.charAt(0).toUpperCase()}>
               <a href={`/terms/${term.slug}`}>{term.label}</a>
+              <span class="index-definition">{term.definition}</span>
               <span class="count">{term.category}</span>
             </li>
           ))}
         </ul>
-      </section>
+      </div>
+    </div>
+  </section>
 
-      <section id="sources">
-        <h2>Sources in the initial corpus</h2>
-        <ul class="list-clean">
-          {authors.map((author) => (
-            <li>
-              <span>{author.name} — <em>{author.work}</em></span>
-              <span class="count">{author.layer}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+  <section class="section" id="subjects">
+    <div class="shell section-grid">
+      <div class="section-intro">
+        <p class="micro-label">02 · Subjects</p>
+        <h2>Browse by doctrine</h2>
+        <p>Follow concepts through the technical systems they belong to rather than only alphabetically.</p>
+      </div>
+      <div class="section-body subject-grid">
+        {subjects.map(([name, detail]) => (
+          <a class="subject" href="#lexicon">
+            <strong>{name}</strong>
+            <span>{detail}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
 
-      <section id="method">
-        <h2>Method</h2>
-        <p>Entries distinguish source evidence from editorial synthesis. Historical variants are preserved rather than silently merged. Short quotations may be used where necessary, while the public text is primarily paraphrase, bibliography, and source location.</p>
-      </section>
-    </article>
+  <section class="section" id="tradition">
+    <div class="shell section-grid">
+      <div class="section-intro">
+        <p class="micro-label">03 · Tradition</p>
+        <h2>Five source witnesses</h2>
+        <p>The initial corpus deliberately spans different linguistic and historical layers of the traditional astrological literature.</p>
+      </div>
+      <div class="section-body timeline">
+        {authors.map((author) => (
+          <div class="timeline-row">
+            <span class="timeline-era">{author.layer}</span>
+            <span class="timeline-author">{author.name}</span>
+            <span class="timeline-work"><em>{author.work}</em></span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 
-    <aside class="toc">
-      <strong>Index</strong>
-      <a href="#terms">Current terms</a>
-      <a href="#sources">Sources</a>
-      <a href="#method">Method</a>
-    </aside>
-  </div>
+  <section class="section" id="method">
+    <div class="shell section-grid">
+      <div class="section-intro">
+        <p class="micro-label">04 · Method</p>
+        <h2>How entries are built</h2>
+        <p>The database separates historical evidence from editorial synthesis instead of presenting every source as though it said the same thing.</p>
+      </div>
+      <div class="section-body method-grid">
+        <div class="method-item">
+          <strong>Canonical definition</strong>
+          <p>A concise recognition rule explaining what the term is, without folding every attributed effect into the definition itself.</p>
+        </div>
+        <div class="method-item">
+          <strong>Source accounts</strong>
+          <p>Each author’s explanation remains separately attributable to a work, edition and precise source locator.</p>
+        </div>
+        <div class="method-item">
+          <strong>Differences preserved</strong>
+          <p>False friends, competing technical rules and translator-dependent labels are recorded rather than silently normalized away.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <script define:vars={{ terms, authors }} is:inline>
     const input = document.getElementById('term-search');
     const box = document.getElementById('search-results');
     const index = [
       ...terms.map((x) => ({ label: x.label, kind: 'term', detail: x.category, href: `/terms/${x.slug}` })),
-      ...authors.map((x) => ({ label: x.name, kind: 'author', detail: x.work, href: x.name === 'Guido Bonatti' ? '/authors/guido-bonatti' : '#sources' }))
+      ...authors.map((x) => ({ label: x.name, kind: 'author', detail: x.work, href: x.name === 'Guido Bonatti' ? '/authors/guido-bonatti' : '#tradition' })),
+      ...authors.map((x) => ({ label: x.work, kind: 'work', detail: x.name, href: '#tradition' }))
     ];
 
     input?.addEventListener('input', () => {
@@ -81,7 +165,7 @@ const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUppe
         box.innerHTML = '';
         return;
       }
-      const results = index.filter((x) => `${x.label} ${x.detail}`.toLowerCase().includes(q)).slice(0, 8);
+      const results = index.filter((x) => `${x.label} ${x.detail}`.toLowerCase().includes(q)).slice(0, 9);
       box.innerHTML = results.length
         ? results.map((x) => `<a class="search-result" href="${x.href}"><small>${x.kind}</small><span><strong>${x.label}</strong><br><span class="meta">${x.detail}</span></span></a>`).join('')
         : `<div class="search-result"><small>search</small><span>No indexed result yet.</span></div>`;
@@ -90,7 +174,6 @@ const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUppe
 
     const alphaLinks = Array.from(document.querySelectorAll('.alpha a[data-letter]'));
     const termRows = Array.from(document.querySelectorAll('#term-list li[data-term-letter]'));
-    const termsHeading = document.getElementById('terms-heading');
     const emptyMessage = document.getElementById('no-letter-results');
 
     function applyLetterFilter(letter, { updateHash = false } = {}) {
@@ -110,27 +193,21 @@ const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUppe
         else link.removeAttribute('aria-current');
       });
 
-      if (termsHeading) termsHeading.textContent = filter === 'ALL' ? 'Current terms' : `Current terms — ${filter}`;
       if (emptyMessage) emptyMessage.hidden = visibleCount !== 0;
-
-      if (updateHash) {
-        const nextHash = filter === 'ALL' ? '#terms' : `#${filter}`;
-        history.replaceState(null, '', nextHash);
-      }
+      if (updateHash) history.replaceState(null, '', filter === 'ALL' ? '#lexicon' : `#${filter}`);
     }
 
     alphaLinks.forEach((link) => {
       link.addEventListener('click', (event) => {
         event.preventDefault();
         applyLetterFilter(link.dataset.letter, { updateHash: true });
-        document.getElementById('terms')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     });
 
     function filterFromHash() {
       const hash = window.location.hash.replace('#', '').toUpperCase();
       if (/^[A-Z]$/.test(hash)) applyLetterFilter(hash);
-      else if (hash === 'TERMS' || !hash) applyLetterFilter('ALL');
+      else applyLetterFilter('ALL');
     }
 
     window.addEventListener('hashchange', filterFromHash);

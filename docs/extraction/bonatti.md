@@ -25,7 +25,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 940–1001: Treatise 8, Part 2, *Projection of Parts and Their Significations*, Chapters 1–19 plus the concluding royal Parts, reviewed sequentially and completely. PDF p. 1002 begins the bibliography, so Treatise 8.2 is complete.
 - PDF pp. 1018–1028: Treatise 9, *Nativities*, Preface and Part 1, Chapters 1–6, reviewed sequentially and completely.
 - PDF pp. 1028–1047: Treatise 9, Part 2, Chapters 1–6, reviewed sequentially and completely.
-- PDF pp. 1047–1067: Treatise 9, Part 3, body-form doctrine and the beginning of First House soul doctrine, reviewed sequentially; Part 3 remains in progress.
+- PDF pp. 1047–1076: Treatise 9, Part 3 opening and First House doctrine, including body-form material and the qualities of the soul, reviewed sequentially.
+- PDF pp. 1076–1101: Treatise 9, Part 3, Second House, Chapters 1–13, reviewed sequentially and completely. PDF p. 1101 begins the Third House.
 
 ## Editorial rule applied
 
@@ -55,6 +56,10 @@ Treatise 8.2 substantially reworks Abū Maʿshar’s lot doctrine. Bonatti expli
 
 Treatise 9 Parts 1–2 establish Bonatti’s natal framework. He distinguishes conception as an incomplete first beginning limited to gestation from the nativity as the complete second beginning governing the native’s postnatal life. He gives a detailed Animodar rectification procedure from the prenatal syzygy, distinguishes the specialized `almudabit` in early-life judgments, defines the hyleg as the formal/root significator of life and the kadkhuda as its effective giver of years, and identifies the directed Ascendant through the bounds as the `jarbakhtar` or divisor. The numerical longevity recipes are kept as historical source evidence rather than multiplied into weak standalone terms.
 
+Treatise 9 Part 3 begins with physical-form catalogues and then gives a reusable structure for judging the qualities of the soul. Bonatti assigns rational/intellectual qualities principally to Mercury, gives the sect luminary a role in sensible and vegetative faculties, and requires the Moon, Mercury, their signs and rulers, planetary participation and the angles to be judged together. The long individual character catalogues were reviewed but not promoted as standalone terms.
+
+The Second House section gives an unusually explicit hierarchy for selecting a significator of substance rather than reducing wealth judgment to the ruler of the second alone. Bonatti identifies the house of substance as the second sign from the Ascendant, ranks the Part of Fortune, Part of Substance, the second and its lord, Jupiter and further fallback testimonies, and uses triplicity rulers to divide topic-specific prosperity into successive thirds of life. The long house-by-house and planet-by-planet wealth catalogues were reviewed as applications rather than separate lexicon entries.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -70,13 +75,14 @@ Treatise 9 Parts 1–2 establish Bonatti’s natal framework. He distinguishes c
 - `db/seed/0029_bonatti_elections.sql`
 - `db/seed/0030_bonatti_lots.sql`
 - `db/seed/0031_bonatti_nativities_parts1_2.sql`
+- `db/seed/0032_bonatti_nativities_part3_first_second_house.sql`
 
 ## Remaining sections in this compiled PDF
 
-The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, from Part 3 onward.
+The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Third House on PDF p. 1101 and continuing to the end of the compilation.
 
 The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
 
 ## Next
 
-Continue sequentially with Treatise 9, Part 3 from PDF p. 1068.
+Continue sequentially with Treatise 9, Part 3, Third House from PDF p. 1101.

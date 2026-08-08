@@ -5,16 +5,16 @@
 
 INSERT OR IGNORE INTO terms (slug, label, short_definition, category, status, editorial_notes) VALUES
   ('annual-revolution', 'Annual Revolution', 'A chart and judgment based on the Sun returning to the same zodiacal degree and minute from which a year is reckoned.', 'prognostic technique', 'draft', 'Bonatti uses revolution broadly for the Sun returning to a specified starting point. The starting point differs for a world-year revolution, a nativity, or another inception.'),
-  ('world-year-revolution', 'Revolution of the Year of the World', 'An annual mundane revolution cast for the Sun\'s entrance into the first minute of Aries and judged for the condition of the coming year.', 'mundane astrology', 'draft', 'Bonatti explicitly distinguishes this from the annual revolution of a nativity or other inception.'),
-  ('nativity-year-revolution', 'Revolution of the Year of a Nativity', 'An annual revolution measured from the Sun\'s exact zodiacal position at birth until its return to the same point.', 'prognostic technique', 'draft', 'This is Bonatti\'s explicit definition in Treatise 8.1; it corresponds structurally to what later literature commonly calls a solar return, but that synonym should be normalized only with cross-source evidence.'),
+  ('world-year-revolution', 'Revolution of the Year of the World', 'An annual mundane revolution cast for the Sun''s entrance into the first minute of Aries and judged for the condition of the coming year.', 'mundane astrology', 'draft', 'Bonatti explicitly distinguishes this from the annual revolution of a nativity or other inception.'),
+  ('nativity-year-revolution', 'Revolution of the Year of a Nativity', 'An annual revolution measured from the Sun''s exact zodiacal position at birth until its return to the same point.', 'prognostic technique', 'draft', 'This is Bonatti''s explicit definition in Treatise 8.1; it corresponds structurally to what later literature commonly calls a solar return, but that synonym should be normalized only with cross-source evidence.'),
   ('lord-of-year', 'Lord of the Year', 'The principal planetary ruler selected for an annual revolution by a hierarchy of rulership, angularity, dignity, condition and fallback criteria.', 'mundane and annual rulership', 'draft', 'Bonatti gives an unusually elaborate selection procedure. Do not reduce this to simply the ruler of the Ascendant.'),
   ('lord-of-revolution', 'Lord of the Revolution', 'The ruler governing the effective span of a particular revolution, which may cover a whole year, half-year, or quarter-year depending on the sign rising at the Aries ingress.', 'mundane and annual rulership', 'draft', 'Bonatti explicitly says every Lord of the Year is a Lord of the Revolution, but not every Lord of the Revolution governs the whole year.'),
   ('significator-of-king', 'Significator of the King', 'The planet selected in a mundane revolution to represent the king, ruler, or highest governing authority of the region being judged.', 'mundane astrology', 'draft', 'Bonatti gives a ranked selection procedure centered on the tenth house, its rulers, the Sun, dignity and condition. It is a technical significator, not simply the natural signification of the Sun.'),
-  ('clime', 'Clime', 'One of seven traditional geographical latitude divisions of the inhabited world, each associated in Bonatti\'s mundane doctrine with one of the seven planets.', 'mundane geography', 'draft', 'Historical astronomical-geographical framework. It should not be treated as a modern political or cultural geography.'),
+  ('clime', 'Clime', 'One of seven traditional geographical latitude divisions of the inhabited world, each associated in Bonatti''s mundane doctrine with one of the seven planets.', 'mundane geography', 'draft', 'Historical astronomical-geographical framework. It should not be treated as a modern political or cultural geography.'),
   ('luminary-of-time', 'Luminary of the Time', 'The luminary having temporal authority in a judgment: the Sun by day and the Moon by night.', 'sect and rulership', 'draft', 'Bonatti repeatedly describes this as the luminary “whose authority it is.” This definition is retained because the day/night criterion is explicit and operational.');
 
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
-SELECT id, 'Revolution of the Year', 'English', 'source-phrase', 'Bonatti\'s general phrase for an annual solar revolution.' FROM terms WHERE slug='annual-revolution';
+SELECT id, 'Revolution of the Year', 'English', 'source-phrase', 'Bonatti''s general phrase for an annual solar revolution.' FROM terms WHERE slug='annual-revolution';
 INSERT OR IGNORE INTO aliases (term_id, label, language, alias_type, scope_note)
 SELECT id, 'Luminary Whose Authority It Is', 'English', 'source-phrase', 'Recurring wording in the Dykes translation.' FROM terms WHERE slug='luminary-of-time';
 
@@ -26,13 +26,13 @@ FROM editions e JOIN works w ON w.id=e.work_id WHERE w.slug='bonatti-liber-astro
 
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
 SELECT t.id, w.id,
-       'Bonatti defines a revolution of a year as the Sun\'s circular course from a specific degree and minute until its return to that same point. The same structure can be applied to the world-year, a nativity, or another inception.',
+       'Bonatti defines a revolution of a year as the Sun''s circular course from a specific degree and minute until its return to that same point. The same structure can be applied to the world-year, a nativity, or another inception.',
        'Treatise 8.1, Preface', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='annual-revolution' AND w.slug='bonatti-liber-astronomiae';
 
 INSERT INTO interpretations (term_id, work_id, summary, scope, certainty, status)
 SELECT t.id, w.id,
-       'The revolution of the year of the world begins at the Sun\'s entrance into the first minute of Aries and runs until the Sun returns to the same point. Bonatti uses it to judge the general condition of the coming year for a region.',
+       'The revolution of the year of the world begins at the Sun''s entrance into the first minute of Aries and runs until the Sun returns to the same point. Bonatti uses it to judge the general condition of the coming year for a region.',
        'Treatise 8.1, Preface', 'direct', 'draft'
 FROM terms t CROSS JOIN works w WHERE t.slug='world-year-revolution' AND w.slug='bonatti-liber-astronomiae';
 

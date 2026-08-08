@@ -36,6 +36,8 @@ Source: *Liber Astronomiae*, Project Hindsight / Cazimi Press English translatio
 - PDF pp. 1158–1169: Treatise 9, Part 3, Ninth House, Chapters 1–4, reviewed sequentially and completely. PDF p. 1169 begins the Tenth House.
 - PDF pp. 1169–1184: Treatise 9, Part 3, Tenth House, Chapters 1–3, reviewed sequentially and completely. PDF p. 1184 begins the Eleventh House.
 - PDF pp. 1184–1191: Treatise 9, Part 3, Eleventh House, Chapters 1–2, reviewed sequentially and completely. PDF p. 1191 begins the Twelfth House.
+- PDF pp. 1191–1202: Treatise 9, Part 3, Twelfth House, Chapters 1–2, reviewed sequentially and completely.
+- PDF pp. 1202–1221: Treatise 9 concluding predictive chapters, including firdaria, planetary eminence, opening of the gates, al-bust/combust-hour doctrine, profections, directed significators, twelfth-parts, ninth-parts, Lord of the Orb and primary-direction calculation, reviewed sequentially and completely. PDF p. 1222 begins the bibliography, so the substantive Bonatti material in this compiled PDF is complete.
 
 ## Editorial rule applied
 
@@ -87,6 +89,10 @@ The Tenth House section assigns profession, work, offices or duties, power/prosp
 
 The Eleventh House section assigns friends, good fortune and hope to the eleventh and uses a broad hierarchy of friendship significators. In comparing two nativities Bonatti also applies transfer of light between the two charts’ significators: a well-disposed translating planet can produce friendship even without direct contact, although he describes it as temporary rather than permanent. The long friend-type and synastry catalogues were reviewed but not promoted into weak standalone terms.
 
+The Twelfth House section assigns hidden and jealous enemies to the twelfth, in explicit contrast with the openly opposing enemies treated through the seventh. The large planet-in-domicile catalogue that follows was reviewed completely but remains corpus evidence rather than being expanded into hundreds of weak entries.
+
+The concluding predictive chapters add especially strong definitions of firdaria, profection, the profected `sālkhudāy`, planetary eminence/elevation, the Lord of the Orb, and primary directions. They also supply additional Bonatti versions of opening the gates, combust/incombust hours, lunar duodena/al-bust, twelfth-parts and ninth-parts. Bonatti’s profection advances one sign per solar year while retaining the natal degree, and is explicitly treated as modifying rather than replacing the annual revolution. His primary-direction chapter distinguishes oblique ascensions at the horizon, right ascension at the meridian, and interpolated arcs for intermediate places, converting the resulting equatorial arc into time.
+
 ## Current seeds
 
 - `db/seed/0019_bonatti_tractate1_and_2_part1.sql`
@@ -109,13 +115,12 @@ The Eleventh House section assigns friends, good fortune and hope to the elevent
 - `db/seed/0036_bonatti_nativities_eighth_house.sql`
 - `db/seed/0037_bonatti_nativities_ninth_house.sql`
 - `db/seed/0038_bonatti_nativities_tenth_eleventh_house.sql`
+- `db/seed/0039_bonatti_nativities_twelfth_and_prediction.sql`
 
-## Remaining sections in this compiled PDF
+## Completion status
 
-The only substantive Bonatti material still unreviewed in this compiled PDF is the remainder of Treatise 9, *Nativities*, beginning with the Twelfth House on PDF p. 1191 and continuing to the end of the substantive text.
-
-The other projected horary booklets described by the Project Hindsight editor are not present in this compiled PDF, so this source supports completion only of Treatise 6, Part I, not all of Bonatti’s horary material.
+All substantive Bonatti material contained in this compiled PDF has now been reviewed sequentially. PDF p. 1222 begins the bibliography/editorial apparatus. The other projected horary booklets described by the Project Hindsight editor are not present in this compilation, so Treatise 6 is complete only for the included Part I.
 
 ## Next
 
-Continue sequentially with Treatise 9, Part 3, Twelfth House from PDF p. 1191.
+Proceed to the next source in the corpus. The planned sequence is Antiochus, *The Thesaurus*, followed by William Lilly, *Christian Astrology*.

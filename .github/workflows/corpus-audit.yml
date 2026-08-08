@@ -27,12 +27,3 @@ jobs:
 
       - name: Build fresh database and audit corpus
         run: npm run audit:corpus
-
-      - name: Upload fresh audit database
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: astro-lexicon-audit-db
-          path: .tmp/astro-lexicon-audit.sqlite
-          if-no-files-found: error
-          retention-days: 1

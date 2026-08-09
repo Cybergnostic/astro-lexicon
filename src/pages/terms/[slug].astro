@@ -8,6 +8,7 @@ export function getStaticPaths() {
 
 const { term } = Astro.props;
 const article = term.article;
+const articleBlocks = article?.blocks ?? article?.sections?.map((section) => ({ type: 'section', ...section })) ?? [];
 const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
@@ -37,10 +38,23 @@ const citationLabel=(citation) => {
         <p>{article.intro}</p>
       </section>}
 
-      {article?.sections.map((section)=><section id={section.section_key}>
-        <h2>{section.heading}</h2>
-        <p>{section.body}</p>
-      </section>)}
+      {articleBlocks.map((block) => block.type === 'table' ? (
+        <section id={block.table_key} class="article-table-section">
+          <h2>{block.heading}</h2>
+          {block.caption && <p class="table-caption">{block.caption}</p>}
+          <div class="table-scroll" tabindex="0">
+            <table class="article-table">
+              <thead><tr>{block.columns.map((column) => <th scope="col">{column}</th>)}</tr></thead>
+              <tbody>{block.rows.map((row) => <tr>{row.map((cell) => <td>{cell}</td>)}</tr>)}</tbody>
+            </table>
+          </div>
+        </section>
+      ) : (
+        <section id={block.section_key}>
+          <h2>{block.heading}</h2>
+          <p>{block.body}</p>
+        </section>
+      ))}
 
       <section id="names">
         <h2>Names & historical forms</h2>
@@ -70,7 +84,7 @@ const citationLabel=(citation) => {
       <strong>On this entry</strong>
       {!article && <a href="#definition">Definition</a>}
       {article && <a href="#overview">Overview</a>}
-      {article?.sections.map((section)=><a href={`#${section.section_key}`}>{section.heading}</a>)}
+      {articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
       <a href="#names">Names & forms</a>
       <a href="#sources">Source accounts</a>
       {term.interpretations.length > 1 && <a href="#comparison">Comparison</a>}
@@ -79,3 +93,16 @@ const citationLabel=(citation) => {
     </aside>
   </div>
 </BaseLayout>
+
+<style>
+  .table-caption{margin:-.25rem 0 1rem;color:var(--muted);font-size:.92rem;max-width:42rem}
+  .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
+  .article-table{width:100%;border-collapse:collapse;min-width:34rem;font-size:.91rem}
+  .article-table th,.article-table td{padding:.78rem .85rem;text-align:left;vertical-align:top;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .article-table th:last-child,.article-table td:last-child{border-right:0}
+  .article-table tbody tr:last-child td{border-bottom:0}
+  .article-table th{font:700 .68rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.07em;background:var(--paper-deep);white-space:nowrap}
+  .article-table td:first-child{font-weight:600}
+  .table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  @media(max-width:720px){.article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}}
+</style>

@@ -49,6 +49,28 @@ def export(db_path: Path, out_path: Path):
             )
         ]
 
+        article = con.execute(
+            """SELECT intro
+               FROM term_articles
+               WHERE term_id=? AND status IN ('reviewed','published')""",
+            (term["id"],),
+        ).fetchone()
+        if article:
+            article_record = dict(article)
+            article_record["sections"] = [
+                dict(row)
+                for row in con.execute(
+                    """SELECT section_key,heading,body
+                       FROM term_article_sections
+                       WHERE term_id=? AND status IN ('reviewed','published')
+                       ORDER BY sort_order,id""",
+                    (term["id"],),
+                )
+            ]
+            record["article"] = article_record
+        else:
+            record["article"] = None
+
         interpretations = []
         for interpretation in con.execute(
             """SELECT i.id,i.summary,i.scope,i.certainty,i.evidence_grade,
@@ -143,6 +165,7 @@ def export(db_path: Path, out_path: Path):
         "meta": {
             "terms": len(terms),
             "interpretations": sum(len(term["interpretations"]) for term in terms),
+            "articles": sum(1 for term in terms if term["article"]),
             "authors": len(authors),
             "works": len(works),
             "evidence_standard": "Reviewed A/B evidence only",

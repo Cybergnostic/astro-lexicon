@@ -7,6 +7,7 @@ export function getStaticPaths() {
 }
 
 const { term } = Astro.props;
+const article = term.article;
 const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
@@ -21,6 +22,7 @@ const citationLabel=(citation) => {
       <div class="rail-group"><span class="micro-label">Subject</span><span class="rail-value">{term.category}</span></div>
       <div class="rail-group"><span class="micro-label">Definition quality</span><span class="rail-value">{term.definition_quality}/5</span></div>
       <div class="rail-group"><span class="micro-label">Source witnesses</span><span class="rail-value">{sourceAuthors.length}</span></div>
+      {article && <div class="rail-group"><span class="micro-label">Teaching article</span><span class="rail-value">Reviewed</span></div>}
     </aside>
 
     <article class="article">
@@ -28,7 +30,17 @@ const citationLabel=(citation) => {
       <h1>{term.label}</h1>
       <p class="lede">{term.short_definition}</p>
 
-      <div class="definition-panel" id="definition"><p class="micro-label">Canonical definition</p><p>{term.short_definition}</p></div>
+      {!article && <div class="definition-panel" id="definition"><p class="micro-label">Canonical definition</p><p>{term.short_definition}</p></div>}
+
+      {article && <section id="overview" class="article-overview">
+        <h2>Overview</h2>
+        <p>{article.intro}</p>
+      </section>}
+
+      {article?.sections.map((section)=><section id={section.section_key}>
+        <h2>{section.heading}</h2>
+        <p>{section.body}</p>
+      </section>)}
 
       <section id="names">
         <h2>Names & historical forms</h2>
@@ -54,6 +66,16 @@ const citationLabel=(citation) => {
       {term.editorial_notes && <section id="editorial"><h2>Editorial note</h2><p>{term.editorial_notes}</p></section>}
     </article>
 
-    <aside class="toc"><strong>On this entry</strong><a href="#definition">Definition</a><a href="#names">Names & forms</a><a href="#sources">Source accounts</a>{term.interpretations.length > 1 && <a href="#comparison">Comparison</a>}<a href="#related">Related concepts</a>{term.editorial_notes && <a href="#editorial">Editorial note</a>}</aside>
+    <aside class="toc">
+      <strong>On this entry</strong>
+      {!article && <a href="#definition">Definition</a>}
+      {article && <a href="#overview">Overview</a>}
+      {article?.sections.map((section)=><a href={`#${section.section_key}`}>{section.heading}</a>)}
+      <a href="#names">Names & forms</a>
+      <a href="#sources">Source accounts</a>
+      {term.interpretations.length > 1 && <a href="#comparison">Comparison</a>}
+      <a href="#related">Related concepts</a>
+      {term.editorial_notes && <a href="#editorial">Editorial note</a>}
+    </aside>
   </div>
 </BaseLayout>

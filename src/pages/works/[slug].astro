@@ -7,15 +7,55 @@ export function getStaticPaths() {
 }
 const { work } = Astro.props;
 const terms = corpus.terms.filter((term) => term.interpretations.some((item) => item.work_slug === work.slug));
+
+const statusLabel = {
+  indexed: 'Indexed',
+  partial: 'Partially indexed',
+  bibliographic: 'Bibliographic only',
+};
+
+const statusText = {
+  indexed: 'Sequential source extraction and editorial review are complete for the intended corpus scope.',
+  partial: 'This work is represented by reviewed source accounts, but sequential extraction is still incomplete.',
+  bibliographic: 'This work is recorded in the bibliography but has not yet been indexed for lexicon evidence.',
+};
 ---
 <BaseLayout title={`${work.title} — Astrological Lexicon`}>
   <div class="shell page-grid">
-    <aside class="article-rail"><div class="rail-group"><span class="micro-label">Author</span><span class="rail-value"><a href={`/authors/${work.author_slug}/`}>{work.author_name}</a></span></div><div class="rail-group"><span class="micro-label">Historical layer</span><span class="rail-value">{work.historical_layer}</span></div><div class="rail-group"><span class="micro-label">Indexed terms</span><span class="rail-value">{terms.length}</span></div></aside>
-    <article class="article"><p class="eyebrow">Work index · {work.historical_layer}</p><h1>{work.title}</h1>{work.original_title && <p class="lede">{work.original_title}</p>}
-      <section id="bibliography"><h2>Bibliographic record</h2>{work.editions.map((edition)=><div class="source-block"><div class="source-head"><h3>{edition.label}</h3><span class="source-label">{edition.publication_year || 'edition'}</span></div><p>{[edition.translator && `Translator: ${edition.translator}`,edition.editor && `Editor: ${edition.editor}`,edition.publisher,edition.publication_place].filter(Boolean).join(' · ')}</p>{edition.copyright_note && <p class="source-cite">{edition.copyright_note}</p>}</div>)}</section>
-      <section id="terms"><h2>Terms evidenced by this work</h2><ul class="index-list compact-list">{terms.map((term)=><li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}</ul></section>
+    <aside class="article-rail">
+      <div class="rail-group"><span class="micro-label">Author</span><span class="rail-value"><a href={`/authors/${work.author_slug}/`}>{work.author_name}</a></span></div>
+      <div class="rail-group"><span class="micro-label">Historical layer</span><span class="rail-value">{work.historical_layer}</span></div>
+      <div class="rail-group"><span class="micro-label">Corpus status</span><span class="rail-value">{statusLabel[work.corpus_status] || work.corpus_status}</span></div>
+      <div class="rail-group"><span class="micro-label">Indexed terms</span><span class="rail-value">{terms.length}</span></div>
+    </aside>
+
+    <article class="article">
+      <p class="eyebrow">Work index · {work.historical_layer}</p>
+      <h1>{work.title}</h1>
+      {work.original_title && <p class="lede">{work.original_title}</p>}
+
+      <section id="coverage">
+        <h2>Corpus coverage</h2>
+        <p><strong>{statusLabel[work.corpus_status] || work.corpus_status}.</strong> {statusText[work.corpus_status]}</p>
+      </section>
+
+      <section id="bibliography">
+        <h2>Bibliographic record</h2>
+        {work.editions.map((edition)=><div class="source-block"><div class="source-head"><h3>{edition.label}</h3><span class="source-label">{edition.publication_year || 'edition'}</span></div><p>{[edition.translator && `Translator: ${edition.translator}`,edition.editor && `Editor: ${edition.editor}`,edition.publisher,edition.publication_place].filter(Boolean).join(' · ')}</p>{edition.copyright_note && <p class="source-cite">{edition.copyright_note}</p>}</div>)}
+      </section>
+
+      <section id="terms">
+        <h2>Terms evidenced by this work</h2>
+        {terms.length > 0 ? (
+          <ul class="index-list compact-list">{terms.map((term)=><li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}</ul>
+        ) : (
+          <p>No reviewed public source accounts have been indexed from this work yet.</p>
+        )}
+      </section>
+
       {work.notes && <section id="note"><h2>Editorial note</h2><p>{work.notes}</p></section>}
     </article>
-    <aside class="toc"><strong>Work index</strong><a href="#bibliography">Bibliography</a><a href="#terms">Indexed terms</a>{work.notes && <a href="#note">Editorial note</a>}</aside>
+
+    <aside class="toc"><strong>Work index</strong><a href="#coverage">Coverage</a><a href="#bibliography">Bibliography</a><a href="#terms">Indexed terms</a>{work.notes && <a href="#note">Editorial note</a>}</aside>
   </div>
 </BaseLayout>

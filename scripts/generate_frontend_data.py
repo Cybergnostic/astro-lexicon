@@ -107,7 +107,8 @@ def export(db_path: Path, out_path: Path):
         item["works"] = [
             dict(row)
             for row in con.execute(
-                """SELECT slug,title,original_title,composition_year_start,composition_year_end,language,notes
+                """SELECT slug,title,original_title,composition_year_start,composition_year_end,
+                          language,notes,corpus_status
                    FROM works WHERE author_id=? ORDER BY title COLLATE NOCASE""",
                 (author["id"],),
             )
@@ -117,7 +118,7 @@ def export(db_path: Path, out_path: Path):
     works = []
     for work in con.execute(
         """SELECT w.id,w.slug,w.title,w.original_title,w.composition_year_start,w.composition_year_end,
-                  w.language,w.notes,a.slug author_slug,a.name author_name,a.historical_layer
+                  w.language,w.notes,w.corpus_status,a.slug author_slug,a.name author_name,a.historical_layer
            FROM works w JOIN authors a ON a.id=w.author_id
            ORDER BY a.id,w.title"""
     ):

@@ -57,15 +57,43 @@ def export(db_path: Path, out_path: Path):
         ).fetchone()
         if article:
             article_record = dict(article)
-            article_record["sections"] = [
+            sections = [
                 dict(row)
                 for row in con.execute(
-                    """SELECT section_key,heading,body
+                    """SELECT section_key,heading,body,sort_order
                        FROM term_article_sections
                        WHERE term_id=? AND status IN ('reviewed','published')
                        ORDER BY sort_order,id""",
                     (term["id"],),
                 )
+            ]
+            tables = []
+            for row in con.execute(
+                """SELECT table_key,heading,caption,columns_json,rows_json,sort_order
+                   FROM term_article_tables
+                   WHERE term_id=? AND status IN ('reviewed','published')
+                   ORDER BY sort_order,id""",
+                (term["id"],),
+            ):
+                item = dict(row)
+                item["columns"] = json.loads(item.pop("columns_json"))
+                item["rows"] = json.loads(item.pop("rows_json"))
+                tables.append(item)
+
+            article_record["sections"] = [
+                {k: v for k, v in section.items() if k != "sort_order"} for section in sections
+            ]
+            article_record["tables"] = [
+                {k: v for k, v in table.items() if k != "sort_order"} for table in tables
+            ]
+            blocks = [
+                {"type": "section", **section} for section in sections
+            ] + [
+                {"type": "table", **table} for table in tables
+            ]
+            blocks.sort(key=lambda item: (item["sort_order"], item.get("section_key", item.get("table_key", ""))))
+            article_record["blocks"] = [
+                {k: v for k, v in block.items() if k != "sort_order"} for block in blocks
             ]
             record["article"] = article_record
         else:

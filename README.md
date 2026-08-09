@@ -34,6 +34,20 @@ The important boundary is between **knowledge** and **authored expression or met
 
 The private study corpus itself is not stored in this repository.
 
+## Scope rule: this is a term encyclopedia
+
+The project extracts and explains **named terms, technical concepts, classifications, historical terminology, synonyms, source variants and historically established techniques**.
+
+It does **not** convert the private curriculum into a public chart-analysis manual. In particular, the public lexicon should not promote:
+
+- ordered analysis workflows;
+- topic-judgment recipes;
+- factor checklists;
+- lecturer-specific scoring systems;
+- procedural chapter structures merely because they exist in the course material.
+
+A procedure belongs in an entry only as far as needed to define a named concept—for example, the arithmetic of a named lot, the geometry of application/separation, or the recognition rule for a technical condition.
+
 ## Project principles
 
 - Every substantive historical claim should be traceable to a source; editorial synthesis should be clearly distinguishable from attributed historical evidence.
@@ -46,12 +60,13 @@ The private study corpus itself is not stored in this repository.
 - Translator and editor commentary is not attributed to the historical author.
 - Editorial review is required before extracted material is treated as canonical.
 - Private teaching material may guide and inform public synthesis, but copyrighted phrasing and proprietary methodology are not reproduced.
+- Source-specific numerical thresholds, formulas and classification tables are labeled as source-specific when the tradition is not uniform.
 
 ## Evidence quality is not article quality
 
 The corpus audit and the encyclopedia-quality audit solve different problems.
 
-A term can have an excellent canonical definition, A-grade historical evidence, precise citations, and correct relations while still being a poor teaching entry. A mature article should, where appropriate, also provide:
+A term can have an excellent canonical definition, A-grade historical evidence, precise citations, and correct relations while still be a poor teaching entry. A mature article should, where appropriate, also provide:
 
 - a clear plain-language explanation;
 - the rule or mechanism by which the concept works;
@@ -65,7 +80,7 @@ A term can have an excellent canonical definition, A-grade historical evidence, 
 
 The public frontend should not repeat the same `short_definition` as both a lead and a visible “Canonical definition” section. The canonical definition remains valuable internally for indexing, normalization, search, APIs, and editorial control; the public article body should add explanatory value rather than duplicate it.
 
-The canonical schema includes a separate reviewed **term article layer** (`term_articles` and ordered `term_article_sections`). That layer is now used across foundation terms, planets, mechanics, lots, predictive terminology and other encyclopedia entries rather than only by the original Temperament pilot.
+The canonical schema includes reviewed **term articles**, ordered prose sections, and first-class structured article tables. Tables are used selectively for information that is genuinely comparative or reference-like: dignity systems, classification families, formulas, planetary roles, source variants, and similar material.
 
 ## Editorial evidence standard
 
@@ -79,69 +94,74 @@ Public historical interpretations are expected to have reviewed A/B evidence. Th
 
 - `db/migrations/` — canonical SQLite/D1 schema and editorial-review fields
 - `db/seed/` — source extraction, cross-source editorial revision, reviewed ontology, and reviewed article seeds
-- `db/audit/` — read-only editorial/integrity audits, including lot-formula coverage
+- `db/audit/` — read-only editorial/integrity audits, including lot-formula and article-quality coverage
 - `docs/extraction/` — sequential source-coverage ledgers
-- `docs/revision/` — cross-source editorial decisions, curriculum audits and stage-closure ledgers
+- `docs/revision/` — cross-source editorial decisions, curriculum audits, stage closures and checkpoint status
 - `docs/` — ontology, definition, citation, extraction, and source-onboarding policies
-- `scripts/generate_frontend_data.py` — reproducible SQLite → public frontend-data generator
+- `scripts/generate_frontend_data.py` — reproducible SQLite → public frontend-data generator with source-fingerprint caching
 - `src/` — static Astro frontend generated from the canonical corpus
 
 Generated frontend JSON is not a second source of truth. The SQL migrations and ordered seeds remain canonical.
 
-## Current status
+## Current status — encyclopedia-quality checkpoint
 
-The substantive text of all five initial historical sources has been read sequentially, extracted and cross-source reviewed. The canonical corpus is designed to rebuild reproducibly from an empty SQLite database, and the public Astro site is generated from that canonical corpus.
+The substantive text of all five initial historical sources has been read sequentially, extracted and cross-source reviewed. The 40-lesson clean private curriculum has also completed its role as a systematic **term-discovery map**. The current canonical corpus is designed to rebuild reproducibly from an empty SQLite database, and the public Astro site is generated from that canonical corpus.
 
-Completed work includes:
+The first large encyclopedia-quality conversion/corroboration pass is now at checkpoint. Completed work includes:
 
 - source-by-source extraction of the initial five-source corpus;
-- cross-source normalization of core terminology, dignities, sect, signs, houses, aspects, perfection/impediment, lots, horary, natal/rectification, predictive methods, mundane/electional/weather terminology and rare source-specific vocabulary;
+- cross-source normalization of core terminology, dignities, sect, signs, houses/places, aspects, lots, horary, natal and predictive terminology;
 - explicit preservation of technical disagreements and false friends;
-- removal of mention-only interpretations and extraction-heading artifacts;
-- recovery of missed definition-level terms and silent seed mismatches;
-- source-specific edition provenance repair for the compiled Bonatti PDF;
-- citation linkage for reviewed A/B interpretations;
-- reviewed term relations and documented exceptions for intentional historical alias collisions;
-- reproducible fresh SQLite builds with foreign-key enforcement and blocking editorial checks;
-- replacement of the hand-written frontend preview dataset with a canonical SQLite → JSON → Astro build pipeline;
-- generated A–Z term index, canonical term pages, author pages, work pages and bibliography-oriented work navigation;
-- scalable work lifecycle states (`bibliographic`, `partial`, `indexed`) for future corpus growth;
-- foundation ontology for zodiac signs, traditional planets, primary qualities, elements, temperament, sign classifications, planetary gender, luminaries, and essential dignity;
-- astronomical foundation entries including celestial sphere, geocentric framework, primary/secondary motion, horizon, meridian, equinoctial, ecliptic, epicycle, deferent, equant, apogee, and perigee;
-- complete reuse audit and term-discovery sweep of the 40-lesson clean core curriculum;
-- formal closure of the curriculum-discovery stage in `docs/revision/core_curriculum_lexicon_stage_complete.md`;
-- public-source corroboration of many curriculum-discovered terms, including multiple families of lots, commanding/obedient signs, and Lilly’s Significator of Manners;
-- source-sensitive formula presentation for calculated lots, including explicit day/night variants where the historical witness requires them;
+- source-sensitive calculated-lot formulas with explicit day/night reversals and variant streams;
+- direct historical reconciliation of many curriculum-discovered lots, including Substance, family/marriage lots, rank/authority lots, planetary lots, travel/knowledge/social lots, Courage/Victory/Necessity streams, and Eros;
+- clear provisional status for unresolved identities such as the current Divorce lot formula rather than presenting uncertain material as canonical;
+- expanded encyclopedia articles for all twelve zodiac signs, seven traditional planets, major aspects, zodiac framework terms, predictive techniques, specialized historical terminology, houses/places, secondary aspect geometry, ascensional relations, fixed-star/eclipses, sign classifications, qualities/elements, astronomical foundations, and astrology branch taxonomy;
+- structured tables for dignities, planet conditions, classifications, lot formulas, predictive roles, sect, solar conditions, motion, reception/aspect mechanics, house strength and other inherently comparative material;
+- source-specific numerical presentation where needed, including Lilly-specific solar-condition thresholds and Lilly-specific triplicity rulers rather than universalizing one author’s scheme;
+- source-backed connective vocabulary including Prenatal Syzygy, Lord of the Geniture, Dispositor, Perfection, Translation of Light, Collection of Light, Prohibition, Frustration, Refrenation/Refranation, Abscission of Light, Querent, Quesited, Significator, Cosignificator, Radicality, Planetary Hour, Lord of the Hour, Testimony, Fortitude, Debility, Natural Significator, Accidental Signification, Radix, and Interrogation;
+- separation of easily confused identities such as Radix vs Radicality, perfect aspect vs horary Perfection, Significator vs its specialized directional use, Eros vs Abū Maʿshar’s Venus planetary lot, and the several Courage/Victory/Necessity lots;
+- public-source expansion of Hyleg/Apheta, Hylegical Place, Alcochoden and Anareta while keeping sensitive lifespan/death material descriptive rather than operational;
+- a table-aware article-quality audit that prioritizes evidence-rich/article-poor entries;
 - a non-blocking lot-formula coverage audit integrated into the corpus audit;
-- ordered seed development now extends through `0096_foundational_lot_formula_backfill.sql`.
+- generated A–Z term index, canonical term pages, author pages, work pages and bibliography-oriented work navigation;
+- responsive structured-table rendering in the public term pages;
+- source-fingerprint caching in `scripts/generate_frontend_data.py` so unchanged `npm run dev` / `npm run build` runs do not needlessly rebuild the corpus;
+- ordered seed development now extends through `0151_lilly_triplicity_rulers_reference.sql`.
 
-## Current priority: public-source corroboration and formula completion
+A detailed checkpoint is recorded in `docs/revision/encyclopedia_quality_checkpoint_2026-08-09.md`.
 
-The 40-lesson clean core curriculum has finished its role as a systematic **term-discovery map**. It should not be reprocessed as a chart-analysis manual.
+## What remains unresolved at this checkpoint
 
-The active phase is now:
+A checkpoint does not mean the encyclopedia is finished. It means the first systematic conversion/corroboration pass has reached diminishing returns and the remaining work is better handled as targeted expansion.
 
-1. resolve provisional terms against public historical or scholarly witnesses;
-2. replace broad modern placeholders with source-specific historical identities where the sources distinguish them;
-3. attach precise author, work, locator, alias and formula evidence;
-4. show lot formulas explicitly, including day/night reversals and competing source variants;
-5. keep umbrella/disambiguation terms when no single historical formula can honestly represent the whole family;
-6. continue expanding reviewed term articles for teaching quality;
-7. onboard additional historical works when the current five-source corpus cannot resolve an important term.
+Known open items include:
 
-Recent lot work follows a strict rule: a displayed formula belongs to a **source or transmitted variant**, not automatically to the normalized term in every tradition. Similar meanings are not enough to merge lots, and identical calculated degrees are not by themselves proof that two historically named lots are the same concept.
+- **Lot / Part of Divorce:** a modern traditional formula has been located, but a suitable premodern witness for the currently normalized historical identity has not yet been established; keep the historical formula status provisional.
+- **Solar Directions / Divisions terminology:** the current initial corpus did not yield enough direct evidence to force a source reconciliation; keep source-sensitive until a better witness is onboarded.
+- **Ptolemaic Ages exact tables:** preserve source-specificity rather than silently presenting one later table as universal.
+- **Triplicity ruler variants:** Lilly’s scheme is now directly documented, but other historical systems should be added under their own source witnesses rather than merged into one universal table.
+- **Lower-priority thin entries:** the article-quality audit will continue to surface P2/P3/P4 entries as the corpus grows; these are no longer blockers for this checkpoint.
+- **Presentation wording cleanup:** some early converted headings and prose can still be improved later on the visible frontend without reopening the underlying canonical/source work.
 
-## Encyclopedia-quality phase
+## Next phase
 
-Article expansion is already underway in parallel with corroboration. The next quality pass will increasingly focus on what a reader needs after the identity and evidence are secure:
+After this checkpoint, development can proceed in several parallel but clearly separated directions:
 
-- plain-language explanations;
-- concise formulas and recognition rules;
-- source and translation variants;
-- distinctions from confusingly similar terms;
-- concrete examples where useful;
-- related concepts and prerequisite links;
-- tables or diagrams when they improve understanding;
-- historical disagreements that should remain visible rather than normalized away.
+1. **New historical-source onboarding** — add books/authors and let them enrich or challenge existing canonical entries.
+2. **Targeted unresolved-term research** — resolve specific provisional identities only when new evidence warrants it.
+3. **Article-quality refinement** — use the audit to improve remaining thin entries and visible prose rather than reprocessing the whole corpus.
+4. **Frontend/reference UX** — improve discovery, cross-linking, bibliography navigation, search, tables, diagrams and other reader-facing presentation.
+5. **Corpus scaling** — new books should enter through the same provenance-preserving extraction/review pipeline rather than through ad-hoc manual rewriting.
 
 The long-term target is a historical reference work in which a reader can both verify **where a doctrine comes from** and actually **learn what the doctrine means and how it works**.
+
+## Validation
+
+The canonical validation commands remain:
+
+```bash
+npm run audit:corpus
+npm run build
+```
+
+These rebuild the canonical corpus from migrations + ordered seeds, run the integrity/editorial diagnostics, generate frontend data, and build the Astro site. The latest remote-only seed work in this checkpoint has not been claimed as locally validated until those commands are run against the pulled `main` branch.

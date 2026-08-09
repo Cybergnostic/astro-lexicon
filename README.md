@@ -65,7 +65,7 @@ A term can have an excellent canonical definition, A-grade historical evidence, 
 
 The public frontend should not repeat the same `short_definition` as both a lead and a visible “Canonical definition” section. The canonical definition remains valuable internally for indexing, normalization, search, APIs, and editorial control; the public article body should add explanatory value rather than duplicate it.
 
-The canonical schema now includes a separate reviewed **term article layer** (`term_articles` and ordered `term_article_sections`). `Temperament / Complexion` is the first pilot entry using that layer. Its article is original editorial prose informed by the reviewed private-study coverage map while its public technical method remains anchored to historical evidence already present in the corpus.
+The canonical schema includes a separate reviewed **term article layer** (`term_articles` and ordered `term_article_sections`). That layer is now used across foundation terms, planets, mechanics, lots, predictive terminology and other encyclopedia entries rather than only by the original Temperament pilot.
 
 ## Editorial evidence standard
 
@@ -79,9 +79,9 @@ Public historical interpretations are expected to have reviewed A/B evidence. Th
 
 - `db/migrations/` — canonical SQLite/D1 schema and editorial-review fields
 - `db/seed/` — source extraction, cross-source editorial revision, reviewed ontology, and reviewed article seeds
-- `db/audit/` — read-only editorial/integrity audits
+- `db/audit/` — read-only editorial/integrity audits, including lot-formula coverage
 - `docs/extraction/` — sequential source-coverage ledgers
-- `docs/revision/` — cross-source editorial decisions and lecture-corpus migration audits
+- `docs/revision/` — cross-source editorial decisions, curriculum audits and stage-closure ledgers
 - `docs/` — ontology, definition, citation, extraction, and source-onboarding policies
 - `scripts/generate_frontend_data.py` — reproducible SQLite → public frontend-data generator
 - `src/` — static Astro frontend generated from the canonical corpus
@@ -90,7 +90,7 @@ Generated frontend JSON is not a second source of truth. The SQL migrations and 
 
 ## Current status
 
-The substantive text of all five initial historical sources has been read sequentially, extracted and cross-source reviewed. The canonical corpus passes a reproducible fresh-database audit from an empty SQLite file, and the public Astro site is generated from that same audited corpus.
+The substantive text of all five initial historical sources has been read sequentially, extracted and cross-source reviewed. The canonical corpus is designed to rebuild reproducibly from an empty SQLite database, and the public Astro site is generated from that canonical corpus.
 
 Completed work includes:
 
@@ -102,44 +102,46 @@ Completed work includes:
 - source-specific edition provenance repair for the compiled Bonatti PDF;
 - citation linkage for reviewed A/B interpretations;
 - reviewed term relations and documented exceptions for intentional historical alias collisions;
-- reproducible fresh SQLite builds with foreign-key enforcement and blocking editorial checks in CI;
+- reproducible fresh SQLite builds with foreign-key enforcement and blocking editorial checks;
 - replacement of the hand-written frontend preview dataset with a canonical SQLite → JSON → Astro build pipeline;
 - generated A–Z term index, canonical term pages, author pages, work pages and bibliography-oriented work navigation;
 - scalable work lifecycle states (`bibliographic`, `partial`, `indexed`) for future corpus growth;
 - foundation ontology for zodiac signs, traditional planets, primary qualities, elements, temperament, sign classifications, planetary gender, luminaries, and essential dignity;
 - astronomical foundation entries including celestial sphere, geocentric framework, primary/secondary motion, horizon, meridian, equinoctial, ecliptic, epicycle, deferent, equant, apogee, and perigee;
-- complete reuse audit of the 40-lesson clean core curriculum: NA06 is the reviewed benchmark; the remaining 39 legacy distillations are classified 31 A / 8 B / 0 C for migration rather than default re-extraction;
-- separate encyclopedia article schema and the first frontend-ready teaching article for `Temperament / Complexion`;
-- 68 ordered seed files currently applied by the reproducible corpus build.
+- complete reuse audit and term-discovery sweep of the 40-lesson clean core curriculum;
+- formal closure of the curriculum-discovery stage in `docs/revision/core_curriculum_lexicon_stage_complete.md`;
+- public-source corroboration of many curriculum-discovered terms, including multiple families of lots, commanding/obedient signs, and Lilly’s Significator of Manners;
+- source-sensitive formula presentation for calculated lots, including explicit day/night variants where the historical witness requires them;
+- a non-blocking lot-formula coverage audit integrated into the corpus audit;
+- ordered seed development now extends through `0096_foundational_lot_formula_backfill.sql`.
 
-## Current priority: migrate the structured lecture corpus
+## Current priority: public-source corroboration and formula completion
 
-The 40-lesson clean core curriculum has already been distilled once. NA06 Temperament has completed the stricter Terra/Sol review benchmark, and the remaining 39 lesson distillations have been audited for reuse quality.
+The 40-lesson clean core curriculum has finished its role as a systematic **term-discovery map**. It should not be reprocessed as a chart-analysis manual.
 
-The current task is therefore **migration and targeted review**, not wholesale re-extraction. The lecture/doctrine pipeline preserves atomic propositions such as:
+The active phase is now:
 
-- definitions;
-- rules and recognition criteria;
-- mechanisms;
-- qualifications and exceptions;
-- comparisons and distinctions;
-- examples and worked examples;
-- interpretive significance;
-- common mistakes or teaching cautions;
-- methodological notes when they are genuinely general doctrine.
+1. resolve provisional terms against public historical or scholarly witnesses;
+2. replace broad modern placeholders with source-specific historical identities where the sources distinguish them;
+3. attach precise author, work, locator, alias and formula evidence;
+4. show lot formulas explicitly, including day/night reversals and competing source variants;
+5. keep umbrella/disambiguation terms when no single historical formula can honestly represent the whole family;
+6. continue expanding reviewed term articles for teaching quality;
+7. onboard additional historical works when the current five-source corpus cannot resolve an important term.
 
-The purpose is not to publish the lectures themselves. The structured corpus is a **coverage and pedagogy map** that reveals what the lexicon knows, what it can explain, and what is still missing.
+Recent lot work follows a strict rule: a displayed formula belongs to a **source or transmitted variant**, not automatically to the normalized term in every tradition. Similar meanings are not enough to merge lots, and identical calculated degrees are not by themselves proof that two historically named lots are the same concept.
 
 ## Encyclopedia-quality phase
 
-The article phase has now started with Temperament as the pilot. The sequence is:
+Article expansion is already underway in parallel with corroboration. The next quality pass will increasingly focus on what a reader needs after the identity and evidence are secure:
 
-1. migrate reviewed lecture/doctrine records to canonical lexicon terms;
-2. compare pedagogical coverage against historical/source coverage;
-3. audit public terms for actual teaching usefulness, not merely citation completeness;
-4. classify entries that need explanation, examples, comparisons, diagrams, structural correction, or stronger definitions;
-5. add reviewed explanatory sections through the separate term-article layer;
-6. render article sections on term pages while keeping `short_definition` as the concise lead/index definition;
-7. continue adding new historical books and source evidence in parallel once this article model is established.
+- plain-language explanations;
+- concise formulas and recognition rules;
+- source and translation variants;
+- distinctions from confusingly similar terms;
+- concrete examples where useful;
+- related concepts and prerequisite links;
+- tables or diagrams when they improve understanding;
+- historical disagreements that should remain visible rather than normalized away.
 
 The long-term target is a historical reference work in which a reader can both verify **where a doctrine comes from** and actually **learn what the doctrine means and how it works**.

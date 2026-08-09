@@ -35,28 +35,28 @@ Raw lecture re-extraction is now exception-driven rather than the default workfl
 
 ### Phase 3 — Doctrine migration and canonical-term mapping — IN PROGRESS
 
-Current workflow for each lesson:
+For each lesson:
 
 1. read the existing structured distillation;
-2. identify which records map to existing canonical lexicon terms;
-3. identify genuinely missing concepts that deserve new canonical terms;
-4. separate general historical/traditional doctrine from instructor-specific method;
-5. Sol-check only ambiguity, attribution, contradiction, reconstruction, high-impact method variants, or sensitive content;
-6. return to the raw source only when provenance or coverage actually needs verification;
-7. preserve private-course provenance internally while publishing only original synthesis supported by public historical evidence where available.
+2. map records to existing canonical lexicon terms;
+3. add genuinely missing concepts only where justified;
+4. separate general historical doctrine from instructor-specific method;
+5. Sol-check ambiguity, attribution, contradiction, reconstruction, high-impact variants or sensitive content;
+6. return to raw sources only when provenance or coverage needs verification;
+7. publish original synthesis, not private-course wording.
 
-Important structural rule: course chapters are not automatically encyclopedia entries. A lesson such as accidental dignities may distribute knowledge across many canonical pages (combustion, cazimi, retrogradation, sect, reception, speed, angularity, etc.).
+Course chapters are not automatically encyclopedia entries. Knowledge is distributed across the canonical concept graph instead.
 
 ### Phase 4 — Encyclopedia article layer — IN PROGRESS
 
-A separate reviewed article layer now exists in SQLite:
+A separate reviewed article layer exists in SQLite:
 
 - `term_articles`
 - `term_article_sections`
 
-The frontend generator exports reviewed article content, and term pages render it between the concise lead and historical source accounts.
+The frontend generator exports reviewed article content and term pages render it between the concise lead and historical source accounts.
 
-Completed teaching/article migrations so far:
+Teaching/article migration now includes:
 
 - Temperament / Complexion
 - Primary Quality
@@ -64,51 +64,71 @@ Completed teaching/article migrations so far:
 - Planetary Gender
 - Essential Dignity
 - Reception
-- Saturn
-- Jupiter
-- Mars
-- Sun
-- Venus
-- Mercury
-- Moon
+- all seven traditional planets
+- Aspect
+- Twelve Houses / Places
+- Angle / Cardine
+- Succedent House / Place
+- Cadent House / Place
+- Accidental Fortitude
+- Direct Motion
+- Station
+- Retrogradation
+- Sect
+- Hayz
+- Halb
+- Triplicity Rulers
+- Almuten
+- Almuten of the Figure
+- Void of Course
+- Feral
+- Besiegement
+- Mercury rational-mind layer
+- Moon perceptive/habitual layer
 
-The private lecture corpus is used as a pedagogy/coverage map; no private lecture wording or lecturer attribution is stored publicly.
+The private lecture corpus remains a pedagogy/coverage map; no private lecture wording or lecturer attribution is stored publicly.
 
-### Phase 5 — Foundational A-class migration — CURRENT ACTIVE BATCH
+### Phase 5 — Foundational A-class migration — SUBSTANTIALLY COMPLETE
 
-Next priority cluster:
+Completed or mapped:
 
-- accidental dignity / accidental condition family;
-- houses and house strength;
-- aspects, application/separation and reception-related mechanics;
-- natal introduction and synthesis principles;
+- accidental dignity / accidental-condition family;
+- house strength;
+- aspect/reception mechanics;
 - triplicity rulers;
-- primary motivation;
-- Almuten Figuris;
-- behavior ruler;
-- quality of mind.
+- Almuten and Almuten of the Figure;
+- natal mind layers through Mercury and Moon;
+- natal synthesis framework as internal editorial sequencing.
 
-For this cluster, prefer enriching existing canonical pages over creating broad course-chapter pages.
+Important migration decisions:
 
-### Phase 6 — Topic-specific natal and prognostic A-class migration — QUEUED
+- `Primary Motivation` remains private/course-specific unless independently historically corroborated;
+- `Ruler of Behavior / Manners` is preserved for migration but awaits a public historical witness outside the initial five-source corpus;
+- the exact private `Quality of Mind` recipe is not published as universal doctrine, while portable Mercury/Moon doctrine is mapped into existing terms.
 
-After foundations are stable:
+See `docs/revision/natal_method_migration_map.md`.
 
-- fortune/misfortune;
-- finances;
-- third/fourth/ninth house topic modules;
-- friends/enemies;
-- profession;
-- career/fame;
-- relationships/marriage;
-- Ptolemaic ages and firdaria;
-- primary directions;
-- profections;
-- solar revolutions;
-- lunar returns/transits;
-- divisions.
+### Phase 6 — Topic-specific natal and prognostic A-class migration — CURRENT ACTIVE PHASE
 
-These should produce a mixture of canonical term enrichment, procedural pages and relations rather than one public page per lesson.
+Current starting cluster:
+
+1. fortune / misfortune;
+2. finances;
+3. third, fourth and ninth house topic modules;
+4. friends / enemies;
+5. profession;
+6. career / fame;
+7. relationships / marriage;
+8. Ptolemaic ages and firdaria;
+9. primary directions;
+10. profections;
+11. solar revolutions;
+12. lunar returns / transits;
+13. divisions.
+
+These modules should produce canonical term enrichment, procedural pages and relations rather than one public page per lesson.
+
+Fortune/misfortune and finances are now under active migration review.
 
 ### Phase 7 — B-class sensitive/compressed lessons — QUEUED WITH GATES
 
@@ -130,18 +150,14 @@ For every significant public term, check whether the page actually teaches:
 - what the concept is;
 - how it works;
 - how it is recognized/calculated;
-- a useful example where appropriate;
+- examples where useful;
 - distinctions from similar concepts;
 - practical/interpretive significance;
 - exceptions and historical variants;
 - related prerequisite concepts;
 - tables/diagrams/worked examples where they materially improve understanding.
 
-The article layer exists specifically so `short_definition` does not have to carry all of this.
-
 ### Phase 9 — Frontend refinement — STARTED, iterative
-
-Current term pages already render article content from the canonical database.
 
 As migrated content grows:
 
@@ -149,26 +165,23 @@ As migrated content grows:
 - add structured tables/diagrams where needed;
 - improve related-concept navigation;
 - expose procedural sequences cleanly;
-- avoid duplicated canonical definition blocks;
 - verify mobile/readability behavior;
-- keep generated frontend data subordinate to SQLite as source of truth.
+- keep SQLite as the source of truth.
 
 ### Phase 10 — Wider corpus expansion — LATER / PARALLEL
 
-Once the article model and migration process are stable:
+Once the migration process is stable:
 
-- inventory other private lecture/course series outside the 40-lesson core;
-- classify their existing distillations with the same A/B/C rule;
+- inventory private lecture/course series outside the 40-lesson core;
+- classify their distillations with the same A/B/C rule;
 - add further historical books from the wider collection;
-- let new public historical witnesses strengthen, qualify or challenge existing canonical articles;
-- preserve author/tradition disagreement instead of flattening it.
+- let new public witnesses strengthen, qualify or challenge existing articles;
+- preserve historical disagreement rather than flattening it.
 
 ## Current position in one line
 
-**Initial historical corpus complete -> core lecture extraction complete at first-pass level -> reuse audit complete -> doctrine migration + encyclopedia article construction now actively underway.**
+**Initial historical corpus complete -> core lecture extraction complete -> reuse audit complete -> foundational migration substantially complete -> topic-specific natal/prognostic migration now active.**
 
-## Definition of done for the current milestone
+## Current milestone
 
-The current milestone is complete when the high-dependency foundational A-class lessons have been mapped into canonical terms and those terms have teaching-quality article content where the lecture corpus demonstrates a real pedagogical gap.
-
-At that point the architecture is considered validated and the same migration pattern can be applied rapidly to topic-specific natal/prognostic lessons.
+Complete the A-class topic-specific natal/prognostic migration while preserving the distinction between historically sourced public doctrine, editorial synthesis, and private/course-specific procedures.

@@ -10,7 +10,7 @@
     "prebuild": "npm run generate:data",
     "build": "astro build",
     "preview": "astro preview",
-    "audit:corpus": "bash scripts/audit_initial_corpus.sh"
+    "audit:corpus": "bash scripts/audit_corpus.sh"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.0",

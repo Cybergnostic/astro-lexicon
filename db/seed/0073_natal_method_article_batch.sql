@@ -25,14 +25,14 @@ FROM terms WHERE slug='almuten-of-figure';
 INSERT OR REPLACE INTO term_article_sections
   (term_id,section_key,heading,body,sort_order,status,editorial_notes)
 SELECT id,'testimonies','Several kinds of testimony are combined',
-       'Historical procedures do not reduce the judgment to one placement. Essential dignity establishes a planet\'s zodiacal authority, while accidental circumstances describe its ability to act. Different authors assign different weights and may use different contributing factors, so the lexicon keeps source-specific procedures visible instead of presenting one later scoring table as timelessly universal.',
+       'Historical procedures do not reduce the judgment to one placement. Essential dignity establishes a planet''s zodiacal authority, while accidental circumstances describe its ability to act. Different authors assign different weights and may use different contributing factors, so the lexicon keeps source-specific procedures visible instead of presenting one later scoring table as timelessly universal.',
        20,'reviewed',NULL
 FROM terms WHERE slug='almuten-of-figure';
 
 INSERT OR REPLACE INTO term_article_sections
   (term_id,section_key,heading,body,sort_order,status,editorial_notes)
 SELECT id,'interpretive-use','What the result is for',
-       'The resulting planet functions as a general predominating significator of the figure. It can help describe the chart\'s governing emphasis, but it does not replace the Ascendant ruler, luminaries, temperament, topical rulers or other specialized significators. Traditional natal judgment remains layered rather than collapsing the whole chart into a single planet.',
+       'The resulting planet functions as a general predominating significator of the figure. It can help describe the chart''s governing emphasis, but it does not replace the Ascendant ruler, luminaries, temperament, topical rulers or other specialized significators. Traditional natal judgment remains layered rather than collapsing the whole chart into a single planet.',
        30,'reviewed',NULL
 FROM terms WHERE slug='almuten-of-figure';
 
@@ -51,7 +51,7 @@ FROM terms WHERE slug='mercury';
 INSERT OR REPLACE INTO term_article_sections
   (term_id,section_key,heading,body,sort_order,status,editorial_notes)
 SELECT id,'mind-condition','Condition before adjectives',
-       'A descriptive list attached to Mercury\'s sign is not a complete judgment of intellect. A planet that is swift, direct and free to operate presents differently from the same planet when retrograde, stationary, obscured by the Sun or otherwise impeded. Traditional analysis therefore judges function and capacity from several conditions before turning them into character language.',
+       'A descriptive list attached to Mercury''s sign is not a complete judgment of intellect. A planet that is swift, direct and free to operate presents differently from the same planet when retrograde, stationary, obscured by the Sun or otherwise impeded. Traditional analysis therefore judges function and capacity from several conditions before turning them into character language.',
        40,'reviewed',NULL
 FROM terms WHERE slug='mercury';
 

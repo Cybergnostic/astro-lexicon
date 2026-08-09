@@ -63,6 +63,10 @@ echo "=== LOT FORMULA COVERAGE (NON-BLOCKING) ==="
 sqlite "$DB_PATH" < "$ROOT_DIR/db/audit/lot_formula_coverage.sql"
 
 echo
+echo "=== ARTICLE QUALITY COVERAGE (NON-BLOCKING) ==="
+sqlite "$DB_PATH" < "$ROOT_DIR/db/audit/article_quality_coverage.sql"
+
+echo
 echo "=== BLOCKING INTEGRITY / EDITORIAL CHECKS ==="
 
 failed=0

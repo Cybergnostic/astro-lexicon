@@ -4,7 +4,9 @@ Status date: 2026-08-09
 
 ## Goal
 
-Turn the existing historical corpus plus the private structured study corpus into a source-based, teaching-quality traditional astrology encyclopedia without duplicating extraction work or publishing private lecture text.
+Build a source-based, teaching-quality traditional astrology **term encyclopedia / lexicon** from the historical corpus plus the private structured study corpus, without duplicating extraction work or publishing private lecture text.
+
+The public unit is the **term or concept**, not the course lesson and not a chart-analysis workflow.
 
 ## Where we are
 
@@ -18,7 +20,7 @@ Turn the existing historical corpus plus the private structured study corpus int
 
 This phase is complete for the initial five works, not for every astrology book in the wider private collection.
 
-### Phase 2 — Clean lecture curriculum extraction — COMPLETE at first-pass level
+### Phase 2 — Clean private curriculum distillation — COMPLETE at first-pass level
 
 - 40-lesson clean curriculum has structured distillations.
 - NA06 Temperament received the stricter Terra/Sol benchmark treatment.
@@ -27,25 +29,38 @@ This phase is complete for the initial five works, not for every astrology book 
 
 Audit result excluding NA06:
 
-- 31 A — reuse + targeted Sol review
-- 8 B — reuse + targeted source/safety audit
+- 31 A — reusable distillation
+- 8 B — reusable with targeted source/safety audit
 - 0 C — default full raw re-extraction
 
-Raw lecture re-extraction is now exception-driven rather than the default workflow.
+Raw lecture re-extraction is exception-driven rather than the default workflow.
 
-### Phase 3 — Doctrine migration and canonical-term mapping — IN PROGRESS
+### Phase 3 — Term discovery and canonical mapping — CURRENT CORE WORK
 
-For each lesson:
+For each existing distillation:
 
-1. read the existing structured distillation;
-2. map records to existing canonical lexicon terms;
-3. add genuinely missing concepts only where justified;
-4. separate general historical doctrine from instructor-specific method;
-5. Sol-check ambiguity, attribution, contradiction, reconstruction, high-impact variants or sensitive content;
-6. return to raw sources only when provenance or coverage needs verification;
-7. publish original synthesis, not private-course wording.
+1. identify named concepts, classifications, conditions, techniques, historical terms, formula-defined points and genuine technical distinctions;
+2. map each surviving concept to an existing canonical term where possible;
+3. add a new canonical term only when the concept is genuinely missing;
+4. preserve synonyms, translation variants and author/tradition variants without duplicating concepts;
+5. use private material as a coverage and disambiguation aid, not as public authority;
+6. return to raw private sources only when a term's meaning or provenance is unclear;
+7. publish only original synthesis supported by public historical evidence where available.
 
-Course chapters are not automatically encyclopedia entries. Knowledge is distributed across the canonical concept graph instead.
+### Explicit exclusion: analysis workflows
+
+Do **not** turn course procedures into public encyclopedia content merely because they are present in the distillation.
+
+Examples of excluded material:
+
+- ordered chart-reading sequences;
+- "first inspect X, then Y" instructions;
+- topic checklists such as all factors to inspect for finances, marriage or profession;
+- instructor-specific synthesis recipes;
+- client-reading workflows;
+- scoring systems that have no independently established historical identity.
+
+A procedure belongs in the lexicon only when the procedure itself is a historically identifiable **named technique or term** that needs definition. For example, `Lot Extraction`, `Primary Direction`, `Profection`, or `Solar Revolution` can have entries because they are canonical techniques; a lecturer's sequence for analysing finances does not become an encyclopedia entry.
 
 ### Phase 4 — Encyclopedia article layer — IN PROGRESS
 
@@ -56,7 +71,7 @@ A separate reviewed article layer exists in SQLite:
 
 The frontend generator exports reviewed article content and term pages render it between the concise lead and historical source accounts.
 
-Teaching/article migration now includes:
+Teaching/article migration now includes, among others:
 
 - Temperament / Complexion
 - Primary Quality
@@ -85,103 +100,106 @@ Teaching/article migration now includes:
 - Besiegement
 - Mercury rational-mind layer
 - Moon perceptive/habitual layer
+- Lot
+- Lot Extraction
+- Natural / Immovable Significators of a Lot
+- General Indicators of a Lot
+- Lot of Fortune
 
-The private lecture corpus remains a pedagogy/coverage map; no private lecture wording or lecturer attribution is stored publicly.
+The private lecture corpus remains a term-discovery/pedagogy map; no private lecture wording or lecturer attribution is stored publicly.
 
-### Phase 5 — Foundational A-class migration — SUBSTANTIALLY COMPLETE
+### Phase 5 — Foundational term-family migration — SUBSTANTIALLY COMPLETE
 
-Completed or mapped:
+Major foundational families already mapped or enriched:
 
-- accidental dignity / accidental-condition family;
-- house strength;
-- aspect/reception mechanics;
+- planets and planetary classifications;
+- signs and sign classifications;
+- essential and accidental dignity/debility;
+- sect;
+- houses and house strength;
+- aspects and reception;
+- motion and solar conditions;
+- temperament;
 - triplicity rulers;
-- Almuten and Almuten of the Figure;
-- natal mind layers through Mercury and Moon;
-- natal synthesis framework as internal editorial sequencing.
+- almuten terminology;
+- lots / calculated points;
+- basic astronomical geometry and coordinates.
 
-Important migration decisions:
+Important exclusions/holds:
 
-- `Primary Motivation` remains private/course-specific unless independently historically corroborated;
-- `Ruler of Behavior / Manners` is preserved for migration but awaits a public historical witness outside the initial five-source corpus;
-- the exact private `Quality of Mind` recipe is not published as universal doctrine, while portable Mercury/Moon doctrine is mapped into existing terms.
+- `Primary Motivation` remains private/course-specific unless independently historically corroborated as a stable traditional term;
+- `Ruler of Behavior / Manners` remains a valid candidate term but awaits a public historical witness outside the initial five-source corpus;
+- the private `Quality of Mind` recipe is not published as a universal workflow; portable Mercury/Moon concepts enrich those canonical entries instead.
 
-See `docs/revision/natal_method_migration_map.md`.
+### Phase 6 — Corpus-wide lesson-to-term sweep — CURRENT ACTIVE PHASE
 
-### Phase 6 — Topic-specific natal and prognostic A-class migration — CURRENT ACTIVE PHASE
+The remaining A-class lessons are now treated as **term-mining passes**, not as topic modules to reproduce publicly.
 
-Current starting cluster:
+Current sweep order:
 
-1. fortune / misfortune;
-2. finances;
-3. third, fourth and ninth house topic modules;
-4. friends / enemies;
-5. profession;
-6. career / fame;
-7. relationships / marriage;
-8. Ptolemaic ages and firdaria;
-9. primary directions;
-10. profections;
-11. solar revolutions;
-12. lunar returns / transits;
-13. divisions.
+1. fortune / finances material -> lots, wealth-related named points, historical wealth terminology, relevant fixed technical concepts;
+2. house-topic lessons -> named house concepts, historical labels and distinctions, not house-analysis checklists;
+3. friends/enemies -> named lots, classifications and historical terms;
+4. profession / career / eminence -> canonical vocational and eminence terms only;
+5. relationships / marriage -> named lots, significator terms and historical distinctions only;
+6. predictive lessons -> each canonical technique and its subterms (Firdaria, Primary Directions, Profections, Solar Revolutions, Lunar Revolutions, Transits, Divisions), not a predictive workflow.
 
-These modules should produce canonical term enrichment, procedural pages and relations rather than one public page per lesson.
-
-Fortune/misfortune and finances are now under active migration review.
+A lesson may contribute zero, one or many encyclopedia entries. It does not automatically get its own public page.
 
 ### Phase 7 — B-class sensitive/compressed lessons — QUEUED WITH GATES
 
 - physical appearance;
-- Hyleg/Alcocoden and lifespan material;
-- medical astrology;
-- accidents/death;
-- offspring/fertility;
-- worked exercises;
+- Hyleg/Alcocoden and lifespan terminology;
+- medical-astrology terminology;
+- accidents/death terminology;
+- offspring/fertility terminology;
+- worked exercises used only for gap detection;
 - sensitive house meanings;
 - fixed-star catalogue coverage.
 
-These distillations remain reusable but require explicit source, human or publication-safety gates before public synthesis.
+These remain useful for term discovery but require stronger source/human/publication checks before public synthesis.
 
 ### Phase 8 — Encyclopedia-quality audit — STARTED, then corpus-wide
 
-For every significant public term, check whether the page actually teaches:
+For every significant public term, check whether the page explains:
 
-- what the concept is;
-- how it works;
-- how it is recognized/calculated;
-- examples where useful;
-- distinctions from similar concepts;
-- practical/interpretive significance;
-- exceptions and historical variants;
-- related prerequisite concepts;
-- tables/diagrams/worked examples where they materially improve understanding.
+- what the term means;
+- aliases and historical forms;
+- how the concept is recognized or calculated when that is intrinsic to its definition;
+- distinctions from nearby concepts;
+- historical variants and disagreements;
+- interpretive significance in the sources;
+- related terms;
+- tables/diagrams/examples where useful.
 
-### Phase 9 — Frontend refinement — STARTED, iterative
+The page should explain the **concept**, not teach a full chart-reading workflow.
 
-As migrated content grows:
+### Phase 9 — Frontend refinement — ITERATIVE
 
-- improve article navigation and hierarchy;
-- add structured tables/diagrams where needed;
-- improve related-concept navigation;
-- expose procedural sequences cleanly;
+As term coverage grows:
+
+- improve A–Z and category navigation;
+- improve related-term navigation;
+- add term-family tables and diagrams;
+- add formula displays where intrinsic to a term;
+- improve historical-source comparison blocks;
 - verify mobile/readability behavior;
 - keep SQLite as the source of truth.
 
 ### Phase 10 — Wider corpus expansion — LATER / PARALLEL
 
-Once the migration process is stable:
+Once the term-migration process is stable:
 
 - inventory private lecture/course series outside the 40-lesson core;
-- classify their distillations with the same A/B/C rule;
+- audit their distillations for new term coverage;
 - add further historical books from the wider collection;
-- let new public witnesses strengthen, qualify or challenge existing articles;
+- use new public witnesses to strengthen, qualify or challenge canonical entries;
 - preserve historical disagreement rather than flattening it.
 
 ## Current position in one line
 
-**Initial historical corpus complete -> core lecture extraction complete -> reuse audit complete -> foundational migration substantially complete -> topic-specific natal/prognostic migration now active.**
+**Initial historical corpus complete -> private core distillation complete -> reuse audit complete -> foundational term families substantially mapped -> corpus-wide lesson-to-term sweep now active.**
 
 ## Current milestone
 
-Complete the A-class topic-specific natal/prognostic migration while preserving the distinction between historically sourced public doctrine, editorial synthesis, and private/course-specific procedures.
+Finish the A-class lesson-to-term sweep and produce a canonical inventory of missing, enriched and source-blocked lexicon entries without importing analysis workflows into the public encyclopedia.

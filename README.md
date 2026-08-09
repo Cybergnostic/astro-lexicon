@@ -65,6 +65,8 @@ A term can have an excellent canonical definition, A-grade historical evidence, 
 
 The public frontend should not repeat the same `short_definition` as both a lead and a visible “Canonical definition” section. The canonical definition remains valuable internally for indexing, normalization, search, APIs, and editorial control; the public article body should add explanatory value rather than duplicate it.
 
+The canonical schema now includes a separate reviewed **term article layer** (`term_articles` and ordered `term_article_sections`). `Temperament / Complexion` is the first pilot entry using that layer. Its article is original editorial prose informed by the reviewed private-study coverage map while its public technical method remains anchored to historical evidence already present in the corpus.
+
 ## Editorial evidence standard
 
 - **A — definition:** the source gives an actual definition, recognition rule or technical mechanism.
@@ -76,10 +78,10 @@ Public historical interpretations are expected to have reviewed A/B evidence. Th
 ## Repository structure
 
 - `db/migrations/` — canonical SQLite/D1 schema and editorial-review fields
-- `db/seed/` — source extraction, cross-source editorial revision, and reviewed ontology seeds
+- `db/seed/` — source extraction, cross-source editorial revision, reviewed ontology, and reviewed article seeds
 - `db/audit/` — read-only editorial/integrity audits
 - `docs/extraction/` — sequential source-coverage ledgers
-- `docs/revision/` — cross-source editorial decisions
+- `docs/revision/` — cross-source editorial decisions and lecture-corpus migration audits
 - `docs/` — ontology, definition, citation, extraction, and source-onboarding policies
 - `scripts/generate_frontend_data.py` — reproducible SQLite → public frontend-data generator
 - `src/` — static Astro frontend generated from the canonical corpus
@@ -106,13 +108,15 @@ Completed work includes:
 - scalable work lifecycle states (`bibliographic`, `partial`, `indexed`) for future corpus growth;
 - foundation ontology for zodiac signs, traditional planets, primary qualities, elements, temperament, sign classifications, planetary gender, luminaries, and essential dignity;
 - astronomical foundation entries including celestial sphere, geocentric framework, primary/secondary motion, horizon, meridian, equinoctial, ecliptic, epicycle, deferent, equant, apogee, and perigee;
-- 67 ordered seed files currently applied by the reproducible corpus build.
+- complete reuse audit of the 40-lesson clean core curriculum: NA06 is the reviewed benchmark; the remaining 39 legacy distillations are classified 31 A / 8 B / 0 C for migration rather than default re-extraction;
+- separate encyclopedia article schema and the first frontend-ready teaching article for `Temperament / Complexion`;
+- 68 ordered seed files currently applied by the reproducible corpus build.
 
-## Current priority: finish the structured lecture corpus
+## Current priority: migrate the structured lecture corpus
 
-Before expanding the historical lexicon indefinitely, the next major phase is to complete the structured extraction and review of the clean private lecture corpus.
+The 40-lesson clean core curriculum has already been distilled once. NA06 Temperament has completed the stricter Terra/Sol review benchmark, and the remaining 39 lesson distillations have been audited for reuse quality.
 
-The lecture/doctrine pipeline should preserve atomic propositions such as:
+The current task is therefore **migration and targeted review**, not wholesale re-extraction. The lecture/doctrine pipeline preserves atomic propositions such as:
 
 - definitions;
 - rules and recognition criteria;
@@ -124,18 +128,18 @@ The lecture/doctrine pipeline should preserve atomic propositions such as:
 - common mistakes or teaching cautions;
 - methodological notes when they are genuinely general doctrine.
 
-The purpose is not to publish the lectures themselves. The structured corpus should become a **coverage and pedagogy map** that reveals what the lexicon knows, what it can explain, and what is still missing.
+The purpose is not to publish the lectures themselves. The structured corpus is a **coverage and pedagogy map** that reveals what the lexicon knows, what it can explain, and what is still missing.
 
-## Next phase: encyclopedia-quality audit
+## Encyclopedia-quality phase
 
-Once the clean lecture curriculum has been substantially extracted and reviewed:
+The article phase has now started with Temperament as the pilot. The sequence is:
 
-1. map lecture/doctrine records to canonical lexicon terms;
+1. migrate reviewed lecture/doctrine records to canonical lexicon terms;
 2. compare pedagogical coverage against historical/source coverage;
-3. audit every public term for actual teaching usefulness, not merely citation completeness;
+3. audit public terms for actual teaching usefulness, not merely citation completeness;
 4. classify entries that need explanation, examples, comparisons, diagrams, structural correction, or stronger definitions;
-5. add an explanatory/article layer separate from `short_definition`;
-6. redesign term pages so the short lead is followed by useful explanatory content rather than a duplicated “Canonical definition” block;
+5. add reviewed explanatory sections through the separate term-article layer;
+6. render article sections on term pages while keeping `short_definition` as the concise lead/index definition;
 7. continue adding new historical books and source evidence in parallel once this article model is established.
 
 The long-term target is a historical reference work in which a reader can both verify **where a doctrine comes from** and actually **learn what the doctrine means and how it works**.

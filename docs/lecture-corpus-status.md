@@ -28,7 +28,7 @@ The active extraction policy is the resumable Terra -> Sol workflow used for NA0
 
 Source: `natalna_06_temperament.md`
 
-Status after checkpoint 06:
+Status after checkpoint 06 and Sol review batch 01-02:
 
 - Terra source coverage: **complete**
 - Source lines accounted for: **1-6371**
@@ -36,6 +36,8 @@ Status after checkpoint 06:
 - Final Terra record: `NAT.05-NA06-0316`
 - Next unused claim ID: `NAT.05-NA06-0317`
 - Mandatory Sol-review records: **177**
+- Sol-approved so far: **24**
+- Mandatory Sol-review records remaining: **153**
 - Human-review flags: **46**
 - Unresolved items: **5** (`UNR-NA06-0001` through `UNR-NA06-0005`)
 - Verified `NAT.05` topic document: **not yet created**
@@ -46,12 +48,14 @@ Checkpoint 05 covered source lines 4683-5283 and added `NAT.05-NA06-0303` throug
 
 Checkpoint 06 covered source lines 5284-6371 and added `NAT.05-NA06-0311` through `NAT.05-NA06-0316`. The late lecture tail was processed but correctly produced no doctrine records where it became personal, political, conversational, or otherwise non-transferable.
 
+The first Sol pass has rechecked and approved `NAT.05-NA06-0001`, `NAT.05-NA06-0016` through `NAT.05-NA06-0027`, and `NAT.05-NA06-0028` through `NAT.05-NA06-0038`. These cover the explicitly labeled Hippocratic table attribution, the twelve-step temperament formula, the Kant temperament section, and the methodological priority that later planetary interpretation is filtered through temperament. Approval here means that the structured claim accurately matches and scopes the lecture evidence; it does not independently authenticate a historical attribution.
+
 The pre-existing cross-topic record `PRX.06-NA06-0050` is intentional and remains unchanged; numeric record suffixes remain unique and contiguous through `0316`.
 
 ### Remaining NA06 work
 
 - Resolve or explicitly disposition the five unresolved items.
-- Run Sol/editorial review on the 177 mandatory-review records.
+- Continue Sol/editorial review on the remaining 153 mandatory-review records.
 - Consolidate duplicates without destroying source provenance.
 - Assemble and audit the verified `NAT.05` knowledge document.
 - Do not begin the encyclopedia-quality mass rewrite before this stage is complete.

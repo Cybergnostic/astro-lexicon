@@ -2,7 +2,9 @@
 --
 -- Evidence quality and article quality are separate. This report surfaces reviewed
 -- canonical terms that are technically mature enough to matter but still lack a
--- reader-facing article or enough explanatory structure.
+-- reader-facing article or enough explanatory structure. It also explicitly surfaces
+-- evidence-rich terms whose reviewed source accounts substantially outpace the
+-- synthesized article layer.
 
 .headers on
 .mode column
@@ -37,7 +39,8 @@ SELECT
   SUM(has_article) AS with_article,
   SUM(CASE WHEN has_article=0 THEN 1 ELSE 0 END) AS without_article,
   SUM(CASE WHEN has_article=1 AND section_count=0 THEN 1 ELSE 0 END) AS intro_only,
-  SUM(CASE WHEN has_article=1 AND section_count>=2 THEN 1 ELSE 0 END) AS with_2plus_sections
+  SUM(CASE WHEN has_article=1 AND section_count>=2 THEN 1 ELSE 0 END) AS with_2plus_sections,
+  SUM(CASE WHEN interpretation_count>=3 AND section_count<3 THEN 1 ELSE 0 END) AS evidence_rich_article_poor
 FROM reviewed;
 
 SELECT
@@ -49,6 +52,8 @@ SELECT
   has_article,
   section_count,
   CASE
+    WHEN interpretation_count>=5 AND section_count<3 THEN 'P0 evidence-rich / article-poor'
+    WHEN interpretation_count>=3 AND has_article=0 THEN 'P0 evidence-rich / no article'
     WHEN has_article=0 AND definition_quality>=5 THEN 'P1 missing article'
     WHEN has_article=0 AND definition_quality=4 THEN 'P2 missing article'
     WHEN has_article=1 AND section_count=0 THEN 'P2 intro only'
@@ -57,9 +62,15 @@ SELECT
   END AS editorial_priority
 FROM reviewed
 WHERE definition_quality>=4
-  AND (has_article=0 OR section_count<2)
+  AND (
+    has_article=0
+    OR section_count<2
+    OR (interpretation_count>=5 AND section_count<3)
+  )
 ORDER BY
   CASE
+    WHEN interpretation_count>=5 AND section_count<3 THEN 0
+    WHEN interpretation_count>=3 AND has_article=0 THEN 0
     WHEN has_article=0 AND definition_quality>=5 THEN 1
     WHEN has_article=0 AND definition_quality=4 THEN 2
     WHEN has_article=1 AND section_count=0 THEN 3
@@ -67,4 +78,5 @@ ORDER BY
     ELSE 5
   END,
   interpretation_count DESC,
+  section_count ASC,
   label COLLATE NOCASE;

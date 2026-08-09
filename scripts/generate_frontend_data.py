@@ -1,10 +1,28 @@
 #!/usr/bin/env python3
 import argparse
+import hashlib
 import json
 import sqlite3
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+CACHE_PATH = ROOT / ".tmp/frontend-corpus.sha256"
+
+
+def source_fingerprint() -> str:
+    """Hash every input that can change the generated frontend corpus."""
+    digest = hashlib.sha256()
+    inputs = [Path(__file__)]
+    for folder in ("db/migrations", "db/seed"):
+        inputs.extend(sorted((ROOT / folder).glob("*.sql")))
+
+    for path in inputs:
+        rel = path.resolve().relative_to(ROOT.resolve())
+        digest.update(str(rel).encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def build_db(db_path: Path):
@@ -213,16 +231,26 @@ def main():
         "--db", type=Path, help="Use an existing canonical SQLite database instead of rebuilding from SQL."
     )
     parser.add_argument("--out", type=Path, default=ROOT / "src/data/generated/corpus.json")
+    parser.add_argument("--force", action="store_true", help="Regenerate even when source inputs are unchanged.")
     args = parser.parse_args()
 
     if args.db:
         export(args.db, args.out)
         return
 
+    fingerprint = source_fingerprint()
+    if not args.force and args.out.exists() and CACHE_PATH.exists():
+        cached = CACHE_PATH.read_text(encoding="utf-8").strip()
+        if cached == fingerprint:
+            print("Frontend corpus unchanged; skipping SQLite rebuild.")
+            return
+
     db_path = ROOT / ".tmp/frontend-corpus.sqlite"
     db_path.parent.mkdir(exist_ok=True)
     build_db(db_path)
     export(db_path, args.out)
+    CACHE_PATH.parent.mkdir(exist_ok=True)
+    CACHE_PATH.write_text(fingerprint + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

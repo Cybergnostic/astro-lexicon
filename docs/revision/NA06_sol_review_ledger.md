@@ -9,9 +9,9 @@ Sanitized editorial ledger for the private `NA06` temperament lecture extraction
 - Terra extraction: complete
 - Stable doctrine records: 316
 - Mandatory Sol-review records: 177
-- Sol-reviewed so far: 48
-- Remaining mandatory Sol reviews: 129
-- Current outcomes: 43 approved, 5 approved with edit
+- Sol-reviewed so far: 67
+- Remaining mandatory Sol reviews: 110
+- Current outcomes: 58 approved, 9 approved with edit
 - Unresolved source-level items: 5 (unchanged)
 
 ## Review decisions
@@ -168,6 +168,84 @@ Sanitized editorial ledger for the private `NA06` temperament lecture extraction
   - Keep human-review flag.
   - Do not use this record to diagnose or predict psychiatric illness.
 
+### REV-NAT.05-NA06-0016 — `approved`
+
+- Claims: `NAT.05-NA06-0080`
+- Source rechecked: yes
+- Human review required: no
+- Decision basis: The source explicitly qualifies choleric risk-taking by other horoscope indicators; Terra preserves that interaction rather than treating risk as a standalone certainty.
+- Downstream actions:
+  - Retain as course_method interpretation.
+
+### REV-NAT.05-NA06-0017 — `approved_with_edit`
+
+- Claims: `NAT.05-NA06-0081`
+- Source rechecked: yes
+- Human review required: yes
+- Edited canonical claim (SR): Predavanje navodi igre na sreću kao primer načina na koji se kolerična sklonost ka riziku može ispoljiti u finansijskoj oblasti; to nije finansijska preporuka niti sigurna prognoza ponašanja.
+- Decision basis: The lecture uses gambling as an extreme example of financial risk-taking. The record is retained, but the wording is bounded so it cannot be read as financial advice or a deterministic behavioral prediction.
+- Downstream actions:
+  - Keep legal_or_financial risk and human-review flag.
+  - Do not use as financial guidance or a prediction that a client will gamble.
+
+### REV-NAT.05-NA06-0018 — `approved`
+
+- Claims: `NAT.05-NA06-0083`
+- Source rechecked: yes
+- Human review required: no
+- Decision basis: Despite transcription noise, the contrast is clear: melancholic judgment is formed internally and expressed after delay, while the choleric type speaks quickly and moves on.
+- Downstream actions:
+  - Retain as course_method interpretation.
+
+### REV-NAT.05-NA06-0019 — `approved_with_edit`
+
+- Claims: `NAT.05-NA06-0086`
+- Source rechecked: yes
+- Human review required: no
+- Edited canonical claim (SR): U okviru predavanja suvi temperamenti se opisuju kao skloniji individualnom radu i vođstvu, a vlažni temperamenti kao skloniji timskom radu; ovo je temperamentna tendencija, ne strogo profesionalno pravilo.
+- Decision basis: The lecture plainly contrasts dry temperaments with moist temperaments in individual/leadership versus team settings, but the original extraction can sound professionally deterministic. The edit preserves it as a tendency inside the course framework.
+- Downstream actions:
+  - Do not use as a rigid vocational classification.
+
+### REV-NAT.05-NA06-0020 — `approved`
+
+- Claims: `NAT.05-NA06-0087`, `NAT.05-NA06-0088`, `NAT.05-NA06-0089`, `NAT.05-NA06-0090`, `NAT.05-NA06-0091`, `NAT.05-NA06-0092`, `NAT.05-NA06-0093`
+- Source rechecked: yes
+- Human review required: no
+- Decision basis: These records accurately separate phlegmatic and sanguine team behavior, the lecture's intellectual characterization of sanguine, the phlegmatic low-effort tendency, and the explicit exception that leadership is not exclusive to dry temperaments.
+- Downstream actions:
+  - Keep all records scoped to the course temperament framework.
+  - Preserve 0091 as the explicit exception to any overly rigid leadership rule.
+
+### REV-NAT.05-NA06-0021 — `approved`
+
+- Claims: `NAT.05-NA06-0095`, `NAT.05-NA06-0099`, `NAT.05-NA06-0103`, `NAT.05-NA06-0104`, `NAT.05-NA06-0107`, `NAT.05-NA06-0108`
+- Source rechecked: yes
+- Human review required: no
+- Decision basis: The source clearly presents fire as an analogy for choleric intensity and develops a consistent cluster of choleric traits: confidence, challenge response, brevity, impatience, intolerance of slower work and trial-and-error learning. Terra does not add traits beyond the lecture.
+- Downstream actions:
+  - Retain as descriptive course interpretations, not behavioral certainties.
+
+### REV-NAT.05-NA06-0022 — `approved`
+
+- Claims: `NAT.05-NA06-0109`
+- Source rechecked: yes
+- Human review required: no
+- Decision basis: The lecture explicitly explains that mixed temperaments, especially three- or four-way mixtures, can show different traits more strongly at different times without implying that the underlying temperament literally changes.
+- Downstream actions:
+  - Retain the phraseology that the person changes only "under quotation marks" / in emphasis, not in underlying temperament.
+
+### REV-NAT.05-NA06-0023 — `approved_with_edit`
+
+- Claims: `NAT.05-NA06-0110`
+- Source rechecked: yes
+- Human review required: no
+- Edited canonical claim (SR): Predavanje navodi da vremenski aktivirana planeta, na primer vladar godine, može privremeno naglasiti ponašanje povezano sa njenim temperamentnim kvalitetom.
+- Decision basis: The source gives a clear example of a year ruler emphasizing behavior associated with the ruler's temperament, while nearby discussion also mentions transits. Because the exact predictive technique is not consistently isolated, the edited claim names a time-activated planet and keeps the year-ruler example without pretending a single universal technique was specified.
+- Downstream actions:
+  - Keep as course_method predictive interpretation.
+  - Do not infer a specific timing system beyond examples explicitly named in the source.
+
 ## Next review boundary
 
-Resume with `NAT.05-NA06-0080`. Do not begin the final NAT.05 encyclopedia/article draft until mandatory Sol review and unresolved-item handling are complete.
+Resume with `NAT.05-NA06-0111`. Do not begin the final NAT.05 encyclopedia/article draft until mandatory Sol review and unresolved-item handling are complete.

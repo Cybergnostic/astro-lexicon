@@ -59,6 +59,10 @@ echo
 sqlite "$DB_PATH" < "$ROOT_DIR/db/audit/initial_corpus_review.sql"
 
 echo
+echo "=== LOT FORMULA COVERAGE (NON-BLOCKING) ==="
+sqlite "$DB_PATH" < "$ROOT_DIR/db/audit/lot_formula_coverage.sql"
+
+echo
 echo "=== BLOCKING INTEGRITY / EDITORIAL CHECKS ==="
 
 failed=0

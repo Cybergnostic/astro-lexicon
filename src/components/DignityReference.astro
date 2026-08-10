@@ -1,0 +1,103 @@
+---
+const { schemes = [] } = Astro.props;
+
+const signOrder = [
+  ['aries','Aries','♈'],['taurus','Taurus','♉'],['gemini','Gemini','♊'],['cancer','Cancer','♋'],
+  ['leo','Leo','♌'],['virgo','Virgo','♍'],['libra','Libra','♎'],['scorpio','Scorpio','♏'],
+  ['sagittarius','Sagittarius','♐'],['capricorn','Capricorn','♑'],['aquarius','Aquarius','♒'],['pisces','Pisces','♓']
+];
+
+const assignmentsFor = (scheme, signSlug, type) => scheme.assignments
+  .filter((item) => item.sign_slug === signSlug && item.assignment_type === type)
+  .sort((a,b) => (a.sequence_no ?? 0) - (b.sequence_no ?? 0) || a.degree_start - b.degree_start);
+
+const wholeSign = (scheme, signSlug, type) => assignmentsFor(scheme, signSlug, type)[0];
+const degreeLabel = (item) => item.exact_degree_number ? ` · ${item.exact_degree_number}°` : '';
+const rangeLabel = (item) => `${Number(item.degree_start)}–${Number(item.degree_end)}°`;
+---
+
+{schemes.map((scheme) => (
+  <section class="reference-system" id={`reference-${scheme.slug}`}>
+    <div class="reference-head">
+      <div>
+        <p class="micro-label">Normalized reference system</p>
+        <h2>{scheme.label}</h2>
+      </div>
+      {scheme.author_name && <p class="reference-source">{scheme.author_name}{scheme.work_title ? ` · ${scheme.work_title}` : ''}</p>}
+    </div>
+    {scheme.notes && <p class="reference-note">{scheme.notes}</p>}
+
+    <div class="table-scroll" tabindex="0">
+      <table class="dignity-table">
+        <thead>
+          <tr>
+            <th scope="col">Sign</th>
+            <th scope="col">Domicile</th>
+            <th scope="col">Exaltation</th>
+            <th scope="col">Triplicity</th>
+            <th scope="col">Terms / bounds</th>
+            <th scope="col">Faces / decans</th>
+            <th scope="col">Detriment</th>
+            <th scope="col">Fall</th>
+          </tr>
+        </thead>
+        <tbody>
+          {signOrder.map(([slug,label,glyph]) => {
+            const domicile = wholeSign(scheme, slug, 'domicile');
+            const exaltation = wholeSign(scheme, slug, 'exaltation');
+            const detriment = wholeSign(scheme, slug, 'detriment');
+            const fall = wholeSign(scheme, slug, 'fall');
+            const triplicity = assignmentsFor(scheme, slug, 'triplicity');
+            const dayTrip = triplicity.find((item) => item.sect_condition === 'day');
+            const nightTrip = triplicity.find((item) => item.sect_condition === 'night');
+            const anyTrip = triplicity.find((item) => item.sect_condition === 'any');
+            const terms = assignmentsFor(scheme, slug, 'term');
+            const faces = assignmentsFor(scheme, slug, 'face');
+            return (
+              <tr>
+                <th scope="row"><a href={`/terms/${slug}/`}><span class="sign-glyph">{glyph}</span>{label}</a></th>
+                <td>{domicile ? <a href={`/terms/${domicile.planet_slug}/`}>{domicile.planet_label}</a> : '—'}</td>
+                <td>{exaltation ? <><a href={`/terms/${exaltation.planet_slug}/`}>{exaltation.planet_label}</a>{degreeLabel(exaltation)}</> : '—'}</td>
+                <td class="stacked">
+                  {anyTrip ? <span><a href={`/terms/${anyTrip.planet_slug}/`}>{anyTrip.planet_label}</a> · day & night</span> : <>
+                    {dayTrip && <span>D · <a href={`/terms/${dayTrip.planet_slug}/`}>{dayTrip.planet_label}</a></span>}
+                    {nightTrip && <span>N · <a href={`/terms/${nightTrip.planet_slug}/`}>{nightTrip.planet_label}</a></span>}
+                  </>}
+                </td>
+                <td class="stacked compact">{terms.map((item) => <span><a href={`/terms/${item.planet_slug}/`}>{item.planet_label}</a> {rangeLabel(item)}</span>)}</td>
+                <td class="stacked compact">{faces.map((item) => <span><a href={`/terms/${item.planet_slug}/`}>{item.planet_label}</a> {rangeLabel(item)}</span>)}</td>
+                <td>{detriment ? <a href={`/terms/${detriment.planet_slug}/`}>{detriment.planet_label}</a> : '—'}</td>
+                <td>{fall ? <><a href={`/terms/${fall.planet_slug}/`}>{fall.planet_label}</a>{degreeLabel(fall)}</> : '—'}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+    <p class="reference-footnote">Degree ranges are displayed as transfer boundaries: for example 0–6° means from 0°00′ up to, but not including, 6°00′. Exaltation and fall numbers preserve the traditional ordinal degree labels in Lilly’s table.</p>
+  </section>
+))}
+
+<style>
+  .reference-system{margin:2.8rem 0}
+  .reference-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line-dark);padding-bottom:.8rem;margin-bottom:.8rem}
+  .reference-head h2{margin:.15rem 0 0}
+  .reference-source,.reference-note,.reference-footnote{color:var(--muted)}
+  .reference-source{font-size:.82rem;text-align:right;max-width:24rem}
+  .reference-note{max-width:50rem;margin:.5rem 0 1rem}
+  .reference-footnote{font-size:.82rem;max-width:58rem;margin:.8rem 0 0}
+  .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
+  .dignity-table{border-collapse:collapse;min-width:92rem;width:100%;font-size:.84rem}
+  .dignity-table th,.dignity-table td{padding:.65rem .72rem;text-align:left;vertical-align:top;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .dignity-table th:last-child,.dignity-table td:last-child{border-right:0}
+  .dignity-table tbody tr:last-child th,.dignity-table tbody tr:last-child td{border-bottom:0}
+  .dignity-table thead th{font:700 .66rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;background:var(--paper-deep);white-space:nowrap}
+  .dignity-table tbody th{background:var(--paper-deep);white-space:nowrap}
+  .dignity-table a{text-decoration:none;border-bottom:1px dotted currentColor}
+  .dignity-table a:hover{border-bottom-style:solid}
+  .stacked{display:flex;flex-direction:column;gap:.28rem;min-width:8.5rem}
+  .stacked.compact{min-width:10rem}
+  .sign-glyph{font-size:1.15rem;margin-right:.4rem;vertical-align:-.05em}
+  .table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  @media(max-width:720px){.reference-head{display:block}.reference-source{text-align:left;margin-top:.5rem}}
+</style>

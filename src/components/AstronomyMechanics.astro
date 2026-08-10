@@ -3,7 +3,7 @@ const { slug } = Astro.props;
 
 const coordinateSlugs = new Set([
   'celestial-sphere','horizon','meridian','equinoctial','ecliptic',
-  'declination','celestial-latitude','celestial-longitude'
+  'declination','celestial-latitude','celestial-longitude','ecliptic-projection'
 ]);
 const motionSlugs = new Set([
   'first-movement','second-movement','direct-motion','station','retrogradation',
@@ -12,6 +12,10 @@ const motionSlugs = new Set([
 const solarSlugs = new Set([
   'oriental','occidental','combustion','under-the-beams','cazimi'
 ]);
+const eclipseSlugs = new Set([
+  'eclipse','solar-eclipse','lunar-eclipse','total-eclipse','partial-eclipse',
+  'annular-eclipse','occultation','eclipse-path'
+]);
 
 const mode = coordinateSlugs.has(slug)
   ? 'coordinates'
@@ -19,7 +23,9 @@ const mode = coordinateSlugs.has(slug)
     ? 'motion'
     : solarSlugs.has(slug)
       ? 'solar'
-      : null;
+      : eclipseSlugs.has(slug)
+        ? 'eclipse'
+        : null;
 ---
 
 {mode === 'coordinates' && (
@@ -41,6 +47,10 @@ const mode = coordinateSlugs.has(slug)
       <div><strong>Ecliptic grid</strong><span>Longitude runs along the ecliptic; latitude measures north or south of it.</span></div>
       <div><strong>Equatorial grid</strong><span>Declination measures north or south of the celestial equator.</span></div>
     </div>
+    {slug === 'ecliptic-projection' && <div class="projection-note">
+      <strong>Projected longitude is only one coordinate.</strong>
+      <span>Two bodies can line up in ecliptic longitude while remaining separated north–south. A true occultation needs the apparent positions to overlap, not merely their projected zodiacal longitudes.</span>
+    </div>}
     <p class="visual-note">The circles are schematic rather than to scale. The point is the reference geometry: ecliptic latitude and declination use different zero planes.</p>
   </section>
 )}
@@ -97,6 +107,36 @@ const mode = coordinateSlugs.has(slug)
   </section>
 )}
 
+{mode === 'eclipse' && (
+  <section class="mechanics-visual" id="astronomy-diagram" aria-labelledby="astronomy-diagram-title">
+    <div class="visual-head">
+      <p class="micro-label">Original teaching schematic</p>
+      <h2 id="astronomy-diagram-title">Solar and lunar eclipses use opposite alignments</h2>
+    </div>
+    <div class="eclipse-stack">
+      <div class="eclipse-row" role="img" aria-label="Solar eclipse schematic: Sun, Moon, Earth aligned with Moon between Sun and Earth">
+        <span class="motion-label">Solar eclipse</span>
+        <div class="alignment">
+          <span class="body sun-body">Sun</span><span class="ray">—</span><span class="body moon-body">Moon</span><span class="shadow-cone">▶</span><span class="body earth-body">Earth</span>
+        </div>
+        <span class="alignment-note">Moon between Earth and Sun</span>
+      </div>
+      <div class="eclipse-row" role="img" aria-label="Lunar eclipse schematic: Sun, Earth, Moon aligned with Earth between Sun and Moon">
+        <span class="motion-label">Lunar eclipse</span>
+        <div class="alignment">
+          <span class="body sun-body">Sun</span><span class="ray">—</span><span class="body earth-body">Earth</span><span class="shadow-cone">▶</span><span class="body moon-body">Moon</span>
+        </div>
+        <span class="alignment-note">Moon enters Earth’s shadow</span>
+      </div>
+    </div>
+    <div class="visual-grid eclipse-grid">
+      <div><strong>Why not every month?</strong><span>The Moon’s orbit is tilted to the ecliptic, so a new or full moon normally passes north or south of exact alignment. Eclipses occur only when the lunation is sufficiently near an orbital crossing.</span></div>
+      <div><strong>Occultation is stricter than longitude conjunction</strong><span>An occultation requires actual apparent overlap from the observer’s viewpoint. Equal or nearly equal projected longitude alone does not guarantee overlap because latitude can differ.</span></div>
+    </div>
+    <p class="visual-note">The bodies, distances, shadows and angles are schematic and not to scale. The diagram shows ordering and line-of-sight geometry only.</p>
+  </section>
+)}
+
 <style>
   .mechanics-visual{margin:2.8rem 0;padding:1.15rem;border:1px solid var(--line-dark);background:var(--paper-pale)}
   .visual-head{border-bottom:1px solid var(--line);padding-bottom:.75rem;margin-bottom:1.2rem}
@@ -113,8 +153,9 @@ const mode = coordinateSlugs.has(slug)
   .horizon-line{position:absolute;left:4%;right:4%;top:50%;border-top:1px dotted var(--line-dark);display:flex;justify-content:flex-start}
   .body-dot{position:absolute;left:68%;top:30%;width:.72rem;height:.72rem;border-radius:50%;background:currentColor;box-shadow:0 0 0 .2rem var(--paper-pale),0 0 0 .25rem var(--line-dark)}
   .visual-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin-top:.8rem}
-  .visual-grid div{padding:.8rem;border:1px solid var(--line);background:var(--paper-deep)}
-  .visual-grid strong,.visual-grid span{display:block}.visual-grid span{margin-top:.25rem;color:var(--muted);font-size:.88rem}
+  .visual-grid div,.projection-note{padding:.8rem;border:1px solid var(--line);background:var(--paper-deep)}
+  .visual-grid strong,.visual-grid span,.projection-note strong,.projection-note span{display:block}.visual-grid span,.projection-note span{margin-top:.25rem;color:var(--muted);font-size:.88rem}
+  .projection-note{margin-top:.8rem}
 
   .motion-stack{display:grid;gap:1rem}
   .motion-row{display:grid;grid-template-columns:8rem 1fr;gap:1rem;align-items:center}
@@ -135,10 +176,19 @@ const mode = coordinateSlugs.has(slug)
   .band strong,.band span{display:block}.band span{margin-top:.2rem;color:var(--muted);font-size:.82rem}
   .cazimi-band{outline:2px solid var(--line);outline-offset:-5px}.combustion-band{border-style:dashed}.beams-band{border-style:dotted}
 
+  .eclipse-stack{display:grid;gap:.8rem}
+  .eclipse-row{display:grid;grid-template-columns:8rem minmax(18rem,1fr) 12rem;gap:1rem;align-items:center;padding:.8rem;border:1px solid var(--line);background:var(--paper-deep);overflow-x:auto}
+  .alignment{display:flex;align-items:center;justify-content:center;gap:.55rem;min-width:18rem}
+  .body{display:grid;place-items:center;border:1px solid var(--line-dark);border-radius:50%;background:var(--paper-pale);font:700 .67rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .sun-body{width:4.4rem;height:4.4rem}.earth-body{width:3.2rem;height:3.2rem}.moon-body{width:2rem;height:2rem}
+  .ray{color:var(--muted);letter-spacing:.12rem}.shadow-cone{font-size:1.5rem;color:var(--muted)}
+  .alignment-note{color:var(--muted);font-size:.82rem}.eclipse-grid{margin-top:1rem}
+
   @media(max-width:760px){
     .visual-grid,.proximity-bands{grid-template-columns:1fr}
     .motion-row{grid-template-columns:1fr}.motion-label{margin-bottom:-.5rem}
     .phase-track{justify-content:flex-start}
     .orientation-strip{grid-template-columns:1fr;text-align:center}.morning,.evening{text-align:center}.sun-disc{margin:auto}.sun-disc{grid-row:2}.evening{grid-row:3}
+    .eclipse-row{grid-template-columns:1fr;gap:.55rem}.alignment{justify-content:flex-start}.alignment-note{padding-bottom:.2rem}
   }
 </style>

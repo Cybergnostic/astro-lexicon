@@ -13,6 +13,7 @@
     "audit:corpus": "bash scripts/audit_corpus.sh",
     "audit:editorial": "python3 scripts/editorial_baseline_audit.py",
     "audit:triage": "python3 scripts/editorial_abc_triage.py",
+    "audit:ontology": "python3 scripts/ontology_duplicate_audit.py",
     "test:generated": "python3 scripts/test_generated_corpus.py"
   },
   "dependencies": {

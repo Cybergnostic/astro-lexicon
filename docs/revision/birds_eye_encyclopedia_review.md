@@ -125,6 +125,10 @@ Current normalized layers:
 - `term_form_attestations`
 - `planetary_profiles`
 - `zodiac_sign_profiles`
+- `concept_families`
+- `concept_family_members`
+
+`concept_families` is the generic family-level layer added during the aspect/perfection review. Pairwise `term_relations` still describe how two concepts relate; a concept family describes a larger ordered teaching system and the role each term plays inside it. This avoids hard-coding family taxonomies in the frontend and is reusable for houses, lots, predictive methods and later review blocks.
 
 Reference schemes now include both:
 
@@ -140,7 +144,7 @@ The original-language terminology layer is also separate from aliases. A histori
 Prefer project-owned, lightweight and accessible visual material:
 
 - Unicode astrological glyphs for simple symbols;
-- original SVG diagrams for geometry, cycles and schematic charts;
+- original SVG or HTML/CSS diagrams for geometry, cycles and schematic charts;
 - responsive HTML/CSS tables for structured reference data;
 - external historical images only when they add genuine historical value and licensing/provenance are clear.
 
@@ -187,25 +191,61 @@ A diagram should teach something prose or a table cannot communicate as efficien
 - repeated dignity lists replaced by normalized scheme-aware dignity views;
 - Ancient Greek sign names with transliteration and literal name glosses.
 
+### Astronomical mechanics / visibility
+
+- celestial sphere, ecliptic, celestial equator/equinoctial and coordinate pages reorganized as one teaching system;
+- explicit distinction between ecliptic longitude, ecliptic latitude and declination;
+- First Motion separated from slower planetary Second Motion, with the modern Earth-rotation explanation stated without erasing the historical framework;
+- direct, station and retrograde motion rewritten as apparent geocentric longitude states rather than physical orbital reversal;
+- oriental/occidental disambiguated between solar-phase usage and “in the figure” usage;
+- solar orientation, traditional proximity conditions and actual naked-eye visibility separated as three different questions;
+- original HTML/CSS celestial-sphere, motion-cycle and solar-relative schematics;
+- eclipse, occultation and ecliptic-projection geometry connected to the coordinate system and illustrated with original schematics;
+- repaired the older fixed-star-nature article seed that targeted a non-canonical slug.
+
+Modern astronomical mechanics in this block were checked against NASA/JPL/USNO material; historical astrological thresholds and meanings remain source-attributed.
+
+### Aspects / application / perfection
+
+- generic `concept_families` / `concept_family_members` schema introduced and exported to the frontend;
+- first normalized family: `aspect-perfection-mechanics`;
+- visible hierarchy from geometry → motion phase → outcome → mediation / relational modifiers → interruption;
+- aspect, application, separation and horary Perfection explicitly separated as different conceptual levels;
+- Translation and Collection of Light rewritten as two different mediation geometries rather than generic “help” conditions;
+- Prohibition, Lilly Frustration, Refrenation and Abscission located inside the interruption family while source-specific variants remain separate;
+- reusable Concept Family frontend map now appears on every family member page;
+- historical false-friend distinctions already established in earlier cross-source work remain preserved, including Lilly vs Bonatti Frustration and Antiochus vs al-Bīrūnī Intervention.
+
+Skyscript and its historical review of denial of perfection were used only as editorial completeness checks; project claims remain grounded in the existing source corpus.
+
+### Houses / places
+
+- normalized `houses-places-structure` concept family;
+- twelve-place framework, angles/cardines, succedents and cadents shown as one repeating structural system;
+- positional strength kept explicitly separate from topical house signification;
+- derived-house doctrine presented as relational recounting within the same chart, not a new set of houses;
+- Antiochus’ Places for Dealings / Places without Dealings kept as a separate source-specific taxonomy rather than folded into angular/cadent strength;
+- improved house-family definitions and cross-links without adding a house-judgment workflow.
+
 ## Remaining checks inside completed families
 
 The family passes above establish the architecture, but they do not close every secondary doctrine. Before calling those families exhaustive, still check:
 
-- oriental/occidental terminology and whether every phase label has an adequate standalone concept page;
 - planetary day/hour correspondences if source-backed and genuinely useful to the encyclopedia;
 - sign-relation families such as commanding/obeying, hearing/seeing and equal-ascension relations;
-- whether an original ecliptic/season diagram would teach more than the current twelve-sign strip;
-- source-specific variants that should become additional named reference schemes rather than prose notes.
+- whether an additional ecliptic/season diagram would teach more than the current twelve-sign strip;
+- source-specific variants that should become additional named reference schemes rather than prose notes;
+- lunar nodes as standalone astronomical/historical terminology if the existing corpus supports a clean canonical identity rather than only eclipse context;
+- whether historical aspect/orb schemes need their own normalized named reference systems beyond the current source-attributed prose/tables;
+- individual house-topic pages only where they improve navigation and source comparison, not as a pretext to publish house-judgment recipes.
 
 ## Next review order
 
-1. **Astronomical mechanics / visibility / synodic terminology** — review the celestial sphere, ecliptic/equator, coordinates, primary/secondary motion, solar visibility, stations/retrogradation, nodes and eclipses as one teaching system; connect the already-built planetary cycles to adequate concept pages and add original diagrams where useful.
-2. **Aspects and connection mechanics** — geometry versus application/perfection/interference terminology.
-3. **Houses / places** — structural strength versus topical meaning.
-4. **Lots** — now largely extracted, but review the whole family as a reader and tighten disambiguation/presentation.
-5. **Predictive terminology** — comparative overview without procedural forecasting workflows.
-6. **Historical cosmology / foundational models**.
-7. **Long-tail entries and lower-priority definitions**.
+1. **Lots** — largely extracted and formula-rich; review the whole family as a reader, tighten formula-stream disambiguation, and use the concept-family layer where it improves navigation.
+2. **Predictive terminology** — comparative overview of profections, firdaria, directions, distributions, solar/lunar revolutions and related terms without procedural forecasting workflows.
+3. **Historical cosmology / foundational models** — planetary order, sect/cosmology and related model concepts beyond the already-completed Thema Mundi block.
+4. **Remaining planetary/sign secondary families** — sign relations, planetary day/hour and source-specific schemes where justified.
+5. **Long-tail entries and lower-priority definitions**.
 
 At each stage, stop adding terms merely because a source mentions them. Add or expand an entry only when it improves the encyclopedia's conceptual coverage, historical accuracy, navigation or teaching quality.
 

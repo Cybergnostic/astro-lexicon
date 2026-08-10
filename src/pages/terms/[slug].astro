@@ -47,23 +47,20 @@ const hasAstronomyDiagram=astronomyDiagramSlugs.has(term.slug);
 const planetaryLots=term.relations?.filter((relation) => relation.direction === 'outgoing' && relation.relation_type === 'associated-planetary-lot') ?? [];
 const hasReferenceSchemes=(term.reference_schemes?.length ?? 0) > 0;
 const hasReferenceAssignments=(term.reference_assignments?.length ?? 0) > 0;
+const hasReferenceData=hasReferenceSchemes || hasReferenceAssignments;
 const hasCycles=(term.cycles?.length ?? 0) > 0;
 const hasSources=(term.interpretations?.length ?? 0) > 0;
 const hasRelations=(term.relations?.length ?? 0) > 0;
-const firstReferenceId=hasReferenceSchemes
-  ? `reference-${term.reference_schemes.find((scheme) => scheme.assignments.some((item) => item.assignment_type !== 'term'))?.slug ?? 'terms-comparison'}`
-  : hasReferenceAssignments
-    ? `dignity-${term.reference_assignments[0].scheme_slug}`
-    : null;
 const firstCycleId=hasCycles ? `cycle-${term.cycles[0].slug}` : null;
-const firstFamilyId=hasConceptFamilies ? `family-${term.concept_families[0].slug}` : null;
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
-  const pages=citation.page_start ? `pp. ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}` : '';
+  const hasPageRange=Boolean(citation.page_end && citation.page_end !== citation.page_start);
+  const pageEnd=hasPageRange ? `–${citation.page_end}` : '';
+  const pages=citation.page_start ? `${hasPageRange ? 'pp.' : 'p.'} ${citation.page_start}${pageEnd}` : '';
   return [locus,pages,citation.locator_text].filter(Boolean).join(' · ');
 };
 const humanizeKey=(value='') => value.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase());
-const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${relation.direction}`;
+const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${relation.direction === 'outgoing' ? 'from this entry' : 'to this entry'}`;
 ---
 <BaseLayout title={`${term.label} — Astrological Lexicon`} description={term.short_definition}>
   <div class="shell page-grid">
@@ -141,8 +138,10 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
       {hasAstronomyDiagram && <AstronomyMechanics slug={term.slug} />}
       {hasZodiacSignProfile && <ZodiacSignProfile profile={term.zodiac_sign_profile} />}
       {hasPlanetProfile && <PlanetProfile profile={term.planet_profile} lots={planetaryLots} />}
-      {hasReferenceSchemes && <DignityReference schemes={term.reference_schemes} />}
-      {hasReferenceAssignments && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
+      {hasReferenceData && <div id="reference-tables" class="reference-anchor">
+        {hasReferenceSchemes && <DignityReference schemes={term.reference_schemes} />}
+        {hasReferenceAssignments && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
+      </div>}
       {hasCycles && <PlanetaryCycle cycles={term.cycles} />}
 
       {hasNames && <section id="names">
@@ -160,7 +159,7 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
       {hasSources && <section id="sources">
         <h2>Sources</h2>
         {term.interpretations.map((item)=><div class="source-block">
-          <div class="source-head"><h3>{item.author_name} · <em>{item.work_title}</em></h3></div>
+          <div class="source-head"><h3><a href={`/authors/${item.author_slug}/`}>{item.author_name}</a> · <em><a href={`/works/${item.work_slug}/`}>{item.work_title}</a></em></h3></div>
           <p>{item.summary}</p>
           {item.citations.map((citation)=><p class="source-cite">{citationLabel(citation)}{citation.edition_label ? ` · ${citation.edition_label}` : ''}</p>)}
         </div>)}
@@ -181,7 +180,7 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
       {hasComposition
         ? pageComposition.map((publicSection)=><a href={`#section-${publicSection.section_key}`}>{publicSection.heading}</a>)
         : articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
-      {firstFamilyId && <a href={`#${firstFamilyId}`}>Concept family</a>}
+      {hasConceptFamilies && term.concept_families.map((family)=><a href={`#family-${family.slug}`}>{family.label}</a>)}
       {hasLotDiagram && <a href="#lot-diagram">Lot construction</a>}
       {hasPlanetaryOrderDiagram && <a href="#planetary-order-diagram">Planetary order</a>}
       {hasPlanetaryTimeSequences && <a href="#planetary-time-sequences">Planetary days / hours</a>}
@@ -189,7 +188,7 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
       {hasAstronomyDiagram && <a href="#astronomy-diagram">Geometry / visual</a>}
       {hasZodiacSignProfile && <a href="#sign-profile">Zodiac sign profile</a>}
       {hasPlanetProfile && <a href="#planet-profile">Planet profile</a>}
-      {firstReferenceId && <a href={`#${firstReferenceId}`}>Reference tables</a>}
+      {hasReferenceData && <a href="#reference-tables">Reference tables</a>}
       {firstCycleId && <a href={`#${firstCycleId}`}>Synodic cycle</a>}
       {hasNames && <a href="#names">Names & forms</a>}
       {hasSources && <a href="#sources">Sources</a>}
@@ -212,6 +211,8 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
   .alias-head{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}.alias-head span,.relation-type{font:600 .68rem/1.35 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.055em;color:var(--muted)}
   .alias-item p,.relation-item p{margin:.3rem 0 .2rem;color:var(--muted);font-size:.9rem;max-width:44rem}
   .relation-item>a{font-weight:650}.relation-type{display:block;margin-top:.15rem}
+  .source-head a{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}.source-head a:hover{border-bottom-style:solid}
+  .reference-anchor{scroll-margin-top:1rem}
   .table-caption{margin:-.25rem 0 1rem;color:var(--muted);font-size:.92rem;max-width:42rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
   .article-table{width:100%;border-collapse:collapse;min-width:34rem;font-size:.91rem}

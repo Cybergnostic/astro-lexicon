@@ -3,29 +3,4 @@ import DignityReference from './DignityReference.astro';
 const { schemes = [], signSlug } = Astro.props;
 ---
 
-<div class="sign-dignity-reference" data-highlight-sign={signSlug}>
-  <DignityReference schemes={schemes} />
-</div>
-
-<script is:inline>
-  document.querySelectorAll('.sign-dignity-reference[data-highlight-sign]').forEach((wrapper) => {
-    const slug = wrapper.dataset.highlightSign;
-    wrapper.querySelectorAll('tbody tr').forEach((row) => {
-      const signLink = row.querySelector(`th a[href="/terms/${slug}/"]`);
-      if (signLink) row.classList.add('current-sign-row');
-    });
-  });
-</script>
-
-<style is:global>
-  .sign-dignity-reference .current-sign-row > th,
-  .sign-dignity-reference .current-sign-row > td{
-    background:color-mix(in srgb,var(--accent) 11%,var(--paper-pale));
-    box-shadow:inset 0 1px 0 color-mix(in srgb,var(--accent) 55%,transparent),inset 0 -1px 0 color-mix(in srgb,var(--accent) 55%,transparent);
-  }
-  .sign-dignity-reference .current-sign-row > th:first-child{
-    box-shadow:inset 4px 0 0 var(--accent),inset 0 1px 0 color-mix(in srgb,var(--accent) 55%,transparent),inset 0 -1px 0 color-mix(in srgb,var(--accent) 55%,transparent);
-  }
-  .sign-dignity-reference .current-sign-row .sign-cell a,
-  .sign-dignity-reference .current-sign-row > th a{color:var(--accent)}
-</style>
+<DignityReference schemes={schemes} highlightSign={signSlug} />

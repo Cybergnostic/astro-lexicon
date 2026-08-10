@@ -1,0 +1,88 @@
+---
+const { profile, lots = [] } = Astro.props;
+
+const label = (value) => ({
+  'star':'Star',
+  'natural-satellite':'Natural satellite',
+  'terrestrial-planet':'Terrestrial / rocky planet',
+  'gas-giant':'Gas giant',
+  'reference-body':'Solar reference body',
+  'earth-satellite':'Earth satellite',
+  'interior-to-earth':'Orbit interior to Earth',
+  'exterior-to-earth':'Orbit exterior to Earth',
+  'luminary':'Luminary',
+  'inferior-planet':'Inferior planet',
+  'superior-planet':'Superior planet',
+  'diurnal':'Diurnal',
+  'nocturnal':'Nocturnal',
+  'conditional':'Conditional / variable',
+  'benefic':'Benefic',
+  'malefic':'Malefic',
+  'hot':'Hot',
+  'cold':'Cold',
+  'dry':'Dry',
+  'moist':'Moist',
+  'direct-only':'Direct in ordinary zodiacal longitude',
+  'direct-station-retrograde':'Direct · station · retrograde',
+  'solar-reference':'Reference body',
+  'lunation':'Lunation',
+  'inferior-synodic':'Inferior-planet synodic cycle',
+  'superior-synodic':'Superior-planet synodic cycle'
+}[value] ?? value);
+
+const beneficence = profile?.beneficence_class === 'luminary'
+  ? 'Luminary · source/context dependent'
+  : label(profile?.beneficence_class);
+---
+
+{profile && <section class="planet-profile" id="planet-profile">
+  <div class="profile-head">
+    <div>
+      <p class="micro-label">Normalized family reference</p>
+      <h2>Planet profile</h2>
+    </div>
+    {profile.astronomy_source_label && profile.astronomy_source_url &&
+      <a class="source-link" href={profile.astronomy_source_url} rel="noreferrer">Astronomy reference · {profile.astronomy_source_label}</a>}
+  </div>
+
+  <div class="profile-grid">
+    <div><span>Physical object</span><strong>{label(profile.astronomical_class)}</strong></div>
+    <div><span>Earth-based geometry</span><strong>{label(profile.solar_orbit_relation)}</strong></div>
+    <div><span>Traditional family</span><strong>{label(profile.traditional_family)}</strong></div>
+    <div><span>Sect</span><strong>{label(profile.sect_affiliation)}</strong></div>
+    <div><span>Benefic / malefic class</span><strong>{beneficence}</strong></div>
+    <div><span>Attributed qualities</span><strong>{label(profile.temperature_quality)} · {label(profile.moisture_quality)}</strong></div>
+    <div><span>Zodiacal motion</span><strong>{label(profile.zodiacal_motion)}</strong></div>
+    <div><span>Solar-cycle family</span><strong>{label(profile.solar_phase_family)}</strong></div>
+  </div>
+
+  <div class="profile-notes">
+    {profile.astronomy_note && <p><strong>Astronomy.</strong> {profile.astronomy_note}</p>}
+    {profile.traditional_note && <p><strong>Traditional classification.</strong> {profile.traditional_note}</p>}
+  </div>
+
+  {lots.length > 0 && <div class="planetary-lots">
+    <h3>Associated planetary lot in the reviewed source stream</h3>
+    {lots.map((lot) => <p><a href={`/terms/${lot.target_slug}/`}>{lot.target_label}</a>{lot.note ? ` — ${lot.note}` : ''}</p>)}
+  </div>}
+</section>}
+
+<style>
+  .planet-profile{margin:2.8rem 0}
+  .profile-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line-dark);padding-bottom:.8rem;margin-bottom:1rem}
+  .profile-head h2{margin:.15rem 0 0}
+  .source-link{font-size:.78rem;color:var(--muted);text-align:right;max-width:24rem;text-decoration:none;border-bottom:1px dotted currentColor}
+  .source-link:hover{border-bottom-style:solid}
+  .profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line-dark);border-left:1px solid var(--line-dark);background:var(--paper-pale)}
+  .profile-grid>div{display:grid;grid-template-columns:minmax(9rem,.8fr) 1.2fr;gap:.7rem;padding:.68rem .75rem;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  .profile-grid span{font:700 .62rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .profile-grid strong{font-size:.87rem}
+  .profile-notes{margin-top:.9rem;max-width:58rem;color:var(--muted)}
+  .profile-notes p{margin:.45rem 0}
+  .profile-notes strong{color:var(--ink)}
+  .planetary-lots{margin-top:1.2rem;border-left:3px solid var(--line-dark);padding:.75rem .9rem;background:var(--paper-pale)}
+  .planetary-lots h3{font-size:1rem;margin:0 0 .45rem}
+  .planetary-lots p{margin:.25rem 0;font-size:.9rem}
+  .planetary-lots a{text-decoration:none;border-bottom:1px dotted currentColor}.planetary-lots a:hover{border-bottom-style:solid}
+  @media(max-width:820px){.profile-grid{grid-template-columns:1fr}.profile-head{display:block}.source-link{display:inline-block;text-align:left;margin-top:.55rem}.profile-grid>div{grid-template-columns:1fr}}
+</style>

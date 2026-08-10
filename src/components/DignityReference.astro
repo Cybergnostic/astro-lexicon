@@ -1,5 +1,5 @@
 ---
-const { schemes = [] } = Astro.props;
+const { schemes = [], highlightSign = null, highlightPlanet = null } = Astro.props;
 
 const signOrder = [
   ['aries','Aries','♈'],['taurus','Taurus','♉'],['gemini','Gemini','♊'],['cancer','Cancer','♋'],
@@ -26,6 +26,7 @@ const exactDegree = (item) => item?.exact_degree_number ? `${item.exact_degree_n
 const endDegree = (item) => item ? Number(item.degree_end) : '';
 const spanLength = (item) => item ? Number(item.degree_end) - Number(item.degree_start) : '';
 const rangeLabel = (item) => `${Number(item.degree_start)}–${Number(item.degree_end)}°`;
+const isCurrentPlanet = (item) => Boolean(highlightPlanet && item?.planet_slug === highlightPlanet);
 
 const baseScheme = lilly ?? schemes.find((scheme) => scheme.assignments.some((item) => item.assignment_type === 'domicile'));
 const termScheme = egyptian ?? schemes.find((scheme) => scheme.assignments.some((item) => item.assignment_type === 'term'));
@@ -45,21 +46,27 @@ const triplicityGroups = [
 
 const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signSlug, 'triplicity')
   .find((item) => item.sect_condition === sect);
+
+const termSchemeLabel = (scheme) => {
+  if (scheme.slug === 'lilly-ptolemaic-essential-dignities') return 'Ptolemaic terms';
+  if (scheme.slug === 'ptolemy-egyptian-terms') return 'Egyptian terms';
+  return scheme.label;
+};
 ---
 
 {hasComposite && (
   <section class="reference-system" id="reference-essential-dignity-overview">
     <div class="reference-head">
       <div>
-        <p class="micro-label">Composite historical reference</p>
-        <h2>Table of planetary rulerships</h2>
+        <p class="micro-label">Traditional reference</p>
+        <h2>Essential dignities</h2>
       </div>
     </div>
     <p class="reference-note">
-      This comparison brings several named historical systems into one view: Dorothean triplicity lords, Egyptian terms / bounds, and Chaldean faces / decans. Domicile, exaltation, detriment and fall follow the traditional dignity table represented here through Lilly. The group labels identify which system supplies each layer.
+      The complete table is shown for context. Domicile, exaltation, detriment and fall use the traditional dignity table; triplicity, terms and faces retain the named historical schemes shown in the column headings.
     </p>
 
-    <div class="matrix-wrap" tabindex="0" aria-label="Composite table of planetary rulerships">
+    <div class="matrix-wrap" tabindex="0" aria-label="Complete table of essential dignities">
       <table class="dignity-matrix">
         <thead>
           <tr class="group-head">
@@ -98,7 +105,7 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
             const faces = assignmentsFor(faceScheme, slug, 'face');
 
             return (
-              <tr>
+              <tr class:list={{ 'current-sign-row': highlightSign === slug }}>
                 <th scope="row" class="sign-cell">
                   <a href={`/terms/${slug}/`}>
                     <span class="sign-glyph" aria-hidden="true">{signGlyph}</span>
@@ -106,20 +113,20 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
                   </a>
                 </th>
 
-                <td class="planet-cell">
+                <td class:list={['planet-cell', { 'current-planet-cell': isCurrentPlanet(domicile) }]}>
                   {domicile ? <a href={`/terms/${domicile.planet_slug}/`} title={domicile.planet_label}><span aria-hidden="true">{glyphFor(domicile)}</span><span class="sr-only">{domicile.planet_label}</span></a> : '—'}
                 </td>
-                <td class="planet-cell exact-cell">
+                <td class:list={['planet-cell','exact-cell', { 'current-planet-cell': isCurrentPlanet(exaltation) }]}>
                   {exaltation ? <a href={`/terms/${exaltation.planet_slug}/`} title={`${exaltation.planet_label}${exactDegree(exaltation) ? ` · ${exactDegree(exaltation)}` : ''}`}><span aria-hidden="true">{glyphFor(exaltation)}</span><span class="sr-only">{exaltation.planet_label}</span>{exactDegree(exaltation) && <small>{exactDegree(exaltation)}</small>}</a> : '—'}
                 </td>
 
-                {[dayTrip,nightTrip,coopTrip].map((item) => <td class="planet-cell trip-cell">
+                {[dayTrip,nightTrip,coopTrip].map((item) => <td class:list={['planet-cell','trip-cell', { 'current-planet-cell': isCurrentPlanet(item) }]}>
                   {item ? <a href={`/terms/${item.planet_slug}/`} title={item.planet_label}><span aria-hidden="true">{glyphFor(item)}</span><span class="sr-only">{item.planet_label}</span></a> : <span class="empty">—</span>}
                 </td>)}
 
                 {[0,1,2,3,4].map((index) => {
                   const item = terms[index];
-                  return <td class="bound-cell">
+                  return <td class:list={['bound-cell', { 'current-planet-cell': isCurrentPlanet(item) }]}>
                     {item ? <a href={`/terms/${item.planet_slug}/`} title={`${item.planet_label} · ${rangeLabel(item)}`}>
                       <span class="planet-glyph" aria-hidden="true">{glyphFor(item)}</span>
                       <span class="sr-only">{item.planet_label}</span>
@@ -130,15 +137,15 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
 
                 {[0,1,2].map((index) => {
                   const item = faces[index];
-                  return <td class="planet-cell face-cell">
+                  return <td class:list={['planet-cell','face-cell', { 'current-planet-cell': isCurrentPlanet(item) }]}>
                     {item ? <a href={`/terms/${item.planet_slug}/`} title={`${item.planet_label} · ${rangeLabel(item)}`}><span aria-hidden="true">{glyphFor(item)}</span><span class="sr-only">{item.planet_label}</span></a> : <span class="empty">—</span>}
                   </td>;
                 })}
 
-                <td class="planet-cell">
+                <td class:list={['planet-cell', { 'current-planet-cell': isCurrentPlanet(detriment) }]}>
                   {detriment ? <a href={`/terms/${detriment.planet_slug}/`} title={detriment.planet_label}><span aria-hidden="true">{glyphFor(detriment)}</span><span class="sr-only">{detriment.planet_label}</span></a> : '—'}
                 </td>
-                <td class="planet-cell exact-cell">
+                <td class:list={['planet-cell','exact-cell', { 'current-planet-cell': isCurrentPlanet(fall) }]}>
                   {fall ? <a href={`/terms/${fall.planet_slug}/`} title={`${fall.planet_label}${exactDegree(fall) ? ` · ${exactDegree(fall)}` : ''}`}><span aria-hidden="true">{glyphFor(fall)}</span><span class="sr-only">{fall.planet_label}</span>{exactDegree(fall) && <small>{exactDegree(fall)}</small>}</a> : '—'}
                 </td>
               </tr>
@@ -163,7 +170,7 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
         <h2>Triplicity rulers by named scheme</h2>
       </div>
     </div>
-    <p class="reference-note">Triplicity rulership is not one universal table. Dorotheus preserves three rulers per elemental triplicity; Lilly preserves a different two-ruler scheme, including Mars for water by both day and night.</p>
+    <p class="reference-note">Triplicity rulership is not one universal table. Each named scheme is kept separate.</p>
     <div class="table-scroll" tabindex="0">
       <table class="comparison-table triplicity-comparison">
         <thead>
@@ -178,14 +185,14 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
         <tbody>
           {triplicityGroups.map(([element,signs]) => {
             const signSlug = signs[0];
-            return <tr>
+            return <tr class:list={{ 'current-sign-row': Boolean(highlightSign && signs.includes(highlightSign)) }}>
               <th scope="row">{element}</th>
               {triplicitySchemes.map((scheme) => {
                 const day = triplicityRuler(scheme, signSlug, 'day');
                 const night = triplicityRuler(scheme, signSlug, 'night');
                 const any = triplicityRuler(scheme, signSlug, 'any');
                 return <>
-                  {[day,night,any].map((item) => <td class="comparison-glyph">{item ? <a href={`/terms/${item.planet_slug}/`} title={item.planet_label}><span aria-hidden="true">{glyphFor(item)}</span><span class="sr-only">{item.planet_label}</span></a> : '—'}</td>)}
+                  {[day,night,any].map((item) => <td class:list={['comparison-glyph', { 'current-planet-cell': isCurrentPlanet(item) }]}>{item ? <a href={`/terms/${item.planet_slug}/`} title={item.planet_label}><span aria-hidden="true">{glyphFor(item)}</span><span class="sr-only">{item.planet_label}</span></a> : '—'}</td>)}
                 </>;
               })}
             </tr>;
@@ -204,10 +211,10 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
         <h2>Terms / bounds by named scheme</h2>
       </div>
     </div>
-    <p class="reference-note">The bound ruler is not universal across the tradition. Each column below preserves a separate named table.</p>
+    <p class="reference-note">The bound ruler is not universal across the tradition. The two tables are presented side by side sign-for-sign.</p>
     <div class="scheme-notes">
       {termSchemes.map((scheme) => <div>
-        <strong>{scheme.label}</strong>
+        <strong>{termSchemeLabel(scheme)}</strong>
         {scheme.notes && <span>{scheme.notes}</span>}
       </div>)}
     </div>
@@ -216,26 +223,26 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
         <thead>
           <tr>
             <th scope="col">Sign</th>
-            {termSchemes.map((scheme) => <th scope="col">{scheme.label}</th>)}
+            {termSchemes.map((scheme) => <th scope="col">{termSchemeLabel(scheme)}</th>)}
           </tr>
         </thead>
         <tbody>
           {signOrder.map(([slug,label,glyph]) => (
-            <tr>
+            <tr class:list={{ 'current-sign-row': highlightSign === slug }}>
               <th scope="row"><a href={`/terms/${slug}/`}><span class="sign-glyph">{glyph}</span>{label}</a></th>
-              {termSchemes.map((scheme) => <td class="term-strip">
-                {assignmentsFor(scheme, slug, 'term').map((item) => <a href={`/terms/${item.planet_slug}/`} title={`${item.planet_label} · ${rangeLabel(item)}`}>
+              {termSchemes.map((scheme) => <td class="term-scheme-cell"><div class="term-strip">
+                {assignmentsFor(scheme, slug, 'term').map((item) => <a class:list={{ 'current-planet-segment': isCurrentPlanet(item) }} href={`/terms/${item.planet_slug}/`} title={`${item.planet_label} · ${rangeLabel(item)}`}>
                   <span class="planet-glyph" aria-hidden="true">{glyphFor(item)}</span>
                   <span class="sr-only">{item.planet_label}</span>
                   <small>{endDegree(item)}°</small>
                 </a>)}
-              </td>)}
+              </div></td>)}
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-    <p class="reference-footnote">Each compact sequence reads from 0° to 30°. The number beneath a planetary glyph is the degree at which rulership transfers to the next term.</p>
+    <p class="reference-footnote">Each sequence reads from 0° to 30°. The number beneath a planetary glyph is the degree at which rulership transfers to the next term.</p>
   </section>
 )}
 
@@ -269,6 +276,12 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
   .matrix-key{display:flex;flex-wrap:wrap;gap:.35rem 1.25rem;margin-top:.55rem;color:var(--muted);font:.64rem/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.matrix-key strong{color:var(--ink)}.matrix-key em{font-style:normal}
   .matrix-wrap:focus-visible,.table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
+  .current-sign-row>th,.current-sign-row>td{background:color-mix(in srgb,var(--accent) 11%,var(--paper-pale))!important;box-shadow:inset 0 1px 0 color-mix(in srgb,var(--accent) 55%,transparent),inset 0 -1px 0 color-mix(in srgb,var(--accent) 55%,transparent)}
+  .current-sign-row>th:first-child{box-shadow:inset 4px 0 0 var(--accent),inset 0 1px 0 color-mix(in srgb,var(--accent) 55%,transparent),inset 0 -1px 0 color-mix(in srgb,var(--accent) 55%,transparent)}
+  .current-sign-row>th a{color:var(--accent)!important}
+  .current-planet-cell{background:color-mix(in srgb,var(--accent) 16%,var(--paper-pale))!important;box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--accent) 62%,transparent)}
+  .current-planet-cell>a{color:var(--accent)!important;font-weight:700}
+
   .comparison-system{margin-top:3.8rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
   .comparison-table,.terms-table{border-collapse:collapse;width:100%;font-size:.8rem}
@@ -278,13 +291,16 @@ const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signS
   .comparison-table thead th,.terms-table thead th{font:700 .57rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.035em;background:var(--paper-deep)}
   .comparison-table tbody th,.terms-table tbody th{background:var(--paper-deep);text-align:left;white-space:nowrap}
   .comparison-glyph a{display:block;color:var(--ink);text-decoration:none}.comparison-glyph a:hover{color:var(--accent)}
-  .terms-table th,.terms-table td{text-align:left}
+  .terms-table{table-layout:fixed}
+  .terms-table th,.terms-table td{text-align:left}.terms-table thead th:first-child{width:9.5rem}
   .terms-table tbody th a{color:var(--ink);text-decoration:none}.terms-table .sign-glyph{font-size:1.05rem;margin-right:.35rem}
-  .term-strip{display:grid;grid-template-columns:repeat(5,minmax(2.6rem,1fr));padding:0!important}
+  .term-scheme-cell{padding:0!important;display:table-cell!important}
+  .term-strip{display:grid;grid-template-columns:repeat(5,minmax(2.6rem,1fr));width:100%}
   .term-strip>a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.12rem;min-height:3rem;padding:.25rem;border-right:1px solid var(--line);text-decoration:none;color:var(--ink)}.term-strip>a:last-child{border-right:0}.term-strip>a:hover{background:var(--paper-deep);color:var(--accent)}
   .term-strip .planet-glyph{font-size:1.15rem}.term-strip small{font:.52rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .current-planet-segment{background:color-mix(in srgb,var(--accent) 16%,var(--paper-pale));color:var(--accent)!important;box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--accent) 62%,transparent)}
   .scheme-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:.7rem;margin:0 0 1rem}.scheme-notes>div{border-left:3px solid var(--line-dark);padding:.55rem .7rem;background:var(--paper-pale)}.scheme-notes strong,.scheme-notes span{display:block}.scheme-notes span{margin-top:.25rem;color:var(--muted);font-size:.82rem}
 
   @media(max-width:980px){.matrix-wrap{overflow-x:auto}.dignity-matrix{min-width:64rem}}
-  @media(max-width:720px){.reference-head{display:block}.scheme-notes{grid-template-columns:1fr}.comparison-table,.terms-table{min-width:44rem}}
+  @media(max-width:720px){.reference-head{display:block}.scheme-notes{grid-template-columns:1fr}.comparison-table,.terms-table{min-width:58rem}}
 </style>

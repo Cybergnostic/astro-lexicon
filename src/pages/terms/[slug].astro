@@ -9,6 +9,7 @@ import LotMechanics from '../../components/LotMechanics.astro';
 import PlanetProfile from '../../components/PlanetProfile.astro';
 import PlanetaryCycle from '../../components/PlanetaryCycle.astro';
 import PlanetaryOrder from '../../components/PlanetaryOrder.astro';
+import PlanetaryTimeSequences from '../../components/PlanetaryTimeSequences.astro';
 import ZodiacSignProfile from '../../components/ZodiacSignProfile.astro';
 import corpus from '../../data/generated/corpus.json';
 
@@ -27,6 +28,7 @@ const hasZodiacSignProfile=Boolean(term.zodiac_sign_profile);
 const hasConceptFamilies=(term.concept_families?.length ?? 0) > 0;
 const hasLotDiagram=(term.concept_families?.some((family) => ['lot-mechanics','abu-mashar-planetary-lots'].includes(family.slug)) ?? false);
 const hasPlanetaryOrderDiagram=(term.concept_families?.some((family) => family.slug === 'traditional-planetary-order') ?? false);
+const hasPlanetaryTimeSequences=(term.planetary_time_sequences?.length ?? 0) > 0;
 const astronomyDiagramSlugs=new Set([
   'celestial-sphere','horizon','meridian','equinoctial','ecliptic','declination','celestial-latitude','celestial-longitude','ecliptic-projection',
   'first-movement','second-movement','direct-motion','station','retrogradation','swift-in-motion','slow-in-motion',
@@ -65,6 +67,7 @@ const citationLabel=(citation) => {
       {hasConceptFamilies && <div class="rail-group"><span class="micro-label">Concept family</span><span class="rail-value">Mapped</span></div>}
       {hasLotDiagram && <div class="rail-group"><span class="micro-label">Lot construction</span><span class="rail-value">Schematic</span></div>}
       {hasPlanetaryOrderDiagram && <div class="rail-group"><span class="micro-label">Planetary order</span><span class="rail-value">Schematic</span></div>}
+      {hasPlanetaryTimeSequences && <div class="rail-group"><span class="micro-label">Planetary time rulers</span><span class="rail-value">Structured</span></div>}
       {hasAstronomyDiagram && <div class="rail-group"><span class="micro-label">Visual explanation</span><span class="rail-value">Schematic</span></div>}
       {(hasReferenceSchemes || hasReferenceAssignments) && <div class="rail-group"><span class="micro-label">Reference data</span><span class="rail-value">Structured</span></div>}
       {hasCycles && <div class="rail-group"><span class="micro-label">Synodic cycle</span><span class="rail-value">Mapped</span></div>}
@@ -106,6 +109,7 @@ const citationLabel=(citation) => {
       {hasConceptFamilies && <ConceptFamilyMap families={term.concept_families} currentSlug={term.slug} />}
       {hasLotDiagram && <LotMechanics families={term.concept_families} />}
       {hasPlanetaryOrderDiagram && <PlanetaryOrder families={term.concept_families} />}
+      {hasPlanetaryTimeSequences && <PlanetaryTimeSequences sequences={term.planetary_time_sequences} />}
       {hasAstronomyDiagram && <AstronomyMechanics slug={term.slug} />}
       {hasZodiacSignProfile && <ZodiacSignProfile profile={term.zodiac_sign_profile} />}
       {hasPlanetProfile && <PlanetProfile profile={term.planet_profile} lots={planetaryLots} />}
@@ -150,6 +154,7 @@ const citationLabel=(citation) => {
       {firstFamilyId && <a href={`#${firstFamilyId}`}>Concept family</a>}
       {hasLotDiagram && <a href="#lot-diagram">Lot construction</a>}
       {hasPlanetaryOrderDiagram && <a href="#planetary-order-diagram">Planetary order</a>}
+      {hasPlanetaryTimeSequences && <a href="#planetary-time-sequences">Planetary days / hours</a>}
       {hasAstronomyDiagram && <a href="#astronomy-diagram">Geometry / visual</a>}
       {hasZodiacSignProfile && <a href="#sign-profile">Zodiac sign profile</a>}
       {hasPlanetProfile && <a href="#planet-profile">Planet profile</a>}

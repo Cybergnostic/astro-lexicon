@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import DignityReference from '../../components/DignityReference.astro';
 import DignityConnections from '../../components/DignityConnections.astro';
 import HistoricalForms from '../../components/HistoricalForms.astro';
+import PlanetProfile from '../../components/PlanetProfile.astro';
 import PlanetaryCycle from '../../components/PlanetaryCycle.astro';
 import corpus from '../../data/generated/corpus.json';
 
@@ -16,6 +17,8 @@ const articleBlocks = article?.blocks ?? article?.sections?.map((section) => ({ 
 const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
 const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?.[0] ?? null;
 const hasHistoricalForms=(term.forms?.length ?? 0) > 0;
+const hasPlanetProfile=Boolean(term.planet_profile);
+const planetaryLots=term.relations?.filter((relation) => relation.direction === 'outgoing' && relation.relation_type === 'associated-planetary-lot') ?? [];
 const hasReferenceSchemes=(term.reference_schemes?.length ?? 0) > 0;
 const hasReferenceAssignments=(term.reference_assignments?.length ?? 0) > 0;
 const hasCycles=(term.cycles?.length ?? 0) > 0;
@@ -40,6 +43,7 @@ const citationLabel=(citation) => {
       <div class="rail-group"><span class="micro-label">Source witnesses</span><span class="rail-value">{sourceAuthors.length}</span></div>
       {article && <div class="rail-group"><span class="micro-label">Teaching article</span><span class="rail-value">Reviewed</span></div>}
       {hasHistoricalForms && <div class="rail-group"><span class="micro-label">Historical terminology</span><span class="rail-value">Structured</span></div>}
+      {hasPlanetProfile && <div class="rail-group"><span class="micro-label">Planet family</span><span class="rail-value">Normalized</span></div>}
       {(hasReferenceSchemes || hasReferenceAssignments) && <div class="rail-group"><span class="micro-label">Reference data</span><span class="rail-value">Structured</span></div>}
       {hasCycles && <div class="rail-group"><span class="micro-label">Synodic cycle</span><span class="rail-value">Mapped</span></div>}
     </aside>
@@ -77,6 +81,7 @@ const citationLabel=(citation) => {
         </section>
       ))}
 
+      {hasPlanetProfile && <PlanetProfile profile={term.planet_profile} lots={planetaryLots} />}
       {hasReferenceSchemes && <DignityReference schemes={term.reference_schemes} />}
       {hasReferenceAssignments && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
       {hasCycles && <PlanetaryCycle cycles={term.cycles} />}
@@ -115,6 +120,7 @@ const citationLabel=(citation) => {
       {!article && <a href="#definition">Definition</a>}
       {article && <a href="#overview">Overview</a>}
       {articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
+      {hasPlanetProfile && <a href="#planet-profile">Planet profile</a>}
       {firstReferenceId && <a href={`#${firstReferenceId}`}>Structured reference</a>}
       {firstCycleId && <a href={`#${firstCycleId}`}>Synodic cycle</a>}
       <a href="#names">Names & forms</a>

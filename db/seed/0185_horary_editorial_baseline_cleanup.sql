@@ -90,8 +90,8 @@ WHERE t.slug IN ('radicality','planetary-hour','lord-of-the-hour')
   );
 
 -- Assign a fresh dense order inside each public page section instead of reusing historical
--- article sort numbers. Historical article blocks can legitimately share a sort number;
--- term_page_blocks cannot.
+-- article sort numbers. Scope the inserts explicitly to the Horary family so generic section
+-- keys such as `role` or `framework` cannot match unrelated composed pages elsewhere.
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
 SELECT ps.id,'article-section',s.section_key,
@@ -104,6 +104,10 @@ SELECT ps.id,'article-section',s.section_key,
 FROM term_page_sections ps
 JOIN term_article_sections s ON s.term_id=ps.term_id
 WHERE ps.status='reviewed'
+  AND ps.term_id IN (SELECT id FROM terms WHERE slug IN (
+    'interrogation','querent','quesited','significator','cosignificator','radicality',
+    'planetary-hour','lord-of-the-hour','horary-astrology'
+  ))
   AND ps.section_key IN ('framework','role','radicality-scope','time-ruler')
   AND s.status IN ('reviewed','published');
 
@@ -115,5 +119,9 @@ SELECT ps.id,'article-table',tb.table_key,'table',1,
 FROM term_page_sections ps
 JOIN term_article_tables tb ON tb.term_id=ps.term_id
 WHERE ps.status='reviewed'
+  AND ps.term_id IN (SELECT id FROM terms WHERE slug IN (
+    'interrogation','querent','quesited','significator','cosignificator','radicality',
+    'planetary-hour','lord-of-the-hour','horary-astrology'
+  ))
   AND ps.section_key IN ('framework','role','radicality-scope','time-ruler')
   AND tb.status IN ('reviewed','published');

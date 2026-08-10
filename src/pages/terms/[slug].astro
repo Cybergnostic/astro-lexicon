@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AstronomyMechanics from '../../components/AstronomyMechanics.astro';
+import ConceptFamilyMap from '../../components/ConceptFamilyMap.astro';
 import DignityReference from '../../components/DignityReference.astro';
 import DignityConnections from '../../components/DignityConnections.astro';
 import HistoricalForms from '../../components/HistoricalForms.astro';
@@ -21,6 +22,7 @@ const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?
 const hasHistoricalForms=(term.forms?.length ?? 0) > 0;
 const hasPlanetProfile=Boolean(term.planet_profile);
 const hasZodiacSignProfile=Boolean(term.zodiac_sign_profile);
+const hasConceptFamilies=(term.concept_families?.length ?? 0) > 0;
 const astronomyDiagramSlugs=new Set([
   'celestial-sphere','horizon','meridian','equinoctial','ecliptic','declination','celestial-latitude','celestial-longitude','ecliptic-projection',
   'first-movement','second-movement','direct-motion','station','retrogradation','swift-in-motion','slow-in-motion',
@@ -38,6 +40,7 @@ const firstReferenceId=hasReferenceSchemes
     ? `dignity-${term.reference_assignments[0].scheme_slug}`
     : null;
 const firstCycleId=hasCycles ? `cycle-${term.cycles[0].slug}` : null;
+const firstFamilyId=hasConceptFamilies ? `family-${term.concept_families[0].slug}` : null;
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
   const pages=citation.page_start ? `pp. ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}` : '';
@@ -55,6 +58,7 @@ const citationLabel=(citation) => {
       {hasHistoricalForms && <div class="rail-group"><span class="micro-label">Historical terminology</span><span class="rail-value">Structured</span></div>}
       {hasPlanetProfile && <div class="rail-group"><span class="micro-label">Planet family</span><span class="rail-value">Normalized</span></div>}
       {hasZodiacSignProfile && <div class="rail-group"><span class="micro-label">Zodiac family</span><span class="rail-value">Normalized</span></div>}
+      {hasConceptFamilies && <div class="rail-group"><span class="micro-label">Concept family</span><span class="rail-value">Mapped</span></div>}
       {hasAstronomyDiagram && <div class="rail-group"><span class="micro-label">Visual explanation</span><span class="rail-value">Schematic</span></div>}
       {(hasReferenceSchemes || hasReferenceAssignments) && <div class="rail-group"><span class="micro-label">Reference data</span><span class="rail-value">Structured</span></div>}
       {hasCycles && <div class="rail-group"><span class="micro-label">Synodic cycle</span><span class="rail-value">Mapped</span></div>}
@@ -93,6 +97,7 @@ const citationLabel=(citation) => {
         </section>
       ))}
 
+      {hasConceptFamilies && <ConceptFamilyMap families={term.concept_families} currentSlug={term.slug} />}
       {hasAstronomyDiagram && <AstronomyMechanics slug={term.slug} />}
       {hasZodiacSignProfile && <ZodiacSignProfile profile={term.zodiac_sign_profile} />}
       {hasPlanetProfile && <PlanetProfile profile={term.planet_profile} lots={planetaryLots} />}
@@ -134,6 +139,7 @@ const citationLabel=(citation) => {
       {!article && <a href="#definition">Definition</a>}
       {article && <a href="#overview">Overview</a>}
       {articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
+      {firstFamilyId && <a href={`#${firstFamilyId}`}>Concept family</a>}
       {hasAstronomyDiagram && <a href="#astronomy-diagram">Geometry / visual</a>}
       {hasZodiacSignProfile && <a href="#sign-profile">Zodiac sign profile</a>}
       {hasPlanetProfile && <a href="#planet-profile">Planet profile</a>}

@@ -67,6 +67,52 @@ def export(db_path: Path, out_path: Path):
             )
         ]
 
+        forms = []
+        for form in con.execute(
+            """SELECT id,language_code,script,form,lemma,transliteration,literal_gloss,
+                      form_type,ambiguity_note,editorial_note
+               FROM term_forms
+               WHERE term_id=? AND status IN ('reviewed','published')
+               ORDER BY language_code,form_type,form COLLATE NOCASE""",
+            (term["id"],),
+        ):
+            item = dict(form)
+            item["renderings"] = [
+                dict(row)
+                for row in con.execute(
+                    """SELECT rendering,rendering_type,scope_note
+                       FROM term_form_renderings
+                       WHERE term_form_id=?
+                       ORDER BY CASE rendering_type
+                         WHEN 'preferred' THEN 0
+                         WHEN 'translation' THEN 1
+                         WHEN 'variant' THEN 2
+                         WHEN 'literal' THEN 3
+                         ELSE 4 END,id""",
+                    (form["id"],),
+                )
+            ]
+            item["attestations"] = [
+                dict(row)
+                for row in con.execute(
+                    """SELECT tfa.source_kind,tfa.tradition_scope,
+                              tfa.external_source_label,tfa.external_source_url,tfa.source_note,
+                              w.slug work_slug,w.title work_title,
+                              a.slug author_slug,a.name author_name,
+                              sp.book,sp.tractate,sp.chapter,sp.section,sp.locator_text
+                       FROM term_form_attestations tfa
+                       LEFT JOIN works w ON w.id=tfa.work_id
+                       LEFT JOIN authors a ON a.id=w.author_id
+                       LEFT JOIN source_passages sp ON sp.id=tfa.source_passage_id
+                       WHERE tfa.term_form_id=? AND tfa.status IN ('reviewed','published')
+                       ORDER BY tfa.id""",
+                    (form["id"],),
+                )
+            ]
+            item.pop("id", None)
+            forms.append(item)
+        record["forms"] = forms
+
         record["symbols"] = [
             dict(row)
             for row in con.execute(
@@ -308,6 +354,9 @@ def export(db_path: Path, out_path: Path):
     reference_scheme_count = con.execute(
         "SELECT COUNT(*) FROM reference_schemes WHERE status IN ('reviewed','published')"
     ).fetchone()[0]
+    historical_form_count = con.execute(
+        "SELECT COUNT(*) FROM term_forms WHERE status IN ('reviewed','published')"
+    ).fetchone()[0]
 
     payload = {
         "meta": {
@@ -317,6 +366,7 @@ def export(db_path: Path, out_path: Path):
             "authors": len(authors),
             "works": len(works),
             "reference_schemes": reference_scheme_count,
+            "historical_forms": historical_form_count,
             "evidence_standard": "Reviewed A/B evidence only",
         },
         "terms": terms,

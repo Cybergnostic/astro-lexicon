@@ -34,7 +34,6 @@ INSERT INTO source_passages
   (edition_id,page_start,page_end,book,chapter,section,locator_text,quote,internal_notes)
 SELECT e.id,NULL,NULL,'Book III','I','Thema mundi','Mathesis III.1',
        'Firmicus gives the Sun at the 15th degree of Leo, Moon at the 15th of Cancer, Saturn at the 15th of Capricorn, Jupiter at the 15th of Sagittarius, Mars at the 15th of Scorpio, Venus at the 15th of Libra, Mercury at the 15th of Virgo, and the horoskopos/Ascendant at the 15th of Cancer.',
-       NULL,
        'Direct primary witness summarized from the public-domain Latin text; no modern copyrighted translation stored.'
 FROM editions e
 JOIN works w ON w.id=e.work_id

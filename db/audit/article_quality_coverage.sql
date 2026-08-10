@@ -54,6 +54,40 @@ SELECT
   SUM(CASE WHEN interpretation_count>=3 AND block_count<3 THEN 1 ELSE 0 END) AS evidence_rich_article_poor
 FROM scored;
 
+-- CTE scope is one SQL statement in SQLite, so the detailed query deliberately repeats
+-- the reviewed/scored definitions instead of referring to the previous statement's CTE.
+WITH reviewed AS (
+  SELECT
+    t.id,
+    t.slug,
+    t.label,
+    t.category,
+    t.entry_type,
+    t.definition_quality,
+    CASE WHEN ta.term_id IS NOT NULL THEN 1 ELSE 0 END AS has_article,
+    COALESCE((
+      SELECT COUNT(*)
+      FROM term_article_sections s
+      WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+    ),0) AS section_count,
+    COALESCE((
+      SELECT COUNT(*)
+      FROM term_article_tables tb
+      WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
+    ),0) AS table_count,
+    COALESCE((
+      SELECT COUNT(*)
+      FROM interpretations i
+      WHERE i.term_id=t.id AND i.status IN ('reviewed','published')
+    ),0) AS interpretation_count
+  FROM terms t
+  LEFT JOIN term_articles ta
+    ON ta.term_id=t.id AND ta.status IN ('reviewed','published')
+  WHERE t.status IN ('reviewed','published')
+), scored AS (
+  SELECT *, section_count + table_count AS block_count
+  FROM reviewed
+)
 SELECT
   slug,
   label,

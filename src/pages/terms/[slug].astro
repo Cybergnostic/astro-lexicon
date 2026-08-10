@@ -25,7 +25,13 @@ const pageComposition = term.page_composition ?? [];
 const hasComposition = pageComposition.length > 0;
 const articleSectionsByKey = new Map((article?.sections ?? []).map((section) => [section.section_key, section]));
 const articleTablesByKey = new Map((article?.tables ?? []).map((table) => [table.table_key, table]));
-const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
+const sourceAuthorSlugs=new Set([
+  ...term.interpretations.map((item)=>item.author_slug),
+  ...(term.forms ?? []).flatMap((form)=>(form.attestations ?? []).map((item)=>item.author_slug)),
+  ...(term.reference_schemes ?? []).map((scheme)=>scheme.author_slug),
+  ...(term.planetary_time_sequences ?? []).map((sequence)=>sequence.author_slug),
+].filter(Boolean));
+const sourceAuthorCount=sourceAuthorSlugs.size;
 const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?.[0] ?? null;
 const hasOverview=Boolean(article?.intro);
 const hasHistoricalForms=(term.forms?.length ?? 0) > 0;
@@ -88,7 +94,7 @@ if (hasRelations) tocItems.push({ href:'#related', label:'Related concepts' });
     <aside class="article-rail" aria-label="Entry information">
       <div class="rail-group"><span class="micro-label">Entry type</span><span class="rail-value">{term.entry_type}</span></div>
       <div class="rail-group"><span class="micro-label">Subject</span><span class="rail-value">{term.category}</span></div>
-      {sourceAuthors.length > 0 && <div class="rail-group"><span class="micro-label">Sources</span><span class="rail-value">{sourceAuthors.length} author{sourceAuthors.length === 1 ? '' : 's'}</span></div>}
+      {sourceAuthorCount > 0 && <div class="rail-group"><span class="micro-label">Source authors</span><span class="rail-value">{sourceAuthorCount} author{sourceAuthorCount === 1 ? '' : 's'}</span></div>}
     </aside>
 
     <article class="article">

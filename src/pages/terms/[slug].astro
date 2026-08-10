@@ -24,6 +24,8 @@ const articleBlocks = article?.blocks ?? article?.sections?.map((section) => ({ 
 const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
 const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?.[0] ?? null;
 const hasHistoricalForms=(term.forms?.length ?? 0) > 0;
+const hasAliases=(term.aliases?.length ?? 0) > 0;
+const hasNames=hasHistoricalForms || hasAliases;
 const hasPlanetProfile=Boolean(term.planet_profile);
 const hasZodiacSignProfile=Boolean(term.zodiac_sign_profile);
 const hasConceptFamilies=(term.concept_families?.length ?? 0) > 0;
@@ -42,6 +44,8 @@ const planetaryLots=term.relations?.filter((relation) => relation.direction === 
 const hasReferenceSchemes=(term.reference_schemes?.length ?? 0) > 0;
 const hasReferenceAssignments=(term.reference_assignments?.length ?? 0) > 0;
 const hasCycles=(term.cycles?.length ?? 0) > 0;
+const hasSources=(term.interpretations?.length ?? 0) > 0;
+const hasRelations=(term.relations?.length ?? 0) > 0;
 const firstReferenceId=hasReferenceSchemes
   ? `reference-${term.reference_schemes.find((scheme) => scheme.assignments.some((item) => item.assignment_type !== 'term'))?.slug ?? 'terms-comparison'}`
   : hasReferenceAssignments
@@ -57,23 +61,10 @@ const citationLabel=(citation) => {
 ---
 <BaseLayout title={`${term.label} — Astrological Lexicon`} description={term.short_definition}>
   <div class="shell page-grid">
-    <aside class="article-rail" aria-label="Entry metadata">
+    <aside class="article-rail" aria-label="Entry information">
       <div class="rail-group"><span class="micro-label">Entry type</span><span class="rail-value">{term.entry_type}</span></div>
       <div class="rail-group"><span class="micro-label">Subject</span><span class="rail-value">{term.category}</span></div>
-      <div class="rail-group"><span class="micro-label">Definition quality</span><span class="rail-value">{term.definition_quality}/5</span></div>
-      <div class="rail-group"><span class="micro-label">Source witnesses</span><span class="rail-value">{sourceAuthors.length}</span></div>
-      {article && <div class="rail-group"><span class="micro-label">Teaching article</span><span class="rail-value">Reviewed</span></div>}
-      {hasHistoricalForms && <div class="rail-group"><span class="micro-label">Historical terminology</span><span class="rail-value">Structured</span></div>}
-      {hasPlanetProfile && <div class="rail-group"><span class="micro-label">Planet family</span><span class="rail-value">Normalized</span></div>}
-      {hasZodiacSignProfile && <div class="rail-group"><span class="micro-label">Zodiac family</span><span class="rail-value">Normalized</span></div>}
-      {hasConceptFamilies && <div class="rail-group"><span class="micro-label">Concept family</span><span class="rail-value">Mapped</span></div>}
-      {hasLotDiagram && <div class="rail-group"><span class="micro-label">Lot construction</span><span class="rail-value">Schematic</span></div>}
-      {hasPlanetaryOrderDiagram && <div class="rail-group"><span class="micro-label">Planetary order</span><span class="rail-value">Schematic</span></div>}
-      {hasPlanetaryTimeSequences && <div class="rail-group"><span class="micro-label">Planetary time rulers</span><span class="rail-value">Structured</span></div>}
-      {hasZodiacRelations && <div class="rail-group"><span class="micro-label">Sign relations</span><span class="rail-value">Structured</span></div>}
-      {hasAstronomyDiagram && <div class="rail-group"><span class="micro-label">Visual explanation</span><span class="rail-value">Schematic</span></div>}
-      {(hasReferenceSchemes || hasReferenceAssignments) && <div class="rail-group"><span class="micro-label">Reference data</span><span class="rail-value">Structured</span></div>}
-      {hasCycles && <div class="rail-group"><span class="micro-label">Synodic cycle</span><span class="rail-value">Mapped</span></div>}
+      {sourceAuthors.length > 0 && <div class="rail-group"><span class="micro-label">Sources</span><span class="rail-value">{sourceAuthors.length} author{sourceAuthors.length === 1 ? '' : 's'}</span></div>}
     </aside>
 
     <article class="article">
@@ -84,7 +75,7 @@ const citationLabel=(citation) => {
       </div>
       <p class="lede">{term.short_definition}</p>
 
-      {!article && <div class="definition-panel" id="definition"><p class="micro-label">Canonical definition</p><p>{term.short_definition}</p></div>}
+      {!article && <div class="definition-panel" id="definition"><p class="micro-label">Definition</p><p>{term.short_definition}</p></div>}
 
       {article && <section id="overview" class="article-overview">
         <h2>Overview</h2>
@@ -121,33 +112,28 @@ const citationLabel=(citation) => {
       {hasReferenceAssignments && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
       {hasCycles && <PlanetaryCycle cycles={term.cycles} />}
 
-      <section id="names">
+      {hasNames && <section id="names">
         <h2>Names & historical forms</h2>
         {hasHistoricalForms && <HistoricalForms forms={term.forms} />}
-        {term.aliases.length > 0 && <div class="alias-group">
-          <h3>{hasHistoricalForms ? 'Other names and navigation aliases' : 'Recorded names and aliases'}</h3>
+        {hasAliases && <div class="alias-group">
+          {hasHistoricalForms && <h3>Other names</h3>}
           <div class="term-links">{term.aliases.map((alias)=><span title={alias.scope_note || undefined}>{alias.label}</span>)}</div>
         </div>}
-        {!hasHistoricalForms && term.aliases.length === 0 && <p class="meta">No separate historical form or alias is currently recorded for this entry.</p>}
-      </section>
+      </section>}
 
-      <section id="sources">
-        <h2>Source accounts</h2>
+      {hasSources && <section id="sources">
+        <h2>Sources</h2>
         {term.interpretations.map((item)=><div class="source-block">
-          <div class="source-head"><h3>{item.author_name} · <em>{item.work_title}</em></h3><span class="source-label">Evidence {item.evidence_grade}</span></div>
+          <div class="source-head"><h3>{item.author_name} · <em>{item.work_title}</em></h3></div>
           <p>{item.summary}</p>
-          {item.citations.map((citation)=><p class="source-cite"><span class="evidence">{item.evidence_grade}</span>{citationLabel(citation)}{citation.edition_label ? ` · ${citation.edition_label}` : ''}</p>)}
+          {item.citations.map((citation)=><p class="source-cite">{citationLabel(citation)}{citation.edition_label ? ` · ${citation.edition_label}` : ''}</p>)}
         </div>)}
-      </section>
+      </section>}
 
-      {term.interpretations.length > 1 && <section id="comparison"><h2>Historical comparison</h2><p>This concept is attested by {sourceAuthors.length} source witness{sourceAuthors.length === 1 ? '' : 'es'} in the current corpus. Their accounts are kept separately above so differences in terminology, mechanism and emphasis remain attributable rather than being collapsed into the canonical definition.</p></section>}
-
-      <section id="related">
+      {hasRelations && <section id="related">
         <h2>Related concepts</h2>
-        {term.relations.length ? <div class="term-links">{term.relations.map((relation)=><a href={`/terms/${relation.target_slug}/`} title={relation.note || undefined}>{relation.target_label}</a>)}</div> : <p class="meta">No reviewed term relations are currently recorded.</p>}
-      </section>
-
-      {term.editorial_notes && <section id="editorial"><h2>Editorial note</h2><p>{term.editorial_notes}</p></section>}
+        <div class="term-links">{term.relations.map((relation)=><a href={`/terms/${relation.target_slug}/`} title={relation.note || undefined}>{relation.target_label}</a>)}</div>
+      </section>}
     </article>
 
     <aside class="toc">
@@ -163,13 +149,11 @@ const citationLabel=(citation) => {
       {hasAstronomyDiagram && <a href="#astronomy-diagram">Geometry / visual</a>}
       {hasZodiacSignProfile && <a href="#sign-profile">Zodiac sign profile</a>}
       {hasPlanetProfile && <a href="#planet-profile">Planet profile</a>}
-      {firstReferenceId && <a href={`#${firstReferenceId}`}>Structured reference</a>}
+      {firstReferenceId && <a href={`#${firstReferenceId}`}>Reference tables</a>}
       {firstCycleId && <a href={`#${firstCycleId}`}>Synodic cycle</a>}
-      <a href="#names">Names & forms</a>
-      <a href="#sources">Source accounts</a>
-      {term.interpretations.length > 1 && <a href="#comparison">Comparison</a>}
-      <a href="#related">Related concepts</a>
-      {term.editorial_notes && <a href="#editorial">Editorial note</a>}
+      {hasNames && <a href="#names">Names & forms</a>}
+      {hasSources && <a href="#sources">Sources</a>}
+      {hasRelations && <a href="#related">Related concepts</a>}
     </aside>
   </div>
 </BaseLayout>
@@ -177,7 +161,7 @@ const citationLabel=(citation) => {
 <style>
   .title-row{display:flex;align-items:baseline;gap:1rem}
   .title-row h1{margin-right:0}
-  .entry-glyph{font-size:clamp(2rem,5vw,4rem);line-height:1;font-family:"Noto Sans Symbols 2","Segoe UI Symbol","DejaVu Sans",sans-serif;color:var(--muted);font-weight:400}
+  .entry-glyph{font-size:clamp(2rem,5vw,4rem);line-height:1;font-family:var(--glyph-font,"DejaVu Sans","Noto Sans Symbols 2","Segoe UI Symbol",sans-serif);color:var(--muted);font-weight:400}
   .alias-group{margin-top:1.2rem}.alias-group h3{font-size:1rem;margin-bottom:.55rem}
   .table-caption{margin:-.25rem 0 1rem;color:var(--muted);font-size:.92rem;max-width:42rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
@@ -185,7 +169,7 @@ const citationLabel=(citation) => {
   .article-table th,.article-table td{padding:.78rem .85rem;text-align:left;vertical-align:top;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
   .article-table th:last-child,.article-table td:last-child{border-right:0}
   .article-table tbody tr:last-child td{border-bottom:0}
-  .article-table th{font:700 .68rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.07em;background:var(--paper-deep);white-space:nowrap}
+  .article-table th{font:700 .68rem/1.35 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;background:var(--paper-deep);white-space:nowrap}
   .article-table td:first-child{font-weight:600}
   .table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
   @media(max-width:720px){.article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}.entry-glyph{font-size:2.4rem}}

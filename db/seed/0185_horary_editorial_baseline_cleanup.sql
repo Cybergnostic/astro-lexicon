@@ -40,9 +40,6 @@ DELETE FROM term_article_sections
 WHERE term_id=(SELECT id FROM terms WHERE slug='querent')
   AND section_key='contrast';
 
--- The broad Horary Astrology page already receives the structured role vocabulary table.
--- Keep that useful table; role pages themselves should not repeat it.
-
 -- -----------------------------------------------------------------------------
 -- EXPLICIT PAGE COMPOSITION FOR THE HORARY VOCABULARY FAMILY
 -- -----------------------------------------------------------------------------
@@ -92,9 +89,9 @@ WHERE t.slug IN ('radicality','planetary-hour','lord-of-the-hour')
     SELECT 1 FROM term_article_tables tb WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
   );
 
--- Generic block insertion for the explicit compositions above. First prose block flows as a
--- paragraph; subsequent distinctions become subsections. Tables use a separate high sort
--- range so they can never collide with article-section sort orders.
+-- Assign a fresh dense order inside each public page section instead of reusing historical
+-- article sort numbers. Historical article blocks can legitimately share a sort number;
+-- term_page_blocks cannot.
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
 SELECT ps.id,'article-section',s.section_key,
@@ -102,7 +99,8 @@ SELECT ps.id,'article-section',s.section_key,
             THEN 'paragraph' ELSE 'subsection' END,
        CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published'))
             THEN 0 ELSE 1 END,
-       s.sort_order,'reviewed','Editorial Baseline v1 horary composition.'
+       10 * ROW_NUMBER() OVER (PARTITION BY ps.id ORDER BY s.sort_order, s.id),
+       'reviewed','Editorial Baseline v1 horary composition.'
 FROM term_page_sections ps
 JOIN term_article_sections s ON s.term_id=ps.term_id
 WHERE ps.status='reviewed'
@@ -111,7 +109,9 @@ WHERE ps.status='reviewed'
 
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
-SELECT ps.id,'article-table',tb.table_key,'table',1,10000+tb.sort_order,'reviewed','Editorial Baseline v1 horary composition.'
+SELECT ps.id,'article-table',tb.table_key,'table',1,
+       10000 + 10 * ROW_NUMBER() OVER (PARTITION BY ps.id ORDER BY tb.sort_order, tb.id),
+       'reviewed','Editorial Baseline v1 horary composition.'
 FROM term_page_sections ps
 JOIN term_article_tables tb ON tb.term_id=ps.term_id
 WHERE ps.status='reviewed'

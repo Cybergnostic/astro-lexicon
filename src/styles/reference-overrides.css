@@ -6,139 +6,36 @@
   font-family:var(--font-serif);
 }
 
-body{
-  font-family:var(--font-serif);
-  font-optical-sizing:auto;
-  font-kerning:normal;
-}
+body{font-family:var(--font-serif);font-optical-sizing:auto;font-kerning:normal}
+h1,h2,h3,h4,h5,h6,.hero-deck,.page-deck,.lede,.definition-panel,.source-block{font-family:var(--font-serif)}
 
-h1,h2,h3,h4,h5,h6,
-.hero-deck,.page-deck,.lede,.definition-panel,.source-block{
-  font-family:var(--font-serif);
-}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 
-.sr-only{
-  position:absolute!important;
-  width:1px!important;
-  height:1px!important;
-  padding:0!important;
-  margin:-1px!important;
-  overflow:hidden!important;
-  clip:rect(0,0,0,0)!important;
-  white-space:nowrap!important;
-  border:0!important;
-}
+/* Structured components draw their own header rules. */
+.article :is(.family-head,.reference-head,.profile-head,.connection-head,.cycle-head,.time-head,.relation-head) h2{border-top:0;padding-top:0}
 
-/* Structured components draw their own header rules. Prevent the generic article h2
-   treatment from creating a second rule and extra vertical padding inside them. */
-.article :is(
-  .family-head,
-  .reference-head,
-  .profile-head,
-  .connection-head,
-  .cycle-head,
-  .time-head,
-  .relation-head
-) h2{
-  border-top:0;
-  padding-top:0;
-}
+/* Diagram provenance such as "original teaching schematic" is implementation metadata,
+   not part of the encyclopedia article. */
+.article .visual-head>.micro-label{display:none}
+.article .visual-head>h2{margin-top:0}
 
-/* Editorial UI text should be quiet and legible, not look like source code. */
-.nav,
-.hero-kicker,
-.eyebrow,
-.micro-label,
-.stat-label,
-.source-label,
-.toc,
-.count{
-  font-family:var(--font-ui)!important;
-}
+.nav,.hero-kicker,.eyebrow,.micro-label,.stat-label,.source-label,.toc,.count{font-family:var(--font-ui)!important}
 
-/* Keep symbols visually consistent across generated reference systems. DejaVu Sans is
-   preferred first because it covers the classical astrological Unicode set consistently
-   on the Linux/browser stack used to review this project. */
-.astro-glyph,
-.planet-glyph,
-.sign-glyph,
-.entry-glyph,
-.planet-cell>a>span:first-child,
-.comparison-glyph span{
-  font-family:var(--glyph-font)!important;
-  font-weight:400!important;
-}
+.astro-glyph,.planet-glyph,.sign-glyph,.entry-glyph,.planet-cell>a>span:first-child,.comparison-glyph span{font-family:var(--glyph-font)!important;font-weight:400!important}
 
-/* The master rulership matrix is a reading table, not a terminal dump. Component-local
-   rules intentionally stay compact; these global editorial overrides establish the final
-   type scale after all structured components are bundled. */
-.article .dignity-matrix{
-  font-family:var(--font-ui)!important;
-  font-size:.84rem!important;
-  line-height:1.25!important;
-}
-.article .dignity-matrix th,
-.article .dignity-matrix td{
-  height:3.8rem!important;
-}
-.article .dignity-matrix thead th{
-  font-family:var(--font-ui)!important;
-  font-size:.64rem!important;
-  line-height:1.2!important;
-  letter-spacing:.045em!important;
-  font-weight:700!important;
-}
-.article .dignity-matrix .system-head th{
-  height:1.7rem!important;
-  font-size:.58rem!important;
-  letter-spacing:.055em!important;
-}
-.article .dignity-matrix .sub-head th{
-  height:1.8rem!important;
-  font-size:.61rem!important;
-}
-.article .dignity-matrix .sign-cell .sign-glyph{
-  font-size:1.52rem!important;
-}
-.article .dignity-matrix .sign-cell span:last-child{
-  font-family:var(--font-ui)!important;
-  font-size:.74rem!important;
-  font-weight:650!important;
-  letter-spacing:.025em!important;
-}
-.article .dignity-matrix .planet-cell>a>span:first-child,
-.article .dignity-matrix .bound-cell .planet-glyph{
-  font-size:1.48rem!important;
-}
-.article .dignity-matrix .exact-cell small,
-.article .dignity-matrix .bound-cell small,
-.article .term-strip small{
-  font-family:var(--font-data)!important;
-  font-size:.57rem!important;
-  line-height:1.05!important;
-}
-.article .matrix-key{
-  font-family:var(--font-ui)!important;
-  font-size:.72rem!important;
-  line-height:1.45!important;
-}
+.article .dignity-matrix{font-family:var(--font-ui)!important;font-size:.84rem!important;line-height:1.25!important}
+.article .dignity-matrix th,.article .dignity-matrix td{height:3.8rem!important}
+.article .dignity-matrix thead th{font-family:var(--font-ui)!important;font-size:.64rem!important;line-height:1.2!important;letter-spacing:.045em!important;font-weight:700!important}
+.article .dignity-matrix .system-head th{height:1.7rem!important;font-size:.58rem!important;letter-spacing:.055em!important}
+.article .dignity-matrix .sub-head th{height:1.8rem!important;font-size:.61rem!important}
+.article .dignity-matrix .sign-cell .sign-glyph{font-size:1.52rem!important}
+.article .dignity-matrix .sign-cell span:last-child{font-family:var(--font-ui)!important;font-size:.74rem!important;font-weight:650!important;letter-spacing:.025em!important}
+.article .dignity-matrix .planet-cell>a>span:first-child,.article .dignity-matrix .bound-cell .planet-glyph{font-size:1.48rem!important}
+.article .dignity-matrix .exact-cell small,.article .dignity-matrix .bound-cell small,.article .term-strip small{font-family:var(--font-data)!important;font-size:.57rem!important;line-height:1.05!important}
+.article .matrix-key{font-family:var(--font-ui)!important;font-size:.72rem!important;line-height:1.45!important}
 
-/* Secondary comparison tables should use the same visual language as the main matrix. */
-.article :is(.comparison-table,.terms-table){
-  font-family:var(--font-ui)!important;
-  font-size:.86rem!important;
-}
-.article :is(.comparison-table,.terms-table) thead th{
-  font-family:var(--font-ui)!important;
-  font-size:.65rem!important;
-  letter-spacing:.04em!important;
-}
-.article .comparison-glyph span,
-.article .term-strip .planet-glyph{
-  font-size:1.32rem!important;
-}
+.article :is(.comparison-table,.terms-table){font-family:var(--font-ui)!important;font-size:.86rem!important}
+.article :is(.comparison-table,.terms-table) thead th{font-family:var(--font-ui)!important;font-size:.65rem!important;letter-spacing:.04em!important}
+.article .comparison-glyph span,.article .term-strip .planet-glyph{font-size:1.32rem!important}
 
-@media(max-width:720px){
-  .article .dignity-matrix{font-size:.8rem!important}
-  .article .dignity-matrix thead th{font-size:.61rem!important}
-}
+@media(max-width:720px){.article .dignity-matrix{font-size:.8rem!important}.article .dignity-matrix thead th{font-size:.61rem!important}}

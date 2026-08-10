@@ -12,6 +12,8 @@ The project compares how technical terms are defined and used across historical 
 - Guido Bonatti — *Liber Astronomiae*
 - William Lilly — *Christian Astrology*
 
+Additional public witnesses may be onboarded as needed for unresolved terminology or doctrine. Firmicus Maternus has now been added as a partial source for the Thema Mundi.
+
 Source PDFs are not stored in this repository.
 
 ## Supplemental private study corpus
@@ -34,7 +36,7 @@ The important boundary is between **knowledge** and **authored expression or met
 
 The private study corpus itself is not stored in this repository.
 
-## Scope rule: this is a term encyclopedia
+## Scope rule: this is a term encyclopedia, not an analysis manual
 
 The project extracts and explains **named terms, technical concepts, classifications, historical terminology, synonyms, source variants and historically established techniques**.
 
@@ -60,7 +62,8 @@ A procedure belongs in an entry only as far as needed to define a named concept�
 - Translator and editor commentary is not attributed to the historical author.
 - Editorial review is required before extracted material is treated as canonical.
 - Private teaching material may guide and inform public synthesis, but copyrighted phrasing and proprietary methodology are not reproduced.
-- Source-specific numerical thresholds, formulas and classification tables are labeled as source-specific when the tradition is not uniform.
+- Source-specific numerical thresholds, formulas, dignity systems and classification tables are labeled as source-specific when the tradition is not uniform.
+- Structured astrological reference data should live canonically in SQLite when the same facts need to appear on multiple pages, rather than being duplicated as hand-written article prose or JSON tables.
 
 ## Evidence quality is not article quality
 
@@ -80,80 +83,186 @@ A term can have an excellent canonical definition, A-grade historical evidence, 
 
 The public frontend should not repeat the same `short_definition` as both a lead and a visible “Canonical definition” section. The canonical definition remains valuable internally for indexing, normalization, search, APIs, and editorial control; the public article body should add explanatory value rather than duplicate it.
 
-The canonical schema includes reviewed **term articles**, ordered prose sections, and first-class structured article tables. Tables are used selectively for information that is genuinely comparative or reference-like: dignity systems, classification families, formulas, planetary roles, source variants, and similar material.
-
-## Editorial evidence standard
-
-- **A — definition:** the source gives an actual definition, recognition rule or technical mechanism.
-- **B — substantial explanation:** the source does not give a compact definition but adds enough criteria, structure, distinctions or exceptions to materially explain the concept.
-- **C — mention/context only:** retained in the searchable source corpus when useful, but not stored as an encyclopedia interpretation.
-
-Public historical interpretations are expected to have reviewed A/B evidence. This evidence grade is independent of the eventual expository completeness of the public article.
-
 ## Repository structure
 
-- `db/migrations/` — canonical SQLite/D1 schema and editorial-review fields
-- `db/seed/` — source extraction, cross-source editorial revision, reviewed ontology, and reviewed article seeds
+- `db/migrations/` — canonical SQLite schema and editorial/reference-system fields
+- `db/seed/` — source extraction, cross-source editorial revision, reviewed ontology, article seeds and structured reference datasets
 - `db/audit/` — read-only editorial/integrity audits, including lot-formula and article-quality coverage
 - `docs/extraction/` — sequential source-coverage ledgers
-- `docs/revision/` — cross-source editorial decisions, curriculum audits, stage closures and checkpoint status
+- `docs/revision/` — cross-source editorial decisions, curriculum audits, stage closures, checkpoints and bird's-eye review plans
 - `docs/` — ontology, definition, citation, extraction, and source-onboarding policies
 - `scripts/generate_frontend_data.py` — reproducible SQLite → public frontend-data generator with source-fingerprint caching
 - `src/` — static Astro frontend generated from the canonical corpus
 
 Generated frontend JSON is not a second source of truth. The SQL migrations and ordered seeds remain canonical.
 
-## Current status — encyclopedia-quality checkpoint
+## Previous checkpoint
 
-The substantive text of all five initial historical sources has been read sequentially, extracted and cross-source reviewed. The 40-lesson clean private curriculum has also completed its role as a systematic **term-discovery map**. The current canonical corpus is designed to rebuild reproducibly from an empty SQLite database, and the public Astro site is generated from that canonical corpus.
+The first large encyclopedia-quality conversion/corroboration pass is complete. It systematically converted the initial corpus and private curriculum term-discovery map into source-backed encyclopedia entries, structured tables, reconciled lot identities, source-sensitive formulas, connective vocabulary and a usable generated frontend.
 
-The first large encyclopedia-quality conversion/corroboration pass is now at checkpoint. Completed work includes:
+The detailed checkpoint is recorded in:
 
-- source-by-source extraction of the initial five-source corpus;
-- cross-source normalization of core terminology, dignities, sect, signs, houses/places, aspects, lots, horary, natal and predictive terminology;
-- explicit preservation of technical disagreements and false friends;
-- source-sensitive calculated-lot formulas with explicit day/night reversals and variant streams;
-- direct historical reconciliation of many curriculum-discovered lots, including Substance, family/marriage lots, rank/authority lots, planetary lots, travel/knowledge/social lots, Courage/Victory/Necessity streams, and Eros;
-- clear provisional status for unresolved identities such as the current Divorce lot formula rather than presenting uncertain material as canonical;
-- expanded encyclopedia articles for all twelve zodiac signs, seven traditional planets, major aspects, zodiac framework terms, predictive techniques, specialized historical terminology, houses/places, secondary aspect geometry, ascensional relations, fixed-star/eclipses, sign classifications, qualities/elements, astronomical foundations, and astrology branch taxonomy;
-- structured tables for dignities, planet conditions, classifications, lot formulas, predictive roles, sect, solar conditions, motion, reception/aspect mechanics, house strength and other inherently comparative material;
-- source-specific numerical presentation where needed, including Lilly-specific solar-condition thresholds and Lilly-specific triplicity rulers rather than universalizing one author’s scheme;
-- source-backed connective vocabulary including Prenatal Syzygy, Lord of the Geniture, Dispositor, Perfection, Translation of Light, Collection of Light, Prohibition, Frustration, Refrenation/Refranation, Abscission of Light, Querent, Quesited, Significator, Cosignificator, Radicality, Planetary Hour, Lord of the Hour, Testimony, Fortitude, Debility, Natural Significator, Accidental Signification, Radix, and Interrogation;
-- separation of easily confused identities such as Radix vs Radicality, perfect aspect vs horary Perfection, Significator vs its specialized directional use, Eros vs Abū Maʿshar’s Venus planetary lot, and the several Courage/Victory/Necessity lots;
-- public-source expansion of Hyleg/Apheta, Hylegical Place, Alcochoden and Anareta while keeping sensitive lifespan/death material descriptive rather than operational;
-- a table-aware article-quality audit that prioritizes evidence-rich/article-poor entries;
-- a non-blocking lot-formula coverage audit integrated into the corpus audit;
-- generated A–Z term index, canonical term pages, author pages, work pages and bibliography-oriented work navigation;
-- responsive structured-table rendering in the public term pages;
-- source-fingerprint caching in `scripts/generate_frontend_data.py` so unchanged `npm run dev` / `npm run build` runs do not needlessly rebuild the corpus;
-- ordered seed development now extends through `0151_lilly_triplicity_rulers_reference.sql`.
+`docs/revision/encyclopedia_quality_checkpoint_2026-08-09.md`
 
-A detailed checkpoint is recorded in `docs/revision/encyclopedia_quality_checkpoint_2026-08-09.md`.
+That pass deliberately ended before lower-priority polishing became open-ended.
 
-## What remains unresolved at this checkpoint
+## Current phase: bird's-eye encyclopedia review
 
-A checkpoint does not mean the encyclopedia is finished. It means the first systematic conversion/corroboration pass has reached diminishing returns and the remaining work is better handled as targeted expansion.
+The active phase is now a **whole-encyclopedia editorial architecture review**.
 
-Known open items include:
+The previous workflow often asked questions from inside the database: Is a term present? Is it sourced? Does it have an article? The new pass asks a different question from the reader's point of view:
 
-- **Lot / Part of Divorce:** a modern traditional formula has been located, but a suitable premodern witness for the currently normalized historical identity has not yet been established; keep the historical formula status provisional.
-- **Solar Directions / Divisions terminology:** the current initial corpus did not yield enough direct evidence to force a source reconciliation; keep source-sensitive until a better witness is onboarded.
-- **Ptolemaic Ages exact tables:** preserve source-specificity rather than silently presenting one later table as universal.
-- **Triplicity ruler variants:** Lilly’s scheme is now directly documented, but other historical systems should be added under their own source witnesses rather than merged into one universal table.
-- **Lower-priority thin entries:** the article-quality audit will continue to surface P2/P3/P4 entries as the corpus grows; these are no longer blockers for this checkpoint.
-- **Presentation wording cleanup:** some early converted headings and prose can still be improved later on the visible frontend without reopening the underlying canonical/source work.
+> If a reader knew nothing about this subject and opened this entry—or several related entries together—would the doctrine actually make sense as a coherent system?
 
-## Next phase
+For every major family and important entry, review five dimensions together:
 
-After this checkpoint, development can proceed in several parallel but clearly separated directions:
+1. **Definition** — is the lead immediately clear and accurate?
+2. **Explanation** — does the reader understand how the concept works and why it matters?
+3. **Reference data** — are the tables, degree ranges, formulas, phases or classifications actually present?
+4. **Connections** — is the entry wired to the planets, signs, dignities, phases, techniques and related concepts it belongs to?
+5. **Presentation** — would a diagram, glyph, comparison table or other visual make the concept easier to understand?
 
-1. **New historical-source onboarding** — add books/authors and let them enrich or challenge existing canonical entries.
-2. **Targeted unresolved-term research** — resolve specific provisional identities only when new evidence warrants it.
-3. **Article-quality refinement** — use the audit to improve remaining thin entries and visible prose rather than reprocessing the whole corpus.
-4. **Frontend/reference UX** — improve discovery, cross-linking, bibliography navigation, search, tables, diagrams and other reader-facing presentation.
-5. **Corpus scaling** — new books should enter through the same provenance-preserving extraction/review pipeline rather than through ad-hoc manual rewriting.
+External web research is encouraged in this phase as an **editorial discovery and inspiration layer**. Strong reference sites, astronomy resources, scholarly papers, historical dictionaries and specialist traditional-astrology sites may be used to identify what a good entry should cover and what questions readers expect answered. Their prose, diagrams and organization are not copied. Historical claims remain grounded in primary/historical sources or reliable scholarship.
 
-The long-term target is a historical reference work in which a reader can both verify **where a doctrine comes from** and actually **learn what the doctrine means and how it works**.
+Useful external benchmarks include:
+
+- Skyscript for reader-facing completeness and traditional-reference pedagogy;
+- HOROI and relevant scholarship for Hellenistic terminology, Greek technical vocabulary and source precision;
+- reliable astronomy references for physical and observational mechanics;
+- the project's own historical corpus for canonical attribution and source comparison.
+
+The bird's-eye review plan is recorded in:
+
+`docs/revision/birds_eye_encyclopedia_review.md`
+
+## Bird's-eye implementation already completed
+
+The first structural block of this phase is already on `main`:
+
+- a normalized reference-data layer for schemes, zodiac/dignity assignments, planetary cycles/phases, symbols and media;
+- a complete Lilly/Ptolemaic essential-dignity scheme stored as structured data rather than only article tables;
+- domicile, detriment, exaltation and fall assignments, including exact exaltation/fall degrees where present in Lilly's table;
+- Lilly's sect-dependent triplicity rulers;
+- all 60 term/bound ranges in the Lilly/Ptolemaic scheme;
+- all 36 planetary faces/decans;
+- Unicode planetary and zodiac glyphs;
+- generated whole-system Essential Dignity display;
+- planet-centric and sign-centric dignity views built from the same canonical reference rows;
+- glyphs displayed on planet/sign entries;
+- a source-backed Thema Mundi entry using Firmicus as a partial public witness;
+- structured solar synodic-cycle records for the Moon, Mercury, Venus, Mars, Jupiter and Saturn;
+- reader-facing planetary-cycle phase sequences on planet pages.
+
+Recent commits at the start of this phase include:
+
+- `21a53b4002f67a0630201ade00a3c3b68457ff21` — normalized reference-system schema
+- `03c25680682dcf3a0cf9659e0cda35862813d1fb` — complete Lilly/Ptolemaic dignity data + glyphs
+- `761a73ad01b46687bb52257b51860af866dd495e` — generator export for reference systems/cycles/media
+- `e075351b68e1a8b748bbc04acfe336485e9eb5cd` — complete Essential Dignity component
+- `a14dfbaa19ec0529703ea9381084ec4bdbff13e2` — planet/sign dignity summary component
+- `612801f6c6db7841fce51a0147625c510c083ef3` — frontend dignity/glyph wiring
+- `df5ba4558e3d1e7b6252b6eda6242c0f2c102f79` — Thema Mundi + Firmicus witness
+- `9e5c4943b26cf9e16cbf1f0e600259a3edbf95c4` — planetary synodic-cycle data
+- `2a50c366a2d69733a2a8c7024121aef45f6982f5` and `984e98a42335cbfc3613f984e980e176c01195f5` — synodic-cycle frontend
+- `a55774096faa88ce83ba07f90dd2a957d575c08e` — bird's-eye review plan
+
+## Immediate next work
+
+The next chat/pass should continue in this order unless new evidence changes the priority:
+
+### 1. Add Egyptian terms/bounds
+
+Egyptian terms must be represented as a **separate named historical reference scheme**, not merged with the Lilly/Ptolemaic term table. Verify the degree ranges against reliable historical/scholarly evidence, store them structurally in the reference tables, and let the frontend distinguish/compare schemes explicitly.
+
+Do not silently call one scheme simply “the terms.”
+
+### 2. Establish the Greek technical-terminology layer
+
+The encyclopedia should preserve original-language technical forms where useful, especially for Hellenistic vocabulary.
+
+Do not merely translate the entire English lexicon into Greek. Extract historically attested technical forms and record, where evidence permits:
+
+- Greek lemma/form;
+- Greek script;
+- transliteration;
+- literal sense or gloss;
+- English rendering(s);
+- source/work or tradition scope;
+- relationship to the canonical English term;
+- translation ambiguity or false-friend notes.
+
+Before overloading `aliases`, assess whether a dedicated `term_forms` / historical-language-form schema is cleaner. HOROI and scholarly/primary sources can guide this work, but do not treat modern reconstructed terminology as source-attested without evidence.
+
+### 3. Review the seven traditional planets as one family
+
+This is the first complete family-level bird's-eye review.
+
+Inspect Sun, Moon, Mercury, Venus, Mars, Jupiter and Saturn side-by-side. Establish a consistent editorial model for what every planetary entry should contain, while preserving genuine source-specific variation.
+
+At minimum examine:
+
+- clear human-readable definition;
+- astronomical/observational identity;
+- glyph and naming forms;
+- traditional qualities/nature;
+- sect;
+- benefic/malefic and other historical classifications;
+- domicile/exaltation/detriment/fall;
+- triplicity, terms and faces through structured reference data;
+- synodic cycle and visibility/motion phases;
+- oriental/occidental distinctions where applicable;
+- station/retrogradation/direct motion where applicable;
+- historical differences between authors;
+- associated planetary lots and related doctrine;
+- useful diagrams or other visual teaching aids.
+
+Use external reference sites and astronomy sources aggressively to discover missing dimensions and improve pedagogy, but write original prose and source historical claims properly.
+
+### 4. Then review the twelve signs and zodiac as a family
+
+Apply the same method after the planetary family establishes the template. Sign pages should become coherent system pages rather than disconnected descriptions, with structured relations to element/triplicity, modality, gender, domicile/exaltation/debility, historical sign-pair relations, rising-time classifications, glyphs and relevant cosmological structure.
+
+### 5. Continue family-by-family
+
+After planets and signs, proceed through major coherent families such as:
+
+- planetary conditions and motion;
+- aspects/configurations;
+- houses/places;
+- lots;
+- astronomical foundations;
+- predictive terminology;
+- horary vocabulary;
+- sect, qualities and temperament;
+- specialized historical terminology.
+
+Periodically zoom back out and judge whether the encyclopedia teaches the **system**, not just whether individual entries pass a database audit.
+
+## Definition-quality rule for this phase
+
+Definitions should answer **“what is this?”** immediately and naturally. Avoid ontology-style leads such as “a classification denoting…” when a direct sentence is clearer.
+
+For example, a good peregrine definition should immediately explain that the planet has none of **its own** essential dignities at that degree. Occupying another planet's term or face does not make it non-peregrine.
+
+The article body may then explain mechanism, history, exceptions, examples and source disagreement.
+
+## Known unresolved items
+
+These remain targeted research questions rather than reasons to reopen a broad extraction pass:
+
+- **Lot / Part of Divorce:** modern traditional formula located, but premodern provenance remains unresolved.
+- **Solar Directions / Divisions:** insufficient direct witness in the initial corpus for forced reconciliation.
+- **Ptolemaic Ages exact tables:** source-sensitive; do not universalize later tables without a named witness.
+- **Triplicity-ruler variants:** Lilly is represented; other historical schemes should be added under explicit source identities.
+- **Lower-priority thin articles:** revisit during the relevant family-level bird's-eye review rather than through an isolated global cleanup.
+
+## SQLite strategy
+
+SQLite remains the canonical backend and is considered appropriate for this project.
+
+The current direction is to use it **more**, not less: structured doctrine that appears across many pages should be modeled once as canonical domain data and projected into the relevant encyclopedia pages. The new reference-system schema is the first implementation of this approach.
+
+A future migration to a client/server database would only become necessary if the project evolves into a high-concurrency collaborative editing system. That is not the current architecture.
 
 ## Validation
 
@@ -164,4 +273,6 @@ npm run audit:corpus
 npm run build
 ```
 
-These rebuild the canonical corpus from migrations + ordered seeds, run the integrity/editorial diagnostics, generate frontend data, and build the Astro site. The latest remote-only seed work in this checkpoint has not been claimed as locally validated until those commands are run against the pulled `main` branch.
+These rebuild the corpus from migrations + ordered seeds, run integrity/editorial diagnostics, generate frontend data, and build the Astro site.
+
+Important: the latest bird's-eye phase commits were made remotely through GitHub and have **not** been claimed as locally validated. After pulling `main`, run both commands before treating the latest schema/frontend changes as validated.

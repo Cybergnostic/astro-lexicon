@@ -14,9 +14,12 @@ const assignmentsFor = (scheme, signSlug, type) => scheme.assignments
 const wholeSign = (scheme, signSlug, type) => assignmentsFor(scheme, signSlug, type)[0];
 const degreeLabel = (item) => item.exact_degree_number ? ` · ${item.exact_degree_number}°` : '';
 const rangeLabel = (item) => `${Number(item.degree_start)}–${Number(item.degree_end)}°`;
+const hasNonTermData = (scheme) => scheme.assignments.some((item) => item.assignment_type !== 'term');
+const fullSchemes = schemes.filter(hasNonTermData);
+const termSchemes = schemes.filter((scheme) => scheme.assignments.some((item) => item.assignment_type === 'term'));
 ---
 
-{schemes.map((scheme) => (
+{fullSchemes.map((scheme) => (
   <section class="reference-system" id={`reference-${scheme.slug}`}>
     <div class="reference-head">
       <div>
@@ -74,9 +77,48 @@ const rangeLabel = (item) => `${Number(item.degree_start)}–${Number(item.degre
         </tbody>
       </table>
     </div>
-    <p class="reference-footnote">Degree ranges are displayed as transfer boundaries: for example 0–6° means from 0°00′ up to, but not including, 6°00′. Exaltation and fall numbers preserve the traditional ordinal degree labels in Lilly’s table.</p>
+    <p class="reference-footnote">Degree ranges are transfer boundaries: 0–6° means from 0°00′ up to, but not including, 6°00′. Exact exaltation and fall degree numbers are shown only when the named scheme supplies them.</p>
   </section>
 ))}
+
+{termSchemes.length > 1 && (
+  <section class="reference-system terms-comparison" id="reference-terms-comparison">
+    <div class="reference-head">
+      <div>
+        <p class="micro-label">Historical scheme comparison</p>
+        <h2>Terms / bounds by named scheme</h2>
+      </div>
+    </div>
+    <p class="reference-note">The term or bound ruler is not universal across the tradition. Each column below preserves a separate historical table, so the same zodiacal degree can be compared without silently merging the schemes.</p>
+    <div class="scheme-notes">
+      {termSchemes.map((scheme) => <div>
+        <strong>{scheme.label}</strong>
+        {scheme.notes && <span>{scheme.notes}</span>}
+      </div>)}
+    </div>
+    <div class="table-scroll" tabindex="0">
+      <table class="terms-table">
+        <thead>
+          <tr>
+            <th scope="col">Sign</th>
+            {termSchemes.map((scheme) => <th scope="col">{scheme.label}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {signOrder.map(([slug,label,glyph]) => (
+            <tr>
+              <th scope="row"><a href={`/terms/${slug}/`}><span class="sign-glyph">{glyph}</span>{label}</a></th>
+              {termSchemes.map((scheme) => <td class="stacked compact">
+                {assignmentsFor(scheme, slug, 'term').map((item) => <span><a href={`/terms/${item.planet_slug}/`}>{item.planet_label}</a> {rangeLabel(item)}</span>)}
+              </td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="reference-footnote">Ranges use the same half-open display convention in every column. The scheme label, not the generic word “terms,” identifies which historical table is being shown.</p>
+  </section>
+)}
 
 <style>
   .reference-system{margin:2.8rem 0}
@@ -84,20 +126,26 @@ const rangeLabel = (item) => `${Number(item.degree_start)}–${Number(item.degre
   .reference-head h2{margin:.15rem 0 0}
   .reference-source,.reference-note,.reference-footnote{color:var(--muted)}
   .reference-source{font-size:.82rem;text-align:right;max-width:24rem}
-  .reference-note{max-width:50rem;margin:.5rem 0 1rem}
+  .reference-note{max-width:54rem;margin:.5rem 0 1rem}
   .reference-footnote{font-size:.82rem;max-width:58rem;margin:.8rem 0 0}
+  .scheme-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:.7rem;margin:0 0 1rem}
+  .scheme-notes>div{border-left:3px solid var(--line-dark);padding:.55rem .7rem;background:var(--paper-pale)}
+  .scheme-notes strong,.scheme-notes span{display:block}
+  .scheme-notes span{margin-top:.25rem;color:var(--muted);font-size:.82rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
-  .dignity-table{border-collapse:collapse;min-width:92rem;width:100%;font-size:.84rem}
-  .dignity-table th,.dignity-table td{padding:.65rem .72rem;text-align:left;vertical-align:top;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .dignity-table th:last-child,.dignity-table td:last-child{border-right:0}
-  .dignity-table tbody tr:last-child th,.dignity-table tbody tr:last-child td{border-bottom:0}
-  .dignity-table thead th{font:700 .66rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;background:var(--paper-deep);white-space:nowrap}
-  .dignity-table tbody th{background:var(--paper-deep);white-space:nowrap}
-  .dignity-table a{text-decoration:none;border-bottom:1px dotted currentColor}
-  .dignity-table a:hover{border-bottom-style:solid}
+  .dignity-table,.terms-table{border-collapse:collapse;width:100%;font-size:.84rem}
+  .dignity-table{min-width:92rem}
+  .terms-table{min-width:54rem}
+  .dignity-table th,.dignity-table td,.terms-table th,.terms-table td{padding:.65rem .72rem;text-align:left;vertical-align:top;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .dignity-table th:last-child,.dignity-table td:last-child,.terms-table th:last-child,.terms-table td:last-child{border-right:0}
+  .dignity-table tbody tr:last-child th,.dignity-table tbody tr:last-child td,.terms-table tbody tr:last-child th,.terms-table tbody tr:last-child td{border-bottom:0}
+  .dignity-table thead th,.terms-table thead th{font:700 .66rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.06em;background:var(--paper-deep);white-space:nowrap}
+  .dignity-table tbody th,.terms-table tbody th{background:var(--paper-deep);white-space:nowrap}
+  .dignity-table a,.terms-table a{text-decoration:none;border-bottom:1px dotted currentColor}
+  .dignity-table a:hover,.terms-table a:hover{border-bottom-style:solid}
   .stacked{display:flex;flex-direction:column;gap:.28rem;min-width:8.5rem}
   .stacked.compact{min-width:10rem}
   .sign-glyph{font-size:1.15rem;margin-right:.4rem;vertical-align:-.05em}
   .table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  @media(max-width:720px){.reference-head{display:block}.reference-source{text-align:left;margin-top:.5rem}}
+  @media(max-width:720px){.reference-head{display:block}.reference-source{text-align:left;margin-top:.5rem}.scheme-notes{grid-template-columns:1fr}}
 </style>

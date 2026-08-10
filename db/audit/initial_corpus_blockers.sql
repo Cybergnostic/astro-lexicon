@@ -82,6 +82,71 @@ WITH blocker_counts(check_name, issue_count) AS (
 
   UNION ALL
 
+  SELECT 'page_composition_missing_article_source', COUNT(*)
+  FROM term_page_blocks pb
+  JOIN term_page_sections ps ON ps.id=pb.page_section_id
+  WHERE pb.status IN ('reviewed','published')
+    AND (
+      (pb.source_kind='article-section' AND NOT EXISTS (
+        SELECT 1 FROM term_article_sections s
+        WHERE s.term_id=ps.term_id AND s.section_key=pb.source_key
+          AND s.status IN ('reviewed','published')
+      ))
+      OR
+      (pb.source_kind='article-table' AND NOT EXISTS (
+        SELECT 1 FROM term_article_tables t
+        WHERE t.term_id=ps.term_id AND t.table_key=pb.source_key
+          AND t.status IN ('reviewed','published')
+      ))
+    )
+
+  UNION ALL
+
+  SELECT 'page_composition_duplicate_source', COUNT(*)
+  FROM (
+    SELECT ps.term_id,pb.source_kind,pb.source_key
+    FROM term_page_blocks pb
+    JOIN term_page_sections ps ON ps.id=pb.page_section_id
+    WHERE ps.status IN ('reviewed','published')
+      AND pb.status IN ('reviewed','published')
+      AND pb.source_kind IN ('article-section','article-table')
+    GROUP BY ps.term_id,pb.source_kind,pb.source_key
+    HAVING COUNT(*)>1
+  ) duplicates
+
+  UNION ALL
+
+  SELECT 'page_composition_unplaced_article_block', COUNT(*)
+  FROM (
+    SELECT s.term_id,'article-section' source_kind,s.section_key source_key
+    FROM term_article_sections s
+    WHERE s.status IN ('reviewed','published')
+      AND EXISTS (
+        SELECT 1 FROM term_page_sections ps
+        WHERE ps.term_id=s.term_id AND ps.status IN ('reviewed','published')
+      )
+    UNION ALL
+    SELECT t.term_id,'article-table' source_kind,t.table_key source_key
+    FROM term_article_tables t
+    WHERE t.status IN ('reviewed','published')
+      AND EXISTS (
+        SELECT 1 FROM term_page_sections ps
+        WHERE ps.term_id=t.term_id AND ps.status IN ('reviewed','published')
+      )
+  ) content
+  WHERE NOT EXISTS (
+    SELECT 1
+    FROM term_page_blocks pb
+    JOIN term_page_sections ps ON ps.id=pb.page_section_id
+    WHERE ps.term_id=content.term_id
+      AND ps.status IN ('reviewed','published')
+      AND pb.status IN ('reviewed','published')
+      AND pb.source_kind=content.source_kind
+      AND pb.source_key=content.source_key
+  )
+
+  UNION ALL
+
   SELECT 'superseded_extraction_artifact_slugs', COUNT(*)
   FROM terms
   WHERE slug IN (

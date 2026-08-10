@@ -152,14 +152,14 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
           <div class="alias-list">{term.aliases.map((alias)=><div class="alias-item">
             <div class="alias-head"><strong>{alias.label}</strong><span>{[alias.language, humanizeKey(alias.alias_type)].filter(Boolean).join(' · ')}</span></div>
             {alias.scope_note && <p>{alias.scope_note}</p>}
-          </div>)}</div>
+          </div>)}</div>}
         </div>}
       </section>}
 
       {hasSources && <section id="sources">
         <h2>Sources</h2>
         {term.interpretations.map((item)=><div class="source-block">
-          <div class="source-head"><h3>{item.author_name} · <em>{item.work_title}</em></h3></div>
+          <div class="source-head"><h3><a href={`/authors/${item.author_slug}/`}>{item.author_name}</a> · <em><a href={`/works/${item.work_slug}/`}>{item.work_title}</a></em></h3></div>
           <p>{item.summary}</p>
           {item.citations.map((citation)=><p class="source-cite">{citationLabel(citation)}{citation.edition_label ? ` · ${citation.edition_label}` : ''}</p>)}
         </div>)}
@@ -211,6 +211,7 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
   .alias-head{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}.alias-head span,.relation-type{font:600 .68rem/1.35 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.055em;color:var(--muted)}
   .alias-item p,.relation-item p{margin:.3rem 0 .2rem;color:var(--muted);font-size:.9rem;max-width:44rem}
   .relation-item>a{font-weight:650}.relation-type{display:block;margin-top:.15rem}
+  .source-head a{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}.source-head a:hover{border-bottom-style:solid}
   .reference-anchor{scroll-margin-top:1rem}
   .table-caption{margin:-.25rem 0 1rem;color:var(--muted);font-size:.92rem;max-width:42rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}

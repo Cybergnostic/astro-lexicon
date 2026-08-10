@@ -41,6 +41,9 @@ jobs:
       - name: Run editorial report
         run: npm run audit:editorial
 
+      - name: Run A/B/C editorial triage
+        run: npm run audit:triage
+
       - name: Generate frontend corpus
         run: npm run generate:data
 

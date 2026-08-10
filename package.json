@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "audit:corpus": "bash scripts/audit_corpus.sh",
     "audit:editorial": "python3 scripts/editorial_baseline_audit.py",
+    "audit:triage": "python3 scripts/editorial_abc_triage.py",
     "test:generated": "python3 scripts/test_generated_corpus.py"
   },
   "dependencies": {

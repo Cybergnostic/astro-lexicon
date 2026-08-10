@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """Classify reviewed lexicon terms into A/B/C editorial prospects.
 
-A = genuine editorial priority: rich or multi-source evidence without adequate synthesis,
-    ontology/reconciliation risk, or a structurally central concept that a bare definition
-    does not represent well.
-B = basically serviceable: current reader-facing material is proportionate to the concept.
+A = genuine editorial priority: evidence that actually requires synthesis, ontology or
+    reconciliation risk, or a structurally central concept that a bare definition cannot
+    represent adequately.
+B = basically serviceable: current reader-facing depth is proportionate to the concept,
+    even if more source work could later be added.
 C = dictionary-level is enough: narrow, well-defined, low-complexity entries where article
-    expansion would mostly restate the definition or a single source account.
+    expansion would mostly restate the definition or a simple source account.
 
-This is a non-blocking prioritization report, not a quality gate.
+This is a non-blocking prioritization report, not a quality gate. In particular, having
+multiple sources does NOT automatically make a term article-worthy.
 """
 
 from __future__ import annotations
@@ -121,24 +123,51 @@ def term_metrics(con: sqlite3.Connection) -> list[dict]:
 def classify(row: dict) -> tuple[str, list[str]]:
     reasons: list[str] = []
 
-    # A: substantial evidence or conceptual structure is not yet adequately synthesized.
-    if row["works"] >= 2 and not row["has_article"]:
-        reasons.append(f"{row['works']} source works but no article")
-    if row["interpretations"] >= 3 and row["blocks"] < 2:
-        reasons.append(f"{row['interpretations']} interpretations but only {row['blocks']} article blocks")
-    if row["ontology_signal"] and row["blocks"] < 2 and (
-        row["works"] >= 2 or row["aliases"] >= 2 or row["contrast_relations"] >= 1
+    # A: only genuine synthesis / ontology problems. A concise existing article is not
+    # penalized merely for having fewer blocks than source accounts.
+    if (
+        not row["has_article"]
+        and row["grade_a"] >= 2
+        and row["works"] >= 2
+        and (
+            row["interpretations"] >= 3
+            or row["ontology_signal"]
+            or row["relations"] >= 4
+            or row["aliases"] >= 3
+        )
     ):
-        reasons.append("ontology/reconciliation warning with little reader explanation")
-    if not row["has_article"] and row["relations"] >= 5 and row["definition_quality"] >= 4:
-        reasons.append(f"central concept with {row['relations']} reviewed relations but no article")
-    if row["definition_quality"] <= 3 and row["interpretations"] >= 2:
-        reasons.append("reviewed evidence exists but canonical definition remains low-confidence")
+        reasons.append(
+            f"multi-source A-grade evidence needs synthesis ({row['interpretations']} interpretations / {row['works']} works)"
+        )
+
+    if (
+        not row["has_article"]
+        and row["ontology_signal"]
+        and (
+            row["contrast_relations"] >= 1
+            or row["aliases"] >= 2
+            or row["works"] >= 2
+        )
+    ):
+        reasons.append("explicit ontology/reconciliation warning is not yet explained to readers")
+
+    if (
+        not row["has_article"]
+        and row["relations"] >= 5
+        and row["definition_quality"] >= 4
+        and row["grade_a"] >= 1
+    ):
+        reasons.append(f"central source-backed concept with {row['relations']} reviewed relations but no synthesis")
+
+    if row["definition_quality"] <= 3 and row["grade_a"] >= 1 and row["interpretations"] >= 2:
+        reasons.append("A-grade evidence exists but the canonical definition remains low-confidence")
 
     if reasons:
         return "A", reasons
 
-    # C: a compact dictionary entry is proportionate to the evidence and complexity.
+    # C: compact dictionary treatment is proportionate. A term can be C even without a
+    # source interpretation when it is a simple reviewed taxonomy/astronomy identity; source
+    # acquisition is tracked separately from article expansion.
     if (
         not row["has_article"]
         and row["definition_quality"] >= 4
@@ -148,9 +177,10 @@ def classify(row: dict) -> tuple[str, list[str]]:
         and row["relations"] <= 3
         and not row["ontology_signal"]
     ):
-        return "C", ["narrow, low-complexity entry; strong definition is proportionate"]
+        return "C", ["narrow, low-complexity entry; dictionary treatment is proportionate"]
 
-    # Existing concise articles are B unless another rule above found a real defect.
+    # Existing articles and uncomplicated multi-source definitions are B unless a real
+    # defect was detected above.
     return "B", ["serviceable at current depth; no strong signal for expansion"]
 
 
@@ -175,7 +205,7 @@ def render(rows: list[dict]) -> str:
         lines.append(
             f"- **{row['label']}** (`{row['slug']}`) — " + "; ".join(row["reasons"])
             + f". Evidence: {row['interpretations']} interpretations / {row['works']} works; "
-              f"article blocks: {row['blocks']}; relations: {row['relations']}."
+              f"A-grade: {row['grade_a']}; article blocks: {row['blocks']}; relations: {row['relations']}."
         )
 
     lines += ["", "## B — basically serviceable", ""]
@@ -213,7 +243,6 @@ def main() -> None:
     for row in rows:
         row["tier"], row["reasons"] = classify(row)
 
-    # Put the strongest A candidates first without pretending this is an absolute score.
     rows.sort(
         key=lambda r: (
             {"A": 0, "B": 1, "C": 2}[r["tier"]],
@@ -226,15 +255,13 @@ def main() -> None:
     args.report.write_text(render(rows), encoding="utf-8")
 
     counts = Counter(row["tier"] for row in rows)
-    print(
-        f"ABC TRIAGE|total={len(rows)}|A={counts['A']}|B={counts['B']}|C={counts['C']}"
-    )
+    print(f"ABC TRIAGE|total={len(rows)}|A={counts['A']}|B={counts['B']}|C={counts['C']}")
     print("Top A prospects:")
     for row in [r for r in rows if r["tier"] == "A"][:30]:
         print(
             f"A|{row['slug']}|{row['label']}|"
             + "; ".join(row["reasons"])
-            + f"|interpretations={row['interpretations']}|works={row['works']}|blocks={row['blocks']}"
+            + f"|interpretations={row['interpretations']}|works={row['works']}|A-grade={row['grade_a']}|blocks={row['blocks']}"
         )
     print(f"Report: {args.report}")
 

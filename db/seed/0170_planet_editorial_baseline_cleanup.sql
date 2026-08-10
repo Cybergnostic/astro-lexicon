@@ -100,22 +100,22 @@ JOIN term_article_sections s ON s.term_id=ps.term_id
 WHERE ps.section_key='nature-condition'
   AND ps.status='reviewed'
   AND s.status IN ('reviewed','published')
-  AND s.section_key NOT IN ('astronomical-identity','phase-motion','solar-relations')
+  AND s.section_key NOT IN ('astronomical-identity','phase-motion','solar-relations','phase','sequence')
 ORDER BY ps.term_id,s.sort_order,s.id;
 
 -- Astronomy/motion blocks. The first astronomical identity paragraph is intentionally
--- unheaded; the section heading already supplies its context. Distinct motion/solar
--- doctrines may retain a subsection heading.
+-- unheaded; the section heading already supplies its context. Distinct phase/motion
+-- doctrines retain subsection headings where they add real orientation.
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
 SELECT ps.id,'article-section',s.section_key,
-       CASE WHEN s.section_key IN ('phase-motion','solar-relations') THEN 'subsection' ELSE 'paragraph' END,
-       CASE WHEN s.section_key IN ('phase-motion','solar-relations') THEN 1 ELSE 0 END,
+       CASE WHEN s.section_key IN ('phase-motion','solar-relations','phase','sequence') THEN 'subsection' ELSE 'paragraph' END,
+       CASE WHEN s.section_key IN ('phase-motion','solar-relations','phase','sequence') THEN 1 ELSE 0 END,
        s.sort_order,'reviewed','Editorial Baseline v1 planet-family composition.'
 FROM term_page_sections ps
 JOIN term_article_sections s ON s.term_id=ps.term_id
 WHERE ps.section_key='astronomy-motion'
   AND ps.status='reviewed'
   AND s.status IN ('reviewed','published')
-  AND s.section_key IN ('astronomical-identity','phase-motion','solar-relations')
+  AND s.section_key IN ('astronomical-identity','phase-motion','solar-relations','phase','sequence')
 ORDER BY ps.term_id,s.sort_order,s.id;

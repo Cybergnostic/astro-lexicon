@@ -392,6 +392,7 @@ def export(db_path: Path, out_path: Path):
                        WHEN tr.subject_term_id=? THEN tr.object_term_id
                        ELSE tr.subject_term_id END
                    WHERE tr.status IN ('reviewed','published')
+                     AND other.status IN ('reviewed','published')
                      AND (tr.subject_term_id=? OR tr.object_term_id=?)
                    ORDER BY tr.relation_type,other.label COLLATE NOCASE""",
                 (term["id"], term["id"], term["id"], term["id"]),

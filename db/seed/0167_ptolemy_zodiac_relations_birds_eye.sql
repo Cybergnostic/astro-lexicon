@@ -192,7 +192,7 @@ INSERT OR REPLACE INTO concept_families
 VALUES
   ('zodiac-relational-symmetries','Zodiac Relational Symmetries',
    'Ptolemy’s named sign-to-sign geometries based on equinoctial or tropical-sign symmetry rather than ordinary aspect distance.',
-   'geometry-family',
+   'mechanics',
    'Current normalized pair schemes use Ptolemy I.14-15 and Robbins’ explicit sign-pair notes. Antiscia remain separate because their sign-level pair table differs.',
    'reviewed');
 

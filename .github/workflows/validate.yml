@@ -44,6 +44,9 @@ jobs:
       - name: Run A/B/C editorial triage
         run: npm run audit:triage
 
+      - name: Run ontology duplicate audit
+        run: npm run audit:ontology
+
       - name: Generate frontend corpus
         run: npm run generate:data
 

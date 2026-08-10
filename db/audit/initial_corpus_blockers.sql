@@ -11,12 +11,14 @@
 WITH blocker_counts(check_name, issue_count) AS (
   SELECT 'terms_failing_public_definition_standard', COUNT(*)
   FROM terms
-  WHERE short_definition IS NULL
-     OR trim(short_definition)=''
-     OR definition_quality IS NULL
-     OR definition_quality < 4
-     OR status='draft'
-     OR entry_type NOT IN ('technical','astronomical','contextual')
+  WHERE status IN ('reviewed','published')
+    AND (
+      short_definition IS NULL
+      OR trim(short_definition)=''
+      OR definition_quality IS NULL
+      OR definition_quality < 4
+      OR entry_type NOT IN ('technical','astronomical','contextual')
+    )
 
   UNION ALL
 

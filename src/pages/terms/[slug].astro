@@ -4,12 +4,14 @@ import AstronomyMechanics from '../../components/AstronomyMechanics.astro';
 import ConceptFamilyMap from '../../components/ConceptFamilyMap.astro';
 import DignityReference from '../../components/DignityReference.astro';
 import DignityConnections from '../../components/DignityConnections.astro';
+import ElementReference from '../../components/ElementReference.astro';
 import HistoricalForms from '../../components/HistoricalForms.astro';
 import LotMechanics from '../../components/LotMechanics.astro';
 import PlanetProfile from '../../components/PlanetProfile.astro';
 import PlanetaryCycle from '../../components/PlanetaryCycle.astro';
 import PlanetaryOrder from '../../components/PlanetaryOrder.astro';
 import PlanetaryTimeSequences from '../../components/PlanetaryTimeSequences.astro';
+import SignDignityReference from '../../components/SignDignityReference.astro';
 import ZodiacRelations from '../../components/ZodiacRelations.astro';
 import ZodiacSignProfile from '../../components/ZodiacSignProfile.astro';
 import corpus from '../../data/generated/corpus.json';
@@ -39,6 +41,11 @@ const hasAliases=(term.aliases?.length ?? 0) > 0;
 const hasNames=hasHistoricalForms || hasAliases;
 const hasPlanetProfile=Boolean(term.planet_profile);
 const hasZodiacSignProfile=Boolean(term.zodiac_sign_profile);
+const allReferenceSchemes=[...new Map(corpus.terms.flatMap((item)=>item.reference_schemes ?? []).map((scheme)=>[scheme.slug,scheme])).values()];
+const elementSigns=corpus.terms
+  .filter((item)=>item.zodiac_sign_profile?.element_slug === term.slug)
+  .sort((a,b)=>(a.zodiac_sign_profile?.ordinal ?? 99)-(b.zodiac_sign_profile?.ordinal ?? 99));
+const hasElementReference=elementSigns.length > 0;
 const hasConceptFamilies=(term.concept_families?.length ?? 0) > 0;
 const hasLotDiagram=(term.concept_families?.some((family) => ['lot-mechanics','abu-mashar-planetary-lots'].includes(family.slug)) ?? false);
 const hasPlanetaryOrderDiagram=(term.concept_families?.some((family) => family.slug === 'traditional-planetary-order') ?? false);
@@ -54,7 +61,8 @@ const hasAstronomyDiagram=astronomyDiagramSlugs.has(term.slug);
 const planetaryLots=term.relations?.filter((relation) => relation.direction === 'outgoing' && relation.relation_type === 'associated-planetary-lot') ?? [];
 const hasReferenceSchemes=(term.reference_schemes?.length ?? 0) > 0;
 const hasReferenceAssignments=(term.reference_assignments?.length ?? 0) > 0;
-const hasReferenceData=hasReferenceSchemes || hasReferenceAssignments;
+const hasGlobalSignDignityReference=hasZodiacSignProfile && allReferenceSchemes.length > 0;
+const hasReferenceData=hasReferenceSchemes || hasReferenceAssignments || hasGlobalSignDignityReference;
 const hasCycles=(term.cycles?.length ?? 0) > 0;
 const hasSources=(term.interpretations?.length ?? 0) > 0;
 const hasRelations=(term.relations?.length ?? 0) > 0;
@@ -81,6 +89,7 @@ if (hasPlanetaryOrderDiagram) tocItems.push({ href:'#planetary-order-diagram', l
 if (hasPlanetaryTimeSequences) tocItems.push({ href:'#planetary-time-sequences', label:'Planetary days / hours' });
 if (hasZodiacRelations) tocItems.push({ href:'#zodiac-relations', label:'Zodiac relations' });
 if (hasAstronomyDiagram) tocItems.push({ href:'#astronomy-diagram', label:'Geometry / visual' });
+if (hasElementReference) tocItems.push({ href:'#element-reference', label:'Signs & triplicity rulers' });
 if (hasZodiacSignProfile) tocItems.push({ href:'#sign-profile', label:'Zodiac sign profile' });
 if (hasPlanetProfile) tocItems.push({ href:'#planet-profile', label:'Planet profile' });
 if (hasReferenceData) tocItems.push({ href:'#reference-tables', label:'Reference tables' });
@@ -168,11 +177,14 @@ if (hasRelations) tocItems.push({ href:'#related', label:'Related concepts' });
       {hasPlanetaryTimeSequences && <PlanetaryTimeSequences sequences={term.planetary_time_sequences} />}
       {hasZodiacRelations && <ZodiacRelations schemes={term.zodiac_relation_schemes} currentSlug={term.slug} />}
       {hasAstronomyDiagram && <AstronomyMechanics slug={term.slug} />}
+      {hasElementReference && <ElementReference elementLabel={term.label} signs={elementSigns} schemes={allReferenceSchemes} />}
       {hasZodiacSignProfile && <ZodiacSignProfile profile={term.zodiac_sign_profile} />}
       {hasPlanetProfile && <PlanetProfile profile={term.planet_profile} lots={planetaryLots} />}
       {hasReferenceData && <div id="reference-tables" class="reference-anchor">
-        {hasReferenceSchemes && <DignityReference schemes={term.reference_schemes} />}
-        {hasReferenceAssignments && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
+        {hasGlobalSignDignityReference
+          ? <SignDignityReference schemes={allReferenceSchemes} signSlug={term.slug} />
+          : hasReferenceSchemes && <DignityReference schemes={term.reference_schemes} />}
+        {hasReferenceAssignments && !hasZodiacSignProfile && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
       </div>}
       {hasCycles && <PlanetaryCycle cycles={term.cycles} />}
 

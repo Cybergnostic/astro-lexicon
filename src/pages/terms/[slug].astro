@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import DignityReference from '../../components/DignityReference.astro';
+import DignityConnections from '../../components/DignityConnections.astro';
 import corpus from '../../data/generated/corpus.json';
 
 export function getStaticPaths() {
@@ -10,6 +12,14 @@ const { term } = Astro.props;
 const article = term.article;
 const articleBlocks = article?.blocks ?? article?.sections?.map((section) => ({ type: 'section', ...section })) ?? [];
 const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
+const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?.[0] ?? null;
+const hasReferenceSchemes=(term.reference_schemes?.length ?? 0) > 0;
+const hasReferenceAssignments=(term.reference_assignments?.length ?? 0) > 0;
+const firstReferenceId=hasReferenceSchemes
+  ? `reference-${term.reference_schemes[0].slug}`
+  : hasReferenceAssignments
+    ? `dignity-${term.reference_assignments[0].scheme_slug}`
+    : null;
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
   const pages=citation.page_start ? `pp. ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}` : '';
@@ -24,11 +34,15 @@ const citationLabel=(citation) => {
       <div class="rail-group"><span class="micro-label">Definition quality</span><span class="rail-value">{term.definition_quality}/5</span></div>
       <div class="rail-group"><span class="micro-label">Source witnesses</span><span class="rail-value">{sourceAuthors.length}</span></div>
       {article && <div class="rail-group"><span class="micro-label">Teaching article</span><span class="rail-value">Reviewed</span></div>}
+      {(hasReferenceSchemes || hasReferenceAssignments) && <div class="rail-group"><span class="micro-label">Reference data</span><span class="rail-value">Structured</span></div>}
     </aside>
 
     <article class="article">
       <p class="eyebrow">Lexicon entry · {term.category}</p>
-      <h1>{term.label}</h1>
+      <div class="title-row">
+        <h1>{term.label}</h1>
+        {primarySymbol && <span class="entry-glyph" role="img" aria-label={primarySymbol.label || `${term.label} symbol`}>{primarySymbol.symbol_text}</span>}
+      </div>
       <p class="lede">{term.short_definition}</p>
 
       {!article && <div class="definition-panel" id="definition"><p class="micro-label">Canonical definition</p><p>{term.short_definition}</p></div>}
@@ -55,6 +69,9 @@ const citationLabel=(citation) => {
           <p>{block.body}</p>
         </section>
       ))}
+
+      {hasReferenceSchemes && <DignityReference schemes={term.reference_schemes} />}
+      {hasReferenceAssignments && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
 
       <section id="names">
         <h2>Names & historical forms</h2>
@@ -85,6 +102,7 @@ const citationLabel=(citation) => {
       {!article && <a href="#definition">Definition</a>}
       {article && <a href="#overview">Overview</a>}
       {articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
+      {firstReferenceId && <a href={`#${firstReferenceId}`}>Structured reference</a>}
       <a href="#names">Names & forms</a>
       <a href="#sources">Source accounts</a>
       {term.interpretations.length > 1 && <a href="#comparison">Comparison</a>}
@@ -95,6 +113,9 @@ const citationLabel=(citation) => {
 </BaseLayout>
 
 <style>
+  .title-row{display:flex;align-items:baseline;gap:1rem}
+  .title-row h1{margin-right:0}
+  .entry-glyph{font-size:clamp(2rem,5vw,4rem);line-height:1;font-family:"Noto Sans Symbols 2","Segoe UI Symbol","DejaVu Sans",sans-serif;color:var(--muted);font-weight:400}
   .table-caption{margin:-.25rem 0 1rem;color:var(--muted);font-size:.92rem;max-width:42rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
   .article-table{width:100%;border-collapse:collapse;min-width:34rem;font-size:.91rem}
@@ -104,5 +125,5 @@ const citationLabel=(citation) => {
   .article-table th{font:700 .68rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.07em;background:var(--paper-deep);white-space:nowrap}
   .article-table td:first-child{font-weight:600}
   .table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  @media(max-width:720px){.article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}}
+  @media(max-width:720px){.article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}.entry-glyph{font-size:2.4rem}}
 </style>

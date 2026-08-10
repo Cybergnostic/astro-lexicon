@@ -1,0 +1,60 @@
+---
+const { schemes = [], currentSlug = '' } = Astro.props;
+---
+
+{schemes.length > 0 && (
+  <section class="zodiac-relations" id="zodiac-relations" aria-labelledby="zodiac-relations-title">
+    <div class="relation-head">
+      <p class="micro-label">Structured sign-to-sign geometry</p>
+      <h2 id="zodiac-relations-title">Zodiac relations by named scheme</h2>
+      <p>These are paired geometries between signs, not extra essential dignities and not ordinary aspect types. Each table keeps its historical source identity visible.</p>
+    </div>
+
+    {schemes.map((scheme) => (
+      <div class="scheme-card">
+        <div class="scheme-heading">
+          <div>
+            <h3>{scheme.label}</h3>
+            <p>{scheme.relation_kind?.replaceAll('-', ' ')}</p>
+          </div>
+          {(scheme.author_name || scheme.work_title) && <span class="source-tag">{[scheme.author_name, scheme.work_title].filter(Boolean).join(' · ')}</span>}
+        </div>
+
+        {scheme.geometry_note && <p class="geometry-note">{scheme.geometry_note}</p>}
+
+        <div class="pair-grid">
+          {scheme.pairs.map((pair) => {
+            const active = pair.sign_a_slug === currentSlug || pair.sign_b_slug === currentSlug;
+            return (
+              <div class:list={['pair-row', { active }]}> 
+                <a href={`/terms/${pair.sign_a_slug}/`} class:list={{ current: pair.sign_a_slug === currentSlug }}>
+                  <strong>{pair.sign_a_label}</strong>
+                  {pair.sign_a_role && <span>{pair.sign_a_role}</span>}
+                </a>
+                <span class="pair-mark" aria-hidden="true">↔</span>
+                <a href={`/terms/${pair.sign_b_slug}/`} class:list={{ current: pair.sign_b_slug === currentSlug }}>
+                  <strong>{pair.sign_b_label}</strong>
+                  {pair.sign_b_role && <span>{pair.sign_b_role}</span>}
+                </a>
+              </div>
+            );
+          })}
+        </div>
+
+        {scheme.notes && <p class="scheme-note">{scheme.notes}</p>}
+      </div>
+    ))}
+  </section>
+)}
+
+<style>
+  .zodiac-relations{margin:2.8rem 0;padding:1.1rem;border:1px solid var(--line-dark);background:var(--paper-pale)}
+  .relation-head{max-width:52rem;border-bottom:1px solid var(--line);padding-bottom:.85rem;margin-bottom:1rem}.relation-head h2{margin:.15rem 0 .45rem}.relation-head p:last-child{margin:0;color:var(--muted)}
+  .scheme-card{margin-top:1rem;padding:.9rem;border:1px solid var(--line);background:var(--paper-deep)}
+  .scheme-heading{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}.scheme-heading h3{margin:0}.scheme-heading p{margin:.15rem 0 0;color:var(--muted);font-size:.8rem;text-transform:capitalize}.source-tag{font:600 .66rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:right;max-width:20rem}
+  .geometry-note{margin:.75rem 0;color:var(--muted);font-size:.84rem;max-width:52rem}
+  .pair-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-top:.8rem}.pair-row{display:grid;grid-template-columns:1fr 2rem 1fr;align-items:stretch;border:1px solid var(--line);background:var(--paper-pale)}.pair-row.active{outline:2px solid var(--line-dark);outline-offset:-2px}
+  .pair-row a{display:flex;flex-direction:column;justify-content:center;min-height:3.6rem;padding:.55rem .65rem;text-decoration:none;color:inherit}.pair-row a:last-child{text-align:right}.pair-row a.current{background:var(--paper-deep)}.pair-row a span{margin-top:.12rem;color:var(--muted);font-size:.7rem}.pair-mark{display:grid;place-items:center;color:var(--muted);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .scheme-note{margin:.7rem 0 0;color:var(--muted);font-size:.8rem}
+  @media(max-width:760px){.scheme-heading{display:block}.source-tag{display:block;text-align:left;margin-top:.35rem}.pair-grid{grid-template-columns:1fr}}
+</style>

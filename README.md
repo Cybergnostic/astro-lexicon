@@ -12,7 +12,7 @@ The project compares how technical terms are defined and used across historical 
 - Guido Bonatti — *Liber Astronomiae*
 - William Lilly — *Christian Astrology*
 
-Additional public witnesses may be onboarded as needed for unresolved terminology or doctrine. Partial public witnesses currently include Firmicus Maternus for the Thema Mundi and Claudius Ptolemy for the Egyptian terms/bounds transmitted in *Tetrabiblos* I.21.
+Additional public witnesses may be onboarded as needed for unresolved terminology or doctrine. Partial public witnesses currently include Firmicus Maternus for the Thema Mundi and Claudius Ptolemy for directly verified passages in the *Tetrabiblos*, including the Egyptian terms/bounds and the general ages of life.
 
 Source PDFs are not stored in this repository.
 
@@ -135,9 +135,7 @@ The detailed phase ledger is:
 
 `docs/revision/birds_eye_encyclopedia_review.md`
 
-## Bird's-eye implementation now on `main`
-
-### Normalized reusable doctrine/reference layers
+## Normalized reusable doctrine/reference layers
 
 The canonical SQLite layer now includes:
 
@@ -152,8 +150,14 @@ The canonical SQLite layer now includes:
 - `term_form_attestations`
 - `planetary_profiles`
 - `zodiac_sign_profiles`
+- `concept_families`
+- `concept_family_members`
 
-Do not recreate these facts as parallel hand-written JSON or repeated article tables when the normalized layer can drive the same information across several pages.
+`concept_families` is a generic ordered teaching-family layer. Use it when several terms form one coherent doctrine or mechanics family. Pairwise `term_relations` still describe individual connections; the family layer describes the larger system and each member’s role inside it.
+
+Do not recreate normalized facts as parallel hand-written JSON or repeated article tables when SQLite can drive the same information across several pages.
+
+## Bird's-eye blocks completed on `main`
 
 ### Essential dignity / historical schemes
 
@@ -163,23 +167,14 @@ Do not recreate these facts as parallel hand-written JSON or repeated article ta
 - all 60 Lilly/Ptolemaic term/bound ranges;
 - all 36 faces/decans;
 - Egyptian terms/bounds transmitted by Ptolemy in *Tetrabiblos* I.21 as a **separate named scheme**;
-- frontend comparison that labels the competing term/bound schemes explicitly rather than silently calling one table “the terms”;
+- explicit frontend comparison between named term/bound schemes;
 - planet- and sign-centric dignity views generated from the same canonical rows.
 
 ### Original-language terminology
 
 Historical/original-language forms are no longer forced into `aliases`.
 
-The dedicated form layer can preserve:
-
-- language and script;
-- historical form/lemma;
-- transliteration;
-- literal gloss;
-- multiple English renderings;
-- translation ambiguity / false-friend notes;
-- source/work/tradition scope;
-- relation to the canonical English headword.
+The dedicated form layer preserves language/script, historical form or lemma, transliteration, literal gloss, multiple English renderings, translation ambiguity / false-friend notes, and source/work/tradition scope.
 
 The first reviewed Ancient Greek layer includes major Hellenistic technical vocabulary, all seven traditional planets and the twelve zodiac signs. It uses HOROI as a philological editorial/reference layer while keeping public prose independently written.
 
@@ -207,97 +202,125 @@ The old hand-written `planet-summary` dignity tables were removed because they d
 
 ### Twelve zodiac signs
 
-The twelve signs have also been reviewed as one family.
-
 The current sign-page architecture includes:
 
 - coordinate-first reader-facing definition;
 - exact equal 30° tropical longitude interval;
-- ordinal position in the twelve-sign system;
+- ordinal position;
 - normalized element/triplicity, modality, polarity and day/night sign class;
 - tropical-quarter position;
-- explicit distinction between equal astrological sign and modern IAU constellation boundaries;
+- explicit distinction between equal astrological signs and modern IAU constellation boundaries;
 - original responsive twelve-sign position strip;
 - glyph and historical Greek sign name/form;
 - normalized scheme-aware dignity relationships;
-- historical source accounts and source-specific additional taxonomies.
+- source-specific additional taxonomies.
 
-Repeated hand-written sign classification and dignity lists were replaced with teaching prose plus normalized linked data.
+### Astronomical mechanics / visibility
 
-### Other completed bird's-eye foundation work
+The astronomy family now teaches one connected geometry:
 
-- source-backed Thema Mundi entry using Firmicus Maternus, *Mathesis* III.1;
-- generated whole-system Essential Dignity display;
-- structured solar synodic-cycle records for Moon, Mercury, Venus, Mars, Jupiter and Saturn;
-- responsive phase sequences on planet pages.
+- celestial sphere, ecliptic and celestial equator;
+- ecliptic longitude vs ecliptic latitude vs declination;
+- First Motion vs slower Second Motion;
+- direct, stationary and retrograde apparent motion;
+- oriental/occidental solar-phase usage vs “in the figure” usage;
+- solar orientation vs traditional proximity conditions vs actual naked-eye visibility;
+- eclipse, occultation and ecliptic-projection geometry;
+- original HTML/CSS schematics for the celestial sphere, motion cycle, solar-relative conditions and eclipse alignment;
+- repaired the older fixed-star-nature article seed that targeted a non-canonical slug.
+
+Modern physical explanations were checked against NASA/JPL/USNO material. Historical astrological thresholds remain source-attributed.
+
+### Aspects / application / perfection
+
+The `aspect-perfection-mechanics` family now visibly separates:
+
+- aspect/orb geometry;
+- partile/platick exactness;
+- application vs separation;
+- horary Perfection as an outcome concept;
+- Translation vs Collection of Light as distinct mediation structures;
+- reception as a relational modifier rather than aspect geometry;
+- Prohibition, Frustration, Refrenation, Abscission and source-specific interruption variants.
+
+The reusable `ConceptFamilyMap` frontend component is generated from SQLite and appears on every family member page.
+
+### Houses / places
+
+The `houses-places-structure` family now separates:
+
+- the twelve-place framework;
+- angles/cardines, succedents and cadents as positional classes;
+- positional accidental capacity from topical house signification;
+- derived houses as relational recounting inside the same chart;
+- Antiochus’ Places for Dealings / Places without Dealings as a separate source-specific classification rather than synonyms for angular/cadent structure.
+
+### Lots / Parts
+
+The Lots review now includes:
+
+- `lot-mechanics` family separating construction, historical identity, canonical equivalence and interpretation;
+- separate `abu-mashar-planetary-lots` historical family for the five non-luminary planetary Lots in *Great Introduction* VIII.3.12–3.16;
+- explicit rule that repeated English names do not establish historical identity without formula/source agreement;
+- Fortune/Absence and Eros/Venus-Love distinctions kept source-sensitive;
+- original generic directed-arc projection schematic;
+- the diagram uses a source-defined **Origin**, not a universalized Ascendant, while noting that the Ascendant is usual in the major represented streams.
+
+### Predictive terminology
+
+The predictive family pass is comparative rather than procedural.
+
+It now includes:
+
+- duplicate cleanup: late `firdaria` merged into source-backed `fardar`; `solar-return` into source-backed `solar-revolution`; `lord-of-the-year` into source-backed `lord-of-year`;
+- useful common names retained as aliases rather than duplicate canonical terms;
+- direct Ptolemy *Tetrabiblos* IV.10 witness for the seven Ages of Life, confirming the stored Moon 4 / Mercury 10 / Venus 8 / Sun 19 / Mars 15 / Jupiter 12 / Saturn-remainder sequence;
+- `time-lord-chronology` family separating Firdaria, Lilly’s Alfridary, profections, annual roles, planetary-year quantities and Ptolemy’s general life-stage model;
+- `directions-distributions` family separating primary directions, significator/promissor roles, distributions and distributor/participator roles;
+- `revolutions-returns` family separating generic revolution charts, annual revolutions, natal Solar Revolution/Return, world-year revolution, Lunar Return and the Lord of the Revolution;
+- comparative table showing that planetary-period sequences, symbolic zodiacal advancement, directed geometry and astronomical returns are different timing mechanisms;
+- `solar-direction` and `divisions` explicitly marked **source-audit-open** because their direct historical terminology/provenance remains unresolved in the current public corpus.
 
 ## Immediate next work
 
-The next pass should **not** redo Egyptian bounds, Greek terminology architecture, the seven-planet family normalization or the twelve-sign family normalization. Build on them.
+Do **not** redo the completed family passes above. Continue from the current `main` branch and use the normalized structures already present.
 
-Continue in this order unless evidence changes the priority:
+Priority order:
 
-### 1. Astronomical mechanics / visibility / synodic terminology
+### 1. Historical cosmology / foundational models
 
-Review these as one teaching system:
+Review the remaining cosmological/foundational system around:
 
-- celestial sphere;
-- ecliptic and celestial equator;
-- longitude/latitude and relevant coordinate distinctions;
-- primary versus secondary motion;
-- direct, stationary and retrograde apparent motion;
-- solar elongation and visibility;
-- morning/evening appearance and oriental/occidental terminology;
-- under-the-beams / combustion / related solar proximity conditions where historically sourced;
-- nodes and eclipses;
-- fixed-star geometry.
+- Thema Mundi;
+- traditional planetary order;
+- sect as a cosmological/day-night organization;
+- luminaries and the seven-planet framework;
+- zodiac/ecliptic relation where foundational rather than sign-specific;
+- historical model concepts that help a reader understand how the doctrines fit together.
 
-The planet cycle data already exists. The next task is to make sure the standalone concept pages and diagrams allow a reader to understand the mechanics behind those phase labels.
+Distinguish pedagogical/model diagrams from literal historical event charts.
 
-Prefer original lightweight diagrams when the geometry is difficult to understand from prose alone.
+### 2. Remaining planet/sign secondary families
 
-### 2. Aspects and connection mechanics
+Targeted follow-ups only:
 
-Review aspect geometry and application/perfection/interference vocabulary together. A reader should be able to distinguish:
-
-- geometrical aspect;
-- application/separation;
-- orb / partile / platick distinctions;
-- reception;
-- translation / collection;
-- prohibition, frustration, refranation and abscission.
-
-Do not turn the family into a horary judgment checklist.
-
-### 3. Houses / places
-
-Review house/place structure and topical meanings together while preserving the distinction between positional strength and topical signification.
-
-### 4. Lots
-
-Most of the large lot extraction/reconciliation work already exists. Review the family as an encyclopedia system: formula visibility, source identities, disambiguation, cross-links and presentation.
-
-### 5. Predictive terminology
-
-Build a comparative overview of profections, firdaria, directions/distributions, revolutions and related terminology without publishing an ordered forecasting workflow.
-
-### 6. Historical cosmology / foundational models
-
-Review Thema Mundi, planetary order, sect, zodiac systems and related cosmological/astronomical models together.
-
-### 7. Long-tail entries
-
-Only after the major families teach coherent systems should the pass return to thin lower-priority definitions.
-
-## Remaining targeted questions inside completed families
-
-The planet/sign passes establish the family architecture but do not imply that every secondary doctrine is exhausted. Keep these as targeted follow-ups rather than reopening a broad extraction pass:
-
-- oriental/occidental terminology and whether every phase label needs its own standalone concept page;
+- commanding/obeying, hearing/seeing, equal-ascension and related sign relations;
 - planetary day/hour correspondences if source-backed and useful;
-- commanding/obeying, hearing/seeing and equal-ascension sign-relation families;
-- additional historical triplicity or term/bound schemes where a named source warrants them;
-- whether an original ecliptic/season diagram adds enough teaching value beyond the existing twelve-sign strip.
+- additional historical triplicity or term/bound schemes only under explicit named source identities;
+- lunar nodes as standalone astronomical/historical terminology if the current corpus supports a clean canonical identity.
+
+### 3. Long-tail definitions
+
+Only after the remaining coherent families are reviewed should the pass return to thin lower-priority entries. Do not restart a generic missing-term hunt.
+
+## Remaining targeted research questions
+
+- **Lot / Part of Divorce:** modern traditional formula located, but premodern provenance remains unresolved.
+- **Solar Directions / Divisions:** kept source-audit-open; direct historical terminology/provenance remains unresolved.
+- **Triplicity-ruler variants:** Lilly is represented; add other historical schemes only under explicit named witnesses.
+- **Historical aspect/orb schemes:** consider normalized named schemes only if the source comparison shows genuine reusable value.
+- **Lunar nodes:** assess whether standalone source-backed entries are needed beyond eclipse context.
+- **Lower-priority thin articles:** revisit only during the relevant family review.
 
 ## Definition-quality rule for this phase
 
@@ -307,21 +330,11 @@ For example, a good peregrine definition should immediately explain that the pla
 
 The article body may then explain mechanism, history, exceptions, examples and source disagreement.
 
-## Known unresolved items
-
-These remain targeted research questions rather than reasons to reopen a broad extraction pass:
-
-- **Lot / Part of Divorce:** modern traditional formula located, but premodern provenance remains unresolved.
-- **Solar Directions / Divisions:** insufficient direct witness in the initial corpus for forced reconciliation.
-- **Ptolemaic Ages exact tables:** source-sensitive; do not universalize later tables without a named witness.
-- **Triplicity-ruler variants:** Lilly is represented; other historical schemes should be added under explicit source identities.
-- **Lower-priority thin articles:** revisit during the relevant family-level bird's-eye review rather than through an isolated global cleanup.
-
 ## SQLite strategy
 
-SQLite remains the canonical backend and is considered appropriate for this project.
+SQLite remains the canonical backend and is appropriate for this project.
 
-The current direction is to use it **more**, not less: structured doctrine that appears across many pages should be modeled once as canonical domain data and projected into the relevant encyclopedia pages. The reference-system, historical-form, planet-profile and sign-profile layers all follow this rule.
+The current direction is to use it **more**, not less: structured doctrine that appears across many pages should be modeled once as canonical domain data and projected into the relevant encyclopedia pages. Reference schemes, historical forms, planet/sign profiles and concept families all follow this rule.
 
 A future migration to a client/server database would only become necessary if the project evolves into a high-concurrency collaborative editing system. That is not the current architecture.
 

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import corpus from '../data/generated/corpus.json';
+import { browseSubjects } from '../data/browseSubjects.js';
 
 const { terms, authors, works, meta } = corpus;
 const featuredSlugs = [
@@ -9,17 +10,6 @@ const featuredSlugs = [
   'prohibition','lot-of-fortune','annual-profection','firdaria','horary-astrology','election'
 ];
 const featured = featuredSlugs.map((slug) => terms.find((term) => term.slug === slug)).filter(Boolean).slice(0,18);
-const subjects = [
-  ['Dignities & Debilities','Domicile, exaltation, terms, faces, fall, detriment and related conditions'],
-  ['Planetary Motion','Application, separation, retrogradation, orientality and solar phase'],
-  ['Perfection & Impediments','Translation, collection, prohibition, refranation and frustration'],
-  ['Signs & Divisions','Signs, triplicities, decans, lunar mansions and zodiacal subdivisions'],
-  ['Sect & Planetary Condition','Diurnal and nocturnal doctrine, hayz and related conditions'],
-  ['Horary & Questions','Interrogational doctrine, significators and judgment of questions'],
-  ['Natal Astrology','Nativities, profession, longevity and rectification terminology'],
-  ['Predictive Techniques','Revolutions, time-lord methods and annual techniques'],
-  ['Mundane & Electional','World-year doctrine, elections, weather and collective indications']
-];
 ---
 <BaseLayout>
   <section class="hero">
@@ -35,11 +25,11 @@ const subjects = [
       </div>
       <div>
         <div class="corpus-stats">
-          <div class="stat"><span class="stat-value">{meta.terms}</span><span class="stat-label">reviewed entries</span></div>
+          <div class="stat"><span class="stat-value">{meta.terms}</span><span class="stat-label">entries</span></div>
           <div class="stat"><span class="stat-value">{meta.interpretations}</span><span class="stat-label">source accounts</span></div>
-          <div class="stat"><span class="stat-value">{meta.works}</span><span class="stat-label">foundational works</span></div>
+          <div class="stat"><span class="stat-value">{meta.works}</span><span class="stat-label">historical works</span></div>
         </div>
-        <p class="hero-note"><strong>Not a modernized glossary.</strong> Definitions are synthesized from reviewed source evidence while disagreements, aliases, translator choices and historical differences remain visible.</p>
+        <p class="hero-note"><strong>Not a modernized glossary.</strong> Definitions are synthesized from source evidence while disagreements, aliases, translator choices and historical differences remain visible.</p>
       </div>
     </div>
   </section>
@@ -56,11 +46,26 @@ const subjects = [
     </div>
   </section>
 
-  <section class="section" id="subjects"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">02 · Subjects</p><h2>Browse by doctrine</h2><p>These are editorial browsing groups; the canonical database retains the more granular source categories.</p></div><div class="section-body subject-grid">{subjects.map(([name,detail]) => <a class="subject" href="/terms/"><strong>{name}</strong><span>{detail}</span></a>)}</div></div></section>
+  <section class="section" id="subjects">
+    <div class="shell section-grid">
+      <div class="section-intro">
+        <p class="micro-label">02 · Subjects</p>
+        <h2>Browse by doctrine</h2>
+        <p>Start with a broad area of traditional doctrine, then narrow the results by name, alias or alphabet.</p>
+      </div>
+      <div class="section-body subject-grid">
+        {browseSubjects.map((subject) =>
+          <a class="subject" href={`/terms/?subject=${subject.slug}`}>
+            <strong>{subject.name}</strong><span>{subject.detail}</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
 
-  <section class="section" id="tradition"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">03 · Tradition</p><h2>Source witnesses</h2><p>The initial corpus spans several linguistic and historical layers of the tradition.</p></div><div class="section-body timeline">{authors.map((author) => <div class="timeline-row"><span class="timeline-era">{author.historical_layer}</span><span class="timeline-author"><a href={`/authors/${author.slug}/`}>{author.name}</a></span><span class="timeline-work"><em>{author.works[0]?.title}</em></span></div>)}</div></div></section>
+  <section class="section" id="tradition"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">03 · Tradition</p><h2>Source witnesses</h2><p>The corpus spans several linguistic and historical layers of the tradition.</p></div><div class="section-body timeline">{authors.map((author) => <div class="timeline-row"><span class="timeline-era">{author.historical_layer}</span><span class="timeline-author"><a href={`/authors/${author.slug}/`}>{author.name}</a></span><span class="timeline-work"><em>{author.works[0]?.title}</em></span></div>)}</div></div></section>
 
-  <section class="section" id="method"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">04 · Method</p><h2>How entries are built</h2><p>The public site is generated from the reviewed canonical SQLite corpus.</p></div><div class="section-body method-grid"><div class="method-item"><strong>Canonical definition</strong><p>A concise recognition rule explaining what the term is.</p></div><div class="method-item"><strong>Source accounts</strong><p>Every historical explanation remains tied to an author, work, edition and locator.</p></div><div class="method-item"><strong>Differences preserved</strong><p>False friends, competing rules and translator-dependent labels are not silently flattened.</p></div></div></div></section>
+  <section class="section" id="method"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">04 · Method</p><h2>How entries are built</h2><p>Each entry separates a concise definition from attributed historical evidence and source differences.</p></div><div class="section-body method-grid"><div class="method-item"><strong>Clear definition</strong><p>A concise recognition rule explaining what the term is.</p></div><div class="method-item"><strong>Source accounts</strong><p>Historical explanations remain tied to an author, work, edition and locator.</p></div><div class="method-item"><strong>Differences preserved</strong><p>False friends, competing rules and translator-dependent labels are not silently flattened.</p></div></div></div></section>
 
   <script define:vars={{ terms, authors, works }} is:inline>
     const input=document.getElementById('term-search'); const box=document.getElementById('search-results');

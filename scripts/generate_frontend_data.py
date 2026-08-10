@@ -165,6 +165,24 @@ def export(db_path: Path, out_path: Path):
         ).fetchone()
         record["planet_profile"] = dict(profile) if profile else None
 
+        sign_profile = con.execute(
+            """SELECT z.ordinal,z.longitude_start,z.longitude_end,z.quarter_anchor,z.quarter_position,
+                      z.solar_declination_half,z.geometry_note,z.tradition_note,
+                      z.astronomy_source_label,z.astronomy_source_url,
+                      e.slug element_slug,e.label element_label,
+                      m.slug modality_slug,m.label modality_label,
+                      p.slug polarity_slug,p.label polarity_label,
+                      dn.slug day_night_slug,dn.label day_night_label
+               FROM zodiac_sign_profiles z
+               JOIN terms e ON e.id=z.element_term_id
+               JOIN terms m ON m.id=z.modality_term_id
+               JOIN terms p ON p.id=z.polarity_term_id
+               JOIN terms dn ON dn.id=z.day_night_term_id
+               WHERE z.sign_term_id=? AND z.status IN ('reviewed','published')""",
+            (term["id"],),
+        ).fetchone()
+        record["zodiac_sign_profile"] = dict(sign_profile) if sign_profile else None
+
         cycles = []
         for cycle in con.execute(
             """SELECT pc.id,pc.slug,pc.cycle_type,pc.mean_period_days,pc.period_note,pc.notes,
@@ -371,6 +389,9 @@ def export(db_path: Path, out_path: Path):
     planetary_profile_count = con.execute(
         "SELECT COUNT(*) FROM planetary_profiles WHERE status IN ('reviewed','published')"
     ).fetchone()[0]
+    zodiac_sign_profile_count = con.execute(
+        "SELECT COUNT(*) FROM zodiac_sign_profiles WHERE status IN ('reviewed','published')"
+    ).fetchone()[0]
 
     payload = {
         "meta": {
@@ -382,6 +403,7 @@ def export(db_path: Path, out_path: Path):
             "reference_schemes": reference_scheme_count,
             "historical_forms": historical_form_count,
             "planetary_profiles": planetary_profile_count,
+            "zodiac_sign_profiles": zodiac_sign_profile_count,
             "evidence_standard": "Reviewed A/B evidence only",
         },
         "terms": terms,

@@ -84,6 +84,7 @@ It does **not** publish full chart-reading recipes, topic-judgment workflows or 
 
 - A mention is not an interpretation: historical accounts need definition-level or substantive evidence.
 - Similar English translations are not merged unless their operative definitions actually agree.
+- When one historical concept has both an established European/Latin technical form and an Arabic/Persian form, prefer the European/Latin form as the canonical public headword unless a specific historical reason requires otherwise; preserve Arabic/Persian forms in aliases and the historical terminology layer.
 - Historical disagreements remain visible.
 - Translator/editor commentary is not silently attributed to the historical author.
 - Source-specific thresholds, formulas and tables stay source-labelled.

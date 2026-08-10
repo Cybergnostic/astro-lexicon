@@ -13,8 +13,7 @@ CREATE TABLE term_page_sections (
   sort_order INTEGER NOT NULL,
   status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','reviewed','published')),
   editorial_notes TEXT,
-  UNIQUE(term_id, section_key),
-  UNIQUE(term_id, sort_order)
+  UNIQUE(term_id, section_key)
 );
 
 CREATE TABLE term_page_blocks (
@@ -28,11 +27,10 @@ CREATE TABLE term_page_blocks (
   sort_order INTEGER NOT NULL,
   status TEXT NOT NULL DEFAULT 'draft' CHECK(status IN ('draft','reviewed','published')),
   editorial_notes TEXT,
-  UNIQUE(page_section_id, source_kind, source_key),
-  UNIQUE(page_section_id, sort_order)
+  UNIQUE(page_section_id, source_kind, source_key)
 );
 
 CREATE INDEX idx_term_page_sections_term
-  ON term_page_sections(term_id, sort_order);
+  ON term_page_sections(term_id, sort_order, id);
 CREATE INDEX idx_term_page_blocks_section
-  ON term_page_blocks(page_section_id, sort_order);
+  ON term_page_blocks(page_section_id, sort_order, id);

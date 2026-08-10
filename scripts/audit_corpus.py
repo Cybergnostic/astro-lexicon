@@ -26,23 +26,59 @@ def apply_sql_chain(con: sqlite3.Connection, folder: Path, kind: str) -> None:
             raise RuntimeError(f"failed while applying {rel}: {exc}") from exc
 
 
-def iter_statements(path: Path):
+def iter_report_items(path: Path):
+    """Yield SQL statements and display-only sqlite3 CLI directives.
+
+    Audit SQL files predate the Python runner and legitimately contain sqlite3 shell
+    directives such as `.headers`, `.mode`, and `.print`. Those are commands for the
+    sqlite3 CLI, not SQL, so passing them to sqlite3.Connection.execute() raises
+    `near ".": syntax error`.
+
+    The Python runner ignores formatting directives and preserves `.print` text as a
+    display item so the existing audit reports remain readable.
+    """
     buffer: list[str] = []
+
     for line in path.read_text(encoding="utf-8").splitlines(keepends=True):
+        stripped = line.strip()
+
+        if stripped.startswith("."):
+            if stripped.startswith(".print"):
+                message = stripped[len(".print") :].strip()
+                if (
+                    len(message) >= 2
+                    and message[0] == message[-1]
+                    and message[0] in {"'", '"'}
+                ):
+                    message = message[1:-1]
+                yield ("print", message)
+            # .headers/.mode/.nullvalue/etc. affect only the sqlite3 shell UI.
+            continue
+
         buffer.append(line)
         sql = "".join(buffer)
         if sqlite3.complete_statement(sql):
             if sql.strip():
-                yield sql
+                yield ("sql", sql)
             buffer = []
+
     trailing = "".join(buffer).strip()
     if trailing:
-        yield trailing
+        # Comments alone are harmless; an actual incomplete SQL statement is not.
+        non_comment_lines = [
+            line for line in trailing.splitlines() if line.strip() and not line.lstrip().startswith("--")
+        ]
+        if non_comment_lines:
+            raise RuntimeError(f"incomplete SQL statement in {path.relative_to(ROOT)}")
 
 
 def run_report(con: sqlite3.Connection, path: Path) -> None:
-    for statement in iter_statements(path):
-        cursor = con.execute(statement)
+    for item_type, value in iter_report_items(path):
+        if item_type == "print":
+            print(value)
+            continue
+
+        cursor = con.execute(value)
         if cursor.description:
             rows = cursor.fetchall()
             for row in rows:
@@ -51,8 +87,11 @@ def run_report(con: sqlite3.Connection, path: Path) -> None:
 
 def run_blockers(con: sqlite3.Connection, path: Path) -> bool:
     failed = False
-    for statement in iter_statements(path):
-        cursor = con.execute(statement)
+    for item_type, value in iter_report_items(path):
+        if item_type != "sql":
+            continue
+
+        cursor = con.execute(value)
         if not cursor.description:
             continue
         for row in cursor.fetchall():

@@ -6,11 +6,13 @@ The project compares technical concepts across historical sources without flatte
 
 ## Current status
 
-The major **bird's-eye encyclopedia review is complete on remote `main`**.
+The major **bird's-eye encyclopedia review** and **Editorial Baseline v1** are complete on remote `main`.
 
-That phase reviewed the lexicon as a reader-facing system rather than as isolated database entries. The major families now have coherent definitions, normalized reference data, cross-links and teaching visuals where useful.
+The bird's-eye phase reviewed the lexicon as a reader-facing system rather than as isolated database entries. Editorial Baseline v1 then passed through the existing corpus family by family to repair canonical duplicates, remove public project-language, reduce article over-segmentation, separate structured reference data from explanatory prose, improve historical-form coverage, and correct several source/provenance inconsistencies discovered during the pass.
 
-Detailed closure ledger:
+No further generic editorial-expansion pass is planned at this stage. Future work should be driven by concrete source additions, audit findings or reader-facing defects rather than by another open-ended cleanup sweep.
+
+Detailed bird's-eye closure ledger:
 
 `docs/revision/birds_eye_encyclopedia_review.md`
 
@@ -20,7 +22,14 @@ Earlier encyclopedia-quality checkpoint:
 
 ### Validation status
 
-The latest bird's-eye commits were made remotely through GitHub. They have **not yet been freshly validated locally** in this session.
+A local audit run on 2026-08-10 confirmed that the full migration/seed chain built successfully through `0191_greek_terminology_precision.sql`; SQLite integrity and foreign-key checks both passed.
+
+That run then exposed a small residual set of editorial-integrity blockers: ambiguous aliases, stale composition pointers, and two audit rules that were stricter than the intended composition/publication model. These are addressed on remote `main` by:
+
+- `0192_editorial_baseline_final_cleanup.sql` — removes dangling composition pointers and resolves the specific ambiguous aliases reported by the audit;
+- a narrowed `initial_corpus_blockers.sql` — keeps true integrity/publication failures blocking while leaving coverage questions such as intentionally unplaced article blocks and reviewed entries without a dedicated `interpretations` row as non-blocking review information.
+
+The current remote state therefore still needs **one final local validation run** before it should be described as fully validated.
 
 After pulling `main`, run:
 
@@ -28,10 +37,36 @@ After pulling `main`, run:
 cd ~/projects/astro-lexicon
 git pull origin main
 npm run audit:corpus
+npm run audit:editorial
 npm run build
 ```
 
-Only after both pass should the current remote state be described as locally validated.
+Only after these pass should the current remote state be described as locally validated.
+
+## Editorial Baseline v1
+
+The baseline pass is now closed as an editorial phase.
+
+### What the pass changed
+
+- reviewed the existing corpus family by family rather than only selected showcase entries;
+- repaired duplicate canonical identities such as duplicate Bounds/Terms, Decan/Face, Refrenation/Refranation, Promissor/Promittor and duplicate solar-condition headwords;
+- preserved historically distinct false friends rather than merging them by English resemblance;
+- established the public-headword preference for established European/Latin forms when the same concept also survives under Arabic/Persian forms, while preserving original-language forms in aliases and `term_forms`;
+- restored source-backed distinctions where later editorial synthesis had drifted from the historical evidence, especially in the Lots family;
+- removed speculative or curriculum-only entries from reviewed/public status when direct historical provenance remained unresolved;
+- added and corrected Hellenistic Greek terminology only where the historical equivalence was sufficiently clear;
+- reduced repeated definition/intro text and public implementation language;
+- introduced page composition as a presentation layer over normalized article content, without making every stored content block mandatory on the public page;
+- kept normalized structured data responsible for repeated reference facts while article prose carries explanation and source comparison.
+
+### Composition policy
+
+Database normalization and editorial segmentation are separate concerns.
+
+Stored article sections/tables remain reusable normalized content objects. `term_page_sections` and `term_page_blocks` decide how those objects are grouped for a public article. A composed page may intentionally omit a redundant stored block; omission is therefore an editorial coverage question, not a database-integrity failure.
+
+A composition block that points to a source section/table that no longer exists **is** an integrity error and remains blocking.
 
 ## Historical corpus
 
@@ -91,6 +126,7 @@ It does **not** publish full chart-reading recipes, topic-judgment workflows or 
 - Reusable facts belong in normalized SQLite data rather than repeated prose or hand-written JSON.
 - Canonical definitions answer **what the term is**; article prose carries the teaching burden.
 - Visuals are added only when they materially improve understanding.
+- A reviewed encyclopedia entry does not require a synthetic `interpretations` row merely to satisfy an audit if its public identity is already supported by structured/reference evidence; source-interpretation coverage remains visible as a review metric rather than a blanket publication blocker.
 
 ## Canonical structured layers
 
@@ -115,10 +151,12 @@ Current reusable domain/reference architecture includes:
 - `zodiac_relation_schemes`
 - `zodiac_relation_pairs`
 - `term_zodiac_relation_schemes`
+- `term_page_sections`
+- `term_page_blocks`
 
 `concept_families` is the generic ordered teaching-family layer. Pairwise `term_relations` still describe two-term relationships; concept families describe a larger system and the role of each member inside it.
 
-## Major bird's-eye blocks now complete
+## Major reviewed families
 
 ### Essential dignity and historical schemes
 
@@ -126,6 +164,7 @@ Current reusable domain/reference architecture includes:
 - exaltation/fall degree numbers where supplied;
 - complete terms/bounds and faces;
 - Egyptian terms/bounds transmitted by Ptolemy as a separate named scheme;
+- Dorothean triplicity reference kept distinct from Lilly's triplicity scheme;
 - explicit named-scheme comparison instead of an unlabeled universal “terms” table;
 - planet- and sign-centric dignity views from the same canonical rows.
 
@@ -133,7 +172,8 @@ Current reusable domain/reference architecture includes:
 
 - dedicated original-language `term_forms` architecture;
 - Greek script, transliteration, gloss, rendering variants and ambiguity notes;
-- initial Hellenistic forms for the seven planets, twelve signs and major technical vocabulary.
+- Hellenistic forms for the seven planets, twelve signs and a broader set of major technical vocabulary;
+- historical forms are added source-sensitively rather than as a modern translation dictionary.
 
 ### Seven planets
 
@@ -172,8 +212,9 @@ Current reusable domain/reference architecture includes:
 - horary Perfection separated from exact aspect;
 - Translation versus Collection of Light;
 - reception as a relational modifier;
-- interruption family including Prohibition, source-specific Frustration, Refrenation and Abscission;
-- reusable concept-family frontend map.
+- interruption family including Prohibition, source-specific Frustration, Refranation and Abscission;
+- reusable concept-family frontend map;
+- high-confidence Greek historical forms added for core Hellenistic aspect/application vocabulary.
 
 ### Houses / places
 
@@ -181,7 +222,8 @@ Current reusable domain/reference architecture includes:
 - angles, succedents and cadents as positional classes;
 - positional strength separated from topical signification;
 - derived houses as relational recounting;
-- Antiochus' dealings taxonomy kept source-specific.
+- Antiochus' dealings taxonomy kept source-specific;
+- Hellenistic place/class terminology retained in the historical-form layer.
 
 ### Lots / Parts
 
@@ -189,7 +231,22 @@ Current reusable domain/reference architecture includes:
 - source-specific formula streams preserved;
 - separate Abū Maʿshar planetary-Lot family;
 - original directed-arc construction visual;
-- repeated English names do not imply historical identity.
+- repeated English names do not imply historical identity;
+- Natural/Immovable and General Significators restored to their direct Abū Maʿshar/Bonatti meanings after a later editorial pass had conflated them with different concepts.
+
+### Horary / interrogation vocabulary
+
+- Querent, Quesited, Significator and Cosignificator retained as roles rather than generic prose labels;
+- Interrogation and Horary Astrology related without being flattened into one historically invariant label;
+- Radicality and planetary-hour terminology kept source-sensitive;
+- public project/navigation language removed.
+
+### Natal / rectification / longevity
+
+- canonical public headwords normalized to Animodar, Hyleg, Alcochoden and Anareta;
+- Namudar, Apheta/Haylaj, Kadkhuda and Intersector preserved as historical forms/aliases;
+- historical longevity doctrine remains descriptive/source-attributed rather than procedural;
+- rectification techniques grouped editorially without publishing a generic rectification workflow.
 
 ### Predictive terminology
 
@@ -197,11 +254,13 @@ Current reusable domain/reference architecture includes:
 - Ptolemy's Ages of Life directly source-backed;
 - separate families for time-lord chronology, directions/distributions and revolutions/returns;
 - profection, Firdaria, Alfridary, primary directions, distributions and returns presented as different timing mechanisms;
-- `solar-direction` and `divisions` remain visibly source-audit-open.
+- Promittor retained as the canonical directional role, with Promissor as a spelling variant;
+- Distributor and Jarbakhtar remain distinct rather than being collapsed by translation similarity;
+- `solar-direction` and `divisions` remain draft research candidates pending direct historical provenance.
 
 ### Historical cosmology / foundational models
 
-- source-backed Traditional Planetary Order;
+- source-backed Planetary Order;
 - Moon → Mercury → Venus → Sun → Mars → Jupiter → Saturn Earth-outward sequence;
 - sphere order distinguished from planetary-hour temporal ordering;
 - Thema Mundi kept as a model chart rather than a literal historical event chart;
@@ -237,33 +296,35 @@ These relations are rendered on both concept and sign pages. They are kept disti
 - `PlanetaryTimeSequences.astro`
 - `ZodiacRelations.astro`
 
-The build pipeline remains generated-data-first. `npm run generate:data` now runs the main SQLite corpus generator and the deterministic zodiac-relation enrichment step before Astro builds the site.
+The build pipeline remains generated-data-first. `npm run generate:data` runs the main SQLite corpus generator plus deterministic enrichment steps before Astro builds the site.
 
 ## Repository structure
 
 - `db/migrations/` — canonical SQLite schema
 - `db/seed/` — source extraction, reconciliation, reviewed articles and structured data
-- `db/audit/` — editorial/integrity audits
+- `db/audit/` — blocking integrity checks plus non-blocking editorial/coverage reports
 - `docs/extraction/` — sequential source-coverage ledgers
 - `docs/revision/` — review decisions, checkpoints and phase closures
 - `scripts/generate_frontend_data.py` — main SQLite → frontend corpus generator
-- `scripts/enrich_zodiac_relations.py` — deterministic sign-relation enrichment step
+- `scripts/editorial_baseline_audit.py` — non-blocking editorial cleanup ledger
+- `scripts/enrich_page_compositions.py` — deterministic composition enrichment
+- `scripts/enrich_zodiac_relations.py` — deterministic sign-relation enrichment
 - `src/` — Astro frontend
 
 Generated frontend JSON is **not** a second source of truth.
 
 ## What remains open
 
-These are bounded future research tasks, not reasons to reopen the whole bird's-eye review:
+These are bounded future research or quality tasks, not reasons to reopen the whole Editorial Baseline pass:
 
-- direct historical provenance for `solar-direction` and `divisions`;
-- premodern provenance for the cautiously recorded modern-traditional Part/Lot of Divorce formula;
+- direct historical provenance for draft `solar-direction` and `divisions`;
+- stronger direct-source coverage for reviewed contextual/astronomical/reference entries currently surfaced by the non-blocking source-interpretation report;
+- additional historical-language forms where a direct technical equivalence can be verified;
 - additional named triplicity, bounds/terms or orb schemes when a specific historical witness justifies them;
-- stronger standalone lunar-node historical terminology if the corpus supports it;
-- lower-priority thin entries, reviewed only inside their relevant families;
+- lower-priority thin or definition-only entries, improved only when their family/source context warrants it;
 - additional books or user-submitted sources through the established source-onboarding/extraction/reconciliation workflow.
 
-Do not restart a generic “find every missing term” pass unless a later corpus expansion creates a concrete reason.
+Do not restart a generic “find every missing term” or generic “compose every stored block” pass unless a later corpus expansion creates a concrete reason.
 
 ## Scaling to new books
 
@@ -271,11 +332,11 @@ New material should enter through the same layered workflow:
 
 1. register source / edition metadata;
 2. extract candidate terminology and substantive doctrine;
-3. attach source passages and interpretations;
+3. attach source passages and interpretations where the source actually supports a concept;
 4. reconcile against existing canonical terms before creating new headwords;
 5. preserve source variants instead of flattening them;
 6. promote reusable repeated facts into normalized reference tables when justified;
-7. run the corpus audit and frontend build.
+7. run the corpus audit, editorial report and frontend build.
 
 This keeps the project scalable: new books extend the corpus instead of forcing a rewrite of the existing encyclopedia.
 
@@ -283,7 +344,12 @@ This keeps the project scalable: new books extend the corpus instead of forcing 
 
 ```bash
 npm run audit:corpus
+npm run audit:editorial
 npm run build
 ```
 
-`audit:corpus` rebuilds the database from migrations + ordered seeds and runs the blocking integrity/editorial checks. `build` runs generated-data preparation and the Astro build.
+`audit:corpus` rebuilds the database from migrations + ordered seeds and blocks on real integrity/publication failures: invalid public definitions, invalid reviewed evidence grades, missing citation links for reviewed interpretations, unresolved alias collisions, dangling/duplicated composition pointers, relevant draft relations and superseded extraction artifacts.
+
+`audit:editorial` is a non-blocking cleanup ledger for definition redundancy, article fragmentation/composition coverage, public process-language and historical-form research candidates.
+
+`build` runs generated-data preparation and the Astro build.

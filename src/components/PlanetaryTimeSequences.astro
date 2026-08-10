@@ -8,13 +8,15 @@ const glyphs = {
 {sequences.length > 0 && (
   <section class="time-sequences" id="planetary-time-sequences" aria-labelledby="planetary-time-title">
     <div class="time-head">
-      <p class="micro-label">Structured historical reference</p>
-      <h2 id="planetary-time-title">Planetary days and hours</h2>
-      <p>The named sequences below are source-bound reference systems. The hour sequence is a repeating planetary cycle; the weekday sequence identifies the ruler of each civil weekday. They are related, but they are not the geocentric sphere order.</p>
+      <div>
+        <p class="micro-label">Structured historical reference</p>
+        <h2 id="planetary-time-title">Planetary days and hours</h2>
+      </div>
+      <p>The hour cycle and weekday rulers are related sequences, not the geocentric sphere order.</p>
     </div>
 
     {sequences.map((sequence) => (
-      <div class="sequence-card">
+      <div class="sequence-block">
         <div class="sequence-heading">
           <div>
             <h3>{sequence.label}</h3>
@@ -25,10 +27,10 @@ const glyphs = {
 
         <div class:list={['step-strip', { weekdays: sequence.sequence_kind === 'weekday-cycle' }]}>
           {sequence.steps.map((step) => (
-            <a class="step" href={`/terms/${step.planet_slug}/`} title={step.note || undefined}>
+            <a class="step" href={`/terms/${step.planet_slug}/`} title={`${step.planet_label}${step.note ? ` · ${step.note}` : ''}`}>
               <span class="step-key">{step.step_label}</span>
               <span class="planet-glyph" aria-hidden="true">{glyphs[step.planet_slug] ?? '•'}</span>
-              <strong>{step.planet_label}</strong>
+              <span class="sr-only">{step.planet_label}</span>
             </a>
           ))}
         </div>
@@ -46,14 +48,14 @@ const glyphs = {
 )}
 
 <style>
-  .time-sequences{margin:2.8rem 0;padding:1.1rem;border:1px solid var(--line-dark);background:var(--paper-pale)}
-  .time-head{max-width:52rem;border-bottom:1px solid var(--line);padding-bottom:.85rem;margin-bottom:1rem}.time-head h2{margin:.15rem 0 .45rem}.time-head p:last-child{margin:0;color:var(--muted)}
-  .sequence-card{margin-top:1rem;padding:.9rem;border:1px solid var(--line);background:var(--paper-deep)}
-  .sequence-heading{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start;margin-bottom:.75rem}.sequence-heading h3{margin:0}.sequence-heading p{margin:.15rem 0 0;color:var(--muted);font-size:.82rem}.source-tag{font:600 .66rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:right;max-width:20rem}
-  .step-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line-dark)}
-  .step{display:grid;grid-template-rows:auto 2rem auto;place-items:center;gap:.25rem;min-width:0;padding:.65rem .35rem;border-right:1px solid var(--line);text-decoration:none;color:inherit;background:var(--paper-pale)}.step:last-child{border-right:0}.step:hover{background:var(--paper-deep)}
-  .step-key{font:700 .61rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:center}.planet-glyph{font-size:1.45rem;line-height:1}.step strong{font-size:.78rem;text-align:center}
-  .sequence-note{margin:.7rem 0 0;color:var(--muted);font-size:.8rem}
-  .derivation-note{display:grid;grid-template-columns:minmax(10rem,.35fr) 1fr;gap:1rem;margin-top:1rem;padding:.8rem;border-left:3px solid var(--line-dark);background:var(--paper-deep)}.derivation-note span{color:var(--muted);font-size:.84rem}
-  @media(max-width:760px){.sequence-heading{display:block}.source-tag{display:block;text-align:left;margin-top:.35rem}.step-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.step:nth-child(4){border-right:0}.step:nth-child(-n+4){border-bottom:1px solid var(--line)}.step:nth-child(7){border-right:0}.derivation-note{grid-template-columns:1fr}}
+  .time-sequences{margin:3rem 0}
+  .time-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(16rem,.55fr);gap:1.5rem;align-items:end;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line);padding:.8rem 0}.time-head h2{margin:.15rem 0 0;border:0;padding:0}.time-head>p{margin:0;color:var(--muted);font-size:.82rem}
+  .sequence-block{padding:1rem 0 1.2rem;border-bottom:1px solid var(--line)}
+  .sequence-heading{display:flex;justify-content:space-between;gap:1rem;align-items:flex-end;margin-bottom:.65rem}.sequence-heading h3{margin:0}.sequence-heading p{margin:.12rem 0 0;color:var(--muted);font-size:.76rem}.source-tag{font:600 .62rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:right;max-width:24rem}
+  .step-strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border:1px solid var(--line-dark);background:var(--paper-pale)}
+  .step{display:grid;grid-template-rows:auto 2.1rem;place-items:center;gap:.18rem;min-width:0;padding:.52rem .3rem;border-right:1px solid var(--line);text-decoration:none;color:inherit}.step:last-child{border-right:0}.step:hover{background:var(--paper-deep);color:var(--accent)}
+  .step-key{font:700 .57rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:center}.planet-glyph{font-family:"Noto Sans Symbols 2","Segoe UI Symbol","DejaVu Sans",sans-serif;font-size:1.5rem;line-height:1}
+  .sequence-note{max-width:58rem;margin:.6rem 0 0;color:var(--muted);font-size:.78rem}
+  .derivation-note{display:grid;grid-template-columns:minmax(11rem,.3fr) 1fr;gap:1rem;margin-top:1rem;padding:.75rem 0;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}.derivation-note span{color:var(--muted);font-size:.82rem}
+  @media(max-width:760px){.time-head{grid-template-columns:1fr}.sequence-heading{display:block}.source-tag{display:block;text-align:left;margin-top:.35rem}.step-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.step:nth-child(4n){border-right:0}.step:nth-child(-n+4){border-bottom:1px solid var(--line)}.derivation-note{grid-template-columns:1fr}}
 </style>

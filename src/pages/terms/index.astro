@@ -21,9 +21,9 @@ const subjectData = browseSubjects.map(({ slug, name, detail }) => ({ slug, name
       {browseSubjects.map((subject)=><a href={`/terms/?subject=${subject.slug}`} data-subject-link={subject.slug}>{subject.name}</a>)}
     </div>
 
-    <div class="search-wrap"><div class="search-label"><span class="micro-label">Filter entries</span><span>definitions · categories · aliases</span></div><div class="search"><input id="filter" type="search" autocomplete="off" placeholder="Type a term, alias, or category…" /></div></div>
-    <div class="alpha" aria-label="Alphabetical index"><a href="#" data-letter="ALL" class="active">All</a>{alphabet.map((letter)=>availableLetters.has(letter)?<a href={`#${letter}`} data-letter={letter}>{letter}</a>:<span class="is-empty">{letter}</span>)}</div>
-    <p id="result-count" class="meta">Showing all {meta.terms} entries.</p>
+    <div class="search-wrap"><div class="search-label"><span class="micro-label">Filter entries</span><span>definitions · categories · aliases</span></div><div class="search"><input id="filter" type="search" autocomplete="off" placeholder="Type a term, alias, or category…" aria-label="Filter lexicon entries" /></div></div>
+    <div class="alpha" aria-label="Alphabetical index"><a href="#" data-letter="ALL" class="active" aria-current="true">All</a>{alphabet.map((letter)=>availableLetters.has(letter)?<a href={`#${letter}`} data-letter={letter}>{letter}</a>:<span class="is-empty">{letter}</span>)}</div>
+    <p id="result-count" class="meta" aria-live="polite" aria-atomic="true">Showing all {meta.terms} entries.</p>
     <ul id="term-list" class="index-list">{terms.map((term)=>{
       const subjectSlugs=subjectSlugsForTerm(term);
       return <li data-letter={term.label.charAt(0).toUpperCase()} data-subjects={subjectSlugs.join(' ')} data-search={`${term.label} ${term.short_definition} ${term.category} ${term.aliases.map(a=>a.label).join(' ')}`.toLowerCase()}><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="index-definition">{term.short_definition}</span><span class="count">{term.category}</span></li>;
@@ -60,8 +60,18 @@ const subjectData = browseSubjects.map(({ slug, name, detail }) => ({ slug, name
         row.hidden=!show;
         if(show)n++;
       });
-      letterLinks.forEach(a=>a.classList.toggle('active',a.dataset.letter===letter));
-      subjectLinks.forEach(a=>a.classList.toggle('active',activeSubject ? a.dataset.subjectLink===activeSubject.slug : a.dataset.subjectLink==='ALL'));
+      letterLinks.forEach(a=>{
+        const active=a.dataset.letter===letter;
+        a.classList.toggle('active',active);
+        if(active) a.setAttribute('aria-current','true');
+        else a.removeAttribute('aria-current');
+      });
+      subjectLinks.forEach(a=>{
+        const active=activeSubject ? a.dataset.subjectLink===activeSubject.slug : a.dataset.subjectLink==='ALL';
+        a.classList.toggle('active',active);
+        if(active) a.setAttribute('aria-current','page');
+        else a.removeAttribute('aria-current');
+      });
       if(count) count.textContent=activeSubject ? `Showing ${n} entries in ${activeSubject.name}.` : `Showing ${n} of ${total} entries.`;
     }
 

@@ -212,6 +212,37 @@ def export(db_path: Path, out_path: Path):
             concept_families.append(item)
         record["concept_families"] = concept_families
 
+        planetary_time_sequences = []
+        for sequence in con.execute(
+            """SELECT s.id,s.slug,s.label,s.sequence_kind,s.notes,
+                      link.relation_role,link.note relation_note,
+                      w.slug work_slug,w.title work_title,
+                      a.slug author_slug,a.name author_name
+               FROM term_planetary_time_sequences link
+               JOIN planetary_time_sequences s ON s.id=link.sequence_id
+               LEFT JOIN works w ON w.id=s.work_id
+               LEFT JOIN authors a ON a.id=w.author_id
+               WHERE link.term_id=? AND s.status IN ('reviewed','published')
+               ORDER BY CASE s.sequence_kind WHEN 'hour-cycle' THEN 0 ELSE 1 END,s.id""",
+            (term["id"],),
+        ):
+            item = dict(sequence)
+            item["steps"] = [
+                dict(row)
+                for row in con.execute(
+                    """SELECT step.sequence_no,step.step_key,step.step_label,step.note,
+                              p.slug planet_slug,p.label planet_label
+                       FROM planetary_time_sequence_steps step
+                       JOIN terms p ON p.id=step.planet_term_id
+                       WHERE step.sequence_id=?
+                       ORDER BY step.sequence_no""",
+                    (sequence["id"],),
+                )
+            ]
+            item.pop("id", None)
+            planetary_time_sequences.append(item)
+        record["planetary_time_sequences"] = planetary_time_sequences
+
         cycles = []
         for cycle in con.execute(
             """SELECT pc.id,pc.slug,pc.cycle_type,pc.mean_period_days,pc.period_note,pc.notes,
@@ -424,6 +455,9 @@ def export(db_path: Path, out_path: Path):
     concept_family_count = con.execute(
         "SELECT COUNT(*) FROM concept_families WHERE status IN ('reviewed','published')"
     ).fetchone()[0]
+    planetary_time_sequence_count = con.execute(
+        "SELECT COUNT(*) FROM planetary_time_sequences WHERE status IN ('reviewed','published')"
+    ).fetchone()[0]
 
     payload = {
         "meta": {
@@ -437,6 +471,7 @@ def export(db_path: Path, out_path: Path):
             "planetary_profiles": planetary_profile_count,
             "zodiac_sign_profiles": zodiac_sign_profile_count,
             "concept_families": concept_family_count,
+            "planetary_time_sequences": planetary_time_sequence_count,
             "evidence_standard": "Reviewed A/B evidence only",
         },
         "terms": terms,

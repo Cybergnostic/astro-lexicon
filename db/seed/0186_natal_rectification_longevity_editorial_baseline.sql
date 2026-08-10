@@ -106,7 +106,7 @@ WHERE ps.section_key='rectification' AND s.status IN ('reviewed','published');
 
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
-SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 rectification composition.'
+SELECT ps.id,'article-table',tb.table_key,'table',1,10000+tb.sort_order,'reviewed','Editorial Baseline v1 rectification composition.'
 FROM term_page_sections ps
 JOIN term_article_tables tb ON tb.term_id=ps.term_id
 WHERE ps.section_key='rectification' AND tb.status IN ('reviewed','published');
@@ -143,7 +143,7 @@ WHERE ps.section_key='historical-role' AND s.status IN ('reviewed','published');
 
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
-SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 longevity terminology composition.'
+SELECT ps.id,'article-table',tb.table_key,'table',1,10000+tb.sort_order,'reviewed','Editorial Baseline v1 longevity terminology composition.'
 FROM term_page_sections ps
 JOIN term_article_tables tb ON tb.term_id=ps.term_id
 WHERE ps.section_key='historical-role' AND tb.status IN ('reviewed','published');

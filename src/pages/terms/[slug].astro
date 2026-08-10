@@ -22,9 +22,10 @@ const hasHistoricalForms=(term.forms?.length ?? 0) > 0;
 const hasPlanetProfile=Boolean(term.planet_profile);
 const hasZodiacSignProfile=Boolean(term.zodiac_sign_profile);
 const astronomyDiagramSlugs=new Set([
-  'celestial-sphere','horizon','meridian','equinoctial','ecliptic','declination','celestial-latitude','celestial-longitude',
+  'celestial-sphere','horizon','meridian','equinoctial','ecliptic','declination','celestial-latitude','celestial-longitude','ecliptic-projection',
   'first-movement','second-movement','direct-motion','station','retrogradation','swift-in-motion','slow-in-motion',
-  'oriental','occidental','combustion','under-the-beams','cazimi'
+  'oriental','occidental','combustion','under-the-beams','cazimi',
+  'eclipse','solar-eclipse','lunar-eclipse','total-eclipse','partial-eclipse','annular-eclipse','occultation','eclipse-path'
 ]);
 const hasAstronomyDiagram=astronomyDiagramSlugs.has(term.slug);
 const planetaryLots=term.relations?.filter((relation) => relation.direction === 'outgoing' && relation.relation_type === 'associated-planetary-lot') ?? [];

@@ -79,8 +79,6 @@ const citationLabel=(citation) => {
       </div>
       <p class="lede">{term.short_definition}</p>
 
-      {!article && <div class="definition-panel" id="definition"><p class="micro-label">Definition</p><p>{term.short_definition}</p></div>}
-
       {article && <div class="article-intro" id="overview"><p>{article.intro}</p></div>}
 
       {hasComposition ? pageComposition.map((publicSection) => (
@@ -171,7 +169,6 @@ const citationLabel=(citation) => {
 
     <aside class="toc">
       <strong>On this entry</strong>
-      {!article && <a href="#definition">Definition</a>}
       {hasComposition
         ? pageComposition.map((publicSection)=><a href={`#section-${publicSection.section_key}`}>{publicSection.heading}</a>)
         : articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}

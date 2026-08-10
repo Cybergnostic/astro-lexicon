@@ -152,7 +152,7 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
           <div class="alias-list">{term.aliases.map((alias)=><div class="alias-item">
             <div class="alias-head"><strong>{alias.label}</strong><span>{[alias.language, humanizeKey(alias.alias_type)].filter(Boolean).join(' · ')}</span></div>
             {alias.scope_note && <p>{alias.scope_note}</p>}
-          </div>)}</div>}
+          </div>)}</div>
         </div>}
       </section>}
 

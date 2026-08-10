@@ -2,8 +2,8 @@
 --
 -- Earlier source extraction established `terms` and `face-decan` as source-backed
 -- canonical headwords. A later gap pass accidentally introduced duplicate reviewed
--- headwords `bound` and `decan` without source interpretations. Preserve useful aliases
--- and relations, then remove the duplicate canonical records.
+-- headwords `bound` and `decan` without source interpretations. Preserve useful aliases,
+-- historical forms and relations, then remove the duplicate canonical records.
 
 PRAGMA foreign_keys = ON;
 
@@ -22,6 +22,20 @@ INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
 SELECT id,'Bound','English','preferred-modern-variant',
        'Modern singular form of the historical terms/bounds subdivision.'
 FROM terms WHERE slug='terms';
+
+-- The Greek-form pass attached ὅριον to `bound` because that later duplicate existed at
+-- the time. Move the complete form row in place so its renderings/attestations remain
+-- attached through the unchanged term_form id.
+UPDATE term_forms
+SET term_id=(SELECT id FROM terms WHERE slug='terms')
+WHERE term_id=(SELECT id FROM terms WHERE slug='bound')
+  AND NOT EXISTS (
+    SELECT 1 FROM term_forms existing
+    WHERE existing.term_id=(SELECT id FROM terms WHERE slug='terms')
+      AND existing.language_code=term_forms.language_code
+      AND existing.form=term_forms.form
+      AND existing.form_type=term_forms.form_type
+  );
 
 INSERT OR IGNORE INTO term_relations (subject_term_id,object_term_id,relation_type,note,status)
 SELECT canonical.id,r.object_term_id,r.relation_type,r.note,r.status
@@ -46,7 +60,7 @@ JOIN terms canonical ON canonical.slug='terms';
 
 -- The duplicate has no reviewed source interpretations in the current corpus. Any
 -- residual rows attached to it are extraction-era presentation/navigation artifacts and
--- may be safely removed by ON DELETE CASCADE after the useful links above are migrated.
+-- may be safely removed by ON DELETE CASCADE after useful links/forms above are migrated.
 DELETE FROM terms WHERE slug='bound';
 
 -- -----------------------------------------------------------------------------
@@ -64,6 +78,17 @@ INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
 SELECT id,'Decan','English','preferred-modern-variant',
        'Modern singular form of the face/decan subdivision.'
 FROM terms WHERE slug='face-decan';
+
+UPDATE term_forms
+SET term_id=(SELECT id FROM terms WHERE slug='face-decan')
+WHERE term_id=(SELECT id FROM terms WHERE slug='decan')
+  AND NOT EXISTS (
+    SELECT 1 FROM term_forms existing
+    WHERE existing.term_id=(SELECT id FROM terms WHERE slug='face-decan')
+      AND existing.language_code=term_forms.language_code
+      AND existing.form=term_forms.form
+      AND existing.form_type=term_forms.form_type
+  );
 
 INSERT OR IGNORE INTO term_relations (subject_term_id,object_term_id,relation_type,note,status)
 SELECT canonical.id,r.object_term_id,r.relation_type,r.note,r.status

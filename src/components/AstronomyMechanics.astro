@@ -59,19 +59,19 @@ const mode = coordinateSlugs.has(slug)
       <div class="motion-row">
         <span class="motion-label">Second Motion</span>
         <div class="phase-track">
-          <span class="phase direct">direct</span>
-          <span class="arrow">→</span>
+          <span class="phase direct">direct →</span>
+          <span class="sequence-arrow">→</span>
           <span class="phase station">station</span>
-          <span class="arrow reverse">←</span>
-          <span class="phase retro">retrograde</span>
-          <span class="arrow reverse">←</span>
+          <span class="sequence-arrow">→</span>
+          <span class="phase retro">← retrograde</span>
+          <span class="sequence-arrow">→</span>
           <span class="phase station">station</span>
-          <span class="arrow">→</span>
-          <span class="phase direct">direct</span>
+          <span class="sequence-arrow">→</span>
+          <span class="phase direct">direct →</span>
         </div>
       </div>
     </div>
-    <p class="visual-note">Direct, stationary and retrograde describe apparent change in zodiacal longitude as seen from Earth. The planet does not physically reverse its orbit.</p>
+    <p class="visual-note">The arrows between pills show the sequence of phases; the arrow inside each motion label shows the apparent zodiacal direction. The planet does not physically reverse its orbit.</p>
   </section>
 )}
 
@@ -123,7 +123,7 @@ const mode = coordinateSlugs.has(slug)
   .motion-track span{color:var(--muted)}.motion-track b{font-size:2rem;font-weight:400}
   .phase-track{display:flex;align-items:center;justify-content:space-between;gap:.45rem;padding:.7rem;border:1px solid var(--line);background:var(--paper-deep);overflow-x:auto}
   .phase{white-space:nowrap;padding:.45rem .65rem;border:1px solid var(--line-dark);border-radius:999px;background:var(--paper-pale);font-size:.78rem;font-weight:700}
-  .station{border-style:dashed}.arrow{font-size:1.2rem}.reverse{transform:rotate(0deg)}
+  .station{border-style:dashed}.sequence-arrow{font-size:1.05rem;color:var(--muted)}
 
   .solar-layout{display:grid;gap:1rem}
   .orientation-strip{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;padding:1rem;border:1px solid var(--line);background:var(--paper-deep)}

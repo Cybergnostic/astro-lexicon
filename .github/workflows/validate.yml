@@ -4,14 +4,28 @@ on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -19,10 +33,19 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
 
-      - name: Audit corpus
+      - name: Audit canonical corpus
         run: npm run audit:corpus
+
+      - name: Run editorial report
+        run: npm run audit:editorial
+
+      - name: Generate frontend corpus
+        run: npm run generate:data
+
+      - name: Check generated corpus invariants
+        run: npm run test:generated
 
       - name: Build site
         run: npm run build

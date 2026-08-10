@@ -62,6 +62,8 @@ const citationLabel=(citation) => {
   const pages=citation.page_start ? `pp. ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}` : '';
   return [locus,pages,citation.locator_text].filter(Boolean).join(' · ');
 };
+const humanizeKey=(value='') => value.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${relation.direction}`;
 ---
 <BaseLayout title={`${term.label} — Astrological Lexicon`} description={term.short_definition}>
   <div class="shell page-grid">
@@ -79,7 +81,7 @@ const citationLabel=(citation) => {
       </div>
       <p class="lede">{term.short_definition}</p>
 
-      {article && <div class="article-intro" id="overview"><p>{article.intro}</p></div>}
+      {article?.intro && <div class="article-intro" id="overview"><p>{article.intro}</p></div>}
 
       {hasComposition ? pageComposition.map((publicSection) => (
         <section id={`section-${publicSection.section_key}`} class="composed-section">
@@ -148,7 +150,10 @@ const citationLabel=(citation) => {
         {hasHistoricalForms && <HistoricalForms forms={term.forms} />}
         {hasAliases && <div class="alias-group">
           {hasHistoricalForms && <h3>Other names</h3>}
-          <div class="term-links">{term.aliases.map((alias)=><span title={alias.scope_note || undefined}>{alias.label}</span>)}</div>
+          <div class="alias-list">{term.aliases.map((alias)=><div class="alias-item">
+            <div class="alias-head"><strong>{alias.label}</strong><span>{[alias.language, humanizeKey(alias.alias_type)].filter(Boolean).join(' · ')}</span></div>
+            {alias.scope_note && <p>{alias.scope_note}</p>}
+          </div>)}</div>
         </div>}
       </section>}
 
@@ -163,7 +168,11 @@ const citationLabel=(citation) => {
 
       {hasRelations && <section id="related">
         <h2>Related concepts</h2>
-        <div class="term-links">{term.relations.map((relation)=><a href={`/terms/${relation.target_slug}/`} title={relation.note || undefined}>{relation.target_label}</a>)}</div>
+        <div class="relation-list">{term.relations.map((relation)=><div class="relation-item">
+          <a href={`/terms/${relation.target_slug}/`}>{relation.target_label}</a>
+          <span class="relation-type">{relationLabel(relation)}</span>
+          {relation.note && <p>{relation.note}</p>}
+        </div>)}</div>
       </section>}
     </article>
 
@@ -197,7 +206,12 @@ const citationLabel=(citation) => {
   .composed-flow{max-width:58rem}.composed-block{max-width:52rem;margin:.85rem 0}.composed-block p{margin:.45rem 0}
   .composed-block.subsection{margin-top:1.55rem}.composed-block h3{margin:0 0 .45rem;font-size:1.05rem;font-weight:650}
   .composed-table-block{max-width:58rem;margin:1rem 0 1.35rem}.composed-table-block .table-caption{margin:0 0 .65rem}
-  .alias-group{margin-top:1.2rem}.alias-group h3{font-size:1rem;margin-bottom:.55rem}
+  .alias-group{margin-top:1.2rem}.alias-group h3{font-size:1rem;margin-bottom:.7rem}
+  .alias-list,.relation-list{display:grid;gap:.65rem;max-width:52rem}
+  .alias-item,.relation-item{border-top:1px solid var(--line);padding:.7rem 0 .2rem}
+  .alias-head{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}.alias-head span,.relation-type{font:600 .68rem/1.35 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.055em;color:var(--muted)}
+  .alias-item p,.relation-item p{margin:.3rem 0 .2rem;color:var(--muted);font-size:.9rem;max-width:44rem}
+  .relation-item>a{font-weight:650}.relation-type{display:block;margin-top:.15rem}
   .table-caption{margin:-.25rem 0 1rem;color:var(--muted);font-size:.92rem;max-width:42rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
   .article-table{width:100%;border-collapse:collapse;min-width:34rem;font-size:.91rem}

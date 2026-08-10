@@ -21,6 +21,10 @@ export function getStaticPaths() {
 const { term } = Astro.props;
 const article = term.article;
 const articleBlocks = article?.blocks ?? article?.sections?.map((section) => ({ type: 'section', ...section })) ?? [];
+const pageComposition = term.page_composition ?? [];
+const hasComposition = pageComposition.length > 0;
+const articleSectionsByKey = new Map((article?.sections ?? []).map((section) => [section.section_key, section]));
+const articleTablesByKey = new Map((article?.tables ?? []).map((table) => [table.table_key, table]));
 const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
 const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?.[0] ?? null;
 const hasHistoricalForms=(term.forms?.length ?? 0) > 0;
@@ -77,12 +81,41 @@ const citationLabel=(citation) => {
 
       {!article && <div class="definition-panel" id="definition"><p class="micro-label">Definition</p><p>{term.short_definition}</p></div>}
 
-      {article && <section id="overview" class="article-overview">
-        <h2>Overview</h2>
-        <p>{article.intro}</p>
-      </section>}
+      {article && <div class="article-intro" id="overview"><p>{article.intro}</p></div>}
 
-      {articleBlocks.map((block) => block.type === 'table' ? (
+      {hasComposition ? pageComposition.map((publicSection) => (
+        <section id={`section-${publicSection.section_key}`} class="composed-section">
+          <h2>{publicSection.heading}</h2>
+          <div class="composed-flow">
+            {publicSection.blocks.map((block) => {
+              const source = block.source_kind === 'article-section'
+                ? articleSectionsByKey.get(block.source_key)
+                : block.source_kind === 'article-table'
+                  ? articleTablesByKey.get(block.source_key)
+                  : null;
+              if (!source) return null;
+
+              if (block.source_kind === 'article-table') {
+                return <div class="composed-block composed-table-block" id={source.table_key}>
+                  {block.show_heading && <h3>{source.heading}</h3>}
+                  {source.caption && <p class="table-caption">{source.caption}</p>}
+                  <div class="table-scroll" tabindex="0">
+                    <table class="article-table">
+                      <thead><tr>{source.columns.map((column) => <th scope="col">{column}</th>)}</tr></thead>
+                      <tbody>{source.rows.map((row) => <tr>{row.map((cell) => <td>{cell}</td>)}</tr>)}</tbody>
+                    </table>
+                  </div>
+                </div>;
+              }
+
+              return <div class:list={['composed-block', { subsection: block.presentation_role === 'subsection' }]} id={source.section_key}>
+                {block.show_heading && <h3>{source.heading}</h3>}
+                <p>{source.body}</p>
+              </div>;
+            })}
+          </div>
+        </section>
+      )) : articleBlocks.map((block) => block.type === 'table' ? (
         <section id={block.table_key} class="article-table-section">
           <h2>{block.heading}</h2>
           {block.caption && <p class="table-caption">{block.caption}</p>}
@@ -139,8 +172,9 @@ const citationLabel=(citation) => {
     <aside class="toc">
       <strong>On this entry</strong>
       {!article && <a href="#definition">Definition</a>}
-      {article && <a href="#overview">Overview</a>}
-      {articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
+      {hasComposition
+        ? pageComposition.map((publicSection)=><a href={`#section-${publicSection.section_key}`}>{publicSection.heading}</a>)
+        : articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
       {firstFamilyId && <a href={`#${firstFamilyId}`}>Concept family</a>}
       {hasLotDiagram && <a href="#lot-diagram">Lot construction</a>}
       {hasPlanetaryOrderDiagram && <a href="#planetary-order-diagram">Planetary order</a>}
@@ -162,6 +196,10 @@ const citationLabel=(citation) => {
   .title-row{display:flex;align-items:baseline;gap:1rem}
   .title-row h1{margin-right:0}
   .entry-glyph{font-size:clamp(2rem,5vw,4rem);line-height:1;font-family:var(--glyph-font,"DejaVu Sans","Noto Sans Symbols 2","Segoe UI Symbol",sans-serif);color:var(--muted);font-weight:400}
+  .article-intro{max-width:52rem;margin:2.2rem 0 0;font-size:1.05rem}.article-intro p{margin:0}
+  .composed-flow{max-width:58rem}.composed-block{max-width:52rem;margin:.85rem 0}.composed-block p{margin:.45rem 0}
+  .composed-block.subsection{margin-top:1.55rem}.composed-block h3{margin:0 0 .45rem;font-size:1.05rem;font-weight:650}
+  .composed-table-block{max-width:58rem;margin:1rem 0 1.35rem}.composed-table-block .table-caption{margin:0 0 .65rem}
   .alias-group{margin-top:1.2rem}.alias-group h3{font-size:1rem;margin-bottom:.55rem}
   .table-caption{margin:-.25rem 0 1rem;color:var(--muted);font-size:.92rem;max-width:42rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
@@ -172,5 +210,5 @@ const citationLabel=(citation) => {
   .article-table th{font:700 .68rem/1.35 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;background:var(--paper-deep);white-space:nowrap}
   .article-table td:first-child{font-weight:600}
   .table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  @media(max-width:720px){.article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}.entry-glyph{font-size:2.4rem}}
+  @media(max-width:720px){.article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}.entry-glyph{font-size:2.4rem}.article-intro{margin-top:1.7rem}}
 </style>

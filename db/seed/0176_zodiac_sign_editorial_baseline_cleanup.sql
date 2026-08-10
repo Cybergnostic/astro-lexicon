@@ -43,9 +43,8 @@ WHERE term_id IN (SELECT id FROM terms WHERE slug IN (
   'aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'
 ));
 
--- Only create a public article section when substantive prose remains after the structured
--- facts and generic source-reading copy are removed. This keeps most sign pages compact,
--- while entries such as Libra can retain genuinely additional doctrines.
+-- Only create a public article section when substantive prose or a surviving sign-specific
+-- table remains after the structured facts and generic source-reading copy are removed.
 INSERT INTO term_page_sections
   (term_id,section_key,heading,sort_order,status,editorial_notes)
 SELECT t.id,'additional-doctrine','Additional traditional structure',10,'reviewed',
@@ -54,9 +53,15 @@ FROM terms t
 WHERE t.slug IN (
   'aries','taurus','gemini','cancer','leo','virgo','libra','scorpio','sagittarius','capricorn','aquarius','pisces'
 )
-AND EXISTS (
-  SELECT 1 FROM term_article_sections s
-  WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+AND (
+  EXISTS (
+    SELECT 1 FROM term_article_sections s
+    WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+  )
+  OR EXISTS (
+    SELECT 1 FROM term_article_tables tb
+    WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
+  )
 );
 
 INSERT INTO term_page_blocks

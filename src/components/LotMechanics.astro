@@ -5,55 +5,17 @@ const applies = families.some((family) => ['lot-mechanics','abu-mashar-planetary
 
 {applies && (
   <section class="lot-visual" id="lot-diagram" aria-labelledby="lot-diagram-title">
-    <div class="lot-head">
-      <p class="micro-label">Original teaching schematic</p>
-      <h2 id="lot-diagram-title">A Lot projects one defined arc from a new origin</h2>
-    </div>
-
+    <div class="lot-head"><h2 id="lot-diagram-title">A Lot projects one defined arc from a new origin</h2></div>
     <div class="projection" role="img" aria-label="Schematic showing an arc measured from point A to point B and the same directed arc projected from the formula's specified origin to locate a Lot">
-      <div class="projection-row">
-        <span class="row-label">Measure</span>
-        <span class="point">A</span>
-        <span class="arc"><b>defined zodiacal arc</b><i>→</i></span>
-        <span class="point">B</span>
-      </div>
-      <div class="projection-row">
-        <span class="row-label">Project</span>
-        <span class="point origin">Origin</span>
-        <span class="arc repeated"><b>same directed arc</b><i>→</i></span>
-        <span class="point lot">Lot</span>
-      </div>
+      <div class="projection-row"><span class="row-label">Measure</span><span class="point">A</span><span class="arc"><b>defined zodiacal arc</b><i>→</i></span><span class="point">B</span></div>
+      <div class="projection-row"><span class="row-label">Project</span><span class="point origin">Origin</span><span class="arc repeated"><b>same directed arc</b><i>→</i></span><span class="point lot">Lot</span></div>
     </div>
-
-    <div class="formula-strip">
-      <span class="formula">Lot = origin + B − A</span>
-      <span class="formula-note">A, B, origin, sect reversal and substitutions are defined by the historical formula being cited. The Ascendant is the usual origin in the major streams represented here, but the schematic keeps the operation general.</span>
-    </div>
-
-    <div class="lot-grid">
-      <div><strong>Construction</strong><span>Measure the source-defined directed arc, then project it from the formula’s origin.</span></div>
-      <div><strong>Identity</strong><span>The English name alone does not establish that two historical Lots use the same construction.</span></div>
-      <div><strong>Interpretation</strong><span>Once calculated, the Lot is a zodiacal point; its ruler and other chart relations belong to a separate interpretive layer.</span></div>
-    </div>
-
-    <p class="lot-note">Schematic only. The arrows do not impose a universal day/night direction. Individual Lot pages and source accounts remain authoritative for the actual formula stream.</p>
+    <div class="formula-strip"><span class="formula">Lot = origin + B − A</span><span class="formula-note">A, B, origin, sect reversal and substitutions are defined by the historical formula being cited. The Ascendant is the usual origin in the major streams represented here, but the schematic keeps the operation general.</span></div>
+    <div class="lot-grid"><div><strong>Construction</strong><span>Measure the source-defined directed arc, then project it from the formula’s origin.</span></div><div><strong>Identity</strong><span>The English name alone does not establish that two historical Lots use the same construction.</span></div><div><strong>Interpretation</strong><span>Once calculated, the Lot is a zodiacal point; its ruler and other chart relations belong to a separate interpretive layer.</span></div></div>
+    <p class="lot-note">The arrows do not impose a universal day/night direction. Individual Lot pages and source accounts give the formula used in each historical stream.</p>
   </section>
 )}
 
 <style>
-  .lot-visual{margin:2.8rem 0;padding:1.1rem;border:1px solid var(--line-dark);background:var(--paper-pale)}
-  .lot-head{border-bottom:1px solid var(--line);padding-bottom:.75rem;margin-bottom:1.1rem}.lot-head h2{margin:.15rem 0 0}
-  .projection{display:grid;gap:.75rem}
-  .projection-row{display:grid;grid-template-columns:5.5rem 3.6rem minmax(12rem,1fr) 3rem;align-items:center;gap:.65rem;padding:.8rem;border:1px solid var(--line);background:var(--paper-deep)}
-  .row-label{font:700 .66rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.06em}
-  .point{display:grid;place-items:center;width:3rem;height:3rem;border:1px solid var(--line-dark);border-radius:50%;background:var(--paper-pale);font-weight:700;font-size:.78rem}
-  .origin{width:3.6rem;height:3.6rem;border-style:dashed}.lot{outline:2px solid var(--line);outline-offset:-5px}
-  .arc{position:relative;display:flex;align-items:center;justify-content:center;min-height:2.7rem;border-bottom:1px solid var(--line-dark);color:var(--muted)}
-  .arc b{font-size:.78rem;font-weight:600}.arc i{position:absolute;right:-.1rem;bottom:-.65rem;font-style:normal;font-size:1.1rem;color:var(--line-dark)}
-  .repeated{border-bottom-style:dashed}
-  .formula-strip{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin-top:.85rem;padding:.75rem .85rem;border:1px solid var(--line);background:var(--paper-pale)}
-  .formula{font:700 .8rem/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.formula-note{max-width:34rem;color:var(--muted);font-size:.8rem;text-align:right}
-  .lot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin-top:.85rem}.lot-grid div{padding:.75rem;border:1px solid var(--line);background:var(--paper-deep)}.lot-grid strong,.lot-grid span{display:block}.lot-grid span{margin-top:.25rem;color:var(--muted);font-size:.82rem}
-  .lot-note{margin:.8rem 0 0;color:var(--muted);font-size:.82rem;max-width:55rem}
-  @media(max-width:760px){.projection-row{grid-template-columns:4.5rem 3rem minmax(8rem,1fr) 2.5rem}.point{width:2.5rem;height:2.5rem}.origin{width:3rem;height:3rem}.formula-strip{display:block}.formula-note{display:block;text-align:left;margin-top:.4rem}.lot-grid{grid-template-columns:1fr}}
+  .lot-visual{margin:2.8rem 0;padding:1.1rem;border:1px solid var(--line-dark);background:var(--paper-pale)}.lot-head{border-bottom:1px solid var(--line);padding-bottom:.75rem;margin-bottom:1.1rem}.lot-head h2{margin:0}.projection{display:grid;gap:.75rem}.projection-row{display:grid;grid-template-columns:5.5rem 3.6rem minmax(12rem,1fr) 3rem;align-items:center;gap:.65rem;padding:.8rem;border:1px solid var(--line);background:var(--paper-deep)}.row-label{font:700 .66rem/1.3 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.06em}.point{display:grid;place-items:center;width:3rem;height:3rem;border:1px solid var(--line-dark);border-radius:50%;background:var(--paper-pale);font-weight:700;font-size:.78rem}.origin{width:3.6rem;height:3.6rem;border-style:dashed}.lot{outline:2px solid var(--line);outline-offset:-5px}.arc{position:relative;display:flex;align-items:center;justify-content:center;min-height:2.7rem;border-bottom:1px solid var(--line-dark);color:var(--muted)}.arc b{font-size:.78rem;font-weight:600}.arc i{position:absolute;right:-.1rem;bottom:-.65rem;font-style:normal;font-size:1.1rem;color:var(--line-dark)}.repeated{border-bottom-style:dashed}.formula-strip{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin-top:.85rem;padding:.75rem .85rem;border:1px solid var(--line);background:var(--paper-pale)}.formula{font:700 .8rem/1.4 var(--font-data,ui-monospace,monospace)}.formula-note{max-width:34rem;color:var(--muted);font-size:.8rem;text-align:right}.lot-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin-top:.85rem}.lot-grid div{padding:.75rem;border:1px solid var(--line);background:var(--paper-deep)}.lot-grid strong,.lot-grid span{display:block}.lot-grid span{margin-top:.25rem;color:var(--muted);font-size:.82rem}.lot-note{margin:.8rem 0 0;color:var(--muted);font-size:.82rem;max-width:55rem}@media(max-width:760px){.projection-row{grid-template-columns:4.5rem 3rem minmax(8rem,1fr) 2.5rem}.point{width:2.5rem;height:2.5rem}.origin{width:3rem;height:3rem}.formula-strip{display:block}.formula-note{display:block;text-align:left;margin-top:.4rem}.lot-grid{grid-template-columns:1fr}}
 </style>

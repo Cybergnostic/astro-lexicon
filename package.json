@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate:data": "python3 scripts/generate_frontend_data.py && python3 scripts/enrich_zodiac_relations.py",
+    "generate:data": "python3 scripts/generate_frontend_data.py && python3 scripts/enrich_page_compositions.py && python3 scripts/enrich_zodiac_relations.py",
     "predev": "npm run generate:data",
     "dev": "astro dev",
     "prebuild": "npm run generate:data",

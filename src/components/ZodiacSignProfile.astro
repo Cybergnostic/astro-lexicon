@@ -1,0 +1,85 @@
+---
+const { profile } = Astro.props;
+
+const signs = [
+  ['aries','Aries','♈'],['taurus','Taurus','♉'],['gemini','Gemini','♊'],['cancer','Cancer','♋'],
+  ['leo','Leo','♌'],['virgo','Virgo','♍'],['libra','Libra','♎'],['scorpio','Scorpio','♏'],
+  ['sagittarius','Sagittarius','♐'],['capricorn','Capricorn','♑'],['aquarius','Aquarius','♒'],['pisces','Pisces','♓']
+];
+
+const quarterLabel = (value) => ({
+  'march-equinox':'March-equinox quarter',
+  'june-solstice':'June-solstice quarter',
+  'september-equinox':'September-equinox quarter',
+  'december-solstice':'December-solstice quarter'
+}[value] ?? value);
+
+const positionLabel = (value) => ({
+  beginning:'Beginning',
+  middle:'Middle',
+  closing:'Closing'
+}[value] ?? value);
+
+const degreeLabel = (value) => Number(value).toLocaleString('en-US', { maximumFractionDigits: 2 });
+---
+
+{profile && <section class="sign-profile" id="sign-profile">
+  <div class="profile-head">
+    <div>
+      <p class="micro-label">Normalized family reference</p>
+      <h2>Zodiac sign profile</h2>
+    </div>
+    {profile.astronomy_source_label && profile.astronomy_source_url &&
+      <a class="source-link" href={profile.astronomy_source_url} rel="noreferrer">Astronomy boundary reference · {profile.astronomy_source_label}</a>}
+  </div>
+
+  <ol class="zodiac-strip" aria-label="Twelve equal signs of the tropical zodiac">
+    {signs.map(([slug,label,glyph], index) => <li class:list={{ current: index + 1 === profile.ordinal }} aria-current={index + 1 === profile.ordinal ? 'true' : undefined}>
+      <a href={`/terms/${slug}/`} title={`${label}: ${index * 30}°–${(index + 1) * 30}°`}>
+        <span class="strip-glyph" aria-hidden="true">{glyph}</span><span class="strip-name">{label}</span>
+      </a>
+    </li>)}
+  </ol>
+
+  <div class="profile-grid">
+    <div><span>Position</span><strong>Sign {profile.ordinal} of 12</strong></div>
+    <div><span>Tropical longitude</span><strong>{degreeLabel(profile.longitude_start)}°–{degreeLabel(profile.longitude_end)}°</strong></div>
+    <div><span>Element / triplicity</span><strong><a href={`/terms/${profile.element_slug}/`}>{profile.element_label}</a></strong></div>
+    <div><span>Modality</span><strong><a href={`/terms/${profile.modality_slug}/`}>{profile.modality_label}</a></strong></div>
+    <div><span>Polarity class</span><strong><a href={`/terms/${profile.polarity_slug}/`}>{profile.polarity_label}</a></strong></div>
+    <div><span>Day / night sign class</span><strong><a href={`/terms/${profile.day_night_slug}/`}>{profile.day_night_label}</a></strong></div>
+    <div><span>Tropical quarter</span><strong>{quarterLabel(profile.quarter_anchor)} · {positionLabel(profile.quarter_position)}</strong></div>
+    <div><span>Solar annual half</span><strong>Sun {profile.solar_declination_half} of the celestial equator between the boundary points</strong></div>
+  </div>
+
+  <div class="profile-notes">
+    {profile.geometry_note && <p><strong>Geometry.</strong> {profile.geometry_note}</p>}
+    {profile.tradition_note && <p><strong>Traditional taxonomy.</strong> {profile.tradition_note}</p>}
+    <p><strong>Reading rule.</strong> These classifications are parallel systems, not a stack of personality keywords. Planetary dignities are rendered separately from the normalized dignity tables.</p>
+  </div>
+</section>}
+
+<style>
+  .sign-profile{margin:2.8rem 0}
+  .profile-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line-dark);padding-bottom:.8rem;margin-bottom:1rem}
+  .profile-head h2{margin:.15rem 0 0}
+  .source-link{font-size:.78rem;color:var(--muted);text-align:right;max-width:24rem;text-decoration:none;border-bottom:1px dotted currentColor}
+  .source-link:hover{border-bottom-style:solid}
+  .zodiac-strip{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));list-style:none;margin:0 0 1rem;padding:0;border:1px solid var(--line-dark);background:var(--paper-pale)}
+  .zodiac-strip li{min-width:0;border-right:1px solid var(--line)}
+  .zodiac-strip li:last-child{border-right:0}
+  .zodiac-strip a{display:flex;min-height:3.4rem;align-items:center;justify-content:center;gap:.25rem;padding:.4rem .15rem;text-decoration:none;text-align:center}
+  .zodiac-strip .current{background:var(--paper-deep);box-shadow:inset 0 -3px 0 var(--ink)}
+  .strip-glyph{font-size:1.2rem;line-height:1}
+  .strip-name{font:700 .55rem/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.03em;overflow:hidden;text-overflow:ellipsis}
+  .profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line-dark);border-left:1px solid var(--line-dark);background:var(--paper-pale)}
+  .profile-grid>div{display:grid;grid-template-columns:minmax(9rem,.8fr) 1.2fr;gap:.7rem;padding:.68rem .75rem;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  .profile-grid span{font:700 .62rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .profile-grid strong{font-size:.87rem}
+  .profile-grid a{text-decoration:none;border-bottom:1px dotted currentColor}.profile-grid a:hover{border-bottom-style:solid}
+  .profile-notes{margin-top:.9rem;max-width:58rem;color:var(--muted)}
+  .profile-notes p{margin:.45rem 0}
+  .profile-notes strong{color:var(--ink)}
+  @media(max-width:900px){.zodiac-strip{grid-template-columns:repeat(6,minmax(0,1fr))}.zodiac-strip li:nth-child(6){border-right:0}.zodiac-strip li:nth-child(-n+6){border-bottom:1px solid var(--line)}}
+  @media(max-width:720px){.profile-head{display:block}.source-link{display:inline-block;text-align:left;margin-top:.55rem}.profile-grid{grid-template-columns:1fr}.profile-grid>div{grid-template-columns:1fr}.zodiac-strip{grid-template-columns:repeat(4,minmax(0,1fr))}.zodiac-strip li{border-bottom:1px solid var(--line)}.zodiac-strip li:nth-child(4n){border-right:0}.zodiac-strip li:nth-last-child(-n+4){border-bottom:0}.strip-name{display:none}.zodiac-strip a{min-height:2.75rem}}
+</style>

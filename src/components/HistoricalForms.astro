@@ -23,7 +23,10 @@ const renderingLabel = (type) => ({
     <dl class="form-details">
       {form.lemma && form.lemma !== form.form && <><dt>Lemma</dt><dd lang={form.language_code === 'grc' ? 'grc' : undefined}>{form.lemma}</dd></>}
       {form.literal_gloss && <><dt>Literal gloss</dt><dd>{form.literal_gloss}</dd></>}
-      {form.renderings?.length > 0 && <><dt>English renderings</dt><dd class="renderings">{form.renderings.map((item) => <span title={item.scope_note || undefined}>{renderingLabel(item.rendering_type)} · {item.rendering}</span>)}</dd></>}
+      {form.renderings?.length > 0 && <><dt>English renderings</dt><dd class="renderings">{form.renderings.map((item) => <span>
+        <strong>{renderingLabel(item.rendering_type)} · {item.rendering}</strong>
+        {item.scope_note && <small>{item.scope_note}</small>}
+      </span>)}</dd></>}
       {form.ambiguity_note && <><dt>Translation note</dt><dd>{form.ambiguity_note}</dd></>}
     </dl>
 
@@ -31,8 +34,11 @@ const renderingLabel = (type) => ({
       <strong>Attestation / scope</strong>
       {form.attestations.map((item) => <p>
         {item.tradition_scope && <span>{item.tradition_scope}</span>}
-        {item.work_title && <span>{item.author_name ? `${item.author_name} · ` : ''}<em>{item.work_title}</em></span>}
-        {item.external_source_label && <span>{item.external_source_label}</span>}
+        {item.work_title && <span>
+          {item.author_name && item.author_slug ? <><a href={`/authors/${item.author_slug}/`}>{item.author_name}</a> · </> : item.author_name ? `${item.author_name} · ` : ''}
+          <em>{item.work_slug ? <a href={`/works/${item.work_slug}/`}>{item.work_title}</a> : item.work_title}</em>
+        </span>}
+        {item.external_source_label && <span>{item.external_source_url ? <a href={item.external_source_url} rel="noreferrer">{item.external_source_label}</a> : item.external_source_label}</span>}
         {item.source_note && <span>{item.source_note}</span>}
       </p>)}
     </div>}
@@ -50,10 +56,11 @@ const renderingLabel = (type) => ({
   .form-details dt{font-weight:700;font-size:.8rem;color:var(--muted)}
   .form-details dd{margin:0}
   .renderings{display:flex;flex-wrap:wrap;gap:.35rem}
-  .renderings span{border:1px solid var(--line);padding:.18rem .4rem;font-size:.8rem;background:var(--paper-deep)}
+  .renderings span{border:1px solid var(--line);padding:.28rem .45rem;font-size:.8rem;background:var(--paper-deep)}
+  .renderings strong,.renderings small{display:block}.renderings strong{font-weight:600}.renderings small{margin-top:.16rem;color:var(--muted);font-size:.7rem;max-width:28rem}
   .form-sources{border-top:1px solid var(--line);margin-top:.8rem;padding-top:.7rem;font-size:.82rem;color:var(--muted)}
   .form-sources>strong{display:block;color:var(--ink);margin-bottom:.3rem}
-  .form-sources p{margin:.2rem 0}
-  .form-sources span{display:block}
+  .form-sources p{margin:.35rem 0}.form-sources span{display:block}
+  .form-sources a{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}.form-sources a:hover{color:var(--ink);border-bottom-style:solid}
   @media(max-width:620px){.form-head{display:block}.form-language{display:block;text-align:left;margin-top:.45rem}.form-details{grid-template-columns:1fr}.form-details dt{margin-top:.3rem}}
 </style>

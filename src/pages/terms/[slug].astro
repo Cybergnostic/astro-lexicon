@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import DignityReference from '../../components/DignityReference.astro';
 import DignityConnections from '../../components/DignityConnections.astro';
+import PlanetaryCycle from '../../components/PlanetaryCycle.astro';
 import corpus from '../../data/generated/corpus.json';
 
 export function getStaticPaths() {
@@ -15,11 +16,13 @@ const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_nam
 const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?.[0] ?? null;
 const hasReferenceSchemes=(term.reference_schemes?.length ?? 0) > 0;
 const hasReferenceAssignments=(term.reference_assignments?.length ?? 0) > 0;
+const hasCycles=(term.cycles?.length ?? 0) > 0;
 const firstReferenceId=hasReferenceSchemes
   ? `reference-${term.reference_schemes[0].slug}`
   : hasReferenceAssignments
     ? `dignity-${term.reference_assignments[0].scheme_slug}`
     : null;
+const firstCycleId=hasCycles ? `cycle-${term.cycles[0].slug}` : null;
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
   const pages=citation.page_start ? `pp. ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}` : '';
@@ -35,6 +38,7 @@ const citationLabel=(citation) => {
       <div class="rail-group"><span class="micro-label">Source witnesses</span><span class="rail-value">{sourceAuthors.length}</span></div>
       {article && <div class="rail-group"><span class="micro-label">Teaching article</span><span class="rail-value">Reviewed</span></div>}
       {(hasReferenceSchemes || hasReferenceAssignments) && <div class="rail-group"><span class="micro-label">Reference data</span><span class="rail-value">Structured</span></div>}
+      {hasCycles && <div class="rail-group"><span class="micro-label">Synodic cycle</span><span class="rail-value">Mapped</span></div>}
     </aside>
 
     <article class="article">
@@ -72,6 +76,7 @@ const citationLabel=(citation) => {
 
       {hasReferenceSchemes && <DignityReference schemes={term.reference_schemes} />}
       {hasReferenceAssignments && <DignityConnections assignments={term.reference_assignments} termSlug={term.slug} />}
+      {hasCycles && <PlanetaryCycle cycles={term.cycles} />}
 
       <section id="names">
         <h2>Names & historical forms</h2>
@@ -103,6 +108,7 @@ const citationLabel=(citation) => {
       {article && <a href="#overview">Overview</a>}
       {articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
       {firstReferenceId && <a href={`#${firstReferenceId}`}>Structured reference</a>}
+      {firstCycleId && <a href={`#${firstCycleId}`}>Synodic cycle</a>}
       <a href="#names">Names & forms</a>
       <a href="#sources">Source accounts</a>
       {term.interpretations.length > 1 && <a href="#comparison">Comparison</a>}

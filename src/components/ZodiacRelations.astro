@@ -1,17 +1,23 @@
 ---
 const { schemes = [], currentSlug = '' } = Astro.props;
+const signGlyphs = {
+  aries:'♈', taurus:'♉', gemini:'♊', cancer:'♋', leo:'♌', virgo:'♍',
+  libra:'♎', scorpio:'♏', sagittarius:'♐', capricorn:'♑', aquarius:'♒', pisces:'♓'
+};
 ---
 
 {schemes.length > 0 && (
   <section class="zodiac-relations" id="zodiac-relations" aria-labelledby="zodiac-relations-title">
     <div class="relation-head">
-      <p class="micro-label">Structured sign-to-sign geometry</p>
-      <h2 id="zodiac-relations-title">Zodiac relations by named scheme</h2>
-      <p>These are paired geometries between signs, not extra essential dignities and not ordinary aspect types. Each table keeps its historical source identity visible.</p>
+      <div>
+        <p class="micro-label">Structured sign-to-sign geometry</p>
+        <h2 id="zodiac-relations-title">Zodiac relations by named scheme</h2>
+      </div>
+      <p>Source-specific sign symmetries are kept separate from ordinary aspects and essential dignity.</p>
     </div>
 
     {schemes.map((scheme) => (
-      <div class="scheme-card">
+      <div class="scheme-block">
         <div class="scheme-heading">
           <div>
             <h3>{scheme.label}</h3>
@@ -27,14 +33,16 @@ const { schemes = [], currentSlug = '' } = Astro.props;
             const active = pair.sign_a_slug === currentSlug || pair.sign_b_slug === currentSlug;
             return (
               <div class:list={['pair-row', { active }]}> 
-                <a href={`/terms/${pair.sign_a_slug}/`} class:list={{ current: pair.sign_a_slug === currentSlug }}>
+                <a href={`/terms/${pair.sign_a_slug}/`} class:list={{ current: pair.sign_a_slug === currentSlug }} title={pair.sign_a_label}>
+                  <span class="sign-glyph" aria-hidden="true">{signGlyphs[pair.sign_a_slug] ?? '•'}</span>
                   <strong>{pair.sign_a_label}</strong>
-                  {pair.sign_a_role && <span>{pair.sign_a_role}</span>}
+                  {pair.sign_a_role && <small>{pair.sign_a_role}</small>}
                 </a>
                 <span class="pair-mark" aria-hidden="true">↔</span>
-                <a href={`/terms/${pair.sign_b_slug}/`} class:list={{ current: pair.sign_b_slug === currentSlug }}>
+                <a href={`/terms/${pair.sign_b_slug}/`} class:list={{ current: pair.sign_b_slug === currentSlug }} title={pair.sign_b_label}>
+                  <span class="sign-glyph" aria-hidden="true">{signGlyphs[pair.sign_b_slug] ?? '•'}</span>
                   <strong>{pair.sign_b_label}</strong>
-                  {pair.sign_b_role && <span>{pair.sign_b_role}</span>}
+                  {pair.sign_b_role && <small>{pair.sign_b_role}</small>}
                 </a>
               </div>
             );
@@ -48,13 +56,17 @@ const { schemes = [], currentSlug = '' } = Astro.props;
 )}
 
 <style>
-  .zodiac-relations{margin:2.8rem 0;padding:1.1rem;border:1px solid var(--line-dark);background:var(--paper-pale)}
-  .relation-head{max-width:52rem;border-bottom:1px solid var(--line);padding-bottom:.85rem;margin-bottom:1rem}.relation-head h2{margin:.15rem 0 .45rem}.relation-head p:last-child{margin:0;color:var(--muted)}
-  .scheme-card{margin-top:1rem;padding:.9rem;border:1px solid var(--line);background:var(--paper-deep)}
-  .scheme-heading{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}.scheme-heading h3{margin:0}.scheme-heading p{margin:.15rem 0 0;color:var(--muted);font-size:.8rem;text-transform:capitalize}.source-tag{font:600 .66rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:right;max-width:20rem}
-  .geometry-note{margin:.75rem 0;color:var(--muted);font-size:.84rem;max-width:52rem}
-  .pair-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem;margin-top:.8rem}.pair-row{display:grid;grid-template-columns:1fr 2rem 1fr;align-items:stretch;border:1px solid var(--line);background:var(--paper-pale)}.pair-row.active{outline:2px solid var(--line-dark);outline-offset:-2px}
-  .pair-row a{display:flex;flex-direction:column;justify-content:center;min-height:3.6rem;padding:.55rem .65rem;text-decoration:none;color:inherit}.pair-row a:last-child{text-align:right}.pair-row a.current{background:var(--paper-deep)}.pair-row a span{margin-top:.12rem;color:var(--muted);font-size:.7rem}.pair-mark{display:grid;place-items:center;color:var(--muted);border-left:1px solid var(--line);border-right:1px solid var(--line)}
-  .scheme-note{margin:.7rem 0 0;color:var(--muted);font-size:.8rem}
-  @media(max-width:760px){.scheme-heading{display:block}.source-tag{display:block;text-align:left;margin-top:.35rem}.pair-grid{grid-template-columns:1fr}}
+  .zodiac-relations{margin:3rem 0}
+  .relation-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(16rem,.55fr);gap:1.5rem;align-items:end;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line);padding:.8rem 0}.relation-head h2{margin:.15rem 0 0;border:0;padding:0}.relation-head>p{margin:0;color:var(--muted);font-size:.82rem}
+  .scheme-block{padding:1rem 0 1.25rem;border-bottom:1px solid var(--line)}
+  .scheme-heading{display:flex;justify-content:space-between;gap:1rem;align-items:flex-end}.scheme-heading h3{margin:0}.scheme-heading p{margin:.12rem 0 0;color:var(--muted);font-size:.76rem;text-transform:capitalize}.source-tag{font:600 .62rem/1.35 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:right;max-width:24rem}
+  .geometry-note{margin:.65rem 0;color:var(--muted);font-size:.82rem;max-width:58rem}
+  .pair-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:1px solid var(--line-dark);background:var(--paper-pale)}
+  .pair-row{display:grid;grid-template-columns:1fr 1.25rem 1fr;align-items:stretch;min-width:0;border-right:1px solid var(--line)}.pair-row:last-child{border-right:0}.pair-row.active{box-shadow:inset 0 -3px 0 var(--ink)}
+  .pair-row a{display:grid;grid-template-rows:1.5rem auto auto;place-items:center;min-width:0;min-height:5.2rem;padding:.4rem .22rem;text-decoration:none;color:inherit;text-align:center}.pair-row a.current{background:var(--paper-deep)}.pair-row a:hover{background:var(--paper-deep);color:var(--accent)}
+  .sign-glyph{font-size:1.22rem;line-height:1}.pair-row strong{font-size:.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}.pair-row small{margin-top:.1rem;color:var(--muted);font-size:.57rem;line-height:1.15}
+  .pair-mark{display:grid;place-items:center;color:var(--muted);font-size:.7rem;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .scheme-note{margin:.65rem 0 0;color:var(--muted);font-size:.78rem;max-width:58rem}
+  @media(max-width:980px){.pair-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pair-row{border-bottom:1px solid var(--line)}.pair-row:nth-child(2n){border-right:0}}
+  @media(max-width:760px){.relation-head{grid-template-columns:1fr}.scheme-heading{display:block}.source-tag{display:block;text-align:left;margin-top:.35rem}.pair-grid{grid-template-columns:1fr}.pair-row{border-right:0}.pair-row a{grid-template-rows:auto;grid-template-columns:1.5rem 1fr;justify-items:start;text-align:left;min-height:3.6rem;gap:.15rem .35rem}.pair-row small{grid-column:2}.pair-mark{border-top:0;border-bottom:0}}
 </style>

@@ -22,26 +22,28 @@ Earlier encyclopedia-quality checkpoint:
 
 ### Validation status
 
-A local audit run on 2026-08-10 confirmed that the full migration/seed chain built successfully through `0191_greek_terminology_precision.sql`; SQLite integrity and foreign-key checks both passed.
+The current `main` state is fully validated by GitHub Actions as of 2026-08-10.
 
-That run then exposed a small residual set of editorial-integrity blockers: ambiguous aliases, stale composition pointers, and two audit rules that were stricter than the intended composition/publication model. These are addressed on remote `main` by:
+The validation chain rebuilds the canonical SQLite database from the complete migration/seed history, runs SQLite integrity and foreign-key checks, applies the blocking corpus audit, runs the non-blocking editorial report, regenerates the frontend corpus, checks generated-output invariants, and completes the Astro production build.
 
-- `0192_editorial_baseline_final_cleanup.sql` — removes dangling composition pointers and resolves the specific ambiguous aliases reported by the audit;
-- a narrowed `initial_corpus_blockers.sql` — keeps true integrity/publication failures blocking while leaving coverage questions such as intentionally unplaced article blocks and reviewed entries without a dedicated `interpretations` row as non-blocking review information.
+The generated-output check was added because database integrity alone cannot guarantee that the exported static site is internally coherent. On introduction it immediately exposed two real cross-layer defects that the earlier audits/build did not catch:
 
-The current remote state therefore still needs **one final local validation run** before it should be described as fully validated.
+- a reviewed relation from `primary-direction` to draft `solar-direction`, which could create a frontend link to a non-exported term;
+- reviewed composed content for `promittor` that was being omitted because the canonical term had article sections but no parent `term_articles` intro row after the earlier Promissor/Promittor merge.
 
-After pulling `main`, run:
+Both defects are fixed on `main`. Public relations are now limited to exported terms, and reviewed article sections/tables can be exported even when no intro row exists.
+
+For a full local validation after pulling `main`, run:
 
 ```bash
 cd ~/projects/astro-lexicon
 git pull origin main
 npm run audit:corpus
 npm run audit:editorial
+npm run generate:data
+npm run test:generated
 npm run build
 ```
-
-Only after these pass should the current remote state be described as locally validated.
 
 ## Editorial Baseline v1
 
@@ -306,6 +308,7 @@ The build pipeline remains generated-data-first. `npm run generate:data` runs th
 - `docs/extraction/` — sequential source-coverage ledgers
 - `docs/revision/` — review decisions, checkpoints and phase closures
 - `scripts/generate_frontend_data.py` — main SQLite → frontend corpus generator
+- `scripts/test_generated_corpus.py` — generated frontend invariant checks
 - `scripts/editorial_baseline_audit.py` — non-blocking editorial cleanup ledger
 - `scripts/enrich_page_compositions.py` — deterministic composition enrichment
 - `scripts/enrich_zodiac_relations.py` — deterministic sign-relation enrichment
@@ -336,7 +339,7 @@ New material should enter through the same layered workflow:
 4. reconcile against existing canonical terms before creating new headwords;
 5. preserve source variants instead of flattening them;
 6. promote reusable repeated facts into normalized reference tables when justified;
-7. run the corpus audit, editorial report and frontend build.
+7. run the corpus audit, editorial report, generated-output check and frontend build.
 
 This keeps the project scalable: new books extend the corpus instead of forcing a rewrite of the existing encyclopedia.
 
@@ -345,6 +348,8 @@ This keeps the project scalable: new books extend the corpus instead of forcing 
 ```bash
 npm run audit:corpus
 npm run audit:editorial
+npm run generate:data
+npm run test:generated
 npm run build
 ```
 
@@ -352,4 +357,8 @@ npm run build
 
 `audit:editorial` is a non-blocking cleanup ledger for definition redundancy, article fragmentation/composition coverage, public process-language and historical-form research candidates.
 
-`build` runs generated-data preparation and the Astro build.
+`generate:data` rebuilds the reviewed frontend corpus and deterministic enrichment layers.
+
+`test:generated` checks the exported corpus for cross-layer invariants such as unique slugs, valid relation targets, interpretation references and composition pointers.
+
+`build` runs generated-data preparation and the Astro production build.

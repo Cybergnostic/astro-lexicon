@@ -1,0 +1,90 @@
+-- Editorial Baseline v1: restore Kadkhuda / Alcochoden as one canonical concept.
+--
+-- The earlier cross-source revision already normalized Alcochodon into `kadkhuda`, but a
+-- later curriculum expansion recreated `alcochoden`, and a subsequent Lilly evidence pass
+-- attached new direct evidence/article material to that duplicate. Merge all later material
+-- back into the established source-comparative canonical entry.
+
+PRAGMA foreign_keys = ON;
+
+UPDATE terms
+SET label='Kadkhuda / Alcochoden',
+    short_definition='The planet selected in relation to the Hyleg from the relevant dignity rulers and used in medieval longevity doctrine as the giver or allocator of years; Kadkhuda, Alcocoden, Alcochoden and Alcochodon are historical forms for the same technical role, while exact qualification rules vary by source.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical',
+    editorial_notes='Editorial Baseline v1 merges the later Alcochoden duplicate into the earlier cross-source Kadkhuda identity. Historical spellings remain as aliases/forms.'
+WHERE slug='kadkhuda';
+
+WITH alias_data(label,language,alias_type,scope_note) AS (VALUES
+  ('Alcochoden','Latin/English','historical-spelling','Common Latinized spelling of Kadkhuda.'),
+  ('Alcochodon','English historical spelling','source-spelling','William Lilly’s spelling in Christian Astrology.'),
+  ('Alcocoden','Latin/English','historical-spelling','Common Latinized spelling variant.'),
+  ('Giver of Years','English translation','source-gloss','Functional English description of the Kadkhuda/Alcochoden role.')
+)
+INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
+SELECT t.id,a.label,a.language,a.alias_type,a.scope_note
+FROM terms t CROSS JOIN alias_data a
+WHERE t.slug='kadkhuda';
+
+INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
+SELECT canonical.id,a.label,a.language,a.alias_type,a.scope_note
+FROM aliases a
+JOIN terms duplicate ON duplicate.id=a.term_id AND duplicate.slug='alcochoden'
+JOIN terms canonical ON canonical.slug='kadkhuda';
+
+-- Move the later Lilly interpretation and retain citation ids.
+UPDATE OR IGNORE interpretations
+SET term_id=(SELECT id FROM terms WHERE slug='kadkhuda')
+WHERE term_id=(SELECT id FROM terms WHERE slug='alcochoden');
+
+-- Preserve later article sections (especially Lilly's reservation/account) without
+-- replacing the existing cross-source teaching article wholesale.
+INSERT OR IGNORE INTO term_article_sections
+  (term_id,section_key,heading,body,sort_order,status,editorial_notes)
+SELECT canonical.id,s.section_key,s.heading,s.body,s.sort_order,s.status,s.editorial_notes
+FROM term_article_sections s
+JOIN terms duplicate ON duplicate.id=s.term_id AND duplicate.slug='alcochoden'
+JOIN terms canonical ON canonical.slug='kadkhuda';
+
+INSERT OR IGNORE INTO term_article_tables
+  (term_id,table_key,heading,caption,columns_json,rows_json,sort_order,status,editorial_notes)
+SELECT canonical.id,tb.table_key,tb.heading,tb.caption,tb.columns_json,tb.rows_json,tb.sort_order,tb.status,tb.editorial_notes
+FROM term_article_tables tb
+JOIN terms duplicate ON duplicate.id=tb.term_id AND duplicate.slug='alcochoden'
+JOIN terms canonical ON canonical.slug='kadkhuda';
+
+-- Move historical forms if any were attached to the later spelling entry.
+UPDATE term_forms
+SET term_id=(SELECT id FROM terms WHERE slug='kadkhuda')
+WHERE term_id=(SELECT id FROM terms WHERE slug='alcochoden')
+  AND NOT EXISTS (
+    SELECT 1 FROM term_forms existing
+    WHERE existing.term_id=(SELECT id FROM terms WHERE slug='kadkhuda')
+      AND existing.language_code=term_forms.language_code
+      AND existing.form=term_forms.form
+      AND existing.form_type=term_forms.form_type
+  );
+
+INSERT OR IGNORE INTO term_relations (subject_term_id,object_term_id,relation_type,note,status)
+SELECT canonical.id,r.object_term_id,r.relation_type,r.note,r.status
+FROM term_relations r
+JOIN terms duplicate ON duplicate.id=r.subject_term_id AND duplicate.slug='alcochoden'
+JOIN terms canonical ON canonical.slug='kadkhuda'
+WHERE r.object_term_id<>canonical.id;
+
+INSERT OR IGNORE INTO term_relations (subject_term_id,object_term_id,relation_type,note,status)
+SELECT r.subject_term_id,canonical.id,r.relation_type,r.note,r.status
+FROM term_relations r
+JOIN terms duplicate ON duplicate.id=r.object_term_id AND duplicate.slug='alcochoden'
+JOIN terms canonical ON canonical.slug='kadkhuda'
+WHERE r.subject_term_id<>canonical.id;
+
+INSERT OR IGNORE INTO concept_family_members
+  (family_id,term_id,role_key,role_label,sequence_no,note,status)
+SELECT m.family_id,canonical.id,m.role_key,m.role_label,m.sequence_no,m.note,m.status
+FROM concept_family_members m
+JOIN terms duplicate ON duplicate.id=m.term_id AND duplicate.slug='alcochoden'
+JOIN terms canonical ON canonical.slug='kadkhuda';
+
+DELETE FROM terms WHERE slug='alcochoden';

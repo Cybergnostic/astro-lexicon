@@ -54,9 +54,9 @@ const hasRelations=(term.relations?.length ?? 0) > 0;
 const firstCycleId=hasCycles ? `cycle-${term.cycles[0].slug}` : null;
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
-  const pages=citation.page_start
-    ? `${citation.page_end && citation.page_end !== citation.page_start ? 'pp.' : 'p.'} ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}`
-    : '';
+  const hasPageRange=Boolean(citation.page_end && citation.page_end !== citation.page_start);
+  const pageEnd=hasPageRange ? `–${citation.page_end}` : '';
+  const pages=citation.page_start ? `${hasPageRange ? 'pp.' : 'p.'} ${citation.page_start}${pageEnd}` : '';
   return [locus,pages,citation.locator_text].filter(Boolean).join(' · ');
 };
 const humanizeKey=(value='') => value.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase());

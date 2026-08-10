@@ -32,6 +32,8 @@ For important entries, compare several kinds of material when available:
 
 The purpose of comparison is to discover what questions a good entry ought to answer, what distinctions or visuals may be missing, and where historical variants require separate treatment. Public article prose remains original synthesis. Historical claims remain source-attributed.
 
+Private lecture material may still be used as a coverage/editorial checklist. It is not a public textual source and must not be reproduced as proprietary wording or as a private analysis workflow.
+
 ## Family-level review
 
 Do not inspect only one page at a time. For every major family, define what a complete member page should contain and then check the entire family against that model.
@@ -58,7 +60,9 @@ Every traditional planet page should eventually expose, where relevant:
 Every sign page should eventually expose:
 
 - glyph;
+- exact position in the equal-sign zodiac;
 - modality, element/triplicity, gender/sect classification and other reviewed sign taxonomies;
+- explicit distinction between equal astrological sign and modern astronomical constellation;
 - domicile ruler;
 - exaltation/fall where applicable, including degree numbers by named scheme;
 - day/night triplicity rulers by named scheme;
@@ -116,8 +120,20 @@ Current normalized layers:
 - `planetary_cycle_phases`
 - `term_symbols`
 - `term_media`
+- `term_forms`
+- `term_form_renderings`
+- `term_form_attestations`
+- `planetary_profiles`
+- `zodiac_sign_profiles`
 
-The first implemented scheme is Lilly's Book I table of essential dignities according to Ptolemy. It supplies one canonical dataset to the Essential Dignity overview and the corresponding planet/sign pages.
+Reference schemes now include both:
+
+- Lilly's Book I table presented according to Ptolemy;
+- the Egyptian terms/bounds transmitted by Ptolemy in *Tetrabiblos* I.21.
+
+These are separate named datasets. Neither is presented silently as simply “the terms.”
+
+The original-language terminology layer is also separate from aliases. A historical form can preserve Greek script, transliteration, literal gloss, multiple English renderings, source/tradition scope and ambiguity notes without implying that every rendering is a canonical navigation synonym.
 
 ## Visual policy
 
@@ -130,30 +146,66 @@ Prefer project-owned, lightweight and accessible visual material:
 
 A diagram should teach something prose or a table cannot communicate as efficiently. Do not decorate pages merely to make them look busier.
 
-## Current first block
+## Completed bird's-eye blocks
 
-Implemented at the start of this pass:
+### Reference / dignity foundation
 
 - normalized reference-system schema;
 - complete Lilly/Ptolemaic dignity data, including term and face ranges and exaltation/fall degree numbers;
+- Egyptian terms/bounds as a separate Ptolemy-transmitted historical scheme;
+- explicit side-by-side named-scheme comparison for terms/bounds;
 - Unicode planet and sign glyphs;
-- generator export of symbols, media, dignity assignments, reference schemes and cycles;
 - complete Essential Dignity reference component;
 - planet- and sign-centric dignity connection views;
-- source-backed Thema Mundi entry from Firmicus Maternus, *Mathesis* III.1;
-- solar synodic-cycle datasets and visual phase sequences for Moon, Mercury, Venus, Mars, Jupiter and Saturn.
+- source-backed Thema Mundi entry from Firmicus Maternus, *Mathesis* III.1.
+
+### Greek technical terminology
+
+- dedicated `term_forms` layer rather than overloading aliases;
+- Greek script, transliteration, literal gloss, English rendering variants and ambiguity/false-friend notes;
+- initial Hellenistic technical vocabulary for planets, domicile, exaltation/fall, triplicity, sect, Ascendant, zodiac, face, station, retrograde motion and bounds;
+- Ancient Greek names of the twelve zodiac signs and `ζῴδιον`;
+- source-scope metadata through the HOROI philological reference layer.
+
+### Seven traditional planets
+
+- reader-facing definitions that separate modern physical identity from traditional classification;
+- normalized `planetary_profiles` for object class, Earth-based geometry, family, sect, benefic/malefic class, attributed qualities, motion and solar-cycle family;
+- astronomy/observational-geometry teaching sections;
+- removal of duplicated hand-written dignity summary tables in favour of normalized reference data;
+- solar synodic-cycle datasets and visual phase sequences for Moon, Mercury, Venus, Mars, Jupiter and Saturn;
+- associated source-specific planetary/luminary lots linked from the planet pages;
+- historical Greek planetary names/forms rendered separately from navigation aliases.
+
+### Twelve zodiac signs
+
+- reader-facing coordinate-first definitions for all twelve signs;
+- normalized `zodiac_sign_profiles` for ordinal, 30° longitude interval, element, modality, polarity, day/night class and tropical-quarter position;
+- original responsive twelve-sign position strip on each sign page;
+- explicit sign-versus-modern-constellation distinction using the IAU astronomy boundary framework;
+- repeated sign-classification prose replaced by normalized linked data;
+- repeated dignity lists replaced by normalized scheme-aware dignity views;
+- Ancient Greek sign names with transliteration and literal name glosses.
+
+## Remaining checks inside completed families
+
+The family passes above establish the architecture, but they do not close every secondary doctrine. Before calling those families exhaustive, still check:
+
+- oriental/occidental terminology and whether every phase label has an adequate standalone concept page;
+- planetary day/hour correspondences if source-backed and genuinely useful to the encyclopedia;
+- sign-relation families such as commanding/obeying, hearing/seeing and equal-ascension relations;
+- whether an original ecliptic/season diagram would teach more than the current twelve-sign strip;
+- source-specific variants that should become additional named reference schemes rather than prose notes.
 
 ## Next review order
 
-1. **Planets as a complete family** — re-read every planet page from a distance; improve definitions, article architecture and cross-links using astronomy + historical sources + strong reference-site comparisons.
-2. **Signs as a complete family** — same treatment, now with normalized dignity data available.
-3. **Essential dignity family** — reconcile other historical term/bound and triplicity schemes rather than presenting Lilly as universal.
-4. **Astronomical mechanics / visibility / synodic terminology** — add missing standalone concepts and original diagrams where useful.
-5. **Aspects and horary mechanics**.
-6. **Houses / places**.
-7. **Lots**.
-8. **Predictive terminology**.
-9. **Long-tail entries and lower-priority definitions**.
+1. **Astronomical mechanics / visibility / synodic terminology** — review the celestial sphere, ecliptic/equator, coordinates, primary/secondary motion, solar visibility, stations/retrogradation, nodes and eclipses as one teaching system; connect the already-built planetary cycles to adequate concept pages and add original diagrams where useful.
+2. **Aspects and connection mechanics** — geometry versus application/perfection/interference terminology.
+3. **Houses / places** — structural strength versus topical meaning.
+4. **Lots** — now largely extracted, but review the whole family as a reader and tighten disambiguation/presentation.
+5. **Predictive terminology** — comparative overview without procedural forecasting workflows.
+6. **Historical cosmology / foundational models**.
+7. **Long-tail entries and lower-priority definitions**.
 
 At each stage, stop adding terms merely because a source mentions them. Add or expand an entry only when it improves the encyclopedia's conceptual coverage, historical accuracy, navigation or teaching quality.
 

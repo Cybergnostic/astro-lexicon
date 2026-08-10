@@ -56,14 +56,15 @@ const firstReferenceId=hasReferenceSchemes
     ? `dignity-${term.reference_assignments[0].scheme_slug}`
     : null;
 const firstCycleId=hasCycles ? `cycle-${term.cycles[0].slug}` : null;
-const firstFamilyId=hasConceptFamilies ? `family-${term.concept_families[0].slug}` : null;
 const citationLabel=(citation) => {
   const locus=[citation.book,citation.tractate,citation.chapter,citation.section].filter(Boolean).join(' · ');
-  const pages=citation.page_start ? `pp. ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}` : '';
+  const pages=citation.page_start
+    ? `${citation.page_end && citation.page_end !== citation.page_start ? 'pp.' : 'p.'} ${citation.page_start}${citation.page_end && citation.page_end !== citation.page_start ? `–${citation.page_end}` : ''}`
+    : '';
   return [locus,pages,citation.locator_text].filter(Boolean).join(' · ');
 };
 const humanizeKey=(value='') => value.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase());
-const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${relation.direction}`;
+const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${relation.direction === 'outgoing' ? 'from this entry' : 'to this entry'}`;
 ---
 <BaseLayout title={`${term.label} — Astrological Lexicon`} description={term.short_definition}>
   <div class="shell page-grid">
@@ -181,7 +182,7 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
       {hasComposition
         ? pageComposition.map((publicSection)=><a href={`#section-${publicSection.section_key}`}>{publicSection.heading}</a>)
         : articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
-      {firstFamilyId && <a href={`#${firstFamilyId}`}>Concept family</a>}
+      {hasConceptFamilies && term.concept_families.map((family)=><a href={`#family-${family.slug}`}>{family.label}</a>)}
       {hasLotDiagram && <a href="#lot-diagram">Lot construction</a>}
       {hasPlanetaryOrderDiagram && <a href="#planetary-order-diagram">Planetary order</a>}
       {hasPlanetaryTimeSequences && <a href="#planetary-time-sequences">Planetary days / hours</a>}

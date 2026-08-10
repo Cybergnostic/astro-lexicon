@@ -79,7 +79,7 @@ const citationLabel=(citation) => {
       </div>
       <p class="lede">{term.short_definition}</p>
 
-      {article && <div class="article-intro" id="overview"><p>{article.intro}</p></div>}
+      {article?.intro && <div class="article-intro" id="overview"><p>{article.intro}</p></div>}
 
       {hasComposition ? pageComposition.map((publicSection) => (
         <section id={`section-${publicSection.section_key}`} class="composed-section">

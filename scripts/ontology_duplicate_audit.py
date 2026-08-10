@@ -64,33 +64,44 @@ def load_terms(con: sqlite3.Connection) -> list[dict]:
            WHERE status IN ('reviewed','published')
            ORDER BY id"""
     ):
+        aliases = alias_map.get(row[0], [])
+        definition = row[3] or ""
         out.append(
             {
                 "id": row[0],
                 "slug": row[1],
                 "label": row[2],
-                "definition": row[3] or "",
+                "norm_label": normalize_label(row[2]),
+                "definition": definition,
+                "definition_tokens": tokens(definition),
                 "category": row[4] or "",
                 "entry_type": row[5] or "",
                 "quality": int(row[6] or 0),
-                "aliases": alias_map.get(row[0], []),
+                "aliases": aliases,
+                "norm_aliases": {normalize_label(x) for x in aliases},
             }
         )
     return out
 
 
 def candidate(a: dict, b: dict) -> dict | None:
-    label_a = normalize_label(a["label"])
-    label_b = normalize_label(b["label"])
+    label_a = a["norm_label"]
+    label_b = b["norm_label"]
     label_sim = ratio(label_a, label_b)
-    def_sim = ratio(a["definition"], b["definition"])
-    def_j = jaccard(tokens(a["definition"]), tokens(b["definition"]))
+    def_j = jaccard(a["definition_tokens"], b["definition_tokens"])
     same_category = bool(a["category"] and a["category"] == b["category"])
 
-    aliases_a = {normalize_label(x) for x in a["aliases"]}
-    aliases_b = {normalize_label(x) for x in b["aliases"]}
+    aliases_a = a["norm_aliases"]
+    aliases_b = b["norm_aliases"]
     cross_alias = label_a in aliases_b or label_b in aliases_a or bool(aliases_a & aliases_b)
 
+    # Cheap prefilter before the much more expensive full-definition SequenceMatcher.
+    # Pairs survive if terminology is already similar, aliases cross, or the definitions
+    # share enough substantive vocabulary to warrant closer comparison.
+    if not cross_alias and label_sim < 0.62 and def_j < 0.35:
+        return None
+
+    def_sim = ratio(a["definition"], b["definition"])
     reasons: list[str] = []
     score = 0.0
 

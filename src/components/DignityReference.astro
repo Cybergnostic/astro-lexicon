@@ -11,7 +11,12 @@ const planetGlyphs = {
   sun:'☉', moon:'☽', mercury:'☿', venus:'♀', mars:'♂', jupiter:'♃', saturn:'♄'
 };
 
-const assignmentsFor = (scheme, signSlug, type) => scheme.assignments
+const schemeBySlug = (slug) => schemes.find((scheme) => scheme.slug === slug);
+const lilly = schemeBySlug('lilly-ptolemaic-essential-dignities');
+const egyptian = schemeBySlug('ptolemy-egyptian-terms');
+const dorothean = schemeBySlug('dorothean-triplicity-rulers');
+
+const assignmentsFor = (scheme, signSlug, type) => (scheme?.assignments ?? [])
   .filter((item) => item.sign_slug === signSlug && item.assignment_type === type)
   .sort((a,b) => (a.sequence_no ?? 0) - (b.sequence_no ?? 0) || a.degree_start - b.degree_start);
 
@@ -21,55 +26,77 @@ const exactDegree = (item) => item?.exact_degree_number ? `${item.exact_degree_n
 const endDegree = (item) => item ? Number(item.degree_end) : '';
 const spanLength = (item) => item ? Number(item.degree_end) - Number(item.degree_start) : '';
 const rangeLabel = (item) => `${Number(item.degree_start)}–${Number(item.degree_end)}°`;
-const hasNonTermData = (scheme) => scheme.assignments.some((item) => item.assignment_type !== 'term');
-const fullSchemes = schemes.filter(hasNonTermData);
+
+const baseScheme = lilly ?? schemes.find((scheme) => scheme.assignments.some((item) => item.assignment_type === 'domicile'));
+const termScheme = egyptian ?? schemes.find((scheme) => scheme.assignments.some((item) => item.assignment_type === 'term'));
+const triplicityScheme = dorothean ?? schemes.find((scheme) => scheme.assignments.some((item) => item.assignment_type === 'triplicity'));
+const faceScheme = baseScheme;
+
+const hasComposite = Boolean(baseScheme && termScheme && triplicityScheme && faceScheme);
 const termSchemes = schemes.filter((scheme) => scheme.assignments.some((item) => item.assignment_type === 'term'));
+const triplicitySchemes = schemes.filter((scheme) => scheme.assignments.some((item) => item.assignment_type === 'triplicity'));
+
+const triplicityGroups = [
+  ['Fire',['aries','leo','sagittarius']],
+  ['Earth',['taurus','virgo','capricorn']],
+  ['Air',['gemini','libra','aquarius']],
+  ['Water',['cancer','scorpio','pisces']]
+];
+
+const triplicityRuler = (scheme, signSlug, sect) => assignmentsFor(scheme, signSlug, 'triplicity')
+  .find((item) => item.sect_condition === sect);
 ---
 
-{fullSchemes.map((scheme) => (
-  <section class="reference-system" id={`reference-${scheme.slug}`}>
+{hasComposite && (
+  <section class="reference-system" id="reference-essential-dignity-overview">
     <div class="reference-head">
       <div>
-        <p class="micro-label">Normalized reference system</p>
-        <h2>{scheme.label}</h2>
+        <p class="micro-label">Composite historical reference</p>
+        <h2>Table of planetary rulerships</h2>
       </div>
-      {scheme.author_name && <p class="reference-source">{scheme.author_name}{scheme.work_title ? ` · ${scheme.work_title}` : ''}</p>}
     </div>
-    {scheme.notes && <p class="reference-note">{scheme.notes}</p>}
+    <p class="reference-note">
+      One comparison matrix, with the source system named for each layer: Dorothean triplicity lords, Egyptian terms / bounds, and Chaldean faces / decans. Domicile, exaltation, detriment and fall use the normalized traditional dignity framework preserved in the Lilly reference table. The systems remain separate in the database even though they are compared here in one view.
+    </p>
 
-    <div class="matrix-wrap" tabindex="0" aria-label={`${scheme.label} rulership table`}>
+    <div class="matrix-wrap" tabindex="0" aria-label="Composite table of planetary rulerships">
       <table class="dignity-matrix">
         <thead>
           <tr class="group-head">
-            <th scope="col" rowspan="2" class="sign-head">Sign</th>
-            <th scope="col" rowspan="2">Domicile</th>
-            <th scope="col" rowspan="2">Exaltation</th>
+            <th scope="col" rowspan="3" class="sign-head">Sign</th>
+            <th scope="col" rowspan="3">Domicile</th>
+            <th scope="col" rowspan="3">Exaltation</th>
             <th scope="colgroup" colspan="3">Triplicity lords</th>
-            <th scope="colgroup" colspan="5">Terms / bounds</th>
-            <th scope="colgroup" colspan="3">Faces / decans</th>
-            <th scope="col" rowspan="2">Detriment</th>
-            <th scope="col" rowspan="2">Fall</th>
+            <th scope="colgroup" colspan="5">Bounds / terms</th>
+            <th scope="colgroup" colspan="3">Decans / faces</th>
+            <th scope="col" rowspan="3">Detriment</th>
+            <th scope="col" rowspan="3">Fall</th>
+          </tr>
+          <tr class="system-head">
+            <th scope="colgroup" colspan="3">Dorothean</th>
+            <th scope="colgroup" colspan="5">Egyptian</th>
+            <th scope="colgroup" colspan="3">Chaldean</th>
           </tr>
           <tr class="sub-head">
             <th scope="col">Day</th>
             <th scope="col">Night</th>
-            <th scope="col">Both</th>
+            <th scope="col">Coop.</th>
             <th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th>
-            <th scope="col">1</th><th scope="col">2</th><th scope="col">3</th>
+            <th scope="col">1st</th><th scope="col">2nd</th><th scope="col">3rd</th>
           </tr>
         </thead>
         <tbody>
           {signOrder.map(([slug,label,signGlyph]) => {
-            const domicile = wholeSign(scheme, slug, 'domicile');
-            const exaltation = wholeSign(scheme, slug, 'exaltation');
-            const detriment = wholeSign(scheme, slug, 'detriment');
-            const fall = wholeSign(scheme, slug, 'fall');
-            const triplicity = assignmentsFor(scheme, slug, 'triplicity');
-            const dayTrip = triplicity.find((item) => item.sect_condition === 'day');
-            const nightTrip = triplicity.find((item) => item.sect_condition === 'night');
-            const bothTrip = triplicity.find((item) => item.sect_condition === 'any');
-            const terms = assignmentsFor(scheme, slug, 'term');
-            const faces = assignmentsFor(scheme, slug, 'face');
+            const domicile = wholeSign(baseScheme, slug, 'domicile');
+            const exaltation = wholeSign(baseScheme, slug, 'exaltation');
+            const detriment = wholeSign(baseScheme, slug, 'detriment');
+            const fall = wholeSign(baseScheme, slug, 'fall');
+            const dayTrip = triplicityRuler(triplicityScheme, slug, 'day');
+            const nightTrip = triplicityRuler(triplicityScheme, slug, 'night');
+            const coopTrip = triplicityRuler(triplicityScheme, slug, 'any');
+            const terms = assignmentsFor(termScheme, slug, 'term');
+            const faces = assignmentsFor(faceScheme, slug, 'face');
+
             return (
               <tr>
                 <th scope="row" class="sign-cell">
@@ -86,7 +113,7 @@ const termSchemes = schemes.filter((scheme) => scheme.assignments.some((item) =>
                   {exaltation ? <a href={`/terms/${exaltation.planet_slug}/`} title={`${exaltation.planet_label}${exactDegree(exaltation) ? ` · ${exactDegree(exaltation)}` : ''}`}><span aria-hidden="true">{glyphFor(exaltation)}</span><span class="sr-only">{exaltation.planet_label}</span>{exactDegree(exaltation) && <small>{exactDegree(exaltation)}</small>}</a> : '—'}
                 </td>
 
-                {[dayTrip,nightTrip,bothTrip].map((item) => <td class="planet-cell trip-cell">
+                {[dayTrip,nightTrip,coopTrip].map((item) => <td class="planet-cell trip-cell">
                   {item ? <a href={`/terms/${item.planet_slug}/`} title={item.planet_label}><span aria-hidden="true">{glyphFor(item)}</span><span class="sr-only">{item.planet_label}</span></a> : <span class="empty">—</span>}
                 </td>)}
 
@@ -121,22 +148,63 @@ const termSchemes = schemes.filter((scheme) => scheme.assignments.some((item) =>
       </table>
     </div>
     <div class="matrix-key">
+      <span><strong>Triplicity:</strong> day · night · cooperating ruler</span>
       <span><strong>Terms:</strong> boundary degree <em>(span)</em></span>
-      <span><strong>Both:</strong> same triplicity ruler by day and night</span>
       <span>Exact exaltation / fall degrees appear beneath the glyph.</span>
     </div>
   </section>
-))}
+)}
+
+{triplicitySchemes.length > 1 && (
+  <section class="reference-system comparison-system" id="reference-triplicity-comparison">
+    <div class="reference-head">
+      <div>
+        <p class="micro-label">Historical scheme comparison</p>
+        <h2>Triplicity rulers by named scheme</h2>
+      </div>
+    </div>
+    <p class="reference-note">Triplicity rulership is not one universal table. Dorotheus preserves three rulers per elemental triplicity; Lilly preserves a different two-ruler scheme, including Mars for water by both day and night.</p>
+    <div class="table-scroll" tabindex="0">
+      <table class="comparison-table triplicity-comparison">
+        <thead>
+          <tr>
+            <th rowspan="2">Triplicity</th>
+            {triplicitySchemes.map((scheme) => <th colspan="3">{scheme.label}</th>)}
+          </tr>
+          <tr>
+            {triplicitySchemes.map(() => <><th>Day</th><th>Night</th><th>Third / both</th></>)}
+          </tr>
+        </thead>
+        <tbody>
+          {triplicityGroups.map(([element,signs]) => {
+            const signSlug = signs[0];
+            return <tr>
+              <th scope="row">{element}</th>
+              {triplicitySchemes.map((scheme) => {
+                const day = triplicityRuler(scheme, signSlug, 'day');
+                const night = triplicityRuler(scheme, signSlug, 'night');
+                const any = triplicityRuler(scheme, signSlug, 'any');
+                return <>
+                  {[day,night,any].map((item) => <td class="comparison-glyph">{item ? <a href={`/terms/${item.planet_slug}/`} title={item.planet_label}><span aria-hidden="true">{glyphFor(item)}</span><span class="sr-only">{item.planet_label}</span></a> : '—'}</td>)}
+                </>;
+              })}
+            </tr>;
+          })}
+        </tbody>
+      </table>
+    </div>
+  </section>
+)}
 
 {termSchemes.length > 1 && (
-  <section class="reference-system terms-comparison" id="reference-terms-comparison">
+  <section class="reference-system comparison-system" id="reference-terms-comparison">
     <div class="reference-head">
       <div>
         <p class="micro-label">Historical scheme comparison</p>
         <h2>Terms / bounds by named scheme</h2>
       </div>
     </div>
-    <p class="reference-note">The term or bound ruler is not universal across the tradition. Each column below preserves a separate historical table, so the same zodiacal degree can be compared without silently merging the schemes.</p>
+    <p class="reference-note">The bound ruler is not universal across the tradition. Each column below preserves a separate named table.</p>
     <div class="scheme-notes">
       {termSchemes.map((scheme) => <div>
         <strong>{scheme.label}</strong>
@@ -175,54 +243,48 @@ const termSchemes = schemes.filter((scheme) => scheme.assignments.some((item) =>
   .reference-system{margin:3rem 0}
   .reference-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-bottom:1px solid var(--line-dark);padding-bottom:.8rem;margin-bottom:.8rem}
   .reference-head h2{margin:.15rem 0 0}
-  .reference-source,.reference-note,.reference-footnote{color:var(--muted)}
-  .reference-source{font-size:.82rem;text-align:right;max-width:24rem}
-  .reference-note{max-width:58rem;margin:.5rem 0 1rem}
+  .reference-note,.reference-footnote{color:var(--muted)}
+  .reference-note{max-width:62rem;margin:.5rem 0 1rem}
   .reference-footnote{font-size:.82rem;max-width:58rem;margin:.8rem 0 0}
-  .scheme-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:.7rem;margin:0 0 1rem}
-  .scheme-notes>div{border-left:3px solid var(--line-dark);padding:.55rem .7rem;background:var(--paper-pale)}
-  .scheme-notes strong,.scheme-notes span{display:block}
-  .scheme-notes span{margin-top:.25rem;color:var(--muted);font-size:.82rem}
 
   .matrix-wrap{border:2px solid var(--ink);background:var(--paper-pale);overflow:hidden}
   .dignity-matrix{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.76rem;line-height:1.18}
-  .dignity-matrix th,.dignity-matrix td{height:3.45rem;padding:.28rem .18rem;text-align:center;vertical-align:middle;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
+  .dignity-matrix th,.dignity-matrix td{height:3.35rem;padding:.25rem .14rem;text-align:center;vertical-align:middle;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
   .dignity-matrix tr>*:last-child{border-right:0}.dignity-matrix tbody tr:last-child>*{border-bottom:0}
-  .dignity-matrix thead th{font:700 .57rem/1.18 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.035em;background:var(--paper-deep)}
+  .dignity-matrix thead th{font:700 .56rem/1.18 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.025em;background:var(--paper-deep)}
   .dignity-matrix .group-head th{border-bottom:1px solid var(--ink)}
-  .dignity-matrix .sub-head th{height:1.65rem;padding:.18rem .08rem;font-size:.53rem}
-  .dignity-matrix .sign-head{width:8.2rem}
-  .sign-cell{background:var(--paper-deep);text-align:left!important;padding-left:.48rem!important}
-  .sign-cell a{display:flex;align-items:center;gap:.42rem;color:var(--ink);text-decoration:none}.sign-cell a:hover{color:var(--accent)}
-  .sign-cell .sign-glyph{font-size:1.42rem;line-height:1}.sign-cell span:last-child{font-size:.72rem;text-transform:uppercase;letter-spacing:.035em}
-  .planet-cell>a,.bound-cell>a{display:flex;min-height:2.5rem;align-items:center;justify-content:center;color:var(--ink);text-decoration:none}
-  .planet-cell>a{flex-direction:column}.planet-cell>a>span:first-child,.bound-cell .planet-glyph{font-family:"Noto Sans Symbols 2","Segoe UI Symbol","DejaVu Sans",sans-serif;font-size:1.35rem;line-height:1}
+  .dignity-matrix .system-head th{height:1.4rem;padding:.12rem .08rem;font-size:.48rem;color:var(--muted);border-bottom:1px solid var(--line-dark)}
+  .dignity-matrix .sub-head th{height:1.55rem;padding:.15rem .05rem;font-size:.5rem}
+  .dignity-matrix .sign-head{width:7.6rem}
+  .sign-cell{background:var(--paper-deep);text-align:left!important;padding-left:.4rem!important}
+  .sign-cell a{display:flex;align-items:center;gap:.35rem;color:var(--ink);text-decoration:none}.sign-cell a:hover{color:var(--accent)}
+  .sign-cell .sign-glyph{font-size:1.35rem;line-height:1}.sign-cell span:last-child{font-size:.67rem;text-transform:uppercase;letter-spacing:.025em}
+  .planet-cell>a,.bound-cell>a{display:flex;min-height:2.45rem;align-items:center;justify-content:center;color:var(--ink);text-decoration:none}
+  .planet-cell>a{flex-direction:column}.planet-cell>a>span:first-child,.bound-cell .planet-glyph,.comparison-glyph span{font-family:var(--glyph-font);font-size:1.32rem;line-height:1}
   .planet-cell>a:hover,.bound-cell>a:hover{color:var(--accent);background:color-mix(in srgb,var(--paper-deep) 55%,transparent)}
-  .exact-cell small{display:block;margin-top:.15rem;font:.53rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
-  .trip-cell{width:3rem}.bound-cell{padding:.18rem .05rem!important}.bound-cell>a{flex-direction:column;gap:.14rem}
-  .bound-cell small{font:700 .49rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);white-space:nowrap}.bound-cell small span{color:var(--muted);font-weight:500}
-  .face-cell{width:2.8rem}.empty{color:var(--line-dark)}
+  .exact-cell small{display:block;margin-top:.12rem;font:.5rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .trip-cell{width:2.7rem}.bound-cell{padding:.15rem .04rem!important}.bound-cell>a{flex-direction:column;gap:.12rem}
+  .bound-cell small{font:700 .47rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);white-space:nowrap}.bound-cell small span{color:var(--muted);font-weight:500}
+  .face-cell{width:2.55rem}.empty{color:var(--line-dark)}
   .matrix-key{display:flex;flex-wrap:wrap;gap:.35rem 1.25rem;margin-top:.55rem;color:var(--muted);font:.64rem/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.matrix-key strong{color:var(--ink)}.matrix-key em{font-style:normal}
   .matrix-wrap:focus-visible,.table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
+  .comparison-system{margin-top:3.8rem}
   .table-scroll{overflow-x:auto;border:1px solid var(--line-dark);background:var(--paper-pale)}
-  .terms-table{border-collapse:collapse;width:100%;font-size:.82rem}
-  .terms-table th,.terms-table td{padding:.55rem .65rem;text-align:left;vertical-align:middle;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .terms-table th:last-child,.terms-table td:last-child{border-right:0}.terms-table tbody tr:last-child th,.terms-table tbody tr:last-child td{border-bottom:0}
-  .terms-table thead th{font:700 .62rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;background:var(--paper-deep)}
-  .terms-table tbody th{background:var(--paper-deep);white-space:nowrap}.terms-table tbody th a{color:var(--ink);text-decoration:none}
-  .term-strip{display:grid;grid-template-columns:repeat(5,minmax(2.5rem,1fr));padding:0!important}
-  .term-strip>a{display:flex;min-height:3.2rem;flex-direction:column;align-items:center;justify-content:center;gap:.12rem;color:var(--ink);text-decoration:none;border-right:1px solid var(--line)}.term-strip>a:last-child{border-right:0}.term-strip>a:hover{background:var(--paper-deep);color:var(--accent)}
-  .term-strip .planet-glyph{font-size:1.2rem}.term-strip small{font:.55rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
-  .sign-glyph{font-size:1.15rem;margin-right:.4rem;vertical-align:-.05em}
-  .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+  .comparison-table,.terms-table{border-collapse:collapse;width:100%;font-size:.8rem}
+  .comparison-table th,.comparison-table td,.terms-table th,.terms-table td{padding:.5rem .6rem;text-align:center;vertical-align:middle;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .comparison-table th:last-child,.comparison-table td:last-child,.terms-table th:last-child,.terms-table td:last-child{border-right:0}
+  .comparison-table tbody tr:last-child>*,.terms-table tbody tr:last-child>*{border-bottom:0}
+  .comparison-table thead th,.terms-table thead th{font:700 .57rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.035em;background:var(--paper-deep)}
+  .comparison-table tbody th,.terms-table tbody th{background:var(--paper-deep);text-align:left;white-space:nowrap}
+  .comparison-glyph a{display:block;color:var(--ink);text-decoration:none}.comparison-glyph a:hover{color:var(--accent)}
+  .terms-table th,.terms-table td{text-align:left}
+  .terms-table tbody th a{color:var(--ink);text-decoration:none}.terms-table .sign-glyph{font-size:1.05rem;margin-right:.35rem}
+  .term-strip{display:grid;grid-template-columns:repeat(5,minmax(2.6rem,1fr));padding:0!important}
+  .term-strip>a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.12rem;min-height:3rem;padding:.25rem;border-right:1px solid var(--line);text-decoration:none;color:var(--ink)}.term-strip>a:last-child{border-right:0}.term-strip>a:hover{background:var(--paper-deep);color:var(--accent)}
+  .term-strip .planet-glyph{font-size:1.15rem}.term-strip small{font:.52rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}
+  .scheme-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:.7rem;margin:0 0 1rem}.scheme-notes>div{border-left:3px solid var(--line-dark);padding:.55rem .7rem;background:var(--paper-pale)}.scheme-notes strong,.scheme-notes span{display:block}.scheme-notes span{margin-top:.25rem;color:var(--muted);font-size:.82rem}
 
-  @media(max-width:980px){
-    .matrix-wrap{overflow-x:auto}
-    .dignity-matrix{min-width:64rem}
-  }
-  @media(max-width:720px){
-    .reference-head{display:block}.reference-source{text-align:left;margin-top:.5rem}.scheme-notes{grid-template-columns:1fr}
-    .matrix-key{display:grid;grid-template-columns:1fr}.terms-table{min-width:48rem}
-  }
+  @media(max-width:980px){.matrix-wrap{overflow-x:auto}.dignity-matrix{min-width:64rem}}
+  @media(max-width:720px){.reference-head{display:block}.scheme-notes{grid-template-columns:1fr}.comparison-table,.terms-table{min-width:44rem}}
 </style>

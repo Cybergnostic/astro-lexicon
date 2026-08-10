@@ -1,0 +1,278 @@
+-- Editorial Baseline v1: predictive, time-lord and directional terminology.
+--
+-- Resolve late duplicate identities, prefer established European/Latin public headwords when
+-- several historical forms name the same concept, remove project-language from public prose,
+-- and demote curriculum-only predictive terms whose direct historical provenance remains open.
+
+PRAGMA foreign_keys = ON;
+
+-- -----------------------------------------------------------------------------
+-- CANONICAL PUBLIC HEADWORDS
+-- -----------------------------------------------------------------------------
+
+UPDATE terms
+SET label='Firdaria',
+    short_definition='Firdaria is a medieval planetary time-lord system of unequal major periods beginning from the sect luminary—Sun by day and Moon by night—with planetary subperiod participation inside the major periods.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical'
+WHERE slug='fardar';
+
+INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
+SELECT id,'Fardār','Arabic/Persian transliteration','historical-form','Historical form represented by the Latin/English Firdaria tradition.'
+FROM terms WHERE slug='fardar';
+
+UPDATE terms
+SET label='Alfridary',
+    short_definition='Alfridary is Lilly’s septennial planetary period system in which successive planets govern fixed seven-year spans, beginning from the Sun in a day nativity and the Moon in a night nativity.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical'
+WHERE slug='alfridary';
+
+UPDATE terms
+SET label='Solar Revolution',
+    short_definition='A Solar Revolution, commonly called a Solar Return, is the annual figure erected for the Sun’s return to its exact radical zodiacal longitude.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical'
+WHERE slug='solar-revolution';
+
+INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
+SELECT id,'Solar Return','English','modern-common-name','Common modern English name for the natal Solar Revolution.'
+FROM terms WHERE slug='solar-revolution';
+
+UPDATE terms
+SET label='Lord of Profection',
+    short_definition='The Lord of Profection is the ruler of the sign reached by an annual profection; in Bonatti this ruler functions as the profected Lord of the Year and participates with the ruler of the annual revolution.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical'
+WHERE slug='salkhuday';
+
+INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
+SELECT id,'Sālkhudāy','Arabic/Persian transliteration','historical-form','Historical source form for the ruler of the profected sign in Bonatti’s transmitted terminology.'
+FROM terms WHERE slug='salkhuday';
+
+-- -----------------------------------------------------------------------------
+-- PROMISSOR / PROMITTOR DUPLICATION
+-- -----------------------------------------------------------------------------
+-- The direct Bonatti-backed canonical role is `promittor`. The later curriculum seed
+-- recreated the same directional role as `promissor`. Preserve the spelling as an alias
+-- and migrate all later material to the source-backed identity.
+
+UPDATE terms
+SET label='Promittor',
+    short_definition='In primary directions, the Promittor is the planet, aspect, cusp, fixed star, or other zodiacal point toward which the significator is directed.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical'
+WHERE slug='promittor';
+
+INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
+SELECT id,'Promissor','Latin/English','historical-spelling-variant','Alternative spelling used for the same formal role in primary directions.'
+FROM terms WHERE slug='promittor';
+
+UPDATE OR IGNORE interpretations
+SET term_id=(SELECT id FROM terms WHERE slug='promittor')
+WHERE term_id=(SELECT id FROM terms WHERE slug='promissor');
+
+INSERT OR IGNORE INTO aliases (term_id,label,language,alias_type,scope_note)
+SELECT canonical.id,a.label,a.language,a.alias_type,a.scope_note
+FROM aliases a
+JOIN terms duplicate ON duplicate.id=a.term_id AND duplicate.slug='promissor'
+JOIN terms canonical ON canonical.slug='promittor';
+
+INSERT OR IGNORE INTO term_article_sections
+  (term_id,section_key,heading,body,sort_order,status,editorial_notes)
+SELECT canonical.id,s.section_key,s.heading,s.body,s.sort_order,s.status,s.editorial_notes
+FROM term_article_sections s
+JOIN terms duplicate ON duplicate.id=s.term_id AND duplicate.slug='promissor'
+JOIN terms canonical ON canonical.slug='promittor';
+
+INSERT OR IGNORE INTO term_article_tables
+  (term_id,table_key,heading,caption,columns_json,rows_json,sort_order,status,editorial_notes)
+SELECT canonical.id,tb.table_key,tb.heading,tb.caption,tb.columns_json,tb.rows_json,tb.sort_order,tb.status,tb.editorial_notes
+FROM term_article_tables tb
+JOIN terms duplicate ON duplicate.id=tb.term_id AND duplicate.slug='promissor'
+JOIN terms canonical ON canonical.slug='promittor';
+
+UPDATE term_forms
+SET term_id=(SELECT id FROM terms WHERE slug='promittor')
+WHERE term_id=(SELECT id FROM terms WHERE slug='promissor')
+  AND NOT EXISTS (
+    SELECT 1 FROM term_forms existing
+    WHERE existing.term_id=(SELECT id FROM terms WHERE slug='promittor')
+      AND existing.language_code=term_forms.language_code
+      AND existing.form=term_forms.form
+      AND existing.form_type=term_forms.form_type
+  );
+
+INSERT OR IGNORE INTO term_relations (subject_term_id,object_term_id,relation_type,note,status)
+SELECT canonical.id,r.object_term_id,r.relation_type,r.note,r.status
+FROM term_relations r
+JOIN terms duplicate ON duplicate.id=r.subject_term_id AND duplicate.slug='promissor'
+JOIN terms canonical ON canonical.slug='promittor'
+WHERE r.object_term_id<>canonical.id;
+
+INSERT OR IGNORE INTO term_relations (subject_term_id,object_term_id,relation_type,note,status)
+SELECT r.subject_term_id,canonical.id,r.relation_type,r.note,r.status
+FROM term_relations r
+JOIN terms duplicate ON duplicate.id=r.object_term_id AND duplicate.slug='promissor'
+JOIN terms canonical ON canonical.slug='promittor'
+WHERE r.subject_term_id<>canonical.id;
+
+INSERT OR IGNORE INTO concept_family_members
+  (family_id,term_id,role_key,role_label,sequence_no,note,status)
+SELECT m.family_id,canonical.id,m.role_key,m.role_label,m.sequence_no,m.note,m.status
+FROM concept_family_members m
+JOIN terms duplicate ON duplicate.id=m.term_id AND duplicate.slug='promissor'
+JOIN terms canonical ON canonical.slug='promittor';
+
+DELETE FROM terms WHERE slug='promissor';
+
+-- Keep the predictive family map pointed at the surviving canonical role.
+DELETE FROM concept_family_members
+WHERE family_id=(SELECT id FROM concept_families WHERE slug='directions-distributions')
+  AND term_id IS NULL;
+
+INSERT OR REPLACE INTO concept_family_members
+  (family_id,term_id,role_key,role_label,sequence_no,note,status)
+SELECT f.id,t.id,'formal-role','Formal role',30,
+       'Target factor encountered by the directed significator in a primary direction.','reviewed'
+FROM concept_families f JOIN terms t ON t.slug='promittor'
+WHERE f.slug='directions-distributions';
+
+-- -----------------------------------------------------------------------------
+-- REVIEW STATUS MUST MATCH EVIDENCE STATUS
+-- -----------------------------------------------------------------------------
+-- These two curriculum-discovered terms explicitly remain source-audit-open in the corpus.
+-- Keep them for future research, but do not publish them as reviewed canonical entries yet.
+
+UPDATE terms
+SET status='draft',
+    definition_quality=3,
+    editorial_notes='Editorial Baseline v1: retained as a research candidate, but direct historical terminology/provenance remains unresolved. Do not publish as a reviewed canonical entry until a source witness is attached.'
+WHERE slug IN ('solar-direction','divisions');
+
+UPDATE term_articles
+SET status='draft'
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN ('solar-direction','divisions'));
+
+UPDATE term_article_sections
+SET status='draft'
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN ('solar-direction','divisions'));
+
+UPDATE term_article_tables
+SET status='draft'
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN ('solar-direction','divisions'));
+
+UPDATE concept_family_members
+SET status='draft'
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN ('solar-direction','divisions'));
+
+-- -----------------------------------------------------------------------------
+-- REMOVE PUBLIC PROJECT-LANGUAGE
+-- -----------------------------------------------------------------------------
+
+UPDATE term_article_sections
+SET body='Firdaria and Alfridary are historically related in name but technically distinct. Medieval Firdaria uses unequal planetary periods with subperiod participation, whereas Lilly’s Alfridary assigns fixed seven-year spans. Similar terminology is therefore not enough to identify the two systems.'
+WHERE term_id=(SELECT id FROM terms WHERE slug='fardar')
+  AND section_key='not-alfridary';
+
+UPDATE term_article_sections
+SET body='Lord of the Year is a chronological office rather than one universal calculation. Annual profection can supply a yearly ruler, while annual-revolution traditions can select rulers by other hierarchies. The method that grants the annual role therefore needs to be stated whenever the title is used precisely.'
+WHERE term_id=(SELECT id FROM terms WHERE slug='lord-of-year')
+  AND section_key='role-not-formula';
+
+UPDATE term_relations
+SET note='Bonatti uses Sālkhudāy as the ruler of the profected sign and therefore as a specialized profected Lord of the Year; broader Lord-of-Year algorithms remain distinct.'
+WHERE subject_term_id=(SELECT id FROM terms WHERE slug='salkhuday')
+  AND object_term_id=(SELECT id FROM terms WHERE slug='lord-of-year')
+  AND relation_type='specialized-form-of';
+
+-- -----------------------------------------------------------------------------
+-- COMPOSITION: TIME-LORD / ANNUAL TECHNIQUES
+-- -----------------------------------------------------------------------------
+
+DELETE FROM term_page_sections
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN (
+  'fardar','alfridary','profection','annual-profection','monthly-profection','profected-sign',
+  'lord-of-year','salkhuday','planetary-years','ptolemaic-ages',
+  'annual-revolution','solar-revolution','lunar-return','world-year-revolution','lord-of-revolution'
+));
+
+INSERT INTO term_page_sections
+  (term_id,section_key,heading,sort_order,status,editorial_notes)
+SELECT t.id,'time-structure','Temporal structure and historical scope',10,'reviewed','Editorial Baseline v1 predictive composition.'
+FROM terms t
+WHERE t.slug IN (
+  'fardar','alfridary','profection','annual-profection','monthly-profection','profected-sign',
+  'lord-of-year','salkhuday','planetary-years','ptolemaic-ages',
+  'annual-revolution','solar-revolution','lunar-return','world-year-revolution','lord-of-revolution'
+)
+  AND t.status='reviewed'
+  AND EXISTS (
+    SELECT 1 FROM term_article_sections s WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+    UNION ALL
+    SELECT 1 FROM term_article_tables tb WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
+  );
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-section',s.section_key,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 'paragraph' ELSE 'subsection' END,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 0 ELSE 1 END,
+       s.sort_order,'reviewed','Editorial Baseline v1 predictive composition.'
+FROM term_page_sections ps
+JOIN term_article_sections s ON s.term_id=ps.term_id
+WHERE ps.section_key='time-structure' AND s.status IN ('reviewed','published');
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 predictive composition.'
+FROM term_page_sections ps
+JOIN term_article_tables tb ON tb.term_id=ps.term_id
+WHERE ps.section_key='time-structure' AND tb.status IN ('reviewed','published');
+
+-- -----------------------------------------------------------------------------
+-- COMPOSITION: DIRECTIONS / DISTRIBUTIONS
+-- -----------------------------------------------------------------------------
+
+DELETE FROM term_page_sections
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN (
+  'primary-direction','directional-significator','significator','promittor',
+  'distribution','distributor','participator','term-direction','jarbakhtar'
+));
+
+INSERT INTO term_page_sections
+  (term_id,section_key,heading,sort_order,status,editorial_notes)
+SELECT t.id,'directional-mechanics','Directional role and mechanics',10,'reviewed','Editorial Baseline v1 directions composition.'
+FROM terms t
+WHERE t.slug IN (
+  'primary-direction','directional-significator','significator','promittor',
+  'distribution','distributor','participator','term-direction','jarbakhtar'
+)
+  AND t.status='reviewed'
+  AND EXISTS (
+    SELECT 1 FROM term_article_sections s WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+    UNION ALL
+    SELECT 1 FROM term_article_tables tb WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
+  );
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-section',s.section_key,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 'paragraph' ELSE 'subsection' END,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 0 ELSE 1 END,
+       s.sort_order,'reviewed','Editorial Baseline v1 directions composition.'
+FROM term_page_sections ps
+JOIN term_article_sections s ON s.term_id=ps.term_id
+WHERE ps.section_key='directional-mechanics' AND s.status IN ('reviewed','published');
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 directions composition.'
+FROM term_page_sections ps
+JOIN term_article_tables tb ON tb.term_id=ps.term_id
+WHERE ps.section_key='directional-mechanics' AND tb.status IN ('reviewed','published');

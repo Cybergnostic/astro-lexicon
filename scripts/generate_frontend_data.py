@@ -154,6 +154,17 @@ def export(db_path: Path, out_path: Path):
             )
         ]
 
+        profile = con.execute(
+            """SELECT astronomical_class,solar_orbit_relation,traditional_family,
+                      sect_affiliation,beneficence_class,temperature_quality,moisture_quality,
+                      zodiacal_motion,solar_phase_family,astronomy_note,traditional_note,
+                      astronomy_source_label,astronomy_source_url
+               FROM planetary_profiles
+               WHERE planet_term_id=? AND status IN ('reviewed','published')""",
+            (term["id"],),
+        ).fetchone()
+        record["planet_profile"] = dict(profile) if profile else None
+
         cycles = []
         for cycle in con.execute(
             """SELECT pc.id,pc.slug,pc.cycle_type,pc.mean_period_days,pc.period_note,pc.notes,
@@ -357,6 +368,9 @@ def export(db_path: Path, out_path: Path):
     historical_form_count = con.execute(
         "SELECT COUNT(*) FROM term_forms WHERE status IN ('reviewed','published')"
     ).fetchone()[0]
+    planetary_profile_count = con.execute(
+        "SELECT COUNT(*) FROM planetary_profiles WHERE status IN ('reviewed','published')"
+    ).fetchone()[0]
 
     payload = {
         "meta": {
@@ -367,6 +381,7 @@ def export(db_path: Path, out_path: Path):
             "works": len(works),
             "reference_schemes": reference_scheme_count,
             "historical_forms": historical_form_count,
+            "planetary_profiles": planetary_profile_count,
             "evidence_standard": "Reviewed A/B evidence only",
         },
         "terms": terms,

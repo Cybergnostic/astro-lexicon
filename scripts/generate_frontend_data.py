@@ -183,6 +183,35 @@ def export(db_path: Path, out_path: Path):
         ).fetchone()
         record["zodiac_sign_profile"] = dict(sign_profile) if sign_profile else None
 
+        concept_families = []
+        for family in con.execute(
+            """SELECT DISTINCT cf.id,cf.slug,cf.label,cf.description,cf.family_type,cf.editorial_note
+               FROM concept_families cf
+               JOIN concept_family_members own ON own.family_id=cf.id
+               WHERE own.term_id=?
+                 AND cf.status IN ('reviewed','published')
+                 AND own.status IN ('reviewed','published')
+               ORDER BY cf.label COLLATE NOCASE""",
+            (term["id"],),
+        ):
+            item = dict(family)
+            item["members"] = [
+                dict(row)
+                for row in con.execute(
+                    """SELECT m.role_key,m.role_label,m.sequence_no,m.note,
+                              t.slug term_slug,t.label term_label
+                       FROM concept_family_members m
+                       JOIN terms t ON t.id=m.term_id
+                       WHERE m.family_id=? AND m.status IN ('reviewed','published')
+                         AND t.status IN ('reviewed','published')
+                       ORDER BY m.sequence_no,t.label COLLATE NOCASE""",
+                    (family["id"],),
+                )
+            ]
+            item.pop("id", None)
+            concept_families.append(item)
+        record["concept_families"] = concept_families
+
         cycles = []
         for cycle in con.execute(
             """SELECT pc.id,pc.slug,pc.cycle_type,pc.mean_period_days,pc.period_note,pc.notes,
@@ -392,6 +421,9 @@ def export(db_path: Path, out_path: Path):
     zodiac_sign_profile_count = con.execute(
         "SELECT COUNT(*) FROM zodiac_sign_profiles WHERE status IN ('reviewed','published')"
     ).fetchone()[0]
+    concept_family_count = con.execute(
+        "SELECT COUNT(*) FROM concept_families WHERE status IN ('reviewed','published')"
+    ).fetchone()[0]
 
     payload = {
         "meta": {
@@ -404,6 +436,7 @@ def export(db_path: Path, out_path: Path):
             "historical_forms": historical_form_count,
             "planetary_profiles": planetary_profile_count,
             "zodiac_sign_profiles": zodiac_sign_profile_count,
+            "concept_families": concept_family_count,
             "evidence_standard": "Reviewed A/B evidence only",
         },
         "terms": terms,

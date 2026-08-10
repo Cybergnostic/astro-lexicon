@@ -27,6 +27,7 @@ const articleSectionsByKey = new Map((article?.sections ?? []).map((section) => 
 const articleTablesByKey = new Map((article?.tables ?? []).map((table) => [table.table_key, table]));
 const sourceAuthors=[...new Set(term.interpretations.map((item)=>item.author_name))];
 const primarySymbol=term.symbols?.find((item)=>item.is_primary) ?? term.symbols?.[0] ?? null;
+const hasOverview=Boolean(article?.intro);
 const hasHistoricalForms=(term.forms?.length ?? 0) > 0;
 const hasAliases=(term.aliases?.length ?? 0) > 0;
 const hasNames=hasHistoricalForms || hasAliases;
@@ -61,6 +62,26 @@ const citationLabel=(citation) => {
 };
 const humanizeKey=(value='') => value.replaceAll('-', ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${relation.direction === 'outgoing' ? 'from this entry' : 'to this entry'}`;
+const tocItems=[];
+if (hasOverview) tocItems.push({ href:'#overview', label:'Overview' });
+if (hasComposition) {
+  pageComposition.forEach((publicSection) => tocItems.push({ href:`#section-${publicSection.section_key}`, label:publicSection.heading }));
+} else {
+  articleBlocks.forEach((block) => tocItems.push({ href:`#${block.type === 'table' ? block.table_key : block.section_key}`, label:block.heading }));
+}
+if (hasConceptFamilies) term.concept_families.forEach((family) => tocItems.push({ href:`#family-${family.slug}`, label:family.label }));
+if (hasLotDiagram) tocItems.push({ href:'#lot-diagram', label:'Lot construction' });
+if (hasPlanetaryOrderDiagram) tocItems.push({ href:'#planetary-order-diagram', label:'Planetary order' });
+if (hasPlanetaryTimeSequences) tocItems.push({ href:'#planetary-time-sequences', label:'Planetary days / hours' });
+if (hasZodiacRelations) tocItems.push({ href:'#zodiac-relations', label:'Zodiac relations' });
+if (hasAstronomyDiagram) tocItems.push({ href:'#astronomy-diagram', label:'Geometry / visual' });
+if (hasZodiacSignProfile) tocItems.push({ href:'#sign-profile', label:'Zodiac sign profile' });
+if (hasPlanetProfile) tocItems.push({ href:'#planet-profile', label:'Planet profile' });
+if (hasReferenceData) tocItems.push({ href:'#reference-tables', label:'Reference tables' });
+if (firstCycleId) tocItems.push({ href:`#${firstCycleId}`, label:'Synodic cycle' });
+if (hasNames) tocItems.push({ href:'#names', label:'Names & forms' });
+if (hasSources) tocItems.push({ href:'#sources', label:'Sources' });
+if (hasRelations) tocItems.push({ href:'#related', label:'Related concepts' });
 ---
 <BaseLayout title={`${term.label} — Astrological Lexicon`} description={term.short_definition}>
   <div class="shell page-grid">
@@ -77,6 +98,11 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
         {primarySymbol && <span class="entry-glyph" role="img" aria-label={primarySymbol.label || `${term.label} symbol`}>{primarySymbol.symbol_text}</span>}
       </div>
       <p class="lede">{term.short_definition}</p>
+
+      {tocItems.length > 0 && <details class="mobile-entry-nav">
+        <summary>On this entry <span>{tocItems.length} sections</span></summary>
+        <nav aria-label="On this entry">{tocItems.map((item)=><a href={item.href}>{item.label}</a>)}</nav>
+      </details>}
 
       {article?.intro && <div class="article-intro" id="overview"><p>{article.intro}</p></div>}
 
@@ -175,24 +201,9 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
       </section>}
     </article>
 
-    <aside class="toc">
+    <aside class="toc" aria-label="On this entry">
       <strong>On this entry</strong>
-      {hasComposition
-        ? pageComposition.map((publicSection)=><a href={`#section-${publicSection.section_key}`}>{publicSection.heading}</a>)
-        : articleBlocks.map((block)=><a href={`#${block.type === 'table' ? block.table_key : block.section_key}`}>{block.heading}</a>)}
-      {hasConceptFamilies && term.concept_families.map((family)=><a href={`#family-${family.slug}`}>{family.label}</a>)}
-      {hasLotDiagram && <a href="#lot-diagram">Lot construction</a>}
-      {hasPlanetaryOrderDiagram && <a href="#planetary-order-diagram">Planetary order</a>}
-      {hasPlanetaryTimeSequences && <a href="#planetary-time-sequences">Planetary days / hours</a>}
-      {hasZodiacRelations && <a href="#zodiac-relations">Zodiac relations</a>}
-      {hasAstronomyDiagram && <a href="#astronomy-diagram">Geometry / visual</a>}
-      {hasZodiacSignProfile && <a href="#sign-profile">Zodiac sign profile</a>}
-      {hasPlanetProfile && <a href="#planet-profile">Planet profile</a>}
-      {hasReferenceData && <a href="#reference-tables">Reference tables</a>}
-      {firstCycleId && <a href={`#${firstCycleId}`}>Synodic cycle</a>}
-      {hasNames && <a href="#names">Names & forms</a>}
-      {hasSources && <a href="#sources">Sources</a>}
-      {hasRelations && <a href="#related">Related concepts</a>}
+      {tocItems.map((item)=><a href={item.href}>{item.label}</a>)}
     </aside>
   </div>
 </BaseLayout>
@@ -201,6 +212,7 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
   .title-row{display:flex;align-items:baseline;gap:1rem}
   .title-row h1{margin-right:0}
   .entry-glyph{font-size:clamp(2rem,5vw,4rem);line-height:1;font-family:var(--glyph-font,"DejaVu Sans","Noto Sans Symbols 2","Segoe UI Symbol",sans-serif);color:var(--muted);font-weight:400}
+  .mobile-entry-nav{display:none}
   .article-intro{max-width:52rem;margin:2.2rem 0 0;font-size:1.05rem}.article-intro p{margin:0}
   .composed-flow{max-width:58rem}.composed-block{max-width:52rem;margin:.85rem 0}.composed-block p{margin:.45rem 0}
   .composed-block.subsection{margin-top:1.55rem}.composed-block h3{margin:0 0 .45rem;font-size:1.05rem;font-weight:650}
@@ -222,5 +234,15 @@ const relationLabel=(relation) => `${humanizeKey(relation.relation_type)} · ${r
   .article-table th{font:700 .68rem/1.35 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;background:var(--paper-deep);white-space:nowrap}
   .article-table td:first-child{font-weight:600}
   .table-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  @media(max-width:720px){.article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}.entry-glyph{font-size:2.4rem}.article-intro{margin-top:1.7rem}}
+  @media(max-width:720px){
+    .mobile-entry-nav{display:block;margin:1.5rem 0 0;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .mobile-entry-nav summary{cursor:pointer;list-style:none;padding:.75rem 0;font-size:.69rem;text-transform:uppercase;letter-spacing:.07em;color:var(--ink);display:flex;justify-content:space-between;gap:1rem}
+    .mobile-entry-nav summary::-webkit-details-marker{display:none}.mobile-entry-nav summary::before{content:'+';margin-right:.45rem}.mobile-entry-nav[open] summary::before{content:'−'}
+    .mobile-entry-nav summary span{margin-left:auto;color:var(--muted);font-size:.62rem}
+    .mobile-entry-nav nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+    .mobile-entry-nav a{padding:.58rem .45rem .58rem 0;border-bottom:1px solid var(--line);color:var(--muted);text-decoration:none;font-size:.68rem;line-height:1.35}
+    .mobile-entry-nav a:nth-child(odd){padding-right:.7rem}.mobile-entry-nav a:nth-child(even){padding-left:.7rem;border-left:1px solid var(--line)}
+    .article-table{min-width:30rem}.article-table th,.article-table td{padding:.68rem .72rem}.entry-glyph{font-size:2.4rem}.article-intro{margin-top:1.7rem}
+  }
+  @media(max-width:480px){.mobile-entry-nav nav{grid-template-columns:1fr}.mobile-entry-nav a:nth-child(even){padding-left:0;border-left:0}.mobile-entry-nav a:nth-child(odd){padding-right:0}}
 </style>

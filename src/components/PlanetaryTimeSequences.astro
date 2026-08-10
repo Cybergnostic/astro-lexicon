@@ -23,7 +23,7 @@ const glyphs = {
           {(sequence.author_name || sequence.work_title) && <span class="source-tag">{[sequence.author_name, sequence.work_title].filter(Boolean).join(' · ')}</span>}
         </div>
 
-        <div class:list={['step-strip', { weekdays: sequence.sequence_kind === 'weekday-rulers' }]}>
+        <div class:list={['step-strip', { weekdays: sequence.sequence_kind === 'weekday-cycle' }]}>
           {sequence.steps.map((step) => (
             <a class="step" href={`/terms/${step.planet_slug}/`} title={step.note || undefined}>
               <span class="step-key">{step.step_label}</span>

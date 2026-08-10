@@ -300,37 +300,37 @@ def export(db_path: Path, out_path: Path):
             reference_schemes.append(item)
         record["reference_schemes"] = reference_schemes
 
-        article = con.execute(
+        intro_row = con.execute(
             """SELECT intro
                FROM term_articles
                WHERE term_id=? AND status IN ('reviewed','published')""",
             (term["id"],),
         ).fetchone()
-        if article:
-            article_record = dict(article)
-            sections = [
-                dict(row)
-                for row in con.execute(
-                    """SELECT section_key,heading,body,sort_order
-                       FROM term_article_sections
-                       WHERE term_id=? AND status IN ('reviewed','published')
-                       ORDER BY sort_order,id""",
-                    (term["id"],),
-                )
-            ]
-            tables = []
+        sections = [
+            dict(row)
             for row in con.execute(
-                """SELECT table_key,heading,caption,columns_json,rows_json,sort_order
-                   FROM term_article_tables
+                """SELECT section_key,heading,body,sort_order
+                   FROM term_article_sections
                    WHERE term_id=? AND status IN ('reviewed','published')
                    ORDER BY sort_order,id""",
                 (term["id"],),
-            ):
-                item = dict(row)
-                item["columns"] = json.loads(item.pop("columns_json"))
-                item["rows"] = json.loads(item.pop("rows_json"))
-                tables.append(item)
+            )
+        ]
+        tables = []
+        for row in con.execute(
+            """SELECT table_key,heading,caption,columns_json,rows_json,sort_order
+               FROM term_article_tables
+               WHERE term_id=? AND status IN ('reviewed','published')
+               ORDER BY sort_order,id""",
+            (term["id"],),
+        ):
+            item = dict(row)
+            item["columns"] = json.loads(item.pop("columns_json"))
+            item["rows"] = json.loads(item.pop("rows_json"))
+            tables.append(item)
 
+        if intro_row or sections or tables:
+            article_record = {"intro": intro_row["intro"] if intro_row else None}
             article_record["sections"] = [
                 {k: v for k, v in section.items() if k != "sort_order"} for section in sections
             ]

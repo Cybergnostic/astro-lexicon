@@ -118,7 +118,7 @@ WITH blocker_counts(check_name, issue_count) AS (
 
   SELECT 'page_composition_unplaced_article_block', COUNT(*)
   FROM (
-    SELECT s.term_id,'article-section' source_kind,s.section_key source_key
+    SELECT s.term_id,'article-section' AS source_kind,s.section_key AS source_key
     FROM term_article_sections s
     WHERE s.status IN ('reviewed','published')
       AND EXISTS (
@@ -126,23 +126,23 @@ WITH blocker_counts(check_name, issue_count) AS (
         WHERE ps.term_id=s.term_id AND ps.status IN ('reviewed','published')
       )
     UNION ALL
-    SELECT t.term_id,'article-table' source_kind,t.table_key source_key
+    SELECT t.term_id,'article-table' AS source_kind,t.table_key AS source_key
     FROM term_article_tables t
     WHERE t.status IN ('reviewed','published')
       AND EXISTS (
         SELECT 1 FROM term_page_sections ps
         WHERE ps.term_id=t.term_id AND ps.status IN ('reviewed','published')
       )
-  ) content
+  ) article_content
   WHERE NOT EXISTS (
     SELECT 1
     FROM term_page_blocks pb
     JOIN term_page_sections ps ON ps.id=pb.page_section_id
-    WHERE ps.term_id=content.term_id
+    WHERE ps.term_id=article_content.term_id
       AND ps.status IN ('reviewed','published')
       AND pb.status IN ('reviewed','published')
-      AND pb.source_kind=content.source_kind
-      AND pb.source_key=content.source_key
+      AND pb.source_kind=article_content.source_kind
+      AND pb.source_key=article_content.source_key
   )
 
   UNION ALL

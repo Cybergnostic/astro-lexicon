@@ -6,7 +6,12 @@ export function getStaticPaths() {
   return corpus.works.map((work) => ({ params: { slug: work.slug }, props: { work } }));
 }
 const { work } = Astro.props;
-const terms = corpus.terms.filter((term) => term.interpretations.some((item) => item.work_slug === work.slug));
+const hasWorkEvidence = (term, workSlug) =>
+  term.interpretations.some((item) => item.work_slug === workSlug)
+  || term.forms?.some((form) => form.attestations?.some((item) => item.work_slug === workSlug))
+  || term.reference_schemes?.some((scheme) => scheme.work_slug === workSlug)
+  || term.planetary_time_sequences?.some((sequence) => sequence.work_slug === workSlug);
+const terms = corpus.terms.filter((term) => hasWorkEvidence(term, work.slug));
 
 const statusLabel = {
   indexed: 'Indexed',
@@ -22,7 +27,7 @@ const statusText = {
 ---
 <BaseLayout title={`${work.title} — Astrological Lexicon`}>
   <div class="shell page-grid">
-    <aside class="article-rail">
+    <aside class="article-rail" aria-label="Work information">
       <div class="rail-group"><span class="micro-label">Author</span><span class="rail-value"><a href={`/authors/${work.author_slug}/`}>{work.author_name}</a></span></div>
       <div class="rail-group"><span class="micro-label">Historical layer</span><span class="rail-value">{work.historical_layer}</span></div>
       <div class="rail-group"><span class="micro-label">Corpus status</span><span class="rail-value">{statusLabel[work.corpus_status] || work.corpus_status}</span></div>
@@ -46,10 +51,11 @@ const statusText = {
 
       <section id="terms">
         <h2>Terms evidenced by this work</h2>
+        <p class="section-note">Includes reviewed source accounts and structured source-backed evidence such as historical-form attestations and named reference systems.</p>
         {terms.length > 0 ? (
           <ul class="index-list compact-list">{terms.map((term)=><li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}</ul>
         ) : (
-          <p>No reviewed public source accounts have been indexed from this work yet.</p>
+          <p>No reviewed public evidence from this work is attached to a term yet.</p>
         )}
       </section>
 
@@ -59,3 +65,7 @@ const statusText = {
     <aside class="toc"><strong>Work index</strong><a href="#coverage">Coverage</a><a href="#bibliography">Bibliography</a><a href="#terms">Indexed terms</a>{work.notes && <a href="#note">Editorial note</a>}</aside>
   </div>
 </BaseLayout>
+
+<style>
+  .section-note{margin:-.25rem 0 1rem;color:var(--muted);font-size:.9rem;max-width:48rem}
+</style>

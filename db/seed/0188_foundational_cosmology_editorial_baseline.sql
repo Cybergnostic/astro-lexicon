@@ -1,0 +1,155 @@
+-- Editorial Baseline v1: foundational natural philosophy and cosmology.
+--
+-- Preserve the source-backed qualitative/classificatory systems while composing their
+-- teaching material into coherent sections and removing project-facing language.
+
+PRAGMA foreign_keys = ON;
+
+-- -----------------------------------------------------------------------------
+-- READER-FACING HEADWORDS / COPY
+-- -----------------------------------------------------------------------------
+
+UPDATE terms
+SET label='Planetary Order',
+    short_definition='Planetary Order is the traditional geocentric sequence of the seven planets by sphere, from the Moon nearest the Earth outward through Mercury, Venus, Sun, Mars, Jupiter and Saturn.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical'
+WHERE slug='planetary-order';
+
+UPDATE terms
+SET label='Seven Traditional Planets',
+    short_definition='The seven traditional planets are the Sun, Moon, Mercury, Venus, Mars, Jupiter and Saturn—the seven visible wandering lights that form the planetary framework of premodern astrology.',
+    definition_quality=5,
+    status='reviewed',
+    entry_type='technical'
+WHERE slug='seven-planets';
+
+UPDATE term_article_sections
+SET body='The geocentric sphere sequence is not the same sequence displayed by the Thema Mundi. The Thema Mundi places the planets zodiacally in their domiciles from Cancer through Capricorn, whereas the inherited sphere order places Mercury and Venus between the Moon and Sun. The two structures are historically related but answer different questions.'
+WHERE term_id=(SELECT id FROM terms WHERE slug='planetary-order')
+  AND section_key='not-thema-sequence';
+
+UPDATE term_relations
+SET note='The zodiac divides longitude along the ecliptic into twelve equal signs in the tropical framework represented here.'
+WHERE subject_term_id=(SELECT id FROM terms WHERE slug='zodiac')
+  AND object_term_id=(SELECT id FROM terms WHERE slug='ecliptic')
+  AND relation_type='divides-reference-circle';
+
+-- -----------------------------------------------------------------------------
+-- COMPOSITION: PRIMARY QUALITIES / ELEMENTS
+-- -----------------------------------------------------------------------------
+
+DELETE FROM term_page_sections
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN (
+  'primary-quality','hot','cold','moist','dry','four-elements',
+  'element-fire','element-air','element-water','element-earth','temperament'
+));
+
+INSERT INTO term_page_sections
+  (term_id,section_key,heading,sort_order,status,editorial_notes)
+SELECT t.id,'qualitative-system','Qualitative structure and astrological use',10,'reviewed','Editorial Baseline v1 natural-philosophy composition.'
+FROM terms t
+WHERE t.slug IN (
+  'primary-quality','hot','cold','moist','dry','four-elements',
+  'element-fire','element-air','element-water','element-earth','temperament'
+)
+  AND t.status='reviewed'
+  AND EXISTS (
+    SELECT 1 FROM term_article_sections s WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+    UNION ALL
+    SELECT 1 FROM term_article_tables tb WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
+  );
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-section',s.section_key,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 'paragraph' ELSE 'subsection' END,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 0 ELSE 1 END,
+       s.sort_order,'reviewed','Editorial Baseline v1 natural-philosophy composition.'
+FROM term_page_sections ps
+JOIN term_article_sections s ON s.term_id=ps.term_id
+WHERE ps.section_key='qualitative-system' AND s.status IN ('reviewed','published');
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 natural-philosophy composition.'
+FROM term_page_sections ps
+JOIN term_article_tables tb ON tb.term_id=ps.term_id
+WHERE ps.section_key='qualitative-system' AND tb.status IN ('reviewed','published');
+
+-- -----------------------------------------------------------------------------
+-- COMPOSITION: CLASSIFICATION FRAMEWORKS
+-- -----------------------------------------------------------------------------
+
+DELETE FROM term_page_sections
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN (
+  'sign-modality','planetary-gender','planetary-nature','benefic','malefic','sect','hayz'
+));
+
+INSERT INTO term_page_sections
+  (term_id,section_key,heading,sort_order,status,editorial_notes)
+SELECT t.id,'classification','Classification and scope',10,'reviewed','Editorial Baseline v1 classification composition.'
+FROM terms t
+WHERE t.slug IN ('sign-modality','planetary-gender','planetary-nature','benefic','malefic','sect','hayz')
+  AND t.status='reviewed'
+  AND EXISTS (
+    SELECT 1 FROM term_article_sections s WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+    UNION ALL
+    SELECT 1 FROM term_article_tables tb WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
+  );
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-section',s.section_key,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 'paragraph' ELSE 'subsection' END,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 0 ELSE 1 END,
+       s.sort_order,'reviewed','Editorial Baseline v1 classification composition.'
+FROM term_page_sections ps
+JOIN term_article_sections s ON s.term_id=ps.term_id
+WHERE ps.section_key='classification' AND s.status IN ('reviewed','published');
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 classification composition.'
+FROM term_page_sections ps
+JOIN term_article_tables tb ON tb.term_id=ps.term_id
+WHERE ps.section_key='classification' AND tb.status IN ('reviewed','published');
+
+-- -----------------------------------------------------------------------------
+-- COMPOSITION: COSMOLOGICAL MODELS
+-- -----------------------------------------------------------------------------
+
+DELETE FROM term_page_sections
+WHERE term_id IN (SELECT id FROM terms WHERE slug IN (
+  'planetary-order','seven-planets','thema-mundi','celestial-sphere','zodiac','domicile'
+));
+
+INSERT INTO term_page_sections
+  (term_id,section_key,heading,sort_order,status,editorial_notes)
+SELECT t.id,'model','Model and historical scope',10,'reviewed','Editorial Baseline v1 cosmology composition.'
+FROM terms t
+WHERE t.slug IN ('planetary-order','seven-planets','thema-mundi','celestial-sphere','zodiac','domicile')
+  AND t.status='reviewed'
+  AND EXISTS (
+    SELECT 1 FROM term_article_sections s WHERE s.term_id=t.id AND s.status IN ('reviewed','published')
+    UNION ALL
+    SELECT 1 FROM term_article_tables tb WHERE tb.term_id=t.id AND tb.status IN ('reviewed','published')
+  );
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-section',s.section_key,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 'paragraph' ELSE 'subsection' END,
+       CASE WHEN s.sort_order=(SELECT MIN(s2.sort_order) FROM term_article_sections s2 WHERE s2.term_id=s.term_id AND s2.status IN ('reviewed','published')) THEN 0 ELSE 1 END,
+       s.sort_order,'reviewed','Editorial Baseline v1 cosmology composition.'
+FROM term_page_sections ps
+JOIN term_article_sections s ON s.term_id=ps.term_id
+WHERE ps.section_key='model' AND s.status IN ('reviewed','published');
+
+INSERT INTO term_page_blocks
+  (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
+SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 cosmology composition.'
+FROM term_page_sections ps
+JOIN term_article_tables tb ON tb.term_id=ps.term_id
+WHERE ps.section_key='model' AND tb.status IN ('reviewed','published');

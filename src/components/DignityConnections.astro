@@ -1,28 +1,15 @@
 ---
 const { assignments = [], termSlug } = Astro.props;
-
 const schemes = [...new Map(assignments.map((item) => [item.scheme_slug, item])).values()];
 const asPlanet = assignments.some((item) => item.planet_slug === termSlug);
 const asSign = assignments.some((item) => item.sign_slug === termSlug);
-
-const planetGlyphs = {
-  sun:'☉', moon:'☽', mercury:'☿', venus:'♀', mars:'♂', jupiter:'♃', saturn:'♄'
-};
-const signGlyphs = {
-  aries:'♈', taurus:'♉', gemini:'♊', cancer:'♋', leo:'♌', virgo:'♍',
-  libra:'♎', scorpio:'♏', sagittarius:'♐', capricorn:'♑', aquarius:'♒', pisces:'♓'
-};
-
-const grouped = (schemeSlug, mode) => assignments
-  .filter((item) => item.scheme_slug === schemeSlug && (mode === 'planet' ? item.planet_slug === termSlug : item.sign_slug === termSlug));
-
+const planetGlyphs = { sun:'☉', moon:'☽', mercury:'☿', venus:'♀', mars:'♂', jupiter:'♃', saturn:'♄' };
+const signGlyphs = { aries:'♈', taurus:'♉', gemini:'♊', cancer:'♋', leo:'♌', virgo:'♍', libra:'♎', scorpio:'♏', sagittarius:'♐', capricorn:'♑', aquarius:'♒', pisces:'♓' };
+const grouped = (schemeSlug, mode) => assignments.filter((item) => item.scheme_slug === schemeSlug && (mode === 'planet' ? item.planet_slug === termSlug : item.sign_slug === termSlug));
 const range = (item) => `${Number(item.degree_start)}–${Number(item.degree_end)}°`;
 const exact = (item) => item.exact_degree_number ? `${item.exact_degree_number}°` : '';
 const sect = (item) => item.sect_condition === 'any' ? 'D/N' : item.sect_condition === 'day' ? 'D' : 'N';
-const typeLabel = (type) => ({
-  domicile:'Domicile', exaltation:'Exaltation', triplicity:'Triplicity', term:'Term / bound',
-  face:'Face / decan', detriment:'Detriment', fall:'Fall'
-}[type] ?? type);
+const typeLabel = (type) => ({ domicile:'Domicile', exaltation:'Exaltation', triplicity:'Triplicity', term:'Term / bound', face:'Face / decan', detriment:'Detriment', fall:'Fall' }[type] ?? type);
 ---
 
 {schemes.map((scheme) => {
@@ -30,66 +17,13 @@ const typeLabel = (type) => ({
   const signRows = asSign ? grouped(scheme.scheme_slug,'sign') : [];
   return (planetRows.length || signRows.length) && (
     <section class="dignity-connections" id={`dignity-${scheme.scheme_slug}`}>
-      <div class="connection-head">
-        <div>
-          <p class="micro-label">Structured dignity data</p>
-          <h2>Dignity relationships</h2>
-        </div>
-        <p>{scheme.scheme_label}</p>
-      </div>
-
-      {planetRows.length > 0 && <div class="connection-group">
-        <h3>Where this planet participates</h3>
-        <div class="compact-table-wrap">
-          <table class="compact-reference">
-            <thead><tr><th>Role</th><th>Sign</th><th>Sect</th><th>Degree</th></tr></thead>
-            <tbody>{planetRows.map((item) => <tr>
-              <td>{typeLabel(item.assignment_type)}</td>
-              <td class="glyph-link-cell"><a href={`/terms/${item.sign_slug}/`} title={item.sign_label}>
-                <span class="astro-glyph" aria-hidden="true">{signGlyphs[item.sign_slug] ?? '•'}</span>
-                <span>{item.sign_label}</span>
-              </a></td>
-              <td class="sect-cell">{item.assignment_type === 'triplicity' ? sect(item) : '—'}</td>
-              <td>{['term','face'].includes(item.assignment_type) ? range(item) : (item.exact_degree_number ? exact(item) : 'whole sign')}</td>
-            </tr>)}</tbody>
-          </table>
-        </div>
-      </div>}
-
-      {signRows.length > 0 && <div class="connection-group">
-        <h3>Dignities operating in this sign</h3>
-        <div class="compact-table-wrap">
-          <table class="compact-reference">
-            <thead><tr><th>Role</th><th>Planet</th><th>Sect</th><th>Degree</th></tr></thead>
-            <tbody>{signRows.map((item) => <tr>
-              <td>{typeLabel(item.assignment_type)}</td>
-              <td class="glyph-link-cell"><a href={`/terms/${item.planet_slug}/`} title={item.planet_label}>
-                <span class="astro-glyph planet" aria-hidden="true">{planetGlyphs[item.planet_slug] ?? '•'}</span>
-                <span class="sr-only">{item.planet_label}</span>
-                {item.exact_degree_number && <small>{exact(item)}</small>}
-              </a></td>
-              <td class="sect-cell">{item.assignment_type === 'triplicity' ? sect(item) : '—'}</td>
-              <td>{['term','face'].includes(item.assignment_type) ? range(item) : (item.exact_degree_number ? exact(item) : 'whole sign')}</td>
-            </tr>)}</tbody>
-          </table>
-        </div>
-      </div>}
+      <div class="connection-head"><h2>Dignity relationships</h2><p>{scheme.scheme_label}</p></div>
+      {planetRows.length > 0 && <div class="connection-group"><h3>Where this planet participates</h3><div class="compact-table-wrap"><table class="compact-reference"><thead><tr><th>Role</th><th>Sign</th><th>Sect</th><th>Degree</th></tr></thead><tbody>{planetRows.map((item) => <tr><td>{typeLabel(item.assignment_type)}</td><td class="glyph-link-cell"><a href={`/terms/${item.sign_slug}/`} title={item.sign_label}><span class="astro-glyph" aria-hidden="true">{signGlyphs[item.sign_slug] ?? '•'}</span><span>{item.sign_label}</span></a></td><td class="sect-cell">{item.assignment_type === 'triplicity' ? sect(item) : '—'}</td><td>{['term','face'].includes(item.assignment_type) ? range(item) : (item.exact_degree_number ? exact(item) : 'whole sign')}</td></tr>)}</tbody></table></div></div>}
+      {signRows.length > 0 && <div class="connection-group"><h3>Dignities operating in this sign</h3><div class="compact-table-wrap"><table class="compact-reference"><thead><tr><th>Role</th><th>Planet</th><th>Sect</th><th>Degree</th></tr></thead><tbody>{signRows.map((item) => <tr><td>{typeLabel(item.assignment_type)}</td><td class="glyph-link-cell"><a href={`/terms/${item.planet_slug}/`} title={item.planet_label}><span class="astro-glyph planet" aria-hidden="true">{planetGlyphs[item.planet_slug] ?? '•'}</span><span class="sr-only">{item.planet_label}</span>{item.exact_degree_number && <small>{exact(item)}</small>}</a></td><td class="sect-cell">{item.assignment_type === 'triplicity' ? sect(item) : '—'}</td><td>{['term','face'].includes(item.assignment_type) ? range(item) : (item.exact_degree_number ? exact(item) : 'whole sign')}</td></tr>)}</tbody></table></div></div>}
     </section>
   );
 })}
 
 <style>
-  .dignity-connections{margin:3rem 0}
-  .connection-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line);padding:.8rem 0}
-  .connection-head h2{margin:.15rem 0 0;border:0;padding:0}.connection-head>p{margin:0;color:var(--muted);font-size:.78rem;text-align:right;max-width:24rem}
-  .connection-group{margin-top:1.25rem}.connection-group+ .connection-group{margin-top:1.8rem}.connection-group h3{margin:0 0 .55rem;font-size:.88rem;text-transform:uppercase;letter-spacing:.04em}
-  .compact-table-wrap{border:1px solid var(--line-dark);background:var(--paper-pale)}
-  .compact-reference{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.82rem}
-  .compact-reference th,.compact-reference td{padding:.48rem .6rem;text-align:left;vertical-align:middle;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .compact-reference th:last-child,.compact-reference td:last-child{border-right:0}.compact-reference tbody tr:last-child td{border-bottom:0}
-  .compact-reference thead th{font:700 .59rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.055em;background:var(--paper-deep);white-space:nowrap}
-  .compact-reference th:nth-child(1){width:28%}.compact-reference th:nth-child(2){width:28%}.compact-reference th:nth-child(3){width:12%}.compact-reference th:nth-child(4){width:32%}
-  .glyph-link-cell a{display:inline-flex;align-items:center;gap:.45rem;color:var(--ink);text-decoration:none}.glyph-link-cell a:hover{color:var(--accent)}
-  .astro-glyph{font-family:"Noto Sans Symbols 2","Segoe UI Symbol","DejaVu Sans",sans-serif;font-size:1.2rem;line-height:1}.astro-glyph.planet{font-size:1.35rem}.glyph-link-cell small{font:.58rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted);margin-left:.2rem}.sect-cell{font:700 .64rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-  @media(max-width:720px){.connection-head{display:block}.connection-head>p{text-align:left;margin-top:.45rem}.compact-reference th:nth-child(1){width:31%}.compact-reference th:nth-child(2){width:25%}.glyph-link-cell a>span:not(.astro-glyph):not(.sr-only){display:none}}
+  .dignity-connections{margin:3rem 0}.connection-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line);padding:.8rem 0}.connection-head h2{margin:0;border:0;padding:0}.connection-head>p{margin:0;color:var(--muted);font-size:.78rem;text-align:right;max-width:24rem}.connection-group{margin-top:1.25rem}.connection-group+ .connection-group{margin-top:1.8rem}.connection-group h3{margin:0 0 .55rem;font-size:.88rem;text-transform:uppercase;letter-spacing:.04em}.compact-table-wrap{border:1px solid var(--line-dark);background:var(--paper-pale)}.compact-reference{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.82rem}.compact-reference th,.compact-reference td{padding:.48rem .6rem;text-align:left;vertical-align:middle;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.compact-reference th:last-child,.compact-reference td:last-child{border-right:0}.compact-reference tbody tr:last-child td{border-bottom:0}.compact-reference thead th{font:700 .59rem/1.3 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.055em;background:var(--paper-deep);white-space:nowrap}.compact-reference th:nth-child(1){width:28%}.compact-reference th:nth-child(2){width:28%}.compact-reference th:nth-child(3){width:12%}.compact-reference th:nth-child(4){width:32%}.glyph-link-cell a{display:inline-flex;align-items:center;gap:.45rem;color:var(--ink);text-decoration:none}.glyph-link-cell a:hover{color:var(--accent)}.astro-glyph{font-family:var(--glyph-font);font-size:1.2rem;line-height:1}.astro-glyph.planet{font-size:1.35rem}.glyph-link-cell small{font:.58rem/1 var(--font-data,ui-monospace,monospace);color:var(--muted);margin-left:.2rem}.sect-cell{font:700 .64rem/1 var(--font-data,ui-monospace,monospace)}@media(max-width:720px){.connection-head{display:block}.connection-head>p{text-align:left;margin-top:.45rem}.compact-reference th:nth-child(1){width:31%}.compact-reference th:nth-child(2){width:25%}.glyph-link-cell a>span:not(.astro-glyph):not(.sr-only){display:none}}
 </style>

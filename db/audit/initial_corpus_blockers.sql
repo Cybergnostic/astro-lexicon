@@ -3,6 +3,9 @@
 -- Informational review queries (B-only evidence, duplicate passage fingerprints,
 -- uncited extraction passages, coverage summaries) remain in initial_corpus_review.sql.
 --
+-- Draft terms and draft interpretations are permitted as working-research records. Blocking
+-- publication standards apply only to reviewed/published material.
+--
 -- Two alias collisions are deliberate historical false friends and therefore are
 -- excluded narrowly here rather than deleting useful source terminology:
 --   * House -> zodiacal domicile / mundane place
@@ -24,9 +27,11 @@ WITH blocker_counts(check_name, issue_count) AS (
 
   SELECT 'interpretations_failing_ab_review_standard', COUNT(*)
   FROM interpretations
-  WHERE evidence_grade IS NULL
-     OR evidence_grade NOT IN ('A','B')
-     OR status='draft'
+  WHERE status IN ('reviewed','published')
+    AND (
+      evidence_grade IS NULL
+      OR evidence_grade NOT IN ('A','B')
+    )
 
   UNION ALL
 
@@ -44,7 +49,8 @@ WITH blocker_counts(check_name, issue_count) AS (
   FROM terms t
   WHERE t.status IN ('reviewed','published')
     AND NOT EXISTS (
-      SELECT 1 FROM interpretations i WHERE i.term_id=t.id
+      SELECT 1 FROM interpretations i
+      WHERE i.term_id=t.id AND i.status IN ('reviewed','published')
     )
 
   UNION ALL
@@ -81,6 +87,10 @@ WITH blocker_counts(check_name, issue_count) AS (
   SELECT 'unreviewed_term_relations', COUNT(*)
   FROM term_relations
   WHERE status='draft'
+    AND (
+      subject_term_id IN (SELECT id FROM terms WHERE status IN ('reviewed','published'))
+      OR object_term_id IN (SELECT id FROM terms WHERE status IN ('reviewed','published'))
+    )
 
   UNION ALL
 

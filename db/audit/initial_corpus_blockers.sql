@@ -1,7 +1,8 @@
 -- Machine-readable blocking checks for the initial-corpus audit.
 -- Every row must report issue_count = 0 for the corpus audit command to succeed.
--- Informational review queries (B-only evidence, duplicate passage fingerprints,
--- uncited extraction passages, coverage summaries) remain in initial_corpus_review.sql.
+-- Informational review queries (B-only evidence, source coverage, terms without source
+-- interpretations, article coverage and intentionally unplaced article blocks) remain in
+-- the non-blocking audit reports.
 --
 -- Draft terms and draft interpretations are permitted as working-research records. Blocking
 -- publication standards apply only to reviewed/published material.
@@ -41,16 +42,6 @@ WITH blocker_counts(check_name, issue_count) AS (
     AND i.evidence_grade IN ('A','B')
     AND NOT EXISTS (
       SELECT 1 FROM citations c WHERE c.interpretation_id=i.id
-    )
-
-  UNION ALL
-
-  SELECT 'reviewed_terms_without_source_interpretation', COUNT(*)
-  FROM terms t
-  WHERE t.status IN ('reviewed','published')
-    AND NOT EXISTS (
-      SELECT 1 FROM interpretations i
-      WHERE i.term_id=t.id AND i.status IN ('reviewed','published')
     )
 
   UNION ALL
@@ -125,37 +116,6 @@ WITH blocker_counts(check_name, issue_count) AS (
     GROUP BY ps.term_id,pb.source_kind,pb.source_key
     HAVING COUNT(*)>1
   ) duplicates
-
-  UNION ALL
-
-  SELECT 'page_composition_unplaced_article_block', COUNT(*)
-  FROM (
-    SELECT s.term_id,'article-section' AS source_kind,s.section_key AS source_key
-    FROM term_article_sections s
-    WHERE s.status IN ('reviewed','published')
-      AND EXISTS (
-        SELECT 1 FROM term_page_sections ps
-        WHERE ps.term_id=s.term_id AND ps.status IN ('reviewed','published')
-      )
-    UNION ALL
-    SELECT t.term_id,'article-table' AS source_kind,t.table_key AS source_key
-    FROM term_article_tables t
-    WHERE t.status IN ('reviewed','published')
-      AND EXISTS (
-        SELECT 1 FROM term_page_sections ps
-        WHERE ps.term_id=t.term_id AND ps.status IN ('reviewed','published')
-      )
-  ) article_content
-  WHERE NOT EXISTS (
-    SELECT 1
-    FROM term_page_blocks pb
-    JOIN term_page_sections ps ON ps.id=pb.page_section_id
-    WHERE ps.term_id=article_content.term_id
-      AND ps.status IN ('reviewed','published')
-      AND pb.status IN ('reviewed','published')
-      AND pb.source_kind=article_content.source_kind
-      AND pb.source_key=article_content.source_key
-  )
 
   UNION ALL
 

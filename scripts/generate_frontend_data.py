@@ -67,6 +67,104 @@ def export(db_path: Path, out_path: Path):
             )
         ]
 
+        record["symbols"] = [
+            dict(row)
+            for row in con.execute(
+                """SELECT symbol_system,symbol_text,label,is_primary,notes
+                   FROM term_symbols
+                   WHERE term_id=?
+                   ORDER BY is_primary DESC,id""",
+                (term["id"],),
+            )
+        ]
+
+        record["media"] = [
+            dict(row)
+            for row in con.execute(
+                """SELECT media_key,media_type,asset_path,alt_text,caption,credit,license_note,source_url,sort_order
+                   FROM term_media
+                   WHERE term_id=? AND status IN ('reviewed','published')
+                   ORDER BY sort_order,id""",
+                (term["id"],),
+            )
+        ]
+
+        record["reference_assignments"] = [
+            dict(row)
+            for row in con.execute(
+                """SELECT rs.slug scheme_slug,rs.label scheme_label,rs.domain,
+                          z.assignment_type,z.sect_condition,z.degree_start,z.degree_end,
+                          z.exact_degree_number,z.sequence_no,z.note,
+                          s.slug sign_slug,s.label sign_label,
+                          p.slug planet_slug,p.label planet_label
+                   FROM zodiac_reference_assignments z
+                   JOIN reference_schemes rs ON rs.id=z.scheme_id
+                   JOIN terms s ON s.id=z.sign_term_id
+                   JOIN terms p ON p.id=z.planet_term_id
+                   WHERE rs.status IN ('reviewed','published')
+                     AND (z.sign_term_id=? OR z.planet_term_id=?)
+                   ORDER BY rs.id,s.id,z.assignment_type,z.sect_condition,z.degree_start,z.sequence_no""",
+                (term["id"], term["id"]),
+            )
+        ]
+
+        cycles = []
+        for cycle in con.execute(
+            """SELECT pc.id,pc.slug,pc.cycle_type,pc.mean_period_days,pc.period_note,pc.notes,
+                      r.slug reference_body_slug,r.label reference_body_label
+               FROM planetary_cycles pc
+               LEFT JOIN terms r ON r.id=pc.reference_body_term_id
+               WHERE pc.planet_term_id=? AND pc.status IN ('reviewed','published')
+               ORDER BY pc.id""",
+            (term["id"],),
+        ):
+            item = dict(cycle)
+            item["phases"] = [
+                dict(row)
+                for row in con.execute(
+                    """SELECT phase_key,label,sequence_no,geometric_condition,
+                              visibility_condition,motion_condition,notes
+                       FROM planetary_cycle_phases
+                       WHERE cycle_id=? ORDER BY sequence_no""",
+                    (cycle["id"],),
+                )
+            ]
+            item.pop("id", None)
+            cycles.append(item)
+        record["cycles"] = cycles
+
+        reference_schemes = []
+        for scheme in con.execute(
+            """SELECT rs.id,rs.slug,rs.label,rs.domain,rs.notes,
+                      w.slug work_slug,w.title work_title,
+                      a.slug author_slug,a.name author_name
+               FROM reference_schemes rs
+               LEFT JOIN works w ON w.id=rs.work_id
+               LEFT JOIN authors a ON a.id=w.author_id
+               WHERE rs.status IN ('reviewed','published') AND rs.domain=?
+               ORDER BY rs.id""",
+            (term["slug"],),
+        ):
+            item = dict(scheme)
+            item["assignments"] = [
+                dict(row)
+                for row in con.execute(
+                    """SELECT z.assignment_type,z.sect_condition,z.degree_start,z.degree_end,
+                              z.exact_degree_number,z.sequence_no,z.note,
+                              s.slug sign_slug,s.label sign_label,
+                              p.slug planet_slug,p.label planet_label
+                       FROM zodiac_reference_assignments z
+                       JOIN terms s ON s.id=z.sign_term_id
+                       JOIN terms p ON p.id=z.planet_term_id
+                       WHERE z.scheme_id=?
+                       ORDER BY s.id,z.assignment_type,z.sect_condition,z.degree_start,z.sequence_no""",
+                    (scheme["id"],),
+                )
+            ]
+            item.pop("id", None)
+            reference_schemes.append(item)
+        record["reference_schemes"] = reference_schemes
+
         article = con.execute(
             """SELECT intro
                FROM term_articles
@@ -207,6 +305,10 @@ def export(db_path: Path, out_path: Path):
         ).fetchone()[0]
         works.append(item)
 
+    reference_scheme_count = con.execute(
+        "SELECT COUNT(*) FROM reference_schemes WHERE status IN ('reviewed','published')"
+    ).fetchone()[0]
+
     payload = {
         "meta": {
             "terms": len(terms),
@@ -214,6 +316,7 @@ def export(db_path: Path, out_path: Path):
             "articles": sum(1 for term in terms if term["article"]),
             "authors": len(authors),
             "works": len(works),
+            "reference_schemes": reference_scheme_count,
             "evidence_standard": "Reviewed A/B evidence only",
         },
         "terms": terms,

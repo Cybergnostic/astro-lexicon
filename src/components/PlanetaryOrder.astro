@@ -1,0 +1,44 @@
+---
+const { families = [] } = Astro.props;
+const family = families.find((item) => item.slug === 'traditional-planetary-order');
+const spheres = family?.members
+  ?.filter((member) => member.role_key === 'ordered-sphere')
+  .sort((a,b) => a.sequence_no - b.sequence_no) ?? [];
+---
+
+{family && spheres.length > 0 && (
+  <section class="order-visual" id="planetary-order-diagram" aria-labelledby="planetary-order-title">
+    <div class="order-head">
+      <p class="micro-label">Historical model schematic</p>
+      <h2 id="planetary-order-title">From Earth outward through the seven planetary spheres</h2>
+    </div>
+
+    <div class="order-line" role="img" aria-label={`Traditional geocentric planetary order from Earth outward: ${spheres.map((item)=>item.term_label).join(', ')}`}>
+      <span class="earth">Earth</span>
+      <span class="direction">outward →</span>
+      <div class="sphere-list">
+        {spheres.map((member,index) => (
+          <a href={`/terms/${member.term_slug}/`} class="sphere-item" title={member.note || undefined}>
+            <span class="sphere-number">{index + 1}</span>
+            <strong>{member.term_label}</strong>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <p class="order-note">This is the inherited geocentric order represented by the current Ptolemy witness. It is a historical cosmological model, not a modern heliocentric distance diagram and not the zodiacal domicile sequence of the Thema Mundi.</p>
+  </section>
+)}
+
+<style>
+  .order-visual{margin:2.8rem 0;padding:1.1rem;border:1px solid var(--line-dark);background:var(--paper-pale)}
+  .order-head{border-bottom:1px solid var(--line);padding-bottom:.75rem;margin-bottom:1rem}.order-head h2{margin:.15rem 0 0}
+  .order-line{display:grid;grid-template-columns:auto auto 1fr;gap:.8rem;align-items:center;padding:.9rem;border:1px solid var(--line);background:var(--paper-deep)}
+  .earth{display:grid;place-items:center;width:4rem;height:4rem;border:1.5px solid var(--line-dark);border-radius:50%;background:var(--paper-pale);font-weight:700}
+  .direction{font:700 .67rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);white-space:nowrap}
+  .sphere-list{display:flex;align-items:stretch;gap:.4rem;overflow-x:auto;padding:.1rem}
+  .sphere-item{min-width:6rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;padding:.65rem .45rem;border:1px solid var(--line-dark);border-radius:999px;text-decoration:none;color:inherit;background:var(--paper-pale)}
+  .sphere-item:hover{outline:2px solid var(--line);outline-offset:2px}.sphere-number{font:700 .6rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted)}.sphere-item strong{font-size:.78rem}
+  .order-note{margin:.8rem 0 0;color:var(--muted);font-size:.82rem;max-width:56rem}
+  @media(max-width:760px){.order-line{grid-template-columns:auto 1fr}.direction{grid-column:2}.sphere-list{grid-column:1 / -1}.earth{width:3.3rem;height:3.3rem}.sphere-item{min-width:5rem}}
+</style>

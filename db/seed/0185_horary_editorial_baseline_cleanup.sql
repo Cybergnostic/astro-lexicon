@@ -93,7 +93,8 @@ WHERE t.slug IN ('radicality','planetary-hour','lord-of-the-hour')
   );
 
 -- Generic block insertion for the explicit compositions above. First prose block flows as a
--- paragraph; subsequent distinctions become subsections. Tables sit inside the same section.
+-- paragraph; subsequent distinctions become subsections. Tables use a separate high sort
+-- range so they can never collide with article-section sort orders.
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
 SELECT ps.id,'article-section',s.section_key,
@@ -110,7 +111,7 @@ WHERE ps.status='reviewed'
 
 INSERT INTO term_page_blocks
   (page_section_id,source_kind,source_key,presentation_role,show_heading,sort_order,status,editorial_notes)
-SELECT ps.id,'article-table',tb.table_key,'table',1,100+tb.sort_order,'reviewed','Editorial Baseline v1 horary composition.'
+SELECT ps.id,'article-table',tb.table_key,'table',1,10000+tb.sort_order,'reviewed','Editorial Baseline v1 horary composition.'
 FROM term_page_sections ps
 JOIN term_article_tables tb ON tb.term_id=ps.term_id
 WHERE ps.status='reviewed'

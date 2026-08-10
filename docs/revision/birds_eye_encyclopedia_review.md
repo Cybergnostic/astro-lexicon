@@ -128,7 +128,7 @@ Current normalized layers:
 - `concept_families`
 - `concept_family_members`
 
-`concept_families` is the generic family-level layer added during the aspect/perfection review. Pairwise `term_relations` still describe how two concepts relate; a concept family describes a larger ordered teaching system and the role each term plays inside it. This avoids hard-coding family taxonomies in the frontend and is reusable for houses, lots, predictive methods and later review blocks.
+`concept_families` is the generic family-level layer added during the aspect/perfection review. Pairwise `term_relations` still describe how two concepts relate; a concept family describes a larger ordered teaching system and the role each term plays inside it. This avoids hard-coding family taxonomies in the frontend and is now reused for aspects, houses, Lots and predictive terminology.
 
 Reference schemes now include both:
 
@@ -227,6 +227,31 @@ Skyscript and its historical review of denial of perfection were used only as ed
 - Antiochus’ Places for Dealings / Places without Dealings kept as a separate source-specific taxonomy rather than folded into angular/cadent strength;
 - improved house-family definitions and cross-links without adding a house-judgment workflow.
 
+### Lots / Parts
+
+- normalized `lot-mechanics` family separating construction, historical identity, canonical equivalence and interpretation;
+- separate `abu-mashar-planetary-lots` historical family for the five non-luminary planetary Lots in *Great Introduction* VIII.3.12–3.16;
+- definition cleanup for Lot, Lot Extraction, Natural Indicators and General Indicators;
+- explicit rule that a repeated English name does not establish historical identity without formula/source agreement;
+- Fortune / Absence pairing presented as one current source stream rather than a universal naming convention;
+- Venus/Love Lot kept explicitly related-but-distinct from Eros where formula identity differs;
+- original Lot construction schematic showing directed-arc measurement and projection from a source-defined origin;
+- diagram deliberately uses generic “Origin” rather than universalizing the Ascendant, while noting that the Ascendant is usual in the major represented streams.
+
+Skyscript’s historical Parts/Fortune material was used as an editorial completeness check only; formulas and identities remain grounded in the project’s source-specific records.
+
+### Predictive terminology
+
+- repaired duplicate headwords introduced by later curriculum seeds: `firdaria` merged back into source-backed `fardar`, `solar-return` into source-backed `solar-revolution`, and `lord-of-the-year` into source-backed `lord-of-year`;
+- retained useful common/transliteration names as aliases rather than duplicate canonical terms;
+- directly verified Ptolemy’s seven ages of life against *Tetrabiblos* IV.10 and attached a primary source passage/citation;
+- the existing Moon 4 / Mercury 10 / Venus 8 / Sun 19 / Mars 15 / Jupiter 12 / Saturn-remainder age sequence is now source-backed rather than merely curriculum-retained;
+- normalized `time-lord-chronology` family separating Firdaria, Lilly’s Alfridary, profections, annual roles, planetary-year quantities and Ptolemy’s general age model;
+- normalized `directions-distributions` family separating direction system, formal roles, distributions and their ruler/participant roles;
+- normalized `revolutions-returns` family separating generic return charts, annual revolutions, natal Solar Revolution/Return, world-year revolution, Lunar Return and revolution rulers;
+- added a comparative table explaining that time-lord sequences, zodiacal advancement, directed geometry and astronomical returns are different mechanisms even when combined in historical practice;
+- `solar-direction` and `divisions` remain visibly marked **source-audit-open** because their direct historical terminology/provenance is not yet established in the current public corpus.
+
 ## Remaining checks inside completed families
 
 The family passes above establish the architecture, but they do not close every secondary doctrine. Before calling those families exhaustive, still check:
@@ -237,15 +262,14 @@ The family passes above establish the architecture, but they do not close every 
 - source-specific variants that should become additional named reference schemes rather than prose notes;
 - lunar nodes as standalone astronomical/historical terminology if the existing corpus supports a clean canonical identity rather than only eclipse context;
 - whether historical aspect/orb schemes need their own normalized named reference systems beyond the current source-attributed prose/tables;
-- individual house-topic pages only where they improve navigation and source comparison, not as a pretext to publish house-judgment recipes.
+- individual house-topic pages only where they improve navigation and source comparison, not as a pretext to publish house-judgment recipes;
+- direct source work for `solar-direction` and `divisions` before either term is presented as historically settled.
 
 ## Next review order
 
-1. **Lots** — largely extracted and formula-rich; review the whole family as a reader, tighten formula-stream disambiguation, and use the concept-family layer where it improves navigation.
-2. **Predictive terminology** — comparative overview of profections, firdaria, directions, distributions, solar/lunar revolutions and related terms without procedural forecasting workflows.
-3. **Historical cosmology / foundational models** — planetary order, sect/cosmology and related model concepts beyond the already-completed Thema Mundi block.
-4. **Remaining planetary/sign secondary families** — sign relations, planetary day/hour and source-specific schemes where justified.
-5. **Long-tail entries and lower-priority definitions**.
+1. **Historical cosmology / foundational models** — planetary order, sect/cosmology and related model concepts beyond the already-completed Thema Mundi block.
+2. **Remaining planetary/sign secondary families** — sign relations, planetary day/hour and source-specific schemes where justified.
+3. **Long-tail entries and lower-priority definitions** — now approached family-by-family rather than through a generic missing-term sweep.
 
 At each stage, stop adding terms merely because a source mentions them. Add or expand an entry only when it improves the encyclopedia's conceptual coverage, historical accuracy, navigation or teaching quality.
 

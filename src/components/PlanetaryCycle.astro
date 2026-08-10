@@ -5,45 +5,15 @@ const { cycles = [] } = Astro.props;
 {cycles.map((cycle) => (
   <section class="cycle-system" id={`cycle-${cycle.slug}`}>
     <div class="cycle-head">
-      <div>
-        <p class="micro-label">Solar synodic reference</p>
-        <h2>Synodic cycle</h2>
-      </div>
-      <div class="cycle-period">
-        {cycle.mean_period_days && <strong>{Math.round(cycle.mean_period_days * 100) / 100} days</strong>}
-        {cycle.reference_body_label && <span>relative to {cycle.reference_body_label}</span>}
-      </div>
+      <h2>Synodic cycle</h2>
+      <div class="cycle-period">{cycle.mean_period_days && <strong>{Math.round(cycle.mean_period_days * 100) / 100} days</strong>}{cycle.reference_body_label && <span>relative to {cycle.reference_body_label}</span>}</div>
     </div>
     {cycle.period_note && <p class="cycle-note">{cycle.period_note}</p>}
-
-    <ol class="phase-flow" aria-label="Synodic cycle phases">
-      {cycle.phases.map((phase) => <li>
-        <div class="phase-number">{phase.sequence_no}</div>
-        <div class="phase-body">
-          <h3>{phase.label}</h3>
-          {phase.geometric_condition && <p>{phase.geometric_condition}</p>}
-          <dl>
-            {phase.visibility_condition && <><dt>Visibility</dt><dd>{phase.visibility_condition}</dd></>}
-            {phase.motion_condition && <><dt>Motion</dt><dd>{phase.motion_condition}</dd></>}
-          </dl>
-          {phase.notes && <p class="phase-note">{phase.notes}</p>}
-        </div>
-      </li>)}
-    </ol>
+    <ol class="phase-flow" aria-label="Synodic cycle phases">{cycle.phases.map((phase) => <li><div class="phase-number">{phase.sequence_no}</div><div class="phase-body"><h3>{phase.label}</h3>{phase.geometric_condition && <p>{phase.geometric_condition}</p>}<dl>{phase.visibility_condition && <><dt>Visibility</dt><dd>{phase.visibility_condition}</dd></>}{phase.motion_condition && <><dt>Motion</dt><dd>{phase.motion_condition}</dd></>}</dl>{phase.notes && <p class="phase-note">{phase.notes}</p>}</div></li>)}</ol>
     {cycle.notes && <p class="cycle-footnote">{cycle.notes}</p>}
   </section>
 ))}
 
 <style>
-  .cycle-system{margin:2.8rem 0}
-  .cycle-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;border-bottom:1px solid var(--line-dark);padding-bottom:.8rem}
-  .cycle-head h2{margin:.15rem 0 0}.cycle-period{text-align:right}.cycle-period strong,.cycle-period span{display:block}.cycle-period span,.cycle-note,.cycle-footnote,.phase-note{color:var(--muted)}
-  .cycle-note{max-width:48rem;margin:.8rem 0 1.2rem}.cycle-footnote{font-size:.82rem;max-width:54rem;margin-top:1rem}
-  .phase-flow{list-style:none;margin:1.25rem 0 0;padding:0;display:grid;gap:0;counter-reset:phase}
-  .phase-flow li{display:grid;grid-template-columns:2.4rem 1fr;gap:.8rem;position:relative;padding:0 0 1.15rem}
-  .phase-flow li:not(:last-child)::before{content:"";position:absolute;left:1.15rem;top:2.2rem;bottom:0;width:1px;background:var(--line-dark)}
-  .phase-number{width:2.3rem;height:2.3rem;border:1px solid var(--line-dark);border-radius:50%;display:grid;place-items:center;background:var(--paper-deep);font:700 .72rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;z-index:1}
-  .phase-body{border:1px solid var(--line);background:var(--paper-pale);padding:.85rem 1rem}
-  .phase-body h3{margin:0 0 .35rem}.phase-body>p{margin:.35rem 0}.phase-body dl{display:grid;grid-template-columns:max-content 1fr;gap:.22rem .65rem;margin:.65rem 0 0;font-size:.86rem}.phase-body dt{font-weight:700}.phase-body dd{margin:0}.phase-note{font-size:.82rem!important}
-  @media(max-width:720px){.cycle-head{display:block}.cycle-period{text-align:left;margin-top:.55rem}}
+  .cycle-system{margin:2.8rem 0}.cycle-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;border-bottom:1px solid var(--line-dark);padding-bottom:.8rem}.cycle-head h2{margin:0}.cycle-period{text-align:right}.cycle-period strong,.cycle-period span{display:block}.cycle-period span,.cycle-note,.cycle-footnote,.phase-note{color:var(--muted)}.cycle-note{max-width:48rem;margin:.8rem 0 1.2rem}.cycle-footnote{font-size:.82rem;max-width:54rem;margin-top:1rem}.phase-flow{list-style:none;margin:1.25rem 0 0;padding:0;display:grid;gap:0}.phase-flow li{display:grid;grid-template-columns:2.4rem 1fr;gap:.8rem;position:relative;padding:0 0 1.15rem}.phase-flow li:not(:last-child)::before{content:"";position:absolute;left:1.15rem;top:2.2rem;bottom:0;width:1px;background:var(--line-dark)}.phase-number{width:2.3rem;height:2.3rem;border:1px solid var(--line-dark);border-radius:50%;display:grid;place-items:center;background:var(--paper-deep);font:700 .72rem/1 var(--font-data,ui-monospace,monospace);z-index:1}.phase-body{border:1px solid var(--line);background:var(--paper-pale);padding:.85rem 1rem}.phase-body h3{margin:0 0 .35rem}.phase-body>p{margin:.35rem 0}.phase-body dl{display:grid;grid-template-columns:max-content 1fr;gap:.22rem .65rem;margin:.65rem 0 0;font-size:.86rem}.phase-body dt{font-weight:700}.phase-body dd{margin:0}.phase-note{font-size:.82rem!important}@media(max-width:720px){.cycle-head{display:block}.cycle-period{text-align:left;margin-top:.55rem}}
 </style>

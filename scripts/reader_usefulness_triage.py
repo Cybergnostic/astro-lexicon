@@ -65,9 +65,13 @@ STRUCTURE_SERVED_SLUGS = {
 }
 
 # A shared visual can carry much of the recognition burden for a spatial/motion entry even
-# when the generic article itself has only one prose block. Masculine Planet is likewise a
-# deliberately concise membership entry; the broader doctrine lives under Planetary Masculinity.
-DEPTH_SERVED_SLUGS = VISUAL_SERVED_SLUGS | {'masculine-planet'}
+# when the generic article itself has only one prose block. First/Second Movement and Solar
+# Eclipse were already routed through pre-existing motion/eclipse visual families before the
+# 33-candidate Batch F list was assembled. Masculine Planet is deliberately concise; the
+# broader conditional doctrine lives under Planetary Masculinity.
+DEPTH_SERVED_SLUGS = VISUAL_SERVED_SLUGS | {
+    'first-movement','second-movement','solar-eclipse','masculine-planet'
+}
 
 
 def scalar(con: sqlite3.Connection, sql: str, params: tuple = ()) -> int:
@@ -119,7 +123,7 @@ def classify(r: dict) -> dict:
     if visual: flags.append('visual')
     if sequence and r['tables']==0 and r['family'] in {'timing / predictive techniques','zodiac subdivisions','dignities / debilities'} and r['slug'] not in STRUCTURE_SERVED_SLUGS: flags.append('structure')
     if r['quality']<=3: flags.append('definition')
-    if not has_article and (r['interpretations']>=2 or r['relations']>=5 or r['grade_a']>=2): flags.append('depth')
+    if not has_article and r['slug'] not in DEPTH_SERVED_SLUGS and (r['interpretations']>=2 or r['relations']>=5 or r['grade_a']>=2): flags.append('depth')
     # Sign pages and shared visual/membership components carry structured recognition outside
     # generic article blocks, so low block count alone is not evidence of insufficient depth.
     if has_article and r['blocks']<=1 and (r['interpretations']>=3 or r['relations']>=5) and r['slug'] not in SIGN_SLUGS and r['slug'] not in DEPTH_SERVED_SLUGS: flags.append('depth')

@@ -54,9 +54,11 @@ const hasZodiacRelations=(term.zodiac_relation_schemes?.length ?? 0) > 0;
 const astronomyDiagramSlugs=new Set([
   'celestial-sphere','horizon','meridian','equinoctial','ecliptic','declination','celestial-latitude','celestial-longitude','ecliptic-projection',
   'altitude','azimuth','zenith','nadir','quadrant-of-sphere','ascending-descending-quadrant',
+  'right-ascension','oblique-ascension','rising-times','semi-diurnal-arc',
   'aspect','opposition','trine','quartile','sextile','application','separation','antiscion','contra-antiscion',
+  'apogee','perigee','auge','geocentric-model',
   'first-movement','second-movement','direct-motion','station','retrogradation','swift-in-motion','slow-in-motion',
-  'oriental','occidental','combustion','under-the-beams','cazimi',
+  'oriental','occidental','orientality','occidentality','combustion','under-the-beams','cazimi',
   'eclipse','solar-eclipse','lunar-eclipse','total-eclipse','partial-eclipse','annular-eclipse','occultation','eclipse-path'
 ]);
 const hasAstronomyDiagram=astronomyDiagramSlugs.has(term.slug);

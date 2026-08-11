@@ -5,6 +5,7 @@ const {
   title = 'Astrological Lexicon',
   description = 'A source-based encyclopedia of traditional astrological terminology.'
 } = Astro.props;
+const basePath = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <!doctype html>
 <html lang="en">
@@ -54,5 +55,29 @@ const {
         </div>
       </div>
     </footer>
+
+    <script define:vars={{ basePath }} is:inline>
+      if (basePath) {
+        const prefixInternalLink = (link) => {
+          const href = link.getAttribute('href');
+          if (!href || !href.startsWith('/') || href.startsWith('//') || href === basePath || href.startsWith(`${basePath}/`)) return;
+          link.setAttribute('href', `${basePath}${href}`);
+        };
+
+        const rewriteInternalLinks = (root) => {
+          if (root instanceof HTMLAnchorElement) prefixInternalLink(root);
+          root.querySelectorAll?.('a[href^="/"]').forEach(prefixInternalLink);
+        };
+
+        rewriteInternalLinks(document);
+        new MutationObserver((mutations) => {
+          for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+              if (node instanceof Element) rewriteInternalLinks(node);
+            }
+          }
+        }).observe(document.body, { childList: true, subtree: true });
+      }
+    </script>
   </body>
 </html>

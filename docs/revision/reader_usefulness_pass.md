@@ -57,24 +57,24 @@ Historical sources remain essential evidence, but public explanatory prose shoul
 
 ## Corpus-wide inventory
 
-The reader-usefulness triage now classifies every reviewed/public entry from a fresh canonical SQLite build. It is a planning map rather than an automatic quality score; human editorial judgment remains authoritative.
+The reader-usefulness triage classifies every reviewed/public entry from a fresh canonical SQLite build. It is a planning map rather than an automatic quality score; human editorial judgment remains authoritative.
 
-Current inventory: **468 entries**.
+Current inventory after Batches A and B: **468 entries**.
 
 | Primary action | Entries | Meaning |
 |---|---:|---|
-| OK as-is | 233 | Current reader-facing treatment is proportionate. |
+| OK as-is | 250 | Current reader-facing treatment is proportionate. |
 | Dictionary enough | 99 | A concise definition is sufficient; do not expand merely for uniformity. |
 | Tiny fix | 0 | Batch A completed; no tiny-fix entries remain in the current triage. |
-| Needs expansion | 21 | Correct or promising, but too thin to teach the concept adequately. |
+| Needs expansion | 4 | Residual heuristic flags intentionally deferred to later family/visual work rather than padded in Batch B. |
 | Structure / table | 24 | Existing doctrine is better exposed as an order, scheme, table, or other structured presentation. |
 | Family fix | 43 | Should be edited with related entries under one shared content model. |
 | Ontology review | 15 | Needs careful distinction, false-friend handling, or source reconciliation before editing. |
 | Visual / explanation | 33 | Spatial, geometrical, or motion-based concepts that materially benefit from diagrams. |
 
-Effort estimate by individual entry: **332 S**, **88 M**, **48 L**. Family and visual work should be executed as shared batches, so these are not 136 unrelated medium/large rewrites.
+Effort estimate by individual entry is now **349 S**, **71 M**, **48 L**. Family and visual work should be executed as shared batches rather than as unrelated rewrites.
 
-The large coherent batches already exposed by the inventory are:
+The large coherent batches currently exposed by the inventory are:
 
 - 12 zodiac signs
 - 7 traditional planets
@@ -82,9 +82,9 @@ The large coherent batches already exposed by the inventory are:
 - 9 house/place entries
 - 33 geometry/visual candidates
 - 24 structured/table candidates
-- 21 substantive expansion candidates
 - 15 ontology/reconciliation candidates
-- 0 tiny wording/voice fixes remaining — Batch A completed
+- 4 residual expansion flags, all intentionally deferred
+- 0 tiny wording/voice fixes remaining
 
 The complete generated inventory is reproducible with `scripts/reader_usefulness_triage.py` and is also produced by the `Reader usefulness inventory` GitHub Actions workflow.
 
@@ -108,11 +108,25 @@ The complete generated inventory is reproducible with `scripts/reader_usefulness
 ### Batch A — Tiny fixes — completed
 Resolved all 16 small reader-facing defects in one compact pass, chiefly residual project/corpus language. The rerun moved all 16 entries to `OK as-is`, raising that bucket from 217 to 233 and reducing `Tiny fix` from 16 to 0.
 
-### Batch B — Substantive expansions
-Handle the 21 thin entries in small doctrinal families rather than one by one.
+### Batch B — Substantive expansions — completed
+The source-aware review examined all 21 original expansion candidates against their reviewed interpretations, article blocks and relations. Seventeen received substantive public expansions from evidence already present in the canonical corpus. The rerun moved `Needs expansion` from 21 to 4 and `OK as-is` from 233 to 250.
 
-### Batch C — Structured systems
-Review the 24 sequence/table candidates and expose structure only where it genuinely improves the entry.
+The four residual flags are intentional deferrals rather than unfinished prose work:
+
+- **First Movement** and **Second Movement** already have proportionate explanatory prose and are better improved with the later motion/geometry visual family than with additional padding.
+- **Masculine Planet** is already a concise membership entry; the broader conditional doctrine is handled by **Planetary Masculinity**.
+- **Solar Eclipse** currently has a clear astronomical definition and relation structure but no reviewed historical interpretation layer; further treatment belongs with the eclipse/astronomy visual family rather than a source-based expansion pass.
+
+Batch B added or strengthened reader-facing treatment for Critical Days, Nativity, Significator of the King, Planetary Share in a Sign, Hermes’ Marriage Lots, Bright Degree, Combust Hours, Incombust Hours, Duodena of the Moon, Fifth Nature, Foreknowledge, Possibility / Contingency, the Head and Tail of the Dragon, Planetary Masculinity, the Seven Traditional Planets, and Return of Light.
+
+### Batch C — Structured systems — next
+Review the 24 sequence/table candidates and expose structure only where it genuinely improves the entry. Do not create tables merely to satisfy the classifier: existing prose should remain prose when order, membership, comparison or lookup is not central to understanding the concept.
+
+The current structured candidates divide naturally into three working groups:
+
+- **Dignities / debilities:** Detriment, Domicile, Face / Decan, Triplicity.
+- **Timing / predictive techniques:** Anareta, Annual Revolution, Direction / Period by Term Lords, Jarbakhtar / Divisor, Lord of Profection, Lord of the Day, Lord of the Orb / Circle, Lord of the Revolution, Lord of the Year, Monthly Profection, Planetary Hour, Planetary Recurrence, Planetary Years, Revolution of the World-Year.
+- **Zodiac subdivisions:** Darīǧān / Indian Decan, Degree Sign-Nature, Dodecatemorion / Twelfth-part, Figure Ascending in a Decan, Inconjunct Signs, Ninth / Nawbahar.
 
 ### Batch D — Family models
 Apply shared templates to zodiac signs, planets, sign classifications, and houses/places. The zodiac-sign family is the clearest priority because all twelve currently foreground insufficient or badly prioritized information.

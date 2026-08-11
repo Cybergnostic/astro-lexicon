@@ -55,6 +55,39 @@ Historical sources remain essential evidence, but public explanatory prose shoul
 - `lexicon-voice` — project/source-extraction language dominates the public explanation.
 - `coverage` — important members, classifications, sequences or conditions are missing.
 
+## Corpus-wide inventory
+
+The reader-usefulness triage now classifies every reviewed/public entry from a fresh canonical SQLite build. It is a planning map rather than an automatic quality score; human editorial judgment remains authoritative.
+
+Current inventory: **468 entries**.
+
+| Primary action | Entries | Meaning |
+|---|---:|---|
+| OK as-is | 217 | Current reader-facing treatment is proportionate. |
+| Dictionary enough | 99 | A concise definition is sufficient; do not expand merely for uniformity. |
+| Tiny fix | 16 | Mostly wording, source/project voice, or another small presentation defect. |
+| Needs expansion | 21 | Correct or promising, but too thin to teach the concept adequately. |
+| Structure / table | 24 | Existing doctrine is better exposed as an order, scheme, table, or other structured presentation. |
+| Family fix | 43 | Should be edited with related entries under one shared content model. |
+| Ontology review | 15 | Needs careful distinction, false-friend handling, or source reconciliation before editing. |
+| Visual / explanation | 33 | Spatial, geometrical, or motion-based concepts that materially benefit from diagrams. |
+
+Effort estimate by individual entry: **332 S**, **88 M**, **48 L**. Family and visual work should be executed as shared batches, so these are not 136 unrelated medium/large rewrites.
+
+The large coherent batches already exposed by the inventory are:
+
+- 12 zodiac signs
+- 7 traditional planets
+- 15 sign-quality/classification entries
+- 9 house/place entries
+- 33 geometry/visual candidates
+- 24 structured/table candidates
+- 21 substantive expansion candidates
+- 15 ontology/reconciliation candidates
+- 16 tiny wording/voice fixes
+
+The complete generated inventory is reproducible with `scripts/reader_usefulness_triage.py` and is also produced by the `Reader usefulness inventory` GitHub Actions workflow.
+
 ## Initial reader findings
 
 | Entry / family | Defects | Status | Notes |
@@ -64,11 +97,34 @@ Historical sources remain essential evidence, but public explanatory prose shoul
 | Affliction | depth, coverage | revised in pass 02 | Treat as an umbrella condition and expose the actual affliction conditions rather than leaving the category empty. |
 | Alfridary | depth, structure | revised in pass 02 | Expose both day- and night-nativity seven-period planetary orders in a reader-facing table. |
 | Almuguea | example | revised in pass 02 | Add concrete Mercury and Venus examples and explain the domicile-distance rule before historical naming. |
-| Altitude | visual | queued for visual pass | Geometry should be illustrated. |
-| Apogee | visual | queued for visual pass | Geometry should be illustrated. |
-| Application | visual, example | queued | A diagram should show decreasing separation toward perfection. |
-| Zodiac signs | priority, coverage | queued for family pass | Traditional classifications should lead; longitude spans should move to supporting technical data. Include relevant classifications such as element, modality, polarity/sex, rulership and other reviewed sign qualities. |
-| Ascending / Descending Quadrants | visual, depth | queued for visual pass | A chart/circle diagram should make the quadrants immediately recognizable. |
+| Altitude | visual | classified: visual / explanation | Geometry should be illustrated. |
+| Apogee | visual | classified: visual / explanation | Geometry should be illustrated. |
+| Application | visual, example | classified: visual / explanation | A diagram should show decreasing separation toward perfection. |
+| Zodiac signs | priority, coverage | classified: family fix | Traditional classifications should lead; longitude spans should move to supporting technical data. Include relevant classifications such as element, modality, polarity/sex, rulership and other reviewed sign qualities. |
+| Ascending / Descending Quadrants | visual, depth | classified: visual / explanation | A chart/circle diagram should make the quadrants immediately recognizable. |
+
+## Execution order after inventory
+
+### Batch A — Tiny fixes
+Resolve the 16 small reader-facing defects in one compact pass, especially residual project/corpus language.
+
+### Batch B — Substantive expansions
+Handle the 21 thin entries in small doctrinal families rather than one by one.
+
+### Batch C — Structured systems
+Review the 24 sequence/table candidates and expose structure only where it genuinely improves the entry.
+
+### Batch D — Family models
+Apply shared templates to zodiac signs, planets, sign classifications, and houses/places. The zodiac-sign family is the clearest priority because all twelve currently foreground insufficient or badly prioritized information.
+
+### Batch E — Ontology review
+Resolve the 15 terms whose distinctions need source-aware judgment before prose changes.
+
+### Batch F — Visual systems
+Build reusable diagrams for the 33 spatial/geometry candidates rather than bespoke visuals entry by entry.
+
+### Final audit
+Rerun the inventory and manually inspect residual flags. A flagged entry can still be intentionally concise; the goal is reader usefulness, not eliminating every machine-generated flag.
 
 ## Planned passes
 

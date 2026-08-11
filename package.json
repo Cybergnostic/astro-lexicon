@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "prereview": "npm run generate:data",
     "review": "node scripts/editorial_review_server.mjs",
+    "review:check": "node --check scripts/editorial_review_server.mjs && node --check editorial/app/app.js",
     "prebuild": "npm run generate:data",
     "build": "astro build",
     "preview": "astro preview",

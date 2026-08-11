@@ -59,20 +59,20 @@ Historical sources remain essential evidence, but public explanatory prose shoul
 
 The reader-usefulness triage classifies every reviewed/public entry from a fresh canonical SQLite build. It is a planning map rather than an automatic quality score; human editorial judgment remains authoritative.
 
-Current inventory after Batches A and B: **468 entries**.
+Current inventory after Batches A–C: **468 entries**.
 
 | Primary action | Entries | Meaning |
 |---|---:|---|
-| OK as-is | 250 | Current reader-facing treatment is proportionate. |
+| OK as-is | 263 | Current reader-facing treatment is proportionate. |
 | Dictionary enough | 99 | A concise definition is sufficient; do not expand merely for uniformity. |
 | Tiny fix | 0 | Batch A completed; no tiny-fix entries remain in the current triage. |
 | Needs expansion | 4 | Residual heuristic flags intentionally deferred to later family/visual work rather than padded in Batch B. |
-| Structure / table | 24 | Existing doctrine is better exposed as an order, scheme, table, or other structured presentation. |
+| Structure / table | 11 | Residual structured flags are already served by shared components or are intentionally deferred to ontology, visuals, or exact source-data recovery. |
 | Family fix | 43 | Should be edited with related entries under one shared content model. |
 | Ontology review | 15 | Needs careful distinction, false-friend handling, or source reconciliation before editing. |
 | Visual / explanation | 33 | Spatial, geometrical, or motion-based concepts that materially benefit from diagrams. |
 
-Effort estimate by individual entry is now **349 S**, **71 M**, **48 L**. Family and visual work should be executed as shared batches rather than as unrelated rewrites.
+Effort estimate by individual entry is now **362 S**, **58 M**, **48 L**. Family and visual work should be executed as shared batches rather than as unrelated rewrites.
 
 The large coherent batches currently exposed by the inventory are:
 
@@ -81,8 +81,8 @@ The large coherent batches currently exposed by the inventory are:
 - 15 sign-quality/classification entries
 - 9 house/place entries
 - 33 geometry/visual candidates
-- 24 structured/table candidates
 - 15 ontology/reconciliation candidates
+- 11 residual structure flags, intentionally classified below
 - 4 residual expansion flags, all intentionally deferred
 - 0 tiny wording/voice fixes remaining
 
@@ -119,23 +119,28 @@ The four residual flags are intentional deferrals rather than unfinished prose w
 
 Batch B added or strengthened reader-facing treatment for Critical Days, Nativity, Significator of the King, Planetary Share in a Sign, Hermes’ Marriage Lots, Bright Degree, Combust Hours, Incombust Hours, Duodena of the Moon, Fifth Nature, Foreknowledge, Possibility / Contingency, the Head and Tail of the Dragon, Planetary Masculinity, the Seven Traditional Planets, and Return of Light.
 
-### Batch C — Structured systems — next
-Review the 24 sequence/table candidates and expose structure only where it genuinely improves the entry. Do not create tables merely to satisfy the classifier: existing prose should remain prose when order, membership, comparison or lookup is not central to understanding the concept.
+### Batch C — Structured systems — completed for the current evidence layer
+The source-aware review started with 24 structure/table candidates and added structure only where order, membership, comparison or repeated subdivision materially improved recognition. Thirteen entries moved from `Structure / table` to `OK as-is`, raising `OK as-is` from 250 to 263 and reducing the structure bucket from 24 to 11.
 
-The current structured candidates divide naturally into three working groups:
+Structured presentations were added or strengthened for Annual Revolution, Direction / Period by Term Lords, Jarbakhtar / Divisor, Lord of Profection, Lord of the Day, Lord of the Orb / Circle, Lord of the Revolution, Lord of the Year, Monthly Profection, Darīǧān / Indian Decan, Degree Sign-Nature, Dodecatemorion / Twelfth-part, and Ninth / Nawbahar.
 
-- **Dignities / debilities:** Detriment, Domicile, Face / Decan, Triplicity.
-- **Timing / predictive techniques:** Anareta, Annual Revolution, Direction / Period by Term Lords, Jarbakhtar / Divisor, Lord of Profection, Lord of the Day, Lord of the Orb / Circle, Lord of the Revolution, Lord of the Year, Monthly Profection, Planetary Hour, Planetary Recurrence, Planetary Years, Revolution of the World-Year.
-- **Zodiac subdivisions:** Darīǧān / Indian Decan, Degree Sign-Nature, Dodecatemorion / Twelfth-part, Figure Ascending in a Decan, Inconjunct Signs, Ninth / Nawbahar.
+The eleven residual flags are intentional deferrals rather than missing table work:
 
-### Batch D — Family models
-Apply shared templates to zodiac signs, planets, sign classifications, and houses/places. The zodiac-sign family is the clearest priority because all twelve currently foreground insufficient or badly prioritized information.
+- **Detriment, Domicile, Face / Decan, Triplicity** — already served by the shared dignity-reference presentation; Detriment and Face / Decan also retain ontology questions for Batch E. Duplicating those tables on each term page would add noise rather than clarity.
+- **Planetary Hour** — already served by the shared planetary-time sequence component.
+- **Revolution of the World-Year** — already has a substantial four-block explanation; the structure flag is a classifier false positive.
+- **Anareta** — the unresolved issue is source-aware role/ontology, not lack of a table; defer to Batch E.
+- **Figure Ascending in a Decan** and **Inconjunct Signs** — better handled by the later visual family than by prose tables.
+- **Planetary Recurrence** and **Planetary Years** — both genuinely deserve numerical tables, but the exact values are not yet encoded in a sufficiently explicit canonical structure. Do not reconstruct or guess them from memory; add them only after exact source data is recovered and reviewed.
+
+### Batch D — Family models — next
+Apply shared templates to zodiac signs, planets, sign classifications, and houses/places. The zodiac-sign family is the first priority because all twelve currently foreground insufficient or badly prioritized information. Reuse structured profile/reference data where it already exists rather than copying it into repetitive prose.
 
 ### Batch E — Ontology review
-Resolve the 15 terms whose distinctions need source-aware judgment before prose changes.
+Resolve the 15 terms whose distinctions need source-aware judgment before prose changes, plus the residual ontology-heavy items intentionally deferred from earlier batches.
 
 ### Batch F — Visual systems
-Build reusable diagrams for the 33 spatial/geometry candidates rather than bespoke visuals entry by entry.
+Build reusable diagrams for the 33 spatial/geometry candidates rather than bespoke visuals entry by entry. Include the movement/eclipses and deferred geometrical subdivision cases where a visual is more useful than extra prose.
 
 ### Final audit
 Rerun the inventory and manually inspect residual flags. A flagged entry can still be intentionally concise; the goal is reader usefulness, not eliminating every machine-generated flag.

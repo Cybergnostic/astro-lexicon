@@ -9,8 +9,8 @@ This is a planning audit, not an automatic rewrite engine. It assigns each entry
 
 The rules deliberately favor batching and restraint: concise dictionary entries can remain
 concise, while repeated family/template defects are surfaced only while that family batch
-is still open. Completed family work is allowed to fall back into the ordinary per-entry
-rules so the inventory remains a list of unresolved work rather than a permanent family tag.
+is still open. Completed family and visual work is allowed to fall back into the ordinary
+per-entry rules so the inventory remains a list of unresolved work rather than historical tags.
 """
 
 from __future__ import annotations
@@ -49,6 +49,10 @@ VISUAL_SLUGS = {
     'ascending-descending-quadrant','quadrant-of-sphere','application','separation','antiscion','contra-antiscion',
     'aspect','opposition','trine','quartile','sextile','conjunction','orientality','occidentality',
 }
+# Batch F routes every currently reviewed visual candidate through AstronomyMechanics.
+# Conjunction is retained as a future visual candidate because that entry is not currently
+# part of the reviewed/public 468-entry inventory and is not yet routed on the term page.
+VISUAL_SERVED_SLUGS = VISUAL_SLUGS - {'conjunction'}
 
 
 def scalar(con: sqlite3.Connection, sql: str, params: tuple = ()) -> int:
@@ -94,7 +98,7 @@ def load_rows(con: sqlite3.Connection) -> list[dict]:
 
 
 def classify(r: dict) -> dict:
-    flags=[]; blob=f"{r['public_text']} {r['notes']}"; has_article=bool(r['intro']); ontology=bool(ONTOLOGY_RE.search(r['notes'])); lexicon_voice=bool(LEXICON_VOICE_RE.search(r['public_text'])); visual=r['slug'] in VISUAL_SLUGS; sequence=bool(SEQUENCE_RE.search(blob))
+    flags=[]; blob=f"{r['public_text']} {r['notes']}"; has_article=bool(r['intro']); ontology=bool(ONTOLOGY_RE.search(r['notes'])); lexicon_voice=bool(LEXICON_VOICE_RE.search(r['public_text'])); visual=r['slug'] in VISUAL_SLUGS and r['slug'] not in VISUAL_SERVED_SLUGS; sequence=bool(SEQUENCE_RE.search(blob))
     if lexicon_voice: flags.append('lexicon-voice')
     if ontology: flags.append('ontology')
     if visual: flags.append('visual')
@@ -108,8 +112,8 @@ def classify(r: dict) -> dict:
     if MECHANIC_RE.search(f"{r['label']} {r['category']}") and has_article and r['blocks']<2: flags.append('example')
     flags=list(dict.fromkeys(flags))
 
-    # Batch D family templates are complete. Family remains useful grouping metadata, but it
-    # no longer forces an action. Any residual problem must now earn its own flag.
+    # Batches D–F use shared frontend components. Once those components are routed, family
+    # membership or historical visual candidacy no longer forces an unresolved action.
     if visual: action='visual / explanation'
     elif ontology and (not has_article or lexicon_voice or r['quality']<=3): action='ontology-review'
     elif 'structure' in flags: action='structure / table'

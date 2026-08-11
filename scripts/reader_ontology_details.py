@@ -56,11 +56,11 @@ try:
         """, (term['id'],term['id'],term['id'],term['id'],term['id'])):
             print(f"REL {row['direction']} {row['relation_type']} -> {row['other_label']} [{row['other_slug']}] note={clip(row['note'],800)}")
         for i,row in enumerate(con.execute("""
-            SELECT i.summary,i.scope,i.certainty,i.evidence_grade,i.editorial_notes,
+            SELECT i.summary,i.scope,i.certainty,i.evidence_grade,
                    w.title work_title,a.name author_name
             FROM interpretations i LEFT JOIN works w ON w.id=i.work_id LEFT JOIN authors a ON a.id=w.author_id
             WHERE i.term_id=? AND i.status IN ('reviewed','published') ORDER BY i.id
         """, (term['id'],)),1):
-            print(f"INTERP {i}: {row['author_name']} | {row['work_title']} | grade={row['evidence_grade']} | scope={clip(row['scope'],400)} | {clip(row['summary'])} | notes={clip(row['editorial_notes'],800)}")
+            print(f"INTERP {i}: {row['author_name']} | {row['work_title']} | grade={row['evidence_grade']} | scope={clip(row['scope'],400)} | {clip(row['summary'])}")
 finally:
     con.close()

@@ -61,9 +61,9 @@ Historical sources remain essential evidence, but public explanatory prose shoul
 |---|---|---|---|
 | Abscission / Cutting of Light | definition, depth, example | revised in pass 01 | Explain the intercepted developing contact and distinguish nearby interruption mechanics. |
 | Abscissor / Destroyer / Obstructor | definition, depth, lexicon-voice | revised in pass 01 | Remove "overlapping source names" framing; explain the destructive planetary role first. |
-| Affliction | depth, coverage | queued | Needs a useful account of what kinds of conditions count as afflictions rather than an empty umbrella definition. |
-| Alfridary | depth, structure | queued | If the planetary sequence is already known, expose the order rather than only describing seven-year periods. |
-| Almuguea | example | queued | Add several simple examples. |
+| Affliction | depth, coverage | revised in pass 02 | Treat as an umbrella condition and expose the actual affliction conditions rather than leaving the category empty. |
+| Alfridary | depth, structure | revised in pass 02 | Expose both day- and night-nativity seven-period planetary orders in a reader-facing table. |
+| Almuguea | example | revised in pass 02 | Add concrete Mercury and Venus examples and explain the domicile-distance rule before historical naming. |
 | Altitude | visual | queued for visual pass | Geometry should be illustrated. |
 | Apogee | visual | queued for visual pass | Geometry should be illustrated. |
 | Application | visual, example | queued | A diagram should show decreasing separation toward perfection. |

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Astro Lexicon Editorial Review</title>
+  <link rel="stylesheet" href="/app.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Local editorial workbench</p>
+      <h1>Astro Lexicon Review</h1>
+    </div>
+    <div class="summary" id="summary"></div>
+  </header>
+
+  <div class="toolbar">
+    <button id="prev" type="button" aria-label="Previous entry">←</button>
+    <label class="entry-picker">
+      <span>Entry</span>
+      <input id="entry-search" list="entry-list" placeholder="Search entries…" autocomplete="off" />
+      <datalist id="entry-list"></datalist>
+    </label>
+    <button id="next" type="button" aria-label="Next entry">→</button>
+    <a id="open-public" class="button-link" href="#" target="_blank" rel="noreferrer">Open public preview ↗</a>
+  </div>
+
+  <main class="workspace">
+    <section class="preview-pane" aria-label="Public lexicon preview">
+      <div class="pane-heading">
+        <div>
+          <p class="eyebrow">Unmodified public preview</p>
+          <h2 id="preview-title">Select an entry</h2>
+        </div>
+        <p class="preview-help">This is an iframe of <code>npm run dev</code> on port 4321. The editor itself is separate.</p>
+      </div>
+      <iframe id="preview" title="Public lexicon entry preview"></iframe>
+    </section>
+
+    <aside class="review-pane">
+      <section class="entry-status-card">
+        <div>
+          <p class="eyebrow">Editorial status</p>
+          <h2 id="review-title">No entry selected</h2>
+        </div>
+        <div class="status-buttons" id="status-buttons">
+          <button type="button" data-status="unreviewed">Unreviewed</button>
+          <button type="button" data-status="reviewed">Reviewed ✓</button>
+          <button type="button" data-status="needs-work">Needs work ⚑</button>
+        </div>
+      </section>
+
+      <section class="new-note-card">
+        <p class="eyebrow">Add suggestion</p>
+        <div class="form-grid">
+          <label>Attach to
+            <select id="target"></select>
+          </label>
+          <label>Type
+            <select id="kind">
+              <option value="content">Content</option>
+              <option value="structure">Structure</option>
+              <option value="visual">Visual</option>
+              <option value="source">Source check</option>
+              <option value="frontend">Frontend</option>
+              <option value="image">Image suggestion</option>
+              <option value="other">Other</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="wide-label">Comment / suggestion
+          <textarea id="note-text" rows="5" placeholder="Write exactly what you want changed, added, moved, checked, or illustrated…"></textarea>
+        </label>
+
+        <div class="image-box">
+          <label>Candidate picture
+            <input id="image-input" type="file" accept="image/png,image/jpeg,image/webp" />
+          </label>
+          <label>Image note / proposed use
+            <input id="image-caption" type="text" placeholder="e.g. Use after the Altitude definition; crop labels" />
+          </label>
+          <div id="pending-image" class="pending-image" hidden></div>
+        </div>
+
+        <button id="add-note" class="primary" type="button">Save suggestion</button>
+        <p class="save-state" id="save-state" aria-live="polite"></p>
+      </section>
+
+      <section class="notes-card">
+        <div class="notes-heading">
+          <div>
+            <p class="eyebrow">Saved review history</p>
+            <h3>Suggestions for this entry</h3>
+          </div>
+          <label class="filter">Show
+            <select id="note-filter">
+              <option value="all">All</option>
+              <option value="open">Open only</option>
+              <option value="resolved">Resolved only</option>
+            </select>
+          </label>
+        </div>
+        <div id="notes" class="notes-list"></div>
+      </section>
+    </aside>
+  </main>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -10,29 +10,38 @@ const beneficence = profile?.beneficence_class === 'luminary' ? 'Luminary · sou
 
 {profile && <section class="planet-profile" id="planet-profile">
   <div class="profile-head">
-    <h2>Planet profile</h2>
-    {profile.astronomy_source_label && profile.astronomy_source_url && <a class="source-link" href={profile.astronomy_source_url} rel="noreferrer">Astronomy reference · {profile.astronomy_source_label}</a>}
+    <div>
+      <p class="micro-label">Traditional reference</p>
+      <h2>Planet profile</h2>
+    </div>
   </div>
 
-  <div class="profile-grid">
-    <div><span>Physical object</span><strong>{label(profile.astronomical_class)}</strong></div>
-    <div><span>Earth-based geometry</span><strong>{label(profile.solar_orbit_relation)}</strong></div>
+  <p class="group-label">Traditional classification</p>
+  <div class="profile-grid primary-grid">
     <div><span>Traditional family</span><strong>{label(profile.traditional_family)}</strong></div>
     <div><span>Sect</span><strong>{label(profile.sect_affiliation)}</strong></div>
     <div><span>Benefic / malefic class</span><strong>{beneficence}</strong></div>
     <div><span>Attributed qualities</span><strong>{label(profile.temperature_quality)} · {label(profile.moisture_quality)}</strong></div>
+  </div>
+
+  {profile.traditional_note && <p class="tradition-note"><strong>Classification note.</strong> {profile.traditional_note}</p>}
+
+  <p class="group-label technical-label">Astronomy & motion</p>
+  <div class="profile-grid secondary-grid">
+    <div><span>Physical object</span><strong>{label(profile.astronomical_class)}</strong></div>
+    <div><span>Earth-based geometry</span><strong>{label(profile.solar_orbit_relation)}</strong></div>
     <div><span>Zodiacal motion</span><strong>{label(profile.zodiacal_motion)}</strong></div>
     <div><span>Solar-cycle family</span><strong>{label(profile.solar_phase_family)}</strong></div>
   </div>
 
-  <div class="profile-notes">
+  <div class="astronomy-notes">
     {profile.astronomy_note && <p><strong>Astronomy.</strong> {profile.astronomy_note}</p>}
-    {profile.traditional_note && <p><strong>Traditional classification.</strong> {profile.traditional_note}</p>}
+    {profile.astronomy_source_label && profile.astronomy_source_url && <p><strong>Astronomy reference.</strong> <a href={profile.astronomy_source_url} rel="noreferrer">{profile.astronomy_source_label}</a></p>}
   </div>
 
   {lots.length > 0 && <div class="planetary-lots"><h3>Associated planetary lot</h3><div class="lot-links">{lots.map((lot) => <a href={`/terms/${lot.target_slug}/`} title={lot.note || undefined}>{lot.target_label}</a>)}</div></div>}
 </section>}
 
 <style>
-  .planet-profile{margin:3rem 0}.profile-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line);padding:.8rem 0;margin-bottom:1rem}.profile-head h2{margin:0;border:0;padding:0}.source-link{font-size:.74rem;color:var(--muted);text-align:right;max-width:26rem;text-decoration:none;border-bottom:1px dotted currentColor}.source-link:hover{border-bottom-style:solid}.profile-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line-dark);border-left:1px solid var(--line-dark);background:var(--paper-pale)}.profile-grid>div{min-height:6rem;padding:.65rem .7rem;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);display:flex;flex-direction:column;justify-content:space-between;gap:.5rem}.profile-grid span{font:700 .58rem/1.3 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.profile-grid strong{font-size:.84rem;line-height:1.35;font-weight:600}.profile-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;margin-top:.85rem;max-width:68rem;color:var(--muted)}.profile-notes p{margin:0;font-size:.84rem}.profile-notes strong{color:var(--ink)}.planetary-lots{margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--line)}.planetary-lots h3{font-size:.78rem;margin:0 0 .5rem;text-transform:uppercase;letter-spacing:.04em}.lot-links{display:flex;flex-wrap:wrap;gap:.4rem}.lot-links a{padding:.3rem .5rem;border:1px solid var(--line);text-decoration:none;color:var(--ink);font-size:.78rem}.lot-links a:hover{background:var(--paper-deep)}@media(max-width:980px){.profile-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:720px){.profile-head{display:block}.source-link{display:inline-block;text-align:left;margin-top:.55rem}.profile-grid{grid-template-columns:1fr}.profile-grid>div{min-height:0}.profile-notes{grid-template-columns:1fr}}
+  .planet-profile{margin:3rem 0}.profile-head{display:flex;gap:1.5rem;align-items:flex-end;justify-content:space-between;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line);padding:.8rem 0;margin-bottom:1rem}.profile-head h2{margin:0;border:0;padding:0}.profile-head .micro-label{margin:0 0 .2rem}.group-label{margin:0 0 .42rem;font:700 .61rem/1.3 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}.technical-label{margin-top:1.25rem}.profile-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line-dark);border-left:1px solid var(--line-dark);background:var(--paper-pale)}.profile-grid>div{min-height:5.4rem;padding:.65rem .7rem;border-right:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark);display:flex;flex-direction:column;justify-content:space-between;gap:.5rem}.primary-grid{background:var(--paper-deep)}.profile-grid span{font:700 .58rem/1.3 var(--font-ui,ui-sans-serif,system-ui,sans-serif);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}.profile-grid strong{font-size:.88rem;line-height:1.35;font-weight:650}.tradition-note,.astronomy-notes{max-width:68rem;color:var(--muted);font-size:.84rem}.tradition-note{margin:.8rem 0 0}.tradition-note strong,.astronomy-notes strong{color:var(--ink)}.astronomy-notes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;margin-top:.85rem}.astronomy-notes p{margin:0}.astronomy-notes a{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}.astronomy-notes a:hover{border-bottom-style:solid}.planetary-lots{margin-top:1rem;padding-top:.75rem;border-top:1px solid var(--line)}.planetary-lots h3{font-size:.78rem;margin:0 0 .5rem;text-transform:uppercase;letter-spacing:.04em}.lot-links{display:flex;flex-wrap:wrap;gap:.4rem}.lot-links a{padding:.3rem .5rem;border:1px solid var(--line);text-decoration:none;color:var(--ink);font-size:.78rem}.lot-links a:hover{background:var(--paper-deep)}@media(max-width:980px){.profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));.astronomy-notes{grid-template-columns:1fr}}}@media(max-width:720px){.profile-grid{grid-template-columns:1fr}.profile-grid>div{min-height:0}.astronomy-notes{grid-template-columns:1fr}}
 </style>

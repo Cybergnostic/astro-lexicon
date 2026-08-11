@@ -8,8 +8,9 @@ This is a planning audit, not an automatic rewrite engine. It assigns each entry
 - a broad family so related entries can be edited together.
 
 The rules deliberately favor batching and restraint: concise dictionary entries can remain
-concise, while repeated family/template defects are surfaced as family work rather than
-hundreds of independent rewrites.
+concise, while repeated family/template defects are surfaced only while that family batch
+is still open. Completed family work is allowed to fall back into the ordinary per-entry
+rules so the inventory remains a list of unresolved work rather than a permanent family tag.
 """
 
 from __future__ import annotations
@@ -101,13 +102,12 @@ def classify(r: dict) -> dict:
     if r['quality']<=3: flags.append('definition')
     if not has_article and (r['interpretations']>=2 or r['relations']>=5 or r['grade_a']>=2): flags.append('depth')
     if has_article and r['blocks']<=1 and (r['interpretations']>=3 or r['relations']>=5): flags.append('depth')
-    if r['family'] in {'zodiac signs','planets','houses / places','sign qualities / classifications'}: flags.append('family')
-    if r['family']=='zodiac signs': flags.extend(['priority','coverage'])
     if MECHANIC_RE.search(f"{r['label']} {r['category']}") and has_article and r['blocks']<2: flags.append('example')
     flags=list(dict.fromkeys(flags))
 
-    if r['family'] in {'zodiac signs','planets','houses / places','sign qualities / classifications'}: action='family-fix'
-    elif visual: action='visual / explanation'
+    # Batch D family templates are complete. Family remains useful grouping metadata, but it
+    # no longer forces an action. Any residual problem must now earn its own flag.
+    if visual: action='visual / explanation'
     elif ontology and (not has_article or lexicon_voice or r['quality']<=3): action='ontology-review'
     elif 'structure' in flags: action='structure / table'
     elif 'depth' in flags or 'definition' in flags: action='needs-expansion'
@@ -116,7 +116,6 @@ def classify(r: dict) -> dict:
     else: action='ok-as-is'
 
     effort='S' if action in {'dictionary-enough','ok-as-is','tiny-fix'} else ('M' if action in {'needs-expansion','structure / table'} else 'L')
-    if action=='family-fix': effort='M'  # effort is per-entry; the family itself is handled as one batch
     if action=='visual / explanation': effort='L'
     rr=dict(r); rr.update(action=action,effort=effort,flags=flags); return rr
 

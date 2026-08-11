@@ -1,0 +1,45 @@
+name: Editorial review workbench
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Generate corpus
+        run: npm run generate:data
+      - name: Check workbench JavaScript
+        run: npm run review:check
+      - name: Start workbench
+        run: |
+          node scripts/editorial_review_server.mjs > /tmp/editorial-review.log 2>&1 &
+          echo $! > /tmp/editorial-review.pid
+          for i in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:4322/api/terms >/tmp/terms.json; then
+              break
+            fi
+            sleep 0.5
+          done
+          curl --fail --silent http://127.0.0.1:4322/api/reviews >/tmp/reviews.json
+          curl --fail --silent http://127.0.0.1:4322/ >/tmp/editor.html
+          node -e "const t=require('/tmp/terms.json'); if(!Array.isArray(t)||t.length<400) process.exit(1); const r=require('/tmp/reviews.json'); if(r.version!==1||!Array.isArray(r.notes)) process.exit(1)"
+      - name: Stop workbench
+        if: always()
+        run: |
+          if [ -f /tmp/editorial-review.pid ]; then kill $(cat /tmp/editorial-review.pid) || true; fi
+          cat /tmp/editorial-review.log 2>/dev/null || true

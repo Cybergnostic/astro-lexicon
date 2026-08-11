@@ -63,9 +63,9 @@ Current inventory: **468 entries**.
 
 | Primary action | Entries | Meaning |
 |---|---:|---|
-| OK as-is | 217 | Current reader-facing treatment is proportionate. |
+| OK as-is | 233 | Current reader-facing treatment is proportionate. |
 | Dictionary enough | 99 | A concise definition is sufficient; do not expand merely for uniformity. |
-| Tiny fix | 16 | Mostly wording, source/project voice, or another small presentation defect. |
+| Tiny fix | 0 | Batch A completed; no tiny-fix entries remain in the current triage. |
 | Needs expansion | 21 | Correct or promising, but too thin to teach the concept adequately. |
 | Structure / table | 24 | Existing doctrine is better exposed as an order, scheme, table, or other structured presentation. |
 | Family fix | 43 | Should be edited with related entries under one shared content model. |
@@ -84,7 +84,7 @@ The large coherent batches already exposed by the inventory are:
 - 24 structured/table candidates
 - 21 substantive expansion candidates
 - 15 ontology/reconciliation candidates
-- 16 tiny wording/voice fixes
+- 0 tiny wording/voice fixes remaining — Batch A completed
 
 The complete generated inventory is reproducible with `scripts/reader_usefulness_triage.py` and is also produced by the `Reader usefulness inventory` GitHub Actions workflow.
 
@@ -105,8 +105,8 @@ The complete generated inventory is reproducible with `scripts/reader_usefulness
 
 ## Execution order after inventory
 
-### Batch A — Tiny fixes
-Resolve the 16 small reader-facing defects in one compact pass, especially residual project/corpus language.
+### Batch A — Tiny fixes — completed
+Resolved all 16 small reader-facing defects in one compact pass, chiefly residual project/corpus language. The rerun moved all 16 entries to `OK as-is`, raising that bucket from 217 to 233 and reducing `Tiny fix` from 16 to 0.
 
 ### Batch B — Substantive expansions
 Handle the 21 thin entries in small doctrinal families rather than one by one.

@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import sqlite3
-from pathlib import Path
 
 from reader_usefulness_triage import ROOT, build_db, load_rows, classify
 
@@ -22,6 +21,7 @@ def clip(value, n=900):
     return s if len(s) <= n else s[:n] + '…'
 
 
+DB.parent.mkdir(parents=True, exist_ok=True)
 build_db(DB)
 con = sqlite3.connect(DB)
 con.row_factory = sqlite3.Row

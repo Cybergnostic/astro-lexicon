@@ -20,8 +20,6 @@ jobs:
           python-version: '3.12'
       - name: Classify public entries
         run: python3 scripts/reader_usefulness_triage.py
-      - name: Print tiny-fix details
-        run: python3 scripts/reader_usefulness_tiny_details.py
       - name: Print inventory
         run: cat .tmp/reader-usefulness-triage.md
       - name: Upload inventory

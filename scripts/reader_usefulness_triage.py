@@ -101,7 +101,10 @@ def classify(r: dict) -> dict:
     if sequence and r['tables']==0 and r['family'] in {'timing / predictive techniques','zodiac subdivisions','dignities / debilities'}: flags.append('structure')
     if r['quality']<=3: flags.append('definition')
     if not has_article and (r['interpretations']>=2 or r['relations']>=5 or r['grade_a']>=2): flags.append('depth')
-    if has_article and r['blocks']<=1 and (r['interpretations']>=3 or r['relations']>=5): flags.append('depth')
+    # The twelve sign pages use the shared ZodiacSignProfile and highlighted dignity reference
+    # as their main structured treatment. Those components are generated outside the generic
+    # article block tables, so a low article-block count does not mean the sign page is thin.
+    if has_article and r['blocks']<=1 and (r['interpretations']>=3 or r['relations']>=5) and r['slug'] not in SIGN_SLUGS: flags.append('depth')
     if MECHANIC_RE.search(f"{r['label']} {r['category']}") and has_article and r['blocks']<2: flags.append('example')
     flags=list(dict.fromkeys(flags))
 

@@ -1,0 +1,29 @@
+name: Reader usefulness inventory
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Classify public entries
+        run: python3 scripts/reader_usefulness_triage.py
+      - name: Print inventory
+        run: cat .tmp/reader-usefulness-triage.md
+      - name: Upload inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: reader-usefulness-inventory
+          path: .tmp/reader-usefulness-triage.md

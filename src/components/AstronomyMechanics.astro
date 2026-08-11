@@ -1,6 +1,15 @@
 ---
 const { slug } = Astro.props;
 
+const localSphereSlugs = new Set([
+  'altitude','azimuth','zenith','nadir','quadrant-of-sphere','ascending-descending-quadrant'
+]);
+const aspectSlugs = new Set([
+  'aspect','opposition','trine','quartile','sextile','application','separation'
+]);
+const antisciaSlugs = new Set(['antiscion','contra-antiscion']);
+const orbitSlugs = new Set(['apogee','perigee','auge','geocentric-model']);
+const ascensionSlugs = new Set(['right-ascension','oblique-ascension','rising-times','semi-diurnal-arc']);
 const coordinateSlugs = new Set([
   'celestial-sphere','horizon','meridian','equinoctial','ecliptic',
   'declination','celestial-latitude','celestial-longitude','ecliptic-projection'
@@ -10,23 +19,206 @@ const motionSlugs = new Set([
   'swift-in-motion','slow-in-motion'
 ]);
 const solarSlugs = new Set([
-  'oriental','occidental','combustion','under-the-beams','cazimi'
+  'oriental','occidental','orientality','occidentality','combustion','under-the-beams','cazimi'
 ]);
 const eclipseSlugs = new Set([
   'eclipse','solar-eclipse','lunar-eclipse','total-eclipse','partial-eclipse',
   'annular-eclipse','occultation','eclipse-path'
 ]);
 
-const mode = coordinateSlugs.has(slug)
-  ? 'coordinates'
-  : motionSlugs.has(slug)
-    ? 'motion'
-    : solarSlugs.has(slug)
-      ? 'solar'
-      : eclipseSlugs.has(slug)
-        ? 'eclipse'
-        : null;
+const mode = localSphereSlugs.has(slug)
+  ? 'local-sphere'
+  : aspectSlugs.has(slug)
+    ? 'aspects'
+    : antisciaSlugs.has(slug)
+      ? 'antiscia'
+      : orbitSlugs.has(slug)
+        ? 'orbit'
+        : ascensionSlugs.has(slug)
+          ? 'ascension'
+          : coordinateSlugs.has(slug)
+            ? 'coordinates'
+            : motionSlugs.has(slug)
+              ? 'motion'
+              : solarSlugs.has(slug)
+                ? 'solar'
+                : eclipseSlugs.has(slug)
+                  ? 'eclipse'
+                  : null;
+
+const aspectAngles = [
+  ['Conjunction','0°'],
+  ['Sextile','60°'],
+  ['Square','90°'],
+  ['Trine','120°'],
+  ['Opposition','180°'],
+];
+const highlightedAspect = ({ opposition:'Opposition', trine:'Trine', quartile:'Square', sextile:'Sextile' })[slug] ?? null;
 ---
+
+{mode === 'local-sphere' && (
+  <section class="mechanics-visual" id="astronomy-diagram" aria-labelledby="astronomy-diagram-title">
+    <div class="visual-head">
+      <p class="micro-label">Original teaching schematic</p>
+      <h2 id="astronomy-diagram-title">Local horizon geometry</h2>
+    </div>
+    <div class="local-sphere-layout">
+      <svg class="local-sphere-svg" viewBox="0 0 640 360" role="img" aria-label="Local celestial sphere schematic with horizon, zenith, nadir, altitude and azimuth">
+        <ellipse cx="320" cy="180" rx="245" ry="125" class="svg-circle" />
+        <line x1="75" y1="180" x2="565" y2="180" class="svg-axis" />
+        <line x1="320" y1="45" x2="320" y2="315" class="svg-axis dashed" />
+        <ellipse cx="320" cy="180" rx="105" ry="245" transform="rotate(90 320 180)" class="svg-meridian" />
+        <line x1="320" y1="180" x2="445" y2="105" class="svg-ray" />
+        <circle cx="445" cy="105" r="7" class="svg-point" />
+        <path d="M 375 180 A 55 55 0 0 0 367 151" class="svg-arc" />
+        <path d="M 320 238 A 105 58 0 0 1 402 214" class="svg-arc dotted" />
+        <text x="84" y="170">horizon</text>
+        <text x="331" y="61">zenith</text>
+        <text x="331" y="310">nadir</text>
+        <text x="454" y="99">body</text>
+        <text x="383" y="151">altitude</text>
+        <text x="374" y="239">azimuth</text>
+      </svg>
+      <div class="visual-grid local-grid">
+        <div><strong>Altitude</strong><span>Angular height above the local horizon. Below the horizon the corresponding altitude is negative.</span></div>
+        <div><strong>Azimuth</strong><span>Direction around the horizon. It is measured in the horizontal plane, not along the ecliptic.</span></div>
+        <div><strong>Zenith / nadir</strong><span>The zenith is directly overhead; the nadir is the opposite point directly below the observer.</span></div>
+        <div><strong>Quadrants</strong><span>Horizon and meridian divide the local sphere into four regions. “Ascending” and “descending” depend on which side of the meridian and horizon a body occupies.</span></div>
+      </div>
+    </div>
+    <p class="visual-note">This is a topological teaching diagram, not a stereographically accurate chart. It shows which measurements use the local horizon and vertical circle.</p>
+  </section>
+)}
+
+{mode === 'aspects' && (
+  <section class="mechanics-visual" id="astronomy-diagram" aria-labelledby="astronomy-diagram-title">
+    <div class="visual-head">
+      <p class="micro-label">Original teaching schematic</p>
+      <h2 id="astronomy-diagram-title">Aspect geometry and changing separation</h2>
+    </div>
+    <div class="aspect-layout">
+      <svg class="aspect-wheel" viewBox="0 0 420 420" role="img" aria-label="Zodiac circle showing the major aspect angles from a reference point">
+        <circle cx="210" cy="210" r="160" class="svg-circle" />
+        <circle cx="210" cy="50" r="7" class="svg-point" />
+        <line x1="210" y1="210" x2="210" y2="50" class="svg-ray strong" />
+        <line x1="210" y1="210" x2="348.6" y2="130" class:list={['svg-ray',{active:highlightedAspect==='Sextile'}]} />
+        <line x1="210" y1="210" x2="370" y2="210" class:list={['svg-ray',{active:highlightedAspect==='Square'}]} />
+        <line x1="210" y1="210" x2="348.6" y2="290" class:list={['svg-ray',{active:highlightedAspect==='Trine'}]} />
+        <line x1="210" y1="210" x2="210" y2="370" class:list={['svg-ray',{active:highlightedAspect==='Opposition'}]} />
+        <circle cx="348.6" cy="130" r="5" class:list={['svg-small-point',{active:highlightedAspect==='Sextile'}]} />
+        <circle cx="370" cy="210" r="5" class:list={['svg-small-point',{active:highlightedAspect==='Square'}]} />
+        <circle cx="348.6" cy="290" r="5" class:list={['svg-small-point',{active:highlightedAspect==='Trine'}]} />
+        <circle cx="210" cy="370" r="5" class:list={['svg-small-point',{active:highlightedAspect==='Opposition'}]} />
+        <text x="304" y="126">60°</text><text x="337" y="201">90°</text><text x="303" y="302">120°</text><text x="220" y="365">180°</text>
+      </svg>
+      <div>
+        <div class="aspect-key">
+          {aspectAngles.map(([name,angle]) => <div class:list={['aspect-key-row',{active:name===highlightedAspect}]}><strong>{name}</strong><span>{angle}</span></div>)}
+        </div>
+        <div class="motion-example" role="img" aria-label="Applying and separating aspect schematic">
+          <div class="motion-example-row"><strong>Applying</strong><span class="degree-start">64°</span><span>→</span><span class="degree-target">60°</span><small>distance to exact aspect decreases</small></div>
+          <div class="motion-example-row"><strong>Separating</strong><span class="degree-target">60°</span><span>→</span><span class="degree-start">64°</span><small>distance from exact aspect increases</small></div>
+        </div>
+      </div>
+    </div>
+    <p class="visual-note">The wheel shows ideal angular separations, not houses or signs. Application and separation concern movement toward or away from exact perfection; historical authors may add their own orb and motion rules.</p>
+  </section>
+)}
+
+{mode === 'antiscia' && (
+  <section class="mechanics-visual" id="astronomy-diagram" aria-labelledby="astronomy-diagram-title">
+    <div class="visual-head">
+      <p class="micro-label">Original teaching schematic</p>
+      <h2 id="astronomy-diagram-title">Reflection across the solstitial axis</h2>
+    </div>
+    <div class="antiscia-layout">
+      <svg class="antiscia-wheel" viewBox="0 0 420 420" role="img" aria-label="Zodiac circle showing two points reflected across the Cancer-Capricorn solstitial axis and their opposite contra-antiscion point">
+        <circle cx="210" cy="210" r="160" class="svg-circle" />
+        <line x1="210" y1="35" x2="210" y2="385" class="svg-axis strong" />
+        <line x1="35" y1="210" x2="385" y2="210" class="svg-axis dotted" />
+        <circle cx="113" cy="83" r="8" class="svg-point" />
+        <circle cx="307" cy="83" r="8" class="svg-point" />
+        <circle cx="113" cy="337" r="7" class="svg-small-point" />
+        <path d="M 113 83 Q 210 125 307 83" class="svg-arc" />
+        <line x1="307" y1="83" x2="113" y2="337" class="svg-ray dashed" />
+        <text x="87" y="72">point A</text><text x="294" y="72">antiscion</text><text x="73" y="360">contra-antiscion</text>
+        <text x="219" y="54">Cancer</text><text x="219" y="378">Capricorn</text>
+      </svg>
+      <div class="visual-grid">
+        <div><strong>Antiscion</strong><span>Mirror the zodiacal position across the Cancer–Capricorn solstitial axis. The paired points have equal distance from the solstitial line.</span></div>
+        <div><strong>Contra-antiscion</strong><span>Take the point opposite the antiscion. It is therefore a different relation, not another name for the reflected point itself.</span></div>
+      </div>
+    </div>
+    <p class="visual-note">The diagram emphasizes reflection geometry. Exact sign/degree examples belong to the term’s textual doctrine; the visual does not imply an aspect orb.</p>
+  </section>
+)}
+
+{mode === 'orbit' && (
+  <section class="mechanics-visual" id="astronomy-diagram" aria-labelledby="astronomy-diagram-title">
+    <div class="visual-head">
+      <p class="micro-label">Original teaching schematic</p>
+      <h2 id="astronomy-diagram-title">Geocentric distance on an eccentric circle</h2>
+    </div>
+    <div class="orbit-layout">
+      <svg class="orbit-svg" viewBox="0 0 640 360" role="img" aria-label="Simplified geocentric eccentric orbit showing Earth away from the circle center, apogee as the farthest point and perigee as the nearest point">
+        <ellipse cx="345" cy="180" rx="230" ry="118" class="svg-circle" />
+        <circle cx="275" cy="180" r="13" class="earth-mark" />
+        <circle cx="115" cy="180" r="7" class="svg-point" />
+        <circle cx="575" cy="180" r="7" class="svg-point" />
+        <circle cx="345" cy="180" r="4" class="svg-small-point" />
+        <line x1="275" y1="180" x2="115" y2="180" class="svg-ray" />
+        <line x1="275" y1="180" x2="575" y2="180" class="svg-ray dashed" />
+        <line x1="345" y1="60" x2="345" y2="300" class="svg-axis dotted" />
+        <text x="252" y="210">Earth</text>
+        <text x="80" y="168">perigee</text>
+        <text x="548" y="168">apogee</text>
+        <text x="358" y="176">circle center</text>
+        <text x="504" y="205">auge direction</text>
+      </svg>
+      <div class="visual-grid orbit-grid">
+        <div><strong>Geocentric model</strong><span>The construction is centered on observed motion around Earth, but a geometrical circle can be offset from Earth itself.</span></div>
+        <div><strong>Apogee</strong><span>The point of greatest distance from Earth in the simplified eccentric geometry.</span></div>
+        <div><strong>Perigee</strong><span>The corresponding nearest point to Earth.</span></div>
+        <div><strong>Auge</strong><span>Historical usage points toward the orbital maximum or apogee direction; exact terminology depends on the source’s model.</span></div>
+      </div>
+    </div>
+    <p class="visual-note">This deliberately simplified eccentric-circle diagram teaches the near/far relation only. Historical planetary models can add deferents, epicycles, equants and other constructions.</p>
+  </section>
+)}
+
+{mode === 'ascension' && (
+  <section class="mechanics-visual" id="astronomy-diagram" aria-labelledby="astronomy-diagram-title">
+    <div class="visual-head">
+      <p class="micro-label">Original teaching schematic</p>
+      <h2 id="astronomy-diagram-title">Ascension converts a tilted path into equatorial time</h2>
+    </div>
+    <div class="ascension-layout">
+      <svg class="ascension-svg" viewBox="0 0 640 380" role="img" aria-label="Schematic showing a tilted ecliptic projected to the celestial equator, a horizon line and an above-horizon semi-diurnal arc">
+        <ellipse cx="320" cy="190" rx="245" ry="120" class="svg-circle" />
+        <ellipse cx="320" cy="190" rx="225" ry="88" class="svg-axis" />
+        <ellipse cx="320" cy="190" rx="225" ry="88" transform="rotate(-23 320 190)" class="svg-ray dashed" />
+        <line x1="80" y1="214" x2="560" y2="214" class="svg-axis dotted" />
+        <circle cx="435" cy="121" r="7" class="svg-point" />
+        <line x1="435" y1="121" x2="461" y2="142" class="svg-ray" />
+        <circle cx="461" cy="142" r="5" class="svg-small-point" />
+        <path d="M 122 214 Q 320 45 518 214" class="svg-arc" />
+        <text x="420" y="108">ecliptic position</text>
+        <text x="469" y="144">equatorial projection</text>
+        <text x="85" y="204">horizon</text>
+        <text x="128" y="86">semi-diurnal arc above horizon</text>
+        <text x="382" y="287">celestial equator</text>
+        <text x="213" y="98">ecliptic</text>
+      </svg>
+      <div class="visual-grid ascension-grid">
+        <div><strong>Right ascension</strong><span>Measure the projected position along the celestial equator. It belongs to the equatorial grid rather than directly to zodiacal longitude.</span></div>
+        <div><strong>Oblique ascension</strong><span>At a real terrestrial latitude, the horizon meets the equatorial/ecliptic geometry obliquely, changing which equatorial arc rises with a zodiacal point.</span></div>
+        <div><strong>Rising times</strong><span>Equal 30° zodiac signs do not necessarily consume equal equatorial arcs while rising. Latitude changes the conversion.</span></div>
+        <div><strong>Semi-diurnal arc</strong><span>The portion of a body’s daily circle spent above the horizon from rising to setting, expressed as half of its full diurnal arc.</span></div>
+      </div>
+    </div>
+    <p class="visual-note">This diagram shows the relation of the coordinate systems, not a numerical primary-direction calculation. Exact rising times and arcs depend on latitude and declination.</p>
+  </section>
+)}
 
 {mode === 'coordinates' && (
   <section class="mechanics-visual" id="astronomy-diagram" aria-labelledby="astronomy-diagram-title">
@@ -142,6 +334,17 @@ const mode = coordinateSlugs.has(slug)
   .visual-head{border-bottom:1px solid var(--line);padding-bottom:.75rem;margin-bottom:1.2rem}
   .visual-head h2{margin:.15rem 0 0}
   .visual-note{margin:.9rem 0 0;color:var(--muted);font-size:.86rem;max-width:56rem}
+  svg text{fill:currentColor;font:600 12px/1 var(--font-ui,ui-sans-serif,system-ui,sans-serif)}
+  .svg-circle,.svg-axis,.svg-meridian,.svg-ray,.svg-arc{fill:none;stroke:currentColor;stroke-width:1.4;vector-effect:non-scaling-stroke}
+  .svg-circle{stroke:var(--line-dark)}.svg-axis,.svg-meridian,.svg-ray{stroke:var(--line-dark)}.svg-arc{stroke:var(--muted);stroke-width:2}.dashed{stroke-dasharray:7 6}.dotted{stroke-dasharray:2 5}.strong{stroke-width:2}.svg-point{fill:currentColor}.svg-small-point{fill:var(--paper-pale);stroke:currentColor;stroke-width:1.5}.svg-ray.active{stroke-width:4}.svg-small-point.active{fill:currentColor}
+
+  .local-sphere-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(18rem,.8fr);gap:1rem;align-items:center}.local-sphere-svg{width:100%;min-height:20rem;border:1px solid var(--line);background:var(--paper-deep)}.local-grid{grid-template-columns:1fr;margin:0}
+
+  .aspect-layout{display:grid;grid-template-columns:minmax(18rem,.9fr) minmax(18rem,1.1fr);gap:1.2rem;align-items:center}.aspect-wheel{width:100%;max-width:29rem;margin:auto;border:1px solid var(--line);background:var(--paper-deep)}.aspect-key{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}.aspect-key-row{display:flex;justify-content:space-between;gap:.6rem;border:1px solid var(--line);padding:.55rem .65rem;background:var(--paper-pale)}.aspect-key-row.active{outline:2px solid var(--line-dark);outline-offset:-3px}.aspect-key-row span{color:var(--muted)}.motion-example{display:grid;gap:.5rem;margin-top:1rem}.motion-example-row{display:grid;grid-template-columns:6rem auto auto auto 1fr;gap:.45rem;align-items:center;padding:.7rem;border:1px solid var(--line);background:var(--paper-deep);font-size:.82rem}.motion-example-row small{color:var(--muted)}.degree-target{font-weight:750;border-bottom:2px solid currentColor}.degree-start{color:var(--muted)}
+
+  .antiscia-layout{display:grid;grid-template-columns:minmax(18rem,.9fr) minmax(18rem,1.1fr);gap:1rem;align-items:center}.antiscia-wheel{width:100%;max-width:29rem;margin:auto;border:1px solid var(--line);background:var(--paper-deep)}
+
+  .orbit-layout,.ascension-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(18rem,.75fr);gap:1rem;align-items:center}.orbit-svg,.ascension-svg{width:100%;min-height:20rem;border:1px solid var(--line);background:var(--paper-deep)}.orbit-grid,.ascension-grid{grid-template-columns:1fr;margin:0}.earth-mark{fill:var(--paper-pale);stroke:currentColor;stroke-width:2}
 
   .sphere-wrap{display:grid;place-items:center;min-height:19rem;overflow:hidden}
   .sphere{position:relative;width:min(32rem,82vw);aspect-ratio:1.5;border:1.5px solid var(--line-dark);border-radius:50%;background:linear-gradient(to bottom,transparent 49.6%,var(--line) 49.6%,var(--line) 50.4%,transparent 50.4%)}
@@ -184,11 +387,13 @@ const mode = coordinateSlugs.has(slug)
   .ray{color:var(--muted);letter-spacing:.12rem}.shadow-cone{font-size:1.5rem;color:var(--muted)}
   .alignment-note{color:var(--muted);font-size:.82rem}.eclipse-grid{margin-top:1rem}
 
+  @media(max-width:860px){.local-sphere-layout,.aspect-layout,.antiscia-layout,.orbit-layout,.ascension-layout{grid-template-columns:1fr}.local-grid,.orbit-grid,.ascension-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
   @media(max-width:760px){
-    .visual-grid,.proximity-bands{grid-template-columns:1fr}
+    .visual-grid,.proximity-bands,.local-grid,.orbit-grid,.ascension-grid{grid-template-columns:1fr}
     .motion-row{grid-template-columns:1fr}.motion-label{margin-bottom:-.5rem}
     .phase-track{justify-content:flex-start}
     .orientation-strip{grid-template-columns:1fr;text-align:center}.morning,.evening{text-align:center}.sun-disc{margin:auto}.sun-disc{grid-row:2}.evening{grid-row:3}
     .eclipse-row{grid-template-columns:1fr;gap:.55rem}.alignment{justify-content:flex-start}.alignment-note{padding-bottom:.2rem}
+    .motion-example-row{grid-template-columns:1fr auto auto auto}.motion-example-row small{grid-column:1/-1}
   }
 </style>

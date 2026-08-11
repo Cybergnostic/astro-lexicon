@@ -16,7 +16,7 @@ Historical sources remain essential evidence, but public explanatory prose shoul
 
 1. **Concept before source history**
    - Open by explaining what the concept is and what it does.
-   - Do not organize ordinary public prose around phrases such as "source names", "source-backed identity", "the corpus distinguishes", or other project/extraction language.
+   - Do not organize ordinary public prose around project/extraction language.
    - Historical disagreement belongs after the common conceptual ground has been made clear.
 
 2. **Operational clarity**
@@ -24,25 +24,25 @@ Historical sources remain essential evidence, but public explanatory prose shoul
    - A technically correct definition is insufficient if the reader still cannot picture or recognize the condition.
 
 3. **Useful completeness**
-   - Umbrella categories should enumerate their important members or conditions where the reviewed data supports this.
+   - Umbrella categories should enumerate important members or conditions where the reviewed data supports this.
    - Ordered systems should expose the order rather than merely say that an order exists.
    - Classificatory entries should surface the classifications astrologers actually consult.
 
 4. **Examples for abstract relations**
-   - Add simple schematic or concrete examples when a relational definition is difficult to instantiate mentally.
-   - Examples should clarify the recognition rule without turning the encyclopedia into a chart-judgment manual.
+   - Add schematic or concrete examples when a relational definition is difficult to instantiate mentally.
+   - Examples should clarify recognition without turning the encyclopedia into a chart-judgment manual.
 
 5. **Visuals for spatial concepts**
-   - Flag geometry, motion and positional concepts for a diagram when a picture would communicate the idea materially faster or more accurately than prose.
+   - Use a diagram when it communicates geometry, motion, or position materially faster or more accurately than prose.
    - Prefer reusable visual families over isolated decorative illustrations.
 
 6. **Astrological priority**
    - For astrological entities such as signs and planets, lead with traditional astrological identity and classification.
-   - Astronomical coordinates and modern physical facts remain useful supporting reference data but should not displace the astrological content readers primarily seek.
+   - Astronomical coordinates and modern physical facts are supporting reference data, not the primary identity.
 
 7. **Sources as evidence, not subject**
    - Source accounts preserve attribution, disagreement and historical nuance.
-   - The public article should not make the project sound primarily like a source-extraction catalogue.
+   - Public articles should not read like a source-extraction catalogue.
 
 ## Defect labels
 
@@ -51,113 +51,143 @@ Historical sources remain essential evidence, but public explanatory prose shoul
 - `structure` — useful information exists but is badly ordered or hidden.
 - `example` — abstraction needs a concrete demonstration.
 - `visual` — geometry or spatial relations should be shown.
-- `priority` — secondary/trivia information is emphasized before the astrological core.
+- `priority` — secondary information is emphasized before the astrological core.
 - `lexicon-voice` — project/source-extraction language dominates the public explanation.
 - `coverage` — important members, classifications, sequences or conditions are missing.
 
-## Corpus-wide inventory
+## Current corpus inventory
 
-The reader-usefulness triage classifies every reviewed/public entry from a fresh canonical SQLite build. It is a planning map rather than an automatic quality score; human editorial judgment remains authoritative.
+The reader-usefulness triage is a planning map, not an automatic quality score. Human editorial judgment remains authoritative.
 
-Current inventory after Batches A–C: **468 entries**.
+Current inventory after Batches A–E: **468 entries**.
 
 | Primary action | Entries | Meaning |
 |---|---:|---|
-| OK as-is | 263 | Current reader-facing treatment is proportionate. |
+| OK as-is | 321 | Current reader-facing treatment is proportionate. |
 | Dictionary enough | 99 | A concise definition is sufficient; do not expand merely for uniformity. |
-| Tiny fix | 0 | Batch A completed; no tiny-fix entries remain in the current triage. |
-| Needs expansion | 4 | Residual heuristic flags intentionally deferred to later family/visual work rather than padded in Batch B. |
-| Structure / table | 11 | Residual structured flags are already served by shared components or are intentionally deferred to ontology, visuals, or exact source-data recovery. |
-| Family fix | 43 | Should be edited with related entries under one shared content model. |
-| Ontology review | 15 | Needs careful distinction, false-friend handling, or source reconciliation before editing. |
+| Tiny fix | 0 | No residual wording/voice fixes. |
+| Needs expansion | 4 | Intentional deferrals to visual/family-aware treatment rather than prose padding. |
+| Structure / table | 11 | Residual flags are either served by shared components or await exact source data / visual treatment. |
+| Family fix | 0 | Batch D completed. |
+| Ontology review | 0 | Batch E completed. |
 | Visual / explanation | 33 | Spatial, geometrical, or motion-based concepts that materially benefit from diagrams. |
 
-Effort estimate by individual entry is now **362 S**, **58 M**, **48 L**. Family and visual work should be executed as shared batches rather than as unrelated rewrites.
+Effort estimate by individual entry is now **420 S**, **15 M**, **33 L**.
 
-The large coherent batches currently exposed by the inventory are:
+The remaining planned work is therefore concentrated rather than corpus-wide:
 
-- 12 zodiac signs
-- 7 traditional planets
-- 15 sign-quality/classification entries
-- 9 house/place entries
-- 33 geometry/visual candidates
-- 15 ontology/reconciliation candidates
-- 11 residual structure flags, intentionally classified below
+- 33 geometry / visual candidates
+- 11 residual structure flags, mostly intentional deferrals
 - 4 residual expansion flags, all intentionally deferred
-- 0 tiny wording/voice fixes remaining
+- 0 family-model defects
+- 0 ontology-review defects
+- 0 tiny wording/voice defects
 
 The complete generated inventory is reproducible with `scripts/reader_usefulness_triage.py` and is also produced by the `Reader usefulness inventory` GitHub Actions workflow.
 
-## Initial reader findings
-
-| Entry / family | Defects | Status | Notes |
-|---|---|---|---|
-| Abscission / Cutting of Light | definition, depth, example | revised in pass 01 | Explain the intercepted developing contact and distinguish nearby interruption mechanics. |
-| Abscissor / Destroyer / Obstructor | definition, depth, lexicon-voice | revised in pass 01 | Remove "overlapping source names" framing; explain the destructive planetary role first. |
-| Affliction | depth, coverage | revised in pass 02 | Treat as an umbrella condition and expose the actual affliction conditions rather than leaving the category empty. |
-| Alfridary | depth, structure | revised in pass 02 | Expose both day- and night-nativity seven-period planetary orders in a reader-facing table. |
-| Almuguea | example | revised in pass 02 | Add concrete Mercury and Venus examples and explain the domicile-distance rule before historical naming. |
-| Altitude | visual | classified: visual / explanation | Geometry should be illustrated. |
-| Apogee | visual | classified: visual / explanation | Geometry should be illustrated. |
-| Application | visual, example | classified: visual / explanation | A diagram should show decreasing separation toward perfection. |
-| Zodiac signs | priority, coverage | classified: family fix | Traditional classifications should lead; longitude spans should move to supporting technical data. Include relevant classifications such as element, modality, polarity/sex, rulership and other reviewed sign qualities. |
-| Ascending / Descending Quadrants | visual, depth | classified: visual / explanation | A chart/circle diagram should make the quadrants immediately recognizable. |
-
-## Execution order after inventory
+## Execution record
 
 ### Batch A — Tiny fixes — completed
-Resolved all 16 small reader-facing defects in one compact pass, chiefly residual project/corpus language. The rerun moved all 16 entries to `OK as-is`, raising that bucket from 217 to 233 and reducing `Tiny fix` from 16 to 0.
+
+Resolved all 16 small reader-facing defects in one compact pass, chiefly residual project/corpus language. `Tiny fix` fell from 16 to 0.
 
 ### Batch B — Substantive expansions — completed
-The source-aware review examined all 21 original expansion candidates against their reviewed interpretations, article blocks and relations. Seventeen received substantive public expansions from evidence already present in the canonical corpus. The rerun moved `Needs expansion` from 21 to 4 and `OK as-is` from 233 to 250.
 
-The four residual flags are intentional deferrals rather than unfinished prose work:
+The source-aware review examined all 21 original expansion candidates against reviewed interpretations, article blocks and relations. Seventeen received substantive public expansions from evidence already present in the canonical corpus.
 
-- **First Movement** and **Second Movement** already have proportionate explanatory prose and are better improved with the later motion/geometry visual family than with additional padding.
+The four residual flags are intentional:
+
+- **First Movement** and **Second Movement** already have proportionate prose and belong with the later motion/geometry visual family.
 - **Masculine Planet** is already a concise membership entry; the broader conditional doctrine is handled by **Planetary Masculinity**.
-- **Solar Eclipse** currently has a clear astronomical definition and relation structure but no reviewed historical interpretation layer; further treatment belongs with the eclipse/astronomy visual family rather than a source-based expansion pass.
-
-Batch B added or strengthened reader-facing treatment for Critical Days, Nativity, Significator of the King, Planetary Share in a Sign, Hermes’ Marriage Lots, Bright Degree, Combust Hours, Incombust Hours, Duodena of the Moon, Fifth Nature, Foreknowledge, Possibility / Contingency, the Head and Tail of the Dragon, Planetary Masculinity, the Seven Traditional Planets, and Return of Light.
+- **Solar Eclipse** has a clear astronomical definition and relation structure but no reviewed historical interpretation layer; further treatment belongs with the eclipse/astronomy visual family.
 
 ### Batch C — Structured systems — completed for the current evidence layer
-The source-aware review started with 24 structure/table candidates and added structure only where order, membership, comparison or repeated subdivision materially improved recognition. Thirteen entries moved from `Structure / table` to `OK as-is`, raising `OK as-is` from 250 to 263 and reducing the structure bucket from 24 to 11.
+
+The source-aware review started with 24 structure/table candidates and added structure only where order, membership, comparison or repeated subdivision materially improved recognition. Thirteen moved to `OK as-is`; 11 remain intentionally flagged.
 
 Structured presentations were added or strengthened for Annual Revolution, Direction / Period by Term Lords, Jarbakhtar / Divisor, Lord of Profection, Lord of the Day, Lord of the Orb / Circle, Lord of the Revolution, Lord of the Year, Monthly Profection, Darīǧān / Indian Decan, Degree Sign-Nature, Dodecatemorion / Twelfth-part, and Ninth / Nawbahar.
 
-The eleven residual flags are intentional deferrals rather than missing table work:
+Residual structure flags:
 
-- **Detriment, Domicile, Face / Decan, Triplicity** — already served by the shared dignity-reference presentation; Detriment and Face / Decan also retain ontology questions for Batch E. Duplicating those tables on each term page would add noise rather than clarity.
+- **Detriment, Domicile, Face / Decan, Triplicity** — already served by the shared dignity-reference presentation; duplicating the same tables on each entry would add noise.
 - **Planetary Hour** — already served by the shared planetary-time sequence component.
-- **Revolution of the World-Year** — already has a substantial four-block explanation; the structure flag is a classifier false positive.
-- **Anareta** — the unresolved issue is source-aware role/ontology, not lack of a table; defer to Batch E.
-- **Figure Ascending in a Decan** and **Inconjunct Signs** — better handled by the later visual family than by prose tables.
-- **Planetary Recurrence** and **Planetary Years** — both genuinely deserve numerical tables, but the exact values are not yet encoded in a sufficiently explicit canonical structure. Do not reconstruct or guess them from memory; add them only after exact source data is recovered and reviewed.
+- **Revolution of the World-Year** — already has substantial explanatory structure; the residual flag is heuristic.
+- **Anareta** — table-like language in the article does not itself justify a table.
+- **Figure Ascending in a Decan** and **Inconjunct Signs** — better handled in the visual pass.
+- **Planetary Recurrence** and **Planetary Years** — numerical tables should be added only after exact source values are explicitly recovered and reviewed; do not reconstruct them from memory.
 
-### Batch D — Family models — next
-Apply shared templates to zodiac signs, planets, sign classifications, and houses/places. The zodiac-sign family is the first priority because all twelve currently foreground insufficient or badly prioritized information. Reuse structured profile/reference data where it already exists rather than copying it into repetitive prose.
+Firdaria was originally ontology/structure-heavy but was resolved in Batch E because its exact source-attested periods were available.
 
-### Batch E — Ontology review
-Resolve the 15 terms whose distinctions need source-aware judgment before prose changes, plus the residual ontology-heavy items intentionally deferred from earlier batches.
+### Batch D — Family models — completed
 
-### Batch F — Visual systems
-Build reusable diagrams for the 33 spatial/geometry candidates rather than bespoke visuals entry by entry. Include the movement/eclipses and deferred geometrical subdivision cases where a visual is more useful than extra prose.
+The family-model pass resolved the 43 entries previously forced into `family-fix`.
+
+**Zodiac signs**
+- Reordered the shared sign profile so traditional classification leads and geometry/longitude becomes supporting data.
+- Added concise traditional identity introductions for all twelve signs.
+- Reused the shared dignity reference instead of duplicating dignity tables in prose.
+
+**Traditional planets**
+- Reordered the shared planet profile so sect, benefic/malefic class, traditional family and qualities lead before modern physical/orbital data.
+- Added concise traditional identity introductions for all seven planets.
+
+**Sign classifications**
+- Exposed source-supported membership tables for major fertility, sex/day-night, voice, human/quadruped and related classes.
+- Added the three modality tetragons.
+- Expanded **Voiced Sign** into a real umbrella article without collapsing historically distinct voice scales.
+
+**Houses / places**
+- Added a twelve-place overview with structural class and selected source-attributed topics.
+- Exposed the seven planetary joys by house.
+- Exposed Antiochus’ explicit no-dealings places.
+- Expanded Lilly’s **Short Journey** into a usable recognition rule.
+
+The triage no longer treats mere membership in a completed family as an unresolved defect.
+
+### Batch E — Ontology review — completed
+
+All 15 ontology-review candidates were checked against their reviewed definitions, editorial distinctions, relations and source interpretations. No historical false friends were merged.
+
+Public distinctions were strengthened for:
+
+- Opening the Doors vs Opening of the Gates
+- Universal Question vs Absolute / Determinate Question
+- Exaltation Degree vs sign-level Exaltation
+- Lot of Eros formula streams vs the Venus planetary lot
+- Bond of the Moon vs generic solar-proximity terminology
+- Celestial Power vs Indication
+- Dustoria vs Hayz / Own Similitude
+- Lunar Dichotomy vs other lunar subdivisions
+- Natal Rectification vs its separate historical methods
+- Bonatti’s Planetary Elevation vs other superiority doctrines
+- Rejoicing Condition vs planetary joys by house
+- Trutine of Hermes vs Animodar
+- Feral condition vs Void of Course
+- Opening of the Gates vs the meteorological Opening the Doors
+- Firdaria vs Lilly’s Alfridary
+
+Firdaria also gained its exact source-attested major-period table: Sun 10, Venus 8, Mercury 13, Moon 9, Saturn 11, Jupiter 12, Mars 7, Head 3, Tail 2 years, with the sect-dependent day/night order retained.
+
+The rerun moved `Ontology review` from 15 to **0**, `Family fix` from 43 to **0**, and `OK as-is` to **321**.
+
+### Batch F — Visual systems — next
+
+Build reusable diagram families for the 33 spatial/geometry candidates rather than 33 unrelated bespoke graphics.
+
+The pass should first audit the existing `AstronomyMechanics` coverage and group missing candidates by shared geometry. Likely families include:
+
+1. local celestial sphere / horizon geometry;
+2. ecliptic and coordinate geometry;
+3. aspect geometry plus application/separation;
+4. antiscia / contra-antiscia;
+5. geocentric orbital geometry such as apogee/perigee/auge;
+6. movement, solar-proximity and eclipse diagrams already partly present.
+
+A visual candidate may be closed without a new diagram if an existing shared component already explains it well. The goal is comprehension, not eliminating flags mechanically.
 
 ### Final audit
-Rerun the inventory and manually inspect residual flags. A flagged entry can still be intentionally concise; the goal is reader usefulness, not eliminating every machine-generated flag.
 
-## Planned passes
-
-### Pass 1 — Concept clarity and usefulness
-Review public entries for definition, depth, useful completeness, examples and lexicon voice. Fix the clearest reader-facing defects first.
-
-### Pass 2 — Family consistency
-Review related terms together: signs, planets, dignity families, perfection/interruption mechanics, houses, Lots, predictive techniques and other coherent families.
-
-### Pass 3 — Structures, examples and visuals
-Expose existing structured sequences/tables and add reusable diagrams for geometry, motion and positional concepts.
-
-### Pass 4 — Final reader audit
-Read completed pages as encyclopedia entries, remove residual project language, repair ordering and confirm that technically complete entries are also useful.
+After Batch F, rerun the inventory and manually inspect all residual structure/expansion/visual flags. A flagged entry can remain intentionally concise or be documented as deliberately served by a shared component.
 
 ## Working rule
 

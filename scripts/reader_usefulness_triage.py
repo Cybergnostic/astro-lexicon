@@ -9,8 +9,9 @@ This is a planning audit, not an automatic rewrite engine. It assigns each entry
 
 The rules deliberately favor batching and restraint: concise dictionary entries can remain
 concise, while repeated family/template defects are surfaced only while that family batch
-is still open. Completed family and visual work is allowed to fall back into the ordinary
-per-entry rules so the inventory remains a list of unresolved work rather than historical tags.
+is still open. Completed family, structure and visual work is allowed to fall back into the
+ordinary per-entry rules so the inventory remains a list of unresolved work rather than
+historical tags.
 """
 
 from __future__ import annotations
@@ -53,6 +54,20 @@ VISUAL_SLUGS = {
 # Conjunction is retained as a future visual candidate because that entry is not currently
 # part of the reviewed/public 468-entry inventory and is not yet routed on the term page.
 VISUAL_SERVED_SLUGS = VISUAL_SLUGS - {'conjunction'}
+
+# These entries looked table-shaped to the first heuristic because their prose contains words
+# such as rulers, years, decans or sequence. Human review showed that the useful structure is
+# already supplied by a shared component, by explicit prose, or is not actually tabular.
+STRUCTURE_SERVED_SLUGS = {
+    'detriment','domicile','face-decan','triplicity',
+    'anareta','planetary-hour','world-year-revolution',
+    'decan-figure','inconjunct',
+}
+
+# A shared visual can carry much of the recognition burden for a spatial/motion entry even
+# when the generic article itself has only one prose block. Masculine Planet is likewise a
+# deliberately concise membership entry; the broader doctrine lives under Planetary Masculinity.
+DEPTH_SERVED_SLUGS = VISUAL_SERVED_SLUGS | {'masculine-planet'}
 
 
 def scalar(con: sqlite3.Connection, sql: str, params: tuple = ()) -> int:
@@ -102,18 +117,15 @@ def classify(r: dict) -> dict:
     if lexicon_voice: flags.append('lexicon-voice')
     if ontology: flags.append('ontology')
     if visual: flags.append('visual')
-    if sequence and r['tables']==0 and r['family'] in {'timing / predictive techniques','zodiac subdivisions','dignities / debilities'}: flags.append('structure')
+    if sequence and r['tables']==0 and r['family'] in {'timing / predictive techniques','zodiac subdivisions','dignities / debilities'} and r['slug'] not in STRUCTURE_SERVED_SLUGS: flags.append('structure')
     if r['quality']<=3: flags.append('definition')
     if not has_article and (r['interpretations']>=2 or r['relations']>=5 or r['grade_a']>=2): flags.append('depth')
-    # The twelve sign pages use the shared ZodiacSignProfile and highlighted dignity reference
-    # as their main structured treatment. Those components are generated outside the generic
-    # article block tables, so a low article-block count does not mean the sign page is thin.
-    if has_article and r['blocks']<=1 and (r['interpretations']>=3 or r['relations']>=5) and r['slug'] not in SIGN_SLUGS: flags.append('depth')
+    # Sign pages and shared visual/membership components carry structured recognition outside
+    # generic article blocks, so low block count alone is not evidence of insufficient depth.
+    if has_article and r['blocks']<=1 and (r['interpretations']>=3 or r['relations']>=5) and r['slug'] not in SIGN_SLUGS and r['slug'] not in DEPTH_SERVED_SLUGS: flags.append('depth')
     if MECHANIC_RE.search(f"{r['label']} {r['category']}") and has_article and r['blocks']<2: flags.append('example')
     flags=list(dict.fromkeys(flags))
 
-    # Batches D–F use shared frontend components. Once those components are routed, family
-    # membership or historical visual candidacy no longer forces an unresolved action.
     if visual: action='visual / explanation'
     elif ontology and (not has_article or lexicon_voice or r['quality']<=3): action='ontology-review'
     elif 'structure' in flags: action='structure / table'

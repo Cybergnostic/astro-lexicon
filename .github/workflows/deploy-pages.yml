@@ -36,6 +36,15 @@ jobs:
           GITHUB_PAGES: 'true'
         run: npm run build
 
+      - name: Verify Pages artifact root
+        run: |
+          test -f dist/index.html || {
+            echo 'GitHub Pages requires dist/index.html at the artifact root.'
+            echo 'Build output:'
+            find dist -maxdepth 3 -type f | sort | head -200
+            exit 1
+          }
+
       - name: Configure Pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5

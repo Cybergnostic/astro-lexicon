@@ -64,7 +64,7 @@ try:
             print(f"INTERP {i}: " + ' | '.join(parts))
 
         rels = con.execute(
-            """SELECT tr.relation_type, tr.notes,
+            """SELECT tr.relation_type, tr.note,
                       s.slug AS subject_slug, s.label AS subject_label,
                       o.slug AS object_slug, o.label AS object_label
                FROM term_relations tr

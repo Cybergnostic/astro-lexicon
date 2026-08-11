@@ -159,6 +159,15 @@ async function serveFile(res, path) {
   }
 }
 
+async function serveReviewAsset(res, pathname) {
+  const clean = pathname
+    .replace(/^\/editorial\/review-assets\//, '')
+    .replace(/^\/review-assets\//, '');
+  const path = safeStaticPath(ASSET_ROOT, clean);
+  if (path && await serveFile(res, path)) return true;
+  return false;
+}
+
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || `${HOST}:${PORT}`}`);
@@ -177,9 +186,8 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && url.pathname === '/api/upload') {
       return await handleUpload(req, res);
     }
-    if (req.method === 'GET' && url.pathname.startsWith('/review-assets/')) {
-      const path = safeStaticPath(ASSET_ROOT, url.pathname.replace('/review-assets/', ''));
-      if (path && await serveFile(res, path)) return;
+    if (req.method === 'GET' && (url.pathname.startsWith('/review-assets/') || url.pathname.startsWith('/editorial/review-assets/'))) {
+      if (await serveReviewAsset(res, url.pathname)) return;
       return json(res, 404, { error: 'Image not found.' });
     }
 

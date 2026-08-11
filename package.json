@@ -6,7 +6,7 @@
   "scripts": {
     "generate:data": "python3 scripts/generate_frontend_data.py && python3 scripts/enrich_page_compositions.py && python3 scripts/enrich_zodiac_relations.py",
     "predev": "npm run generate:data",
-    "dev": "astro dev",
+    "dev": "astro dev --host 127.0.0.1",
     "prereview": "npm run generate:data",
     "review": "node scripts/editorial_review_server.mjs",
     "review:check": "node --check scripts/editorial_review_server.mjs && node --check editorial/app/app.js",

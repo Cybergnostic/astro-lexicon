@@ -14,6 +14,7 @@ on:
       - 'docs/editorial/batch-03-foundations-slugs.txt'
       - 'docs/editorial/batch-04-horary-slugs.txt'
       - 'docs/editorial/batch-05-dignities-slugs.txt'
+      - 'scripts/check_dignities_batch05.py'
       - 'docs/editorial/review-batches.json'
       - 'docs/editorial/lexicographic-pilot-slugs.txt'
       - 'docs/editorial/batch-02-lots-slugs.txt'
@@ -50,6 +51,8 @@ jobs:
         run: python3 scripts/check_foundations_batch03.py .tmp/lexicographic-triage.sqlite
       - name: Verify forty-entry horary edits and primary witnesses
         run: python3 scripts/check_horary_batch04.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify dignity prose edits and six sourced historical witnesses
+        run: python3 scripts/check_dignities_batch05.py --db .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \

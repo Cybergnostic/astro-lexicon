@@ -2,7 +2,7 @@
 """Build on-screen editorial comparisons from the canonical SQLite corpus.
 
 The baseline is the last database state before the proposed correction seeds
-0233-0236. Current prose is taken from all ordered seeds. This is a *review*
+0233-0238. Current prose is taken from all ordered seeds. This is a *review*
 artifact under .tmp/, not a second source of truth or an automatically accepted
 historical edition.
 """
@@ -19,13 +19,32 @@ OUT = ROOT / ".tmp/editorial-review-snapshot.json"
 BASE = ROOT / ".tmp/editorial-before.sqlite"
 CURRENT = ROOT / ".tmp/editorial-after.sqlite"
 EXCLUDED_EDITORIAL_SEEDS = (
+    "0237_lexicographic_", "0238_lexicographic_",
     "0233_lexicographic_", "0234_lexicographic_",
     "0235_lexicographic_", "0236_lots_batch02_",
 )
-GROUPS = (
-    ("pilot", "Ten-entry calibration", ROOT / "docs/editorial/lexicographic-pilot-slugs.txt"),
-    ("lots", "Batch 02 · Lots and Parts", ROOT / "docs/editorial/batch-02-lots-slugs.txt"),
-)
+BATCH_MANIFEST = ROOT / "docs/editorial/review-batches.json"
+MAX_REVIEW_BATCH = 60
+
+
+def configured_groups():
+    """Load bounded, human-curated batches rather than hardcoding UI cohorts."""
+    document = json.loads(BATCH_MANIFEST.read_text(encoding="utf-8"))
+    if document.get("version") != 1 or not document.get("batches"):
+        raise ValueError("Review batch manifest requires version 1 and nonempty batches")
+    known_ids = set()
+    groups = []
+    for group in document["batches"]:
+        key = group["id"]
+        if key in known_ids or not key.isascii() or not key.replace("-", "").isalnum():
+            raise ValueError("Duplicate or invalid editorial batch id: " + key)
+        known_ids.add(key)
+        name = group["slugs_file"]
+        location = (ROOT / name).resolve()
+        if ROOT.resolve() not in location.parents:
+            raise ValueError("Batch slug path must remain inside project.")
+        groups.append((key, group["label"], location))
+    return groups
 
 
 def build_before(path: Path) -> None:
@@ -154,9 +173,11 @@ def main() -> None:
     try:
         groups = []
         records = {}
-        for key, title, file in GROUPS:
+        for key, title, file in configured_groups():
             slugs = [line.strip() for line in file.read_text(encoding="utf-8").splitlines()
                      if line.strip() and not line.startswith("#")]
+            if not 1 <= len(slugs) <= MAX_REVIEW_BATCH:
+                raise ValueError(f"Batch {key} must have 1–{MAX_REVIEW_BATCH} entries, found {len(slugs)}")
             if len(slugs) != len(set(slugs)):
                 raise ValueError(f"Duplicate slugs in {file}")
             groups.append({"id": key, "label": title, "slugs": slugs})
@@ -173,7 +194,7 @@ def main() -> None:
         payload = {
             "version": 1, "generated_at": datetime.now(timezone.utc).isoformat(),
             "explanation": (
-                "Before = corpus with editorial seeds 0233–0236 omitted; "
+                "Before = corpus with editorial seeds 0233–0238 omitted; "
                 "proposed = assembled current branch. Other non-edited passages "
                 "and normalized tables are shown on the live site. "
                 "Citations are database witnesses, not automatic source verification."

@@ -9,8 +9,8 @@ from build_editorial_review_snapshot import ROOT, OUT
 
 data = json.loads(OUT.read_text(encoding="utf-8"))
 assert data["version"] == 1
-assert [len(group["slugs"]) for group in data["groups"]] == [10,20]
-assert len(data["entries"]) == 29, "A single overlapping Fortune term belongs to both groups"
+assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40]
+assert len(data["entries"]) == 69, "10 + 20 + 40 entries with overlapping Fortune term"
 assert all(entry["before"]["definition"] is not None for entry in data["entries"].values())
 assert all(entry["proposed"]["definition"] for entry in data["entries"].values())
 
@@ -28,7 +28,15 @@ sons = data["entries"]["lot-of-sons"]
 assert any(change["kind"] == "section" for change in sons["changes"])
 assert any("Abū Maʿshar" in entry["author"] or "Abu" in entry["author"]
            for entry in sons["witnesses"]), "New source witnesses must be exported"
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 20
+
+foundations = data["groups"][2]["slugs"]
+assert len(foundations) == 40
+proposed_changes = [slug for slug in foundations if data["entries"][slug]["changes"]]
+assert len(proposed_changes) == 17, f"Expected 17 distinct editorial revisions, got {proposed_changes}"
+assert data["entries"]["medical-astrology"]["before"]["intro"] != data["entries"]["medical-astrology"]["proposed"]["intro"]
+assert data["entries"]["ninth-nawbahr"]["changes"] == [], "Specialist source pending headword should not be rewritten prematurely"
+
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 40
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

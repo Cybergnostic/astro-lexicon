@@ -137,7 +137,7 @@ function selectEntry(slug, { updateQueue = true, navigate = true } = {}) {
 
 function renderEditorial() {
   const record = packet(), row = ledger();
-  const held = row.review_state === 'source-pending';
+  const held = row.review_state === 'source-pending' || Boolean(row.pending_check?.trim());
   const changed = record.changes.length > 0;
   ui.badge.textContent = labels[row.review_state] || 'Unreviewed';
   ui.badge.dataset.state = row.review_state || 'unreviewed';

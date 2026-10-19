@@ -10,6 +10,7 @@ on:
       - 'scripts/export_editorial_packets.py'
       - 'scripts/check_lots_batch02.py'
       - 'scripts/check_foundations_batch03.py'
+      - 'scripts/check_horary_batch04.py'
       - 'docs/editorial/batch-03-foundations-slugs.txt'
       - 'docs/editorial/batch-04-horary-slugs.txt'
       - 'docs/editorial/review-batches.json'
@@ -46,6 +47,8 @@ jobs:
         run: python3 scripts/check_lots_batch02.py --db .tmp/lexicographic-triage.sqlite
       - name: Verify Batch 03 source holds and actual copy changes
         run: python3 scripts/check_foundations_batch03.py .tmp/lexicographic-triage.sqlite
+      - name: Verify forty-entry horary edits and primary witnesses
+        run: python3 scripts/check_horary_batch04.py --db .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \

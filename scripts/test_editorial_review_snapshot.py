@@ -9,8 +9,8 @@ from build_editorial_review_snapshot import ROOT, OUT
 
 data = json.loads(OUT.read_text(encoding="utf-8"))
 assert data["version"] == 1
-assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40,40]
-assert len(data["entries"]) == 188, "190 cohort references share Fortune and Evasion"
+assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40,40,40]
+assert len(data["entries"]) == 228, "230 cohort references share Fortune and Evasion"
 assert all(entry["before"]["definition"] is not None for entry in data["entries"].values())
 assert all(entry["proposed"]["definition"] for entry in data["entries"].values())
 
@@ -53,7 +53,14 @@ revised_astronomy = [slug for slug in astronomy if data["entries"][slug]["change
 assert len(revised_astronomy) == 22, f"Expected 22 real astronomy editorial revisions, got {revised_astronomy}"
 assert data["entries"]["equant"]["before"]["sections"] != data["entries"]["equant"]["proposed"]["sections"]
 assert any("Bīrūnī" in w["author"] or "Biruni" in w["author"] for w in data["entries"]["solar-eclipse"]["witnesses"])
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 89
+core = data["groups"][6]["slugs"]
+assert len(core) == 40
+revised_core = [slug for slug in core if data["entries"][slug]["changes"]]
+assert len(revised_core) == 18, f"Expected 18 genuine core-term revisions: {revised_core}"
+assert any(c["kind"] == "definition" for c in data["entries"]["mercury"]["changes"])
+assert data["entries"]["element-air"]["before"]["intro"] != data["entries"]["element-air"]["proposed"]["intro"]
+assert data["entries"]["aries"]["changes"] == [], "Sign entries with sound classifications should not be homogenized"
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 107
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

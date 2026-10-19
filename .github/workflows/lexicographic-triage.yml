@@ -15,6 +15,8 @@ on:
       - 'docs/editorial/batch-04-horary-slugs.txt'
       - 'docs/editorial/batch-05-dignities-slugs.txt'
       - 'docs/editorial/batch-06-astronomical-slugs.txt'
+      - 'docs/editorial/batch-07-core-slugs.txt'
+      - 'scripts/check_core_batch07.py'
       - 'scripts/check_astronomy_batch06.py'
       - 'scripts/check_dignities_batch05.py'
       - 'docs/editorial/review-batches.json'
@@ -57,6 +59,8 @@ jobs:
         run: python3 scripts/check_dignities_batch05.py --db .tmp/lexicographic-triage.sqlite
       - name: Verify Batch 06 real copy corrections and direct source citations
         run: python3 scripts/check_astronomy_batch06.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 07 definitions, removed duplicated leads and direct citations
+        run: python3 scripts/check_core_batch07.py --db .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \
@@ -87,6 +91,12 @@ jobs:
             --db .tmp/lexicographic-triage.sqlite \
             --slugs-file docs/editorial/batch-06-astronomical-slugs.txt \
             --out .tmp/astronomy-review-packet.md
+      - name: Export 40-entry core terminology source-review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-07-core-slugs.txt \
+            --out .tmp/core-review-packet.md
       - name: Publish candidate inventory and editorial packets
         uses: actions/upload-artifact@v4
         with:
@@ -98,4 +108,5 @@ jobs:
             .tmp/horary-review-packet.md
             .tmp/dignities-review-packet.md
             .tmp/astronomy-review-packet.md
+            .tmp/core-review-packet.md
           retention-days: 30

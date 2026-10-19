@@ -30,6 +30,11 @@
       "id": "astronomy",
       "label": "Batch 06 · Astronomy, coordinates and eclipses",
       "slugs_file": "docs/editorial/batch-06-astronomical-slugs.txt"
+    },
+    {
+      "id": "core",
+      "label": "Batch 07 · Planets, signs and natural philosophy",
+      "slugs_file": "docs/editorial/batch-07-core-slugs.txt"
     }
   ]
 }

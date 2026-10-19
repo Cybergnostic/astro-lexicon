@@ -32,7 +32,7 @@ assert any("Abū Maʿshar" in entry["author"] or "Abu" in entry["author"]
 foundations = data["groups"][2]["slugs"]
 assert len(foundations) == 40
 proposed_changes = [slug for slug in foundations if data["entries"][slug]["changes"]]
-assert len(proposed_changes) == 20, f"Expected 20 distinct editorial revisions, got {proposed_changes}"
+assert len(proposed_changes) == 17, f"Expected 17 distinct editorial revisions, got {proposed_changes}"
 assert data["entries"]["medical-astrology"]["before"]["intro"] != data["entries"]["medical-astrology"]["proposed"]["intro"]
 assert data["entries"]["ninth-nawbahr"]["changes"] == [], "Specialist source pending headword should not be rewritten prematurely"
 

@@ -80,8 +80,8 @@ export function decide(row, input, { changed = false } = {}) {
   if (!reviewer) throw new Error('Enter your reviewer name to save a decision.');
   const next = { ...row };
   if (input.action === 'approve') {
-    if (row.review_state === 'source-pending') {
-      throw new Error('This entry has an unresolved source check. Resolve it with a passage reference first.');
+    if (row.review_state === 'source-pending' || row.pending_check?.trim()) {
+      throw new Error('Resolve the outstanding verification/review check and record the evidence before approval.');
     }
     if (!changed) {
       throw new Error('There is no proposed copy change. Use “Keep as is” instead.');
@@ -89,8 +89,8 @@ export function decide(row, input, { changed = false } = {}) {
     next.review_state = 'approved';
   } else if (input.action === 'no_change') {
     if (changed) throw new Error('This entry contains proposed edits; approve or request changes instead.');
-    if (row.review_state === 'source-pending') {
-      throw new Error('Source verification is still open on this entry.');
+    if (row.review_state === 'source-pending' || row.pending_check?.trim()) {
+      throw new Error('Resolve the outstanding check before marking an unchanged entry complete.');
     }
     next.review_state = 'no-change-justified';
   } else if (input.action === 'request_changes') {
@@ -101,8 +101,8 @@ export function decide(row, input, { changed = false } = {}) {
     next.review_state = 'source-pending';
     next.pending_check = [row.pending_check, reason].filter(Boolean).join(' | ');
   } else if (input.action === 'resolve_source') {
-    if (row.review_state !== 'source-pending') throw new Error('No open source hold to resolve.');
-    if (reason.length < 12) throw new Error('Record the checked edition and passage in your source-resolution note.');
+    if (row.review_state !== 'source-pending' && !row.pending_check?.trim()) throw new Error('No outstanding check to resolve.');
+    if (reason.length < 12) throw new Error('Explain what you verified, with an edition/passage when the check concerns sources.');
     next.review_state = changed ? 'revised-awaiting-review' : 'triaged';
     // The old pending text is preserved in review_note as part of the audit trail.
     next.pending_check = '';

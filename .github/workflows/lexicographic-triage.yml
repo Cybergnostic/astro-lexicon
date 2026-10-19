@@ -16,6 +16,7 @@ on:
       - 'docs/editorial/batch-05-dignities-slugs.txt'
       - 'docs/editorial/batch-06-astronomical-slugs.txt'
       - 'docs/editorial/batch-07-core-slugs.txt'
+      - 'scripts/check_core_batch07.py'
       - 'scripts/check_astronomy_batch06.py'
       - 'scripts/check_dignities_batch05.py'
       - 'docs/editorial/review-batches.json'
@@ -58,6 +59,8 @@ jobs:
         run: python3 scripts/check_dignities_batch05.py --db .tmp/lexicographic-triage.sqlite
       - name: Verify Batch 06 real copy corrections and direct source citations
         run: python3 scripts/check_astronomy_batch06.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 07 definitions, removed duplicated leads and direct citations
+        run: python3 scripts/check_core_batch07.py --db .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \

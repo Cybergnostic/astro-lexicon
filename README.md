@@ -6,7 +6,7 @@ The project compares technical concepts across historical sources without flatte
 
 ## Human editorial review workbench
 
-The local reviewer supports manifest-defined cohorts: the **ten-entry pilot**, **twenty Lots/Parts entries**, and **forty foundational/planetary entries**, and **forty horary/aspect/perfection entries**. Additional groups can be added without changing the interface. It displays the live website beside actual before/after SQLite prose, historical witness summaries, pending checks and approval decisions.
+The local reviewer supports seven manifest-defined cohorts: **10 pilot terms**, **20 Lots/Parts terms**, and five **40-term** groups covering Foundations, Horary, Dignities, Astronomy and Core terminology. Additional groups can be added without changing the interface. It displays the live website beside actual before/after SQLite prose, historical witness summaries, pending checks and approval decisions.
 
 Run in one terminal:
 

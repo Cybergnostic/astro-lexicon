@@ -94,3 +94,9 @@ test('CSV is persisted atomically with signoff and review chronology', async () 
     assert.ok(!(await readFile(target,'utf8')).includes('undefined'));
   } finally { await rm(dir,{recursive:true,force:true}); }
 });
+
+test('first saved decision must not invalidate an unrelated ledger revision', () => {
+  const old = {...sample,slug:'other-entry',pending_check:'',review_state:'triaged'};
+  const expanded = {...old,review_note:'',reviewed_by:'',reviewed_at:''};
+  assert.equal(revisionToken(old),revisionToken(expanded));
+});

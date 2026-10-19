@@ -1,0 +1,42 @@
+name: Lexicographic triage
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'db/**'
+      - 'scripts/lexicographic_triage.py'
+      - 'scripts/test_lexicographic_triage.py'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - '.github/workflows/lexicographic-triage.yml'
+  pull_request:
+    paths:
+      - 'db/**'
+      - 'scripts/lexicographic_triage.py'
+      - 'scripts/test_lexicographic_triage.py'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - '.github/workflows/lexicographic-triage.yml'
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate triage heuristics and approval gate
+        run: python3 -m unittest discover -s scripts -p 'test_lexicographic_triage.py' -v
+      - name: Rebuild corpus and audit all public headwords
+        run: |
+          python3 scripts/lexicographic_triage.py \
+            --out .tmp/lexicographic-triage.csv \
+            --focus reception,essential-dignity,application,translation-of-light,sect,fardar,annual-profection,animodar,lot-of-fortune,saturn
+      - name: Publish candidate inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: lexicographic-candidate-inventory
+          path: .tmp/lexicographic-triage.csv
+          retention-days: 30

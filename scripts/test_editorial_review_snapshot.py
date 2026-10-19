@@ -9,8 +9,8 @@ from build_editorial_review_snapshot import ROOT, OUT
 
 data = json.loads(OUT.read_text(encoding="utf-8"))
 assert data["version"] == 1
-assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40]
-assert len(data["entries"]) == 148, "150 cohort references share Fortune and Evasion"
+assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40,40]
+assert len(data["entries"]) == 188, "190 cohort references share Fortune and Evasion"
 assert all(entry["before"]["definition"] is not None for entry in data["entries"].values())
 assert all(entry["proposed"]["definition"] for entry in data["entries"].values())
 
@@ -47,7 +47,13 @@ revised_dignities = [slug for slug in dignities if data["entries"][slug]["change
 assert len(revised_dignities) == 13, f"Expected 13 real dignity editorial revisions, got {revised_dignities}"
 assert data["entries"]["exaltation"]["before"]["sections"] != data["entries"]["exaltation"]["proposed"]["sections"]
 assert any("al" in w["author"].lower() or "biruni" in w["author"].lower() for w in data["entries"]["triplicity-rulers"]["witnesses"])
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 67
+astronomy = data["groups"][5]["slugs"]
+assert len(astronomy) == 40
+revised_astronomy = [slug for slug in astronomy if data["entries"][slug]["changes"]]
+assert len(revised_astronomy) == 22, f"Expected 22 real astronomy editorial revisions, got {revised_astronomy}"
+assert data["entries"]["equant"]["before"]["sections"] != data["entries"]["equant"]["proposed"]["sections"]
+assert any("Bīrūnī" in w["author"] or "Biruni" in w["author"] for w in data["entries"]["solar-eclipse"]["witnesses"])
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 89
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

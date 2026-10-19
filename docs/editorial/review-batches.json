@@ -25,6 +25,11 @@
       "id": "dignities",
       "label": "Batch 05 · Dignities, sect and places",
       "slugs_file": "docs/editorial/batch-05-dignities-slugs.txt"
+    },
+    {
+      "id": "astronomy",
+      "label": "Batch 06 · Astronomy, coordinates and eclipses",
+      "slugs_file": "docs/editorial/batch-06-astronomical-slugs.txt"
     }
   ]
 }

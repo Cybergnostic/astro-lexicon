@@ -47,6 +47,7 @@ try {
   const editorial = (await request('/api/editorial')).data;
   assert.equal(Object.keys(editorial.entries).length,69);
   assert.equal(editorial.groups[1].slugs.length,20);
+  assert.equal(editorial.groups[2].slugs.length,40);
   const before = editorial.ledger['lot-of-sons'];
   assert.ok(before.revision);
   assert.ok(before.pending_check);

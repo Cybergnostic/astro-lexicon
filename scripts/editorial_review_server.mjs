@@ -7,11 +7,11 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const APP_ROOT = join(ROOT, 'editorial', 'app');
-const REVIEW_FILE = join(ROOT, 'editorial', 'reviews.json');
+const REVIEW_FILE = process.env.EDITORIAL_REVIEW_FILE ? resolve(process.env.EDITORIAL_REVIEW_FILE) : join(ROOT, 'editorial', 'reviews.json');
 const ASSET_ROOT = join(ROOT, 'editorial', 'review-assets');
 const CORPUS_FILE = join(ROOT, 'src', 'data', 'generated', 'corpus.json');
 const EDITORIAL_FILE = join(ROOT, '.tmp', 'editorial-review-snapshot.json');
-const LEDGER_FILE = join(ROOT, 'docs', 'editorial', 'lexicographic-ledger.csv');
+const LEDGER_FILE = process.env.EDITORIAL_LEDGER_FILE ? resolve(process.env.EDITORIAL_LEDGER_FILE) : join(ROOT, 'docs', 'editorial', 'lexicographic-ledger.csv');
 let decisionQueue = Promise.resolve();
 const HOST = process.env.EDITORIAL_HOST || '127.0.0.1';
 const PORT = Number(process.env.EDITORIAL_PORT || 4322);

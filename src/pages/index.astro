@@ -1,223 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LexiconDirectory from '../components/LexiconDirectory.astro';
 import corpus from '../data/generated/corpus.json';
-import { browseSubjects } from '../data/browseSubjects.js';
 
 const { terms, authors, works, meta } = corpus;
-const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUpperCase()));
-const featuredSlugs = [
-  'reception', 'application', 'sect', 'domicile', 'essential-dignity',
-  'combustion', 'translation-of-light', 'lot-of-fortune',
-  'annual-profection', 'firdaria'
-];
-const featured = featuredSlugs
-  .map((slug) => terms.find((term) => term.slug === slug))
-  .filter(Boolean)
-  .sort((a, b) => a.label.localeCompare(b.label));
-const basePath = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<BaseLayout title="Astrological Lexicon — Historical Astrology Reference">
-  <div class="reference-home">
-    <section class="reference-home__intro">
-      <div class="shell reference-home__intro-inner">
-        <p class="micro-label">Historical reference · Traditional astrology</p>
-        <h1>Astrological Lexicon</h1>
-        <p class="reference-home__description">A reference to the terminology, concepts and techniques of traditional astrology, with historical names and source-specific definitions.</p>
-        <div class="reference-home__search">
-          <label for="term-search">Search entries, authors and works</label>
-          <div class="search" id="lexicon-search">
-            <input
-              id="term-search"
-              type="search"
-              autocomplete="off"
-              placeholder="Enter a term, author or historical work"
-              aria-label="Search the lexicon"
-              role="combobox"
-              aria-autocomplete="list"
-              aria-expanded="false"
-              aria-controls="search-results"
-            />
-            <div id="search-results" class="search-results" role="listbox" aria-label="Search results"></div>
-          </div>
-        </div>
-        <nav class="reference-home__alphabet" aria-label="Browse by initial letter">
-          <span>A–Z</span>
-          {alphabet.map((letter) => availableLetters.has(letter)
-            ? <a href={'/terms/#' + letter}>{letter}</a>
-            : <span class="is-empty">{letter}</span>)}
-        </nav>
+<BaseLayout title="Astrological Lexicon — Dictionary of Traditional Astrology" description="A source-based historical dictionary of traditional astrological terms, techniques and doctrines.">
+  <header class="library-hero">
+    <div class="shell library-hero-grid">
+      <div>
+        <p class="library-hero-eyebrow"><span aria-hidden="true" class="hero-rule"></span> THE HISTORICAL ASTROLOGY REFERENCE</p>
+        <h1>The language of<br/><em>traditional astrology.</em></h1>
+        <p class="library-hero-deck">A scholarly lexicon of concepts, techniques and terminology from the ancient, medieval and early modern astrological traditions.</p>
+        <a class="library-hero-jump" href="#dictionary-heading">Explore the dictionary <span aria-hidden="true">↘</span></a>
       </div>
-    </section>
-
-    <div class="shell reference-home__body">
-      <div class="reference-home__main">
-        <section id="subjects" class="reference-home__section">
-          <div class="reference-home__section-heading">
-            <h2>Browse by subject</h2>
-            <p>Explore related terminology within a branch of traditional astrology.</p>
-          </div>
-          <div class="reference-home__subjects">
-            {browseSubjects.map((subject) => (
-              <a href={'/terms/?subject=' + subject.slug} class="reference-home__subject">
-                <strong>{subject.name}</strong>
-                <span>{subject.detail}</span>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section class="reference-home__section" aria-labelledby="entries-heading">
-          <div class="reference-home__section-heading">
-            <h2 id="entries-heading">Explore the lexicon</h2>
-            <a href="/terms/">Complete alphabetical index →</a>
-          </div>
-          <ul class="reference-home__entries">
-            {featured.map((term) => (
-              <li>
-                <a href={'/terms/' + term.slug + '/'}>{term.label}</a>
-                <p>{term.short_definition}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
-
-      <aside class="reference-home__aside" aria-label="About this reference work">
-        <div class="reference-home__aside-block">
-          <h2>Contents</h2>
-          <p><strong>{meta.terms}</strong> entries · <strong>{meta.works}</strong> historical works</p>
-          <p>Entries distinguish historical usage and terminology where the sources disagree.</p>
-        </div>
-        <div class="reference-home__aside-block">
-          <h2>Historical authors</h2>
-          <ul>
-            {authors.map((author) => (
-              <li><a href={'/authors/' + author.slug + '/'}>{author.name}</a></li>
-            ))}
-          </ul>
-          <a class="reference-home__aside-more" href="/works/">Browse historical works →</a>
+      <aside class="library-hero-aside" aria-label="Reference collection">
+        <div class="library-hero-rule"></div>
+        <p class="library-hero-aside-title">AN OPEN REFERENCE WORK</p>
+        <strong>{meta.terms}<span>entries</span></strong>
+        <p>Definitions, technical distinctions and source-specific historical accounts.</p>
+        <div class="library-hero-numbers">
+          <div><b>{authors.length}</b><span>AUTHORS</span></div>
+          <div><b>{meta.works}</b><span>WORKS</span></div>
         </div>
       </aside>
     </div>
-  </div>
-  <script define:vars={{ terms, authors, works, basePath }} is:inline>
-    const input = document.getElementById('term-search');
-    const box = document.getElementById('search-results');
-    const searchRoot = document.getElementById('lexicon-search');
-    const index = [
-      ...terms.map((x) => ({ label: x.label, kind: 'term', detail: [x.category, ...x.aliases.map((a) => a.label)].join(' · '), href: `/terms/${x.slug}/` })),
-      ...authors.map((x) => ({ label: x.name, kind: 'author', detail: x.historical_layer || '', href: `/authors/${x.slug}/` })),
-      ...works.map((x) => ({ label: x.title, kind: 'work', detail: x.author_name, href: `/works/${x.slug}/` }))
-    ];
-
-    let visibleResults = [];
-    let activeIndex = -1;
-
-    const setExpanded = (expanded) => {
-      input?.setAttribute('aria-expanded', String(expanded));
-      box?.classList.toggle('is-open', expanded);
-      if (!expanded) input?.removeAttribute('aria-activedescendant');
-    };
-
-    const closeResults = () => {
-      visibleResults = [];
-      activeIndex = -1;
-      if (box) box.replaceChildren();
-      setExpanded(false);
-    };
-
-    const updateActiveOption = () => {
-      if (!input || !box) return;
-      const options = [...box.querySelectorAll('[role="option"]')];
-      options.forEach((option, optionIndex) => {
-        option.setAttribute('aria-selected', String(optionIndex === activeIndex));
-      });
-      if (activeIndex >= 0 && options[activeIndex]) {
-        input.setAttribute('aria-activedescendant', options[activeIndex].id);
-        options[activeIndex].scrollIntoView({ block: 'nearest' });
-      } else {
-        input.removeAttribute('aria-activedescendant');
-      }
-    };
-
-    const renderResults = () => {
-      if (!box) return;
-      box.replaceChildren();
-
-      if (!visibleResults.length) {
-        const empty = document.createElement('div');
-        empty.className = 'search-result';
-        empty.setAttribute('role', 'status');
-        const kind = document.createElement('small');
-        kind.textContent = 'search';
-        const text = document.createElement('span');
-        text.textContent = 'No indexed result.';
-        empty.append(kind, text);
-        box.append(empty);
-        setExpanded(true);
-        return;
-      }
-
-      visibleResults.forEach((result, resultIndex) => {
-        const link = document.createElement('a');
-        link.className = 'search-result';
-        link.href = result.href;
-        link.id = `search-option-${resultIndex}`;
-        link.setAttribute('role', 'option');
-        link.setAttribute('aria-selected', 'false');
-
-        const kind = document.createElement('small');
-        kind.textContent = result.kind;
-        const content = document.createElement('span');
-        const label = document.createElement('strong');
-        label.textContent = result.label;
-        const meta = document.createElement('span');
-        meta.className = 'meta';
-        meta.textContent = result.detail || '';
-        content.append(label, document.createElement('br'), meta);
-        link.append(kind, content);
-        box.append(link);
-      });
-
-      setExpanded(true);
-      updateActiveOption();
-    };
-
-    input?.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      activeIndex = -1;
-      if (!q) {
-        closeResults();
-        return;
-      }
-      visibleResults = index
-        .filter((x) => `${x.label} ${x.detail}`.toLowerCase().includes(q))
-        .slice(0, 9);
-      renderResults();
-    });
-
-    input?.addEventListener('keydown', (event) => {
-      if (!box?.classList.contains('is-open')) return;
-      if (event.key === 'ArrowDown' && visibleResults.length) {
-        event.preventDefault();
-        activeIndex = (activeIndex + 1) % visibleResults.length;
-        updateActiveOption();
-      } else if (event.key === 'ArrowUp' && visibleResults.length) {
-        event.preventDefault();
-        activeIndex = activeIndex <= 0 ? visibleResults.length - 1 : activeIndex - 1;
-        updateActiveOption();
-      } else if (event.key === 'Enter' && activeIndex >= 0 && visibleResults[activeIndex]) {
-        event.preventDefault();
-        window.location.href = basePath + visibleResults[activeIndex].href;
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
-        closeResults();
-      }
-    });
-
-    document.addEventListener('click', (event) => {
-      if (searchRoot && !searchRoot.contains(event.target)) closeResults();
-    });
-  </script>
+  </header>
+  <LexiconDirectory terms={terms} authors={authors} works={works} />
 </BaseLayout>

@@ -9,6 +9,9 @@ on:
       - 'scripts/test_lexicographic_triage.py'
       - 'scripts/export_editorial_packets.py'
       - 'scripts/check_lots_batch02.py'
+      - 'scripts/check_foundations_batch03.py'
+      - 'docs/editorial/batch-03-foundations-slugs.txt'
+      - 'docs/editorial/review-batches.json'
       - 'docs/editorial/lexicographic-pilot-slugs.txt'
       - 'docs/editorial/batch-02-lots-slugs.txt'
       - 'docs/editorial/lexicographic-ledger.csv'
@@ -40,6 +43,8 @@ jobs:
             --focus reception,essential-dignity,application,translation-of-light,sect,fardar,annual-profection,animodar,lot-of-fortune,saturn
       - name: Verify Batch 02 edits matched all intended headwords
         run: python3 scripts/check_lots_batch02.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 03 source holds and actual copy changes
+        run: python3 scripts/check_foundations_batch03.py .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \

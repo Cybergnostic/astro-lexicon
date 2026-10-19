@@ -58,6 +58,22 @@ def main() -> int:
         ]
         if len(slugs) != 468:
             raise AssertionError(f"Expected 468 public entries, found {len(slugs)}")
+        direct_rows = con.execute("""
+            SELECT i.id,t.slug,COUNT(DISTINCT c.source_passage_id)
+            FROM interpretations i
+            JOIN terms t ON t.id=i.term_id
+            LEFT JOIN citations c ON c.interpretation_id=i.id
+            WHERE i.scope LIKE '%(Batch 02 direct source verification)'
+            GROUP BY i.id,t.slug
+        """).fetchall()
+        if len(direct_rows) != 9 or any(row[2] == 0 for row in direct_rows):
+            raise AssertionError(f"Expected 9 cited direct historical interpretations; found {len(direct_rows)}: {direct_rows}")
+        passages = con.execute("""
+            SELECT COUNT(DISTINCT p.locator_text) FROM source_passages p
+            WHERE p.locator_text LIKE 'Batch 02 direct witness:%'
+        """).fetchone()[0]
+        if passages != 9:
+            raise AssertionError(f"Expected nine exact checked passage labels; found {passages}")
         if not con.execute("PRAGMA foreign_key_check").fetchall() == []:
             raise AssertionError("Foreign keys invalid")
     finally:

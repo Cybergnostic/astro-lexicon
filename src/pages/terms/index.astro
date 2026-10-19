@@ -41,7 +41,8 @@ const subjectData = browseSubjects.map(({ slug, name, detail }) => ({ slug, name
     const params=new URLSearchParams(window.location.search);
     const requestedSubject=params.get('subject');
     const activeSubject=subjectData.find(item=>item.slug===requestedSubject) ?? null;
-    let letter='ALL';
+    const requestedLetter=window.location.hash.slice(1).toUpperCase();
+    let letter=/^[A-Z]$/.test(requestedLetter) && rows.some((row)=>row.dataset.letter===requestedLetter) ? requestedLetter : 'ALL';
 
     if(activeSubject){
       if(context) context.hidden=false;
@@ -75,7 +76,12 @@ const subjectData = browseSubjects.map(({ slug, name, detail }) => ({ slug, name
       if(count) count.textContent=activeSubject ? `Showing ${n} entries in ${activeSubject.name}.` : `Showing ${n} of ${total} entries.`;
     }
 
-    letterLinks.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();letter=a.dataset.letter||'ALL';apply();}));
+    letterLinks.forEach(a=>a.addEventListener('click',e=>{
+      e.preventDefault();
+      letter=a.dataset.letter||'ALL';
+      history.replaceState(null, '', letter==='ALL' ? window.location.pathname+window.location.search : '#'+letter);
+      apply();
+    }));
     input?.addEventListener('input',apply);
     apply();
   </script>

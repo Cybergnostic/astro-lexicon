@@ -111,12 +111,15 @@ if (hasRelations) tocItems.push({ href:'#related', label:'Related concepts' });
     </aside>
 
     <article class="article">
-      <p class="eyebrow">Lexicon entry · {term.category}</p>
+      <nav class="entry-breadcrumb" aria-label="Breadcrumb"><a href="/terms/">A–Z Index</a><span aria-hidden="true">/</span><span>{term.category}</span></nav>
+      <p class="eyebrow">Historical astrology</p>
       <div class="title-row">
         <h1>{term.label}</h1>
         {primarySymbol && <span class="entry-glyph" role="img" aria-label={primarySymbol.label || `${term.label} symbol`}>{primarySymbol.symbol_text}</span>}
       </div>
       <p class="lede">{term.short_definition}</p>
+      {hasAliases && <p class="entry-variants"><strong>Also known as:</strong> {term.aliases.slice(0, 4).map((alias, index) => <span>{index > 0 ? " · " : ""}{alias.label}</span>)}</p>}
+      {hasRelations && <nav class="entry-crossrefs" aria-label="Related entries"><strong>See also</strong>{term.relations.filter((relation) => relation.target_slug !== term.slug).slice(0, 4).map((relation) => <a href={"/terms/" + relation.target_slug + "/"}>{relation.target_label}</a>)}</nav>}
 
       {tocItems.length > 0 && <details class="mobile-entry-nav">
         <summary>On this entry <span>{tocItems.length} sections</span></summary>

@@ -7,6 +7,9 @@ on:
       - 'db/**'
       - 'scripts/lexicographic_triage.py'
       - 'scripts/test_lexicographic_triage.py'
+      - 'scripts/export_editorial_packets.py'
+      - 'docs/editorial/lexicographic-pilot-slugs.txt'
+      - 'docs/editorial/batch-02-lots-slugs.txt'
       - 'docs/editorial/lexicographic-ledger.csv'
       - '.github/workflows/lexicographic-triage.yml'
   pull_request:
@@ -34,9 +37,24 @@ jobs:
           python3 scripts/lexicographic_triage.py \
             --out .tmp/lexicographic-triage.csv \
             --focus reception,essential-dignity,application,translation-of-light,sect,fardar,annual-profection,animodar,lot-of-fortune,saturn
-      - name: Publish candidate inventory
+      - name: Export actual ten-entry pilot for editorial comparison
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/lexicographic-pilot-slugs.txt \
+            --out .tmp/pilot-review-packet.md
+      - name: Export next 20-entry Lots batch with current source locators
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-02-lots-slugs.txt \
+            --out .tmp/lots-review-packet.md
+      - name: Publish candidate inventory and editorial packets
         uses: actions/upload-artifact@v4
         with:
           name: lexicographic-candidate-inventory
-          path: .tmp/lexicographic-triage.csv
+          path: |
+            .tmp/lexicographic-triage.csv
+            .tmp/pilot-review-packet.md
+            .tmp/lots-review-packet.md
           retention-days: 30

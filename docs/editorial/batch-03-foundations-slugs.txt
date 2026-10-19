@@ -30,8 +30,8 @@ solar-half
 lunar-half
 orientality
 occidentality
-oriental
-occidental
+planetary-day
+planetary-hour
 celestial-latitude
 ninth-nawbahr
 planetary-well

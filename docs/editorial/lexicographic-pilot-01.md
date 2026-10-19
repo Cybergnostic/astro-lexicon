@@ -111,8 +111,23 @@ The seven remaining pilot headwords received **passage spot checks**, not blanke
 
 The GitHub Actions script audited 468 public headwords. It flagged **122** as candidate copy-review items (115 with potential definition/intro overlap; nine with project-style language; flags can overlap). It did **not** declare these items defective or source-verified. It found no public interpretation without a linked source passage under its current database query; a linked passage does **not** mean its content was independently fact-checked.
 
-Manual states for the ten pilot entries: **3 revised-awaiting-review, 5 triaged, 2 source-pending**. No human approvals have been invented. The full report is a CSV artifact in the GitHub Actions workflow named *Lexicographic triage*.
+Manual states for the ten pilot entries after the Saturn correction: **4 revised-awaiting-review, 4 triaged, 2 source-pending**. No human approvals have been invented. The full report is a CSV artifact in the GitHub Actions workflow named *Lexicographic triage*.
 
 ### Follow-on batch
 
 A 20-headword Lots cohort has been selected at docs/editorial/batch-02-lots-queue.md. This is a queue for *source-aware human/editorial work*, not authorization to rewrite 20 entries automatically. It includes cases to calibrate when a short dictionary entry is enough versus when conflicting formula streams need a much fuller article.
+
+
+### A fourth calibration edit — Saturn (planet archetype)
+
+Reviewing the **generated current-entry packet** revealed that Saturn's canonical short definition opened with modern astronomical classification before its traditional astrological identity. This conflicted with the project’s previously stated historical-first standard.
+
+In the ordered correction seed 0234_lexicographic_pilot_saturn_priority.sql, Saturn's lead now begins with its traditional classification (greater malefic, diurnal, cold and dry, domiciles and exaltation), while the article introduction adds actual significations and the nature/sect sections avoid repeating the same identity sentences. The modern astronomy subsection and all existing normalized planetary profiles, scheme data and historic interpretations are left intact.
+
+Source spot check: al-Biruni, *Book of Instruction* §§396–401 for natural classification, §440 for domicile, and §443 for exaltation. This is a proposed editorial revision pending reader signoff, not a claim that every Saturn account has been verified.
+
+### Repeatable review packets
+
+The Lexicographic triage GitHub workflow exports two reviewable Markdown packets in addition to its complete CSV: the current **ten calibration entries** and the selected **20 Lots entries**. Both are compiled from SQLite with exact headword text, composed section keys, reference tables, source interpretation summaries and linked locators. They do not include copyrighted translation quotations. This lets subsequent editors compare actual prose with the SQL correction patches without consulting a dozen original seed files.
+
+The workflow generates the corpus once and reuses its SQLite snapshot in both bounded packet exports. No entry is approved by the tooling.

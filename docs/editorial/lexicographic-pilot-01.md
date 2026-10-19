@@ -87,3 +87,32 @@ The reference to Lilly's preference for rectification by events is traceable to 
 5. Only then begin new book extraction. New historical evidence can trigger a targeted amendment even to an entry previously approved.
 
 No original SQL seeds are rewritten; `0233` is an additive correction layer. No fabricated sources or unverified historical numbers are introduced.
+
+
+---
+
+## Calibration continuation (after initial three prose revisions)
+
+The seven remaining pilot headwords received **passage spot checks**, not blanket article approval. The curated review-state ledger is in docs/editorial/lexicographic-ledger.csv; the authoritative repeatable instructions are in docs/editorial/lexicographic-standard-v1.md.
+
+### Direct evidence and decisions
+
+| Entry | Direct historical spot check | Editorial decision / outstanding work |
+| --- | --- | --- |
+| Reception | Lilly, *Christian Astrology*, Book I, printed p. 112, explicitly describes mutual reception and gives named examples. | Retain the current broader reception and mutuality distinctions; collate Bonatti and the remaining source passages before any doctrinal simplification. State that Lilly's wording represents his usage. |
+| Essential Dignity | al-Biruni, *Book of Instruction*, §§440–445: domicile, exaltation, disagreement over the extent/degree of exaltation. | No automatic revision of source-specific bound/triplicity tables; verify each scheme and study the final composition. |
+| Sect | al-Biruni, *Book of Instruction*, §§396–401 lists planetary diurnal/nocturnal affiliations and benefic/malefic qualities. | Does not alone prove all Hayz/Halb/sect-of-chart conditions. Preserve separate technical entries and leave full verification open. |
+| Firdaria (slug fardar) | al-Biruni, *Book of Instruction*, §395 gives day/night first and second rulers and sevenfold associations. §§438–439 reproduce a numeric table that extracts poorly. | Source-pending for exact durations, node placement, and comparison with Abū Maʿshar/Bonatti. **Do not change numbers based on the OCR.** |
+| Annual Profection | Lilly, *Christian Astrology*, Book III, ch. CLXVI, printed pp. 715–716, one sign per solar year with a twelve-year recurrence. | The beginning at the exact solar return is Lilly's stated practice, not a rule generalized across all historical authors. Pending comparison with other sources. |
+| Lot of Fortune | al-Biruni, *Book of Instruction*, §475 describes construction and reports divergent nocturnal reverse-order practice. | Source-pending for all named formula rows; do not unify streams or invert the table without explicit citation. |
+| Saturn | al-Biruni, *Book of Instruction*, §§396–401 gives Saturn as cold/dry, the greater malefic, and diurnal. | Opening traditional identity is supported; retain profile table and review detailed source-specific statements later. |
+
+### Result of full-corpus machine triage
+
+The GitHub Actions script audited 468 public headwords. It flagged **122** as candidate copy-review items (115 with potential definition/intro overlap; nine with project-style language; flags can overlap). It did **not** declare these items defective or source-verified. It found no public interpretation without a linked source passage under its current database query; a linked passage does **not** mean its content was independently fact-checked.
+
+Manual states for the ten pilot entries: **3 revised-awaiting-review, 5 triaged, 2 source-pending**. No human approvals have been invented. The full report is a CSV artifact in the GitHub Actions workflow named *Lexicographic triage*.
+
+### Follow-on batch
+
+A 20-headword Lots cohort has been selected at docs/editorial/batch-02-lots-queue.md. This is a queue for *source-aware human/editorial work*, not authorization to rewrite 20 entries automatically. It includes cases to calibrate when a short dictionary entry is enough versus when conflicting formula streams need a much fuller article.

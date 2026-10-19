@@ -11,6 +11,7 @@ on:
       - 'scripts/check_lots_batch02.py'
       - 'scripts/check_foundations_batch03.py'
       - 'docs/editorial/batch-03-foundations-slugs.txt'
+      - 'docs/editorial/batch-04-horary-slugs.txt'
       - 'docs/editorial/review-batches.json'
       - 'docs/editorial/lexicographic-pilot-slugs.txt'
       - 'docs/editorial/batch-02-lots-slugs.txt'
@@ -57,6 +58,12 @@ jobs:
             --db .tmp/lexicographic-triage.sqlite \
             --slugs-file docs/editorial/batch-02-lots-slugs.txt \
             --out .tmp/lots-review-packet.md
+      - name: Export forty-entry horary source-review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-04-horary-slugs.txt \
+            --out .tmp/horary-review-packet.md
       - name: Publish candidate inventory and editorial packets
         uses: actions/upload-artifact@v4
         with:
@@ -65,4 +72,5 @@ jobs:
             .tmp/lexicographic-triage.csv
             .tmp/pilot-review-packet.md
             .tmp/lots-review-packet.md
+            .tmp/horary-review-packet.md
           retention-days: 30

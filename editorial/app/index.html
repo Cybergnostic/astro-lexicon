@@ -84,7 +84,7 @@
 
       <section class="decision-panel">
         <h3>Record your decision</h3>
-        <p class="section-help">An approval is a human editorial signoff. Source holds must be resolved with a checked passage before approval.</p>
+        <p class="section-help">An approval is a human editorial signoff. Recorded checks must be resolved before approval. For source checks, record the edition and passage.</p>
         <div class="decision-inputs">
           <label>REVIEWER NAME
             <input id="reviewer-name" type="text" maxlength="120" autocomplete="name" placeholder="Your name" />
@@ -98,7 +98,7 @@
           <button id="keep" data-decision="no_change" type="button">Keep existing entry</button>
           <button data-decision="request_changes" type="button">Request changes</button>
           <button data-decision="needs_source" type="button">Flag source check</button>
-          <button id="resolve-source" data-decision="resolve_source" type="button">Source checked — release hold</button>
+          <button id="resolve-source" data-decision="resolve_source" type="button">Resolve checked issue</button>
         </div>
         <p id="decision-save-state" class="save-state" aria-live="polite"></p>
         <details class="decision-history">

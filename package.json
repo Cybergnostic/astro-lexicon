@@ -9,7 +9,7 @@
     "dev": "astro dev --host 127.0.0.1",
     "prereview": "npm run generate:data && python3 scripts/build_editorial_review_snapshot.py",
     "review": "node scripts/editorial_review_server.mjs",
-    "review:check": "node --check scripts/editorial_review_server.mjs && node --check scripts/editorial_ledger.mjs && node --check editorial/app/app.js && node --test scripts/test_editorial_ledger.mjs && python3 scripts/build_editorial_review_snapshot.py && python3 scripts/test_editorial_review_snapshot.py",
+    "review:check": "node --check scripts/editorial_review_server.mjs && node --check scripts/editorial_ledger.mjs && node --check editorial/app/app.js && node --check scripts/smoke_editorial_workbench.mjs && node --test scripts/test_editorial_ledger.mjs && npm run generate:data && python3 scripts/build_editorial_review_snapshot.py && python3 scripts/test_editorial_review_snapshot.py && node scripts/smoke_editorial_workbench.mjs",
     "prebuild": "npm run generate:data",
     "build": "astro build",
     "preview": "astro preview",

@@ -21,6 +21,10 @@ export function getStaticPaths() {
 }
 
 const { term } = Astro.props;
+const indexedTerms = [...corpus.terms].sort((a, b) => a.label.localeCompare(b.label, 'en', { sensitivity: 'base' }));
+const currentIndex = indexedTerms.findIndex((item) => item.slug === term.slug);
+const previousEntry = currentIndex > 0 ? indexedTerms[currentIndex - 1] : null;
+const nextEntry = currentIndex < indexedTerms.length - 1 ? indexedTerms[currentIndex + 1] : null;
 const article = term.article;
 const articleBlocks = article?.blocks ?? article?.sections?.map((section) => ({ type: 'section', ...section })) ?? [];
 const pageComposition = term.page_composition ?? [];
@@ -104,25 +108,25 @@ if (hasRelations) tocItems.push({ href:'#related', label:'Related concepts' });
 ---
 <BaseLayout title={`${term.label} — Astrological Lexicon`} description={term.short_definition}>
   <div class="shell page-grid">
-    <aside class="article-rail" aria-label="Entry information">
-      <div class="rail-group"><span class="micro-label">Entry type</span><span class="rail-value">{term.entry_type}</span></div>
-      <div class="rail-group"><span class="micro-label">Subject</span><span class="rail-value">{term.category}</span></div>
-      {sourceAuthorCount > 0 && <div class="rail-group"><span class="micro-label">Source authors</span><span class="rail-value">{sourceAuthorCount} author{sourceAuthorCount === 1 ? '' : 's'}</span></div>}
-    </aside>
-
     <article class="article">
-      <nav class="entry-breadcrumb" aria-label="Breadcrumb"><a href="/terms/">A–Z Index</a><span aria-hidden="true">/</span><span>{term.category}</span></nav>
-      <p class="eyebrow">Historical astrology</p>
-      <div class="title-row">
-        <h1>{term.label}</h1>
-        {primarySymbol && <span class="entry-glyph" role="img" aria-label={primarySymbol.label || `${term.label} symbol`}>{primarySymbol.symbol_text}</span>}
-      </div>
-      <p class="lede">{term.short_definition}</p>
-      {hasAliases && <p class="entry-variants"><strong>Also known as:</strong> {term.aliases.slice(0, 4).map((alias, index) => <span>{index > 0 ? " · " : ""}{alias.label}</span>)}</p>}
-      {hasRelations && <nav class="entry-crossrefs" aria-label="Related entries"><strong>See also</strong>{term.relations.filter((relation) => relation.target_slug !== term.slug).slice(0, 4).map((relation) => <a href={"/terms/" + relation.target_slug + "/"}>{relation.target_label}</a>)}</nav>}
+      <nav class="entry-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/terms/">Dictionary</a><span aria-hidden="true">/</span><span>{term.label}</span></nav>
+      <header class="entry-masthead">
+        <div class="entry-heading-kicker"><span>LEXICON ENTRY</span><span class="entry-heading-divider" aria-hidden="true"></span><span>{term.category}</span></div>
+        <div class="title-row">
+          <h1>{term.label}</h1>
+          {primarySymbol && <span class="entry-glyph" role="img" aria-label={primarySymbol.label || term.label + ' symbol'}>{primarySymbol.symbol_text}</span>}
+        </div>
+        <div class="entry-definition">
+          <span class="entry-definition-label">DEFINITION</span>
+          <p class="lede">{term.short_definition}</p>
+        </div>
+        {hasAliases && <p class="entry-variants"><strong>Alternative names</strong> {term.aliases.slice(0, 5).map((alias, index) => <span>{index > 0 ? " · " : ""}{alias.label}</span>)}</p>}
+        {sourceAuthorCount > 0 && <p class="entry-source-count">Historical accounts represented: <strong>{sourceAuthorCount} author{sourceAuthorCount === 1 ? '' : 's'}</strong></p>}
+      </header>
+      {hasRelations && <nav class="entry-crossrefs" aria-label="Related entries"><strong>See also</strong>{term.relations.filter((relation) => relation.target_slug !== term.slug).slice(0, 5).map((relation) => <a href={"/terms/" + relation.target_slug + "/"}>{relation.target_label}</a>)}</nav>}
 
       {tocItems.length > 0 && <details class="mobile-entry-nav">
-        <summary>On this entry <span>{tocItems.length} sections</span></summary>
+        <summary>Jump to a section <span>{tocItems.length} sections</span></summary>
         <nav aria-label="On this entry">{tocItems.map((item)=><a href={item.href}>{item.label}</a>)}</nav>
       </details>}
 
@@ -224,10 +228,14 @@ if (hasRelations) tocItems.push({ href:'#related', label:'Related concepts' });
           {relation.note && <p>{relation.note}</p>}
         </div>)}</div>
       </section>}
+      <nav class="entry-neighbours" aria-label="Adjacent dictionary entries">
+        <div>{previousEntry && <><span>PREVIOUS ENTRY</span><a href={'/terms/' + previousEntry.slug + '/'}><span aria-hidden="true">←</span> {previousEntry.label}</a></>}</div>
+        <div>{nextEntry && <><span>NEXT ENTRY</span><a href={'/terms/' + nextEntry.slug + '/'}>{nextEntry.label} <span aria-hidden="true">→</span></a></>}</div>
+      </nav>
     </article>
 
     <aside class="toc" aria-label="On this entry">
-      <strong>On this entry</strong>
+      <strong>IN THIS ENTRY</strong>
       {tocItems.map((item)=><a href={item.href}>{item.label}</a>)}
     </aside>
   </div>

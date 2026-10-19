@@ -2,7 +2,7 @@
 """Build on-screen editorial comparisons from the canonical SQLite corpus.
 
 The baseline is the last database state before the proposed correction seeds
-0233-0240. Current prose is taken from all ordered seeds. This is a *review*
+0233-0242. Current prose is taken from all ordered seeds. This is a *review*
 artifact under .tmp/, not a second source of truth or an automatically accepted
 historical edition.
 """
@@ -21,6 +21,7 @@ CURRENT = ROOT / ".tmp/editorial-after.sqlite"
 EXCLUDED_EDITORIAL_SEEDS = (
     "0237_lexicographic_", "0238_lexicographic_",
     "0239_lexicographic_", "0240_horary_batch04_",
+    "0241_lexicographic_", "0242_dignities_batch05_",
     "0233_lexicographic_", "0234_lexicographic_",
     "0235_lexicographic_", "0236_lots_batch02_",
 )
@@ -195,7 +196,7 @@ def main() -> None:
         payload = {
             "version": 1, "generated_at": datetime.now(timezone.utc).isoformat(),
             "explanation": (
-                "Before = corpus with editorial seeds 0233–0240 omitted; "
+                "Before = corpus with editorial seeds 0233–0242 omitted; "
                 "proposed = assembled current branch. Other non-edited passages "
                 "and normalized tables are shown on the live site. "
                 "Citations are database witnesses, not automatic source verification."

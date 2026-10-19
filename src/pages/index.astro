@@ -4,29 +4,35 @@ import corpus from '../data/generated/corpus.json';
 import { browseSubjects } from '../data/browseSubjects.js';
 
 const { terms, authors, works, meta } = corpus;
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const availableLetters = new Set(terms.map((term) => term.label.charAt(0).toUpperCase()));
 const featuredSlugs = [
-  'reception','application','sect','hayz','domicile','exaltation','terms','face',
-  'combustion','retrogradation','translation-of-light','collection-of-light',
-  'prohibition','lot-of-fortune','annual-profection','firdaria','horary-astrology','election'
+  'reception', 'application', 'sect', 'domicile', 'essential-dignity',
+  'combustion', 'translation-of-light', 'lot-of-fortune',
+  'annual-profection', 'firdaria'
 ];
-const featured = featuredSlugs.map((slug) => terms.find((term) => term.slug === slug)).filter(Boolean).slice(0,18);
+const featured = featuredSlugs
+  .map((slug) => terms.find((term) => term.slug === slug))
+  .filter(Boolean)
+  .sort((a, b) => a.label.localeCompare(b.label));
+const basePath = import.meta.env.BASE_URL === '/' ? '' : import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<BaseLayout>
-  <section class="hero">
-    <div class="shell hero-grid">
-      <div>
-        <p class="hero-kicker">Historical dictionary · traditional astrology</p>
+<BaseLayout title="Astrological Lexicon — Historical Astrology Reference">
+  <div class="reference-home">
+    <section class="reference-home__intro">
+      <div class="shell reference-home__intro-inner">
+        <p class="micro-label">Historical reference · Traditional astrology</p>
         <h1>Astrological Lexicon</h1>
-        <p class="hero-deck">A source-based reference work tracing technical astrological language across foundational texts from Late Antiquity through the seventeenth century.</p>
-        <div class="search-wrap">
-          <div class="search-label"><span class="micro-label">Search the lexicon</span><span>terms · authors · works</span></div>
+        <p class="reference-home__description">A reference to the terminology, concepts and techniques of traditional astrology, with historical names and source-specific definitions.</p>
+        <div class="reference-home__search">
+          <label for="term-search">Search entries, authors and works</label>
           <div class="search" id="lexicon-search">
             <input
               id="term-search"
               type="search"
               autocomplete="off"
-              placeholder="Try reception, bounds, Bonatti, Christian Astrology…"
-              aria-label="Search lexicon"
+              placeholder="Enter a term, author or historical work"
+              aria-label="Search the lexicon"
               role="combobox"
               aria-autocomplete="list"
               aria-expanded="false"
@@ -35,52 +41,67 @@ const featured = featuredSlugs.map((slug) => terms.find((term) => term.slug === 
             <div id="search-results" class="search-results" role="listbox" aria-label="Search results"></div>
           </div>
         </div>
+        <nav class="reference-home__alphabet" aria-label="Browse by initial letter">
+          <span>A–Z</span>
+          {alphabet.map((letter) => availableLetters.has(letter)
+            ? <a href={'/terms/#' + letter}>{letter}</a>
+            : <span class="is-empty">{letter}</span>)}
+        </nav>
       </div>
-      <div>
-        <div class="corpus-stats">
-          <div class="stat"><span class="stat-value">{meta.terms}</span><span class="stat-label">entries</span></div>
-          <div class="stat"><span class="stat-value">{meta.interpretations}</span><span class="stat-label">source accounts</span></div>
-          <div class="stat"><span class="stat-value">{meta.works}</span><span class="stat-label">historical works</span></div>
+    </section>
+
+    <div class="shell reference-home__body">
+      <div class="reference-home__main">
+        <section id="subjects" class="reference-home__section">
+          <div class="reference-home__section-heading">
+            <h2>Browse by subject</h2>
+            <p>Explore related terminology within a branch of traditional astrology.</p>
+          </div>
+          <div class="reference-home__subjects">
+            {browseSubjects.map((subject) => (
+              <a href={'/terms/?subject=' + subject.slug} class="reference-home__subject">
+                <strong>{subject.name}</strong>
+                <span>{subject.detail}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="reference-home__section" aria-labelledby="entries-heading">
+          <div class="reference-home__section-heading">
+            <h2 id="entries-heading">Explore the lexicon</h2>
+            <a href="/terms/">Complete alphabetical index →</a>
+          </div>
+          <ul class="reference-home__entries">
+            {featured.map((term) => (
+              <li>
+                <a href={'/terms/' + term.slug + '/'}>{term.label}</a>
+                <p>{term.short_definition}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <aside class="reference-home__aside" aria-label="About this reference work">
+        <div class="reference-home__aside-block">
+          <h2>Contents</h2>
+          <p><strong>{meta.terms}</strong> entries · <strong>{meta.works}</strong> historical works</p>
+          <p>Entries distinguish historical usage and terminology where the sources disagree.</p>
         </div>
-        <p class="hero-note"><strong>Not a modernized glossary.</strong> Definitions are synthesized from source evidence while disagreements, aliases, translator choices and historical differences remain visible.</p>
-      </div>
+        <div class="reference-home__aside-block">
+          <h2>Historical authors</h2>
+          <ul>
+            {authors.map((author) => (
+              <li><a href={'/authors/' + author.slug + '/'}>{author.name}</a></li>
+            ))}
+          </ul>
+          <a class="reference-home__aside-more" href="/works/">Browse historical works →</a>
+        </div>
+      </aside>
     </div>
-  </section>
-
-  <section class="section" id="lexicon">
-    <div class="shell section-grid">
-      <div class="section-intro"><p class="micro-label">01 · Lexicon</p><h2>Selected entries</h2><p>A compact doorway into the corpus. The complete A–Z index lives on its own page.</p></div>
-      <div class="section-body">
-        <ul class="index-list compact-list">
-          {featured.map((term) => <li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}
-        </ul>
-        <p class="more-link"><a href="/terms/">Browse all {meta.terms} entries →</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="subjects">
-    <div class="shell section-grid">
-      <div class="section-intro">
-        <p class="micro-label">02 · Subjects</p>
-        <h2>Browse by doctrine</h2>
-        <p>Start with a broad area of traditional doctrine, then narrow the results by name, alias or alphabet.</p>
-      </div>
-      <div class="section-body subject-grid">
-        {browseSubjects.map((subject) =>
-          <a class="subject" href={`/terms/?subject=${subject.slug}`}>
-            <strong>{subject.name}</strong><span>{subject.detail}</span>
-          </a>
-        )}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="tradition"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">03 · Tradition</p><h2>Source witnesses</h2><p>The corpus spans several linguistic and historical layers of the tradition.</p></div><div class="section-body timeline">{authors.map((author) => <div class="timeline-row"><span class="timeline-era">{author.historical_layer}</span><span class="timeline-author"><a href={`/authors/${author.slug}/`}>{author.name}</a></span><span class="timeline-work"><em>{author.works[0]?.title}</em></span></div>)}</div></div></section>
-
-  <section class="section" id="method"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">04 · Method</p><h2>How entries are built</h2><p>Each entry separates a concise definition from attributed historical evidence and source differences.</p></div><div class="section-body method-grid"><div class="method-item"><strong>Clear definition</strong><p>A concise recognition rule explaining what the term is.</p></div><div class="method-item"><strong>Source accounts</strong><p>Historical explanations remain tied to an author, work, edition and locator.</p></div><div class="method-item"><strong>Differences preserved</strong><p>False friends, competing rules and translator-dependent labels are not silently flattened.</p></div></div></div></section>
-
-  <script define:vars={{ terms, authors, works }} is:inline>
+  </div>
+  <script define:vars={{ terms, authors, works, basePath }} is:inline>
     const input = document.getElementById('term-search');
     const box = document.getElementById('search-results');
     const searchRoot = document.getElementById('lexicon-search');
@@ -188,7 +209,7 @@ const featured = featuredSlugs.map((slug) => terms.find((term) => term.slug === 
         updateActiveOption();
       } else if (event.key === 'Enter' && activeIndex >= 0 && visibleResults[activeIndex]) {
         event.preventDefault();
-        window.location.href = visibleResults[activeIndex].href;
+        window.location.href = basePath + visibleResults[activeIndex].href;
       } else if (event.key === 'Escape') {
         event.preventDefault();
         closeResults();

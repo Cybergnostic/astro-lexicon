@@ -9,8 +9,8 @@ from build_editorial_review_snapshot import ROOT, OUT
 
 data = json.loads(OUT.read_text(encoding="utf-8"))
 assert data["version"] == 1
-assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40]
-assert len(data["entries"]) == 108, "110 cohort references share Fortune and Evasion"
+assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40]
+assert len(data["entries"]) == 148, "150 cohort references share Fortune and Evasion"
 assert all(entry["before"]["definition"] is not None for entry in data["entries"].values())
 assert all(entry["proposed"]["definition"] for entry in data["entries"].values())
 
@@ -41,7 +41,13 @@ assert len(horary) == 40
 revised = [slug for slug in horary if data["entries"][slug]["changes"]]
 assert len(revised) == 15, f"Expected 15 genuine horary editorial revisions, got {revised}"
 assert any("Lilly" in witness["author"] for witness in data["entries"]["frustration"]["witnesses"])
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 54
+dignities = data["groups"][4]["slugs"]
+assert len(dignities) == 40
+revised_dignities = [slug for slug in dignities if data["entries"][slug]["changes"]]
+assert len(revised_dignities) == 13, f"Expected 13 real dignity editorial revisions, got {revised_dignities}"
+assert data["entries"]["exaltation"]["before"]["sections"] != data["entries"]["exaltation"]["proposed"]["sections"]
+assert any("al" in w["author"].lower() or "biruni" in w["author"].lower() for w in data["entries"]["triplicity-rulers"]["witnesses"])
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 67
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

@@ -20,6 +20,11 @@
       "id": "horary",
       "label": "Batch 04 · Horary, aspects and perfection",
       "slugs_file": "docs/editorial/batch-04-horary-slugs.txt"
+    },
+    {
+      "id": "dignities",
+      "label": "Batch 05 · Dignities, sect and places",
+      "slugs_file": "docs/editorial/batch-05-dignities-slugs.txt"
     }
   ]
 }

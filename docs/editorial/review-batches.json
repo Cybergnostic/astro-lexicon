@@ -15,6 +15,11 @@
       "id": "foundations",
       "label": "Batch 03 · Foundations and planetary doctrine",
       "slugs_file": "docs/editorial/batch-03-foundations-slugs.txt"
+    },
+    {
+      "id": "horary",
+      "label": "Batch 04 · Horary, aspects and perfection",
+      "slugs_file": "docs/editorial/batch-04-horary-slugs.txt"
     }
   ]
 }

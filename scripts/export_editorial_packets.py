@@ -159,8 +159,8 @@ def main() -> int:
     args = parser.parse_args()
     slugs = [line.strip() for line in args.slugs_file.read_text(encoding="utf-8").splitlines()
              if line.strip() and not line.lstrip().startswith("#")]
-    if not slugs or len(slugs) > 25 or len(slugs) != len(set(slugs)):
-        parser.error("Provide 1–25 distinct canonical slugs, one per line.")
+    if not slugs or len(slugs) > 60 or len(slugs) != len(set(slugs)):
+        parser.error("Provide 1–60 distinct canonical slugs, one per line.")
     db_path = args.db or DEFAULT_DB
     if args.db is None:
         db_path.parent.mkdir(parents=True, exist_ok=True)

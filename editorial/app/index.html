@@ -2,99 +2,185 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Astro Lexicon Editorial Review</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Astro Lexicon · Editorial Review</title>
   <link rel="stylesheet" href="/app.css" />
 </head>
 <body>
   <header class="topbar">
-    <div>
-      <p class="eyebrow">Local editorial workbench</p>
-      <h1>Astro Lexicon Review</h1>
+    <div class="identity">
+      <span class="monogram" aria-hidden="true">AL</span>
+      <div>
+        <p class="eyebrow">ASTROLOGICAL LEXICON / EDITORIAL DESK</p>
+        <h1>Review workbench</h1>
+      </div>
     </div>
-    <div class="summary" id="summary"></div>
+    <div class="summary" id="summary" aria-live="polite">Loading editorial batches…</div>
   </header>
 
   <div class="toolbar">
-    <button id="prev" type="button" aria-label="Previous entry">←</button>
-    <label class="entry-picker">
-      <span>Entry</span>
-      <input id="entry-search" list="entry-list" placeholder="Search entries…" autocomplete="off" />
+    <label class="batch-picker">WORKING BATCH
+      <select id="batch-picker" aria-label="Choose editorial batch"></select>
+    </label>
+    <label class="entry-picker">FIND AN ENTRY
+      <input id="entry-search" list="entry-list" placeholder="Find a headword…" autocomplete="off" />
       <datalist id="entry-list"></datalist>
     </label>
-    <button id="next" type="button" aria-label="Next entry">→</button>
-    <a id="open-public" class="button-link" href="#" target="_blank" rel="noreferrer">Open public preview ↗</a>
+    <label class="filter-picker">REVIEW STATE
+      <select id="status-filter">
+        <option value="all">All entries</option>
+        <option value="revised-awaiting-review">Ready for decision</option>
+        <option value="source-pending">Source check needed</option>
+        <option value="triaged">Further editing</option>
+        <option value="approved">Approved</option>
+        <option value="no-change-justified">Kept as is</option>
+      </select>
+    </label>
+    <div class="nav-controls">
+      <button id="prev" type="button" aria-label="Previous queued entry">←</button>
+      <span id="queue-position" aria-live="polite">—</span>
+      <button id="next" type="button" aria-label="Next queued entry">→</button>
+    </div>
+    <a id="open-public" class="button-link" href="#" target="_blank" rel="noreferrer">Open public page ↗</a>
+  </div>
+
+  <div class="queue-section">
+    <div class="queue-head">
+      <span id="batch-summary">Select an editorial batch</span>
+      <small>Review decisions are saved on this computer to the Git-tracked CSV ledger.</small>
+    </div>
+    <nav id="batch-queue" class="batch-queue" aria-label="Batch entries"></nav>
   </div>
 
   <main class="workspace">
-    <section class="preview-pane" aria-label="Public lexicon preview">
+    <section class="preview-pane" aria-label="Current public entry">
       <div class="pane-heading">
         <div>
-          <p class="eyebrow">Unmodified public preview</p>
+          <p class="eyebrow">LIVE PUBLIC ARTICLE</p>
           <h2 id="preview-title">Select an entry</h2>
         </div>
-        <p class="preview-help">This is an iframe of <code>npm run dev</code> on port 4321. The editor itself is separate.</p>
+        <p class="preview-help">Actual entry on port 4321. You are reviewing copy, not editing the historical database in this pane.</p>
       </div>
-      <iframe id="preview" title="Public lexicon entry preview"></iframe>
+      <iframe id="preview" title="Live Astro Lexicon entry"></iframe>
     </section>
 
-    <aside class="review-pane">
-      <section class="entry-status-card">
-        <div>
-          <p class="eyebrow">Editorial status</p>
-          <h2 id="review-title">No entry selected</h2>
+    <div class="review-pane">
+      <section class="review-identity">
+        <div class="entry-head">
+          <div>
+            <p class="eyebrow">LEXICOGRAPHIC DECISION</p>
+            <h2 id="review-title">No entry selected</h2>
+            <span id="entry-category" class="entry-category"></span>
+          </div>
+          <span class="status-pill" id="editorial-status">Unreviewed</span>
         </div>
-        <div class="status-buttons" id="status-buttons">
-          <button type="button" data-status="unreviewed">Unreviewed</button>
-          <button type="button" data-status="reviewed">Reviewed ✓</button>
-          <button type="button" data-status="needs-work">Needs work ⚑</button>
+        <p id="finding" class="finding"></p>
+        <div id="source-hold" class="source-hold" hidden>
+          <strong>Outstanding check</strong>
+          <p id="pending-check"></p>
         </div>
       </section>
 
+      <section class="decision-panel">
+        <h3>Record your decision</h3>
+        <p class="section-help">An approval is a human editorial signoff. Source holds must be resolved with a checked passage before approval.</p>
+        <div class="decision-inputs">
+          <label>REVIEWER NAME
+            <input id="reviewer-name" type="text" maxlength="120" autocomplete="name" placeholder="Your name" />
+          </label>
+          <label>EXPLANATION OR PASSAGE CHECK
+            <textarea id="decision-reason" rows="3" placeholder="Why accept, what to change, or which edition and passage you checked…"></textarea>
+          </label>
+        </div>
+        <div class="decision-buttons">
+          <button id="approve" class="primary" data-decision="approve" type="button">Approve revised copy</button>
+          <button id="keep" data-decision="no_change" type="button">Keep existing entry</button>
+          <button data-decision="request_changes" type="button">Request changes</button>
+          <button data-decision="needs_source" type="button">Flag source check</button>
+          <button id="resolve-source" data-decision="resolve_source" type="button">Source checked — release hold</button>
+        </div>
+        <p id="decision-save-state" class="save-state" aria-live="polite"></p>
+        <details class="decision-history">
+          <summary>Decision history</summary>
+          <pre id="decision-log">No decisions recorded yet.</pre>
+        </details>
+      </section>
+
+      <section class="comparison-pane">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">EDITORIAL COPY COMPARISON</p>
+            <h3>Before and proposed</h3>
+          </div>
+          <span id="change-count" class="count-chip"></span>
+        </div>
+        <p class="section-help" id="comparison-explanation">
+          Baseline means the text before the editorial correction seeds. Proposed is the assembled text in this branch, not a new uncommitted draft.
+        </p>
+        <div id="comparison" class="comparison-list"></div>
+      </section>
+
+      <section class="source-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">HISTORICAL EVIDENCE</p>
+            <h3>Source witnesses and verification</h3>
+          </div>
+          <span id="source-count" class="count-chip"></span>
+        </div>
+        <p class="section-help"><strong>Recorded citations are not proof that every source was independently verified.</strong> Use the exact edition and passage when approving historical claims.</p>
+        <p id="checked-source" class="checked-source"></p>
+        <details id="sources-details">
+          <summary>Show recorded historical witnesses</summary>
+          <div id="source-list" class="source-list"></div>
+        </details>
+      </section>
+
       <section class="new-note-card">
-        <p class="eyebrow">Add suggestion</p>
+        <p class="eyebrow">PER-PASSAGE NOTES AND IMAGE SUGGESTIONS</p>
         <div class="form-grid">
-          <label>Attach to
+          <label>ATTACH TO
             <select id="target"></select>
           </label>
-          <label>Type
+          <label>TYPE
             <select id="kind">
               <option value="content">Content</option>
               <option value="structure">Structure</option>
-              <option value="visual">Visual</option>
-              <option value="source">Source check</option>
-              <option value="frontend">Frontend</option>
+              <option value="source">Source verification</option>
+              <option value="visual">Visual / diagram</option>
+              <option value="frontend">Frontend / layout</option>
               <option value="image">Image suggestion</option>
               <option value="other">Other</option>
             </select>
           </label>
         </div>
-
-        <label class="wide-label">Comment / suggestion
-          <textarea id="note-text" rows="5" placeholder="Write exactly what you want changed, added, moved, checked, or illustrated…"></textarea>
+        <label class="wide-label">COMMENT / SUGGESTION
+          <textarea id="note-text" rows="3" placeholder="Point to a particular section, formula or citation…"></textarea>
         </label>
-
-        <div class="image-box">
-          <label>Candidate picture
-            <input id="image-input" type="file" accept="image/png,image/jpeg,image/webp" />
-          </label>
-          <label>Image note / proposed use
-            <input id="image-caption" type="text" placeholder="e.g. Use after the Altitude definition; crop labels" />
-          </label>
-          <div id="pending-image" class="pending-image" hidden></div>
-        </div>
-
-        <button id="add-note" class="primary" type="button">Save suggestion</button>
-        <p class="save-state" id="save-state" aria-live="polite"></p>
+        <details class="image-add">
+          <summary>Add a candidate image (optional)</summary>
+          <div class="image-box">
+            <label>IMAGE
+              <input id="image-input" type="file" accept="image/png,image/jpeg,image/webp" />
+            </label>
+            <label>PROPOSED USE
+              <input id="image-caption" type="text" placeholder="Caption, crop, placement, or citation…" />
+            </label>
+            <div id="pending-image" class="pending-image" hidden></div>
+          </div>
+        </details>
+        <button id="add-note" type="button">Save passage note</button>
+        <p id="save-state" class="save-state" aria-live="polite"></p>
       </section>
 
       <section class="notes-card">
         <div class="notes-heading">
           <div>
-            <p class="eyebrow">Saved review history</p>
-            <h3>Suggestions for this entry</h3>
+            <p class="eyebrow">REVIEW HISTORY</p>
+            <h3>Saved suggestions</h3>
           </div>
-          <label class="filter">Show
+          <label class="filter">SHOW
             <select id="note-filter">
               <option value="all">All</option>
               <option value="open">Open only</option>
@@ -104,7 +190,7 @@
         </div>
         <div id="notes" class="notes-list"></div>
       </section>
-    </aside>
+    </div>
   </main>
 
   <script type="module" src="/app.js"></script>

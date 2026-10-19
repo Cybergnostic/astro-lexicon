@@ -12,6 +12,9 @@ on:
       - 'scripts/test_editorial_review_snapshot.py'
       - 'editorial/app/**'
       - 'docs/editorial/lexicographic-ledger.csv'
+      - 'docs/editorial/review-batches.json'
+      - 'docs/editorial/batch-03-foundations-slugs.txt'
+      - 'db/seed/0237_lexicographic_foundations_batch03.sql'
       - 'package.json'
       - '.github/workflows/human-editorial-workbench.yml'
   pull_request:
@@ -24,6 +27,9 @@ on:
       - 'scripts/test_editorial_review_snapshot.py'
       - 'editorial/app/**'
       - 'docs/editorial/lexicographic-ledger.csv'
+      - 'docs/editorial/review-batches.json'
+      - 'docs/editorial/batch-03-foundations-slugs.txt'
+      - 'db/seed/0237_lexicographic_foundations_batch03.sql'
       - 'package.json'
       - '.github/workflows/human-editorial-workbench.yml'
 

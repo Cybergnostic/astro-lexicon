@@ -54,7 +54,15 @@ export function stringifyCsv(headers, rows) {
 }
 
 export function revisionToken(row) {
-  return createHash('sha256').update(JSON.stringify(row)).digest('hex');
+  // Normalize optional review columns so adding them to the CSV on the first
+  // human save cannot invalidate every other browser tab's untouched rows.
+  const normalized = { ...row };
+  for (const field of ['review_note', 'reviewed_by', 'reviewed_at']) {
+    normalized[field] ??= '';
+  }
+  return createHash('sha256').update(JSON.stringify(
+    Object.keys(normalized).sort().map((key) => [key, normalized[key]])
+  )).digest('hex');
 }
 
 export function publicLedger(rows) {

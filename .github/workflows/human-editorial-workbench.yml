@@ -1,0 +1,42 @@
+name: Human editorial workbench
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/editorial_review_server.mjs'
+      - 'scripts/editorial_ledger.mjs'
+      - 'scripts/test_editorial_ledger.mjs'
+      - 'scripts/smoke_editorial_workbench.mjs'
+      - 'scripts/build_editorial_review_snapshot.py'
+      - 'scripts/test_editorial_review_snapshot.py'
+      - 'editorial/app/**'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - 'package.json'
+      - '.github/workflows/human-editorial-workbench.yml'
+  pull_request:
+    paths:
+      - 'scripts/editorial_review_server.mjs'
+      - 'scripts/editorial_ledger.mjs'
+      - 'scripts/test_editorial_ledger.mjs'
+      - 'scripts/smoke_editorial_workbench.mjs'
+      - 'scripts/build_editorial_review_snapshot.py'
+      - 'scripts/test_editorial_review_snapshot.py'
+      - 'editorial/app/**'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - 'package.json'
+      - '.github/workflows/human-editorial-workbench.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript, review decisions, and before/after snapshots
+        run: npm run review:check

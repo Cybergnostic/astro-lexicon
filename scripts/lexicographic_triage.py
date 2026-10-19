@@ -76,6 +76,7 @@ def archetype(slug: str, label: str, category: str, has_tables: bool) -> str:
     }:
         return "planet-sign"
     if any(part in s for part in ("firdar", "profection", "direction", "rectification")) or s in {
+        "fardar",
         "animodar", "trutine-of-hermes", "solar-revolution", "annual-revolution",
     }:
         return "technical-method"

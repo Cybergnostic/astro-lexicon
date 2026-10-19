@@ -63,6 +63,15 @@ The direct witness is *The Great Introduction to Astrology*, Brill 2019 edition,
 
 **Gendered children lots:** their historical headings describe an earlier source's division; they should not be converted into assertions about a real child's sex or reproductive prognosis. The added prose is explicitly framed as an attribution to Abū Maʿshar.
 
+
+### Bonatti's Part of Substance: a second context requires caution
+
+Direct inspection of the uploaded merged *Liber Astronomiae* located Bonatti's clear Treatise 8.2, chapter 5 account (merged PDF p. 954): the Part of Substance is taken from the lord of the second house to that house's degree, the same by day and night, **projected from the Ascendant**. This supports the formula currently stored for that specific source.
+
+A different passage in the earlier **horary/questions** material (merged PDF pp. 217–219, chapter XIV, *On Finding the Significator of the Thing Sought*) discusses the Part of Substance with a numerical question example. Its presentation starts from the second-house degree, and the example uses Mars even after naming the Sun as stronger significator; the modern translator's footnote flags that peculiarity. The relation of this question-specific presentation to the formal Lots chapter needs critical comparison before declaring a universal Bonatti rule. **Do not rewrite the structured formula from this passage without resolving the context.**
+
+This is a concrete case in which the source-aware audit catches a question that cannot be solved by style normalization alone. The formula remains unchanged and the source-review state remains pending.
+
 ## Changes, validation, and acceptance
 
 The generated editorial packets for this PR contain current definitions, reviewed prose sections, the unchanged formula tables and all linked source interpretations.

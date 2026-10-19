@@ -4,6 +4,32 @@ A source-based, teaching-quality encyclopedia of traditional astrological termin
 
 The project compares technical concepts across historical sources without flattening differences between authors, periods, languages, translators or traditions. SQLite is the canonical source of truth; the public Astro frontend is generated from the reviewed corpus.
 
+## Human editorial review workbench
+
+The local reviewer supports the **ten-entry lexicographic pilot** and **twenty Lots/Parts headwords** as separate review queues. It displays the live website beside actual before/after SQLite prose, historical witness summaries, pending checks and approval decisions.
+
+Run in one terminal:
+
+    npm run dev
+
+In a second terminal:
+
+    npm run review
+
+Open http://127.0.0.1:4322/ to review, search, approve, flag sources and leave passage-specific comments. The live website preview runs on port 4321.
+
+Review judgments are saved immediately to the tracked CSV file at docs/editorial/lexicographic-ledger.csv. The existing editorial/reviews.json retains comments and image attachments. Approval requires a human name and all recorded source/review holds to be resolved with an explanation.
+
+Reviewing does not rewrite astrological articles, formulas or source records. Commit and push the saved ledger when your human review session is finished.
+
+Full instructions and safeguards: docs/editorial/human-review-workbench.md.
+
+Validation, including an isolated HTTP test of the decision API:
+
+    npm run review:check
+
+---
+
 ## Current status
 
 The major **bird's-eye encyclopedia review** and **Editorial Baseline v1** are complete on remote `main`.

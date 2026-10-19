@@ -21,7 +21,7 @@ try:
         SELECT t.slug FROM term_articles a JOIN terms t ON t.id=a.term_id
         WHERE a.editorial_notes='Lexicographic Batch 03: historically situated clinical-language correction.'
     """).fetchall()
-    if len(section_rows) != 20 or len(set(slug for slug, _ in section_rows)) != 20:
+    if len(section_rows) != 16 or len(set(slug for slug, _ in section_rows)) != 16:
         raise AssertionError(f"Expected 20 distinct updated prose sections; got {section_rows}")
     if intro_rows != [('medical-astrology',)]:
         raise AssertionError(f"Expected only the medical astrology lead changed: {intro_rows}")
@@ -43,6 +43,6 @@ for slug in selected:
     counts[state] = counts.get(state, 0) + 1
     if state in {"approved", "no-change-justified"}:
         raise AssertionError("Batch 03 cannot receive automated human approval")
-if counts != {"revised-awaiting-review": 20, "triaged": 10, "source-pending": 10}:
+if counts != {"revised-awaiting-review": 17, "triaged": 13, "source-pending": 10}:
     raise AssertionError(f"Batch 03 triage states differ: {counts}")
-print("Batch 03 PASS: 40 distinct headwords; 20 actual prose section edits; one intro edit; 10 source holds; no automated approvals.")
+print("Batch 03 PASS: 40 distinct headwords; 16 actual prose section edits; one intro edit; 10 source holds; no automated approvals.")

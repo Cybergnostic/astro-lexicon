@@ -36,7 +36,12 @@ assert len(proposed_changes) == 17, f"Expected 17 distinct editorial revisions, 
 assert data["entries"]["medical-astrology"]["before"]["intro"] != data["entries"]["medical-astrology"]["proposed"]["intro"]
 assert data["entries"]["ninth-nawbahr"]["changes"] == [], "Specialist source pending headword should not be rewritten prematurely"
 
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 40
+horary = data["groups"][3]["slugs"]
+assert len(horary) == 40
+revised = [slug for slug in horary if data["entries"][slug]["changes"]]
+assert len(revised) == 15, f"Expected 15 genuine horary editorial revisions, got {revised}"
+assert any("Lilly" in witness["author"] for witness in data["entries"]["frustration"]["witnesses"])
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 54
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

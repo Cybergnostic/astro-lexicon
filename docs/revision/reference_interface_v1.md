@@ -1,42 +1,35 @@
-# Reference-first UI redesign — Phase 1
+# Astro Lexicon — Reference-first interface v2
 
-Status: review branch, not yet approved for `main`.
+Status: **Complete implementation for browser review; unmerged PR #55**.
 
-## Editorial goal
+## Design objective
 
-Present Astro Lexicon as a scholarly historical lexicon rather than a landing page for a research project. Readers should immediately find headwords, definitions, historical variants, authors and related terms.
+Treat the site as a dictionary and scholarly source reference, not a marketing homepage, magazine or data-extraction dashboard. The index must be the primary interaction on both the landing page and the A–Z route.
 
-## Changes in this branch
+## Implemented
 
-- Homepage leads with search, a complete A–Z access strip and subject browsing rather than promotional project sections or prominent corpus statistics.
-- Representative entries include concise descriptions so readers can recognize concepts before opening pages.
-- Historical authors are listed as a secondary reference path rather than a marketing timeline.
-- Global navigation prioritizes the alphabetical index.
-- Individual terms show a breadcrumb, variant names and immediate cross-references above the long article material.
-- Article display uses more restrained heading sizes, sentence-case section titles, a tighter reading width and scholarly reference styling.
-- A–Z anchors from the homepage resolve to the matching filtered letter on the terms index, preserving the subject/search filters.
-- All existing source data, specialized tables, diagrams and reviewed term bodies remain unchanged.
+- New navy / blue-gray / copper reference identity, large typographic hierarchy, Source Serif / Newsreader / DM Sans system, visible source-first navigation, accessible skip link.
+- Homepage compact reference introduction followed by the real A–Z directory, not a featured-post collection.
+- Reusable `LexiconDirectory.astro` on the homepage and `/terms/`; provides client-side full-corpus search (headword, aliases, category, definition), alphabetical letter filtering, subject filtering, contextual counts, paged reveal of 24 items, empty state, mobile subject toggle, direct-link URL filters and keyboard search shortcut (/).
+- Sidebars for source authors and primary works, responsive with the main list prioritized on mobile.
+- Term pages: clear category and headword, definition in a separate treatment, aliases and source-author count, cross references, restrained body typography, sticky contents rail, mobile contents nav and adjacent headword links.
+- Existing generated corpus, specialized components, historical forms, source citations and SQLite seed data remain unchanged.
 
-## Review checklist before merge
+## Must verify before merge
 
-1. Run corpus audit, generated-data tests and production build on this branch.
-2. Inspect the homepage and representative term pages on desktop and mobile.
-3. Verify opening A, F, R and Z from the home A–Z strip lands on the intended filtered list.
-4. Verify search mouse and keyboard navigation, including GitHub Pages base paths.
-5. Inspect these entry types: Reception (complex technical), Animodar (historical method), Firdaria (timing tables), a zodiac sign, a planet, and a definition-only headword.
-6. Confirm horizontal scrolling of dense reference tables works on narrow screens.
-7. Recheck source references and historical forms after layout changes.
+1. Run `npm run audit:corpus`, `npm run test:generated`, `npm run build` (GitHub workflow also verifies build).
+2. Homepage desktop + mobile: source links, layout, top nav, 24-item paging.
+3. Search for `reception`, `Animodar`, `firdaria`, and an accented alias; verify case/diacritic-insensitive searches and empty state.
+4. Use letter F on `/terms/`; reload and confirm URL hash restores filter. Use `?subject=predictive-techniques` and reload.
+5. Verify keyboard / focuses search while not typing.
+6. Examine at least one complicated reference page (Reception, a planetary article, a zodiac-sign entry), one short dictionary page, and a page with wide tables.
+7. Check browser console and keyboard/tab order. Confirm GitHub Pages deployment base-path links.
+8. Review UI with real screenshot and feedback; don't treat successful build as visual approval.
 
-## Next UI/editorial phases
+## Content work intentionally separate
 
-- Decide a stable headword template with concise definition, historical forms, explanation, source-specific variants, references and see-also links.
-- Remove redundant top-level prose where the canonical short definition and article intro repeat without adding information.
-- Integrate historical source citations near disputed claims, while maintaining the underlying normalized source data.
-- Add consistent bibliographic locators and improved cross-reference labels; avoid rendering database relation keys as reader-facing headings.
-- Build a separately reviewed lexicographic sample of 8–12 diverse terms before rolling content changes across the full corpus.
+The new entry display uses existing prose, preserving provenance. **This branch is not a lexicographic rewrite of 468 entries.** Once design is accepted, pilot an editorial pass on a set of representative headwords, remove redundant explanation and development notes, integrate precise source locators, and only then scale source onboarding. Avoid copying copyrighted modern translation prose.
 
-## Source expansion after UI baseline
+## Notes
 
-The existing historical-source database and extraction ledgers remain authoritative. Additional source witnesses must be onboarded by registering exact editions, reading in source order, recording passage/page locators, separating author text from editor notes, matching existing headwords first and preserving genuine disagreements. Avoid copying copyrighted translation text into the public corpus.
-
-Candidate available sources for the next verified extraction: Sahl and Masha'allah; Bonatti, Abū Maʿshar, al-Bīrūnī, Antiochus and Lilly for corrections/cross-witness checks. Do not claim a source is fully processed until its coverage ledger and audit support it.
+Subject membership currently uses the project's existing `browseSubjects.js` text/keyword classification. A later taxonomy pass should migrate to explicit editorial categories if collisions become visible. Search is static/browser-local, uses no API and does not send queries to a server.

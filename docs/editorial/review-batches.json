@@ -35,6 +35,11 @@
       "id": "core",
       "label": "Batch 07 · Planets, signs and natural philosophy",
       "slugs_file": "docs/editorial/batch-07-core-slugs.txt"
+    },
+    {
+      "id": "signs",
+      "label": "Batch 08 · Zodiacal classes, relationships and elections",
+      "slugs_file": "docs/editorial/batch-08-signs-slugs.txt"
     }
   ]
 }

@@ -16,6 +16,7 @@ on:
       - 'docs/editorial/batch-05-dignities-slugs.txt'
       - 'docs/editorial/batch-06-astronomical-slugs.txt'
       - 'docs/editorial/batch-07-core-slugs.txt'
+      - 'docs/editorial/batch-08-signs-slugs.txt'
       - 'scripts/check_core_batch07.py'
       - 'scripts/check_astronomy_batch06.py'
       - 'scripts/check_dignities_batch05.py'
@@ -97,6 +98,12 @@ jobs:
             --db .tmp/lexicographic-triage.sqlite \
             --slugs-file docs/editorial/batch-07-core-slugs.txt \
             --out .tmp/core-review-packet.md
+      - name: Export actual forty-entry sign classification review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-08-signs-slugs.txt \
+            --out .tmp/signs-review-packet.md
       - name: Publish candidate inventory and editorial packets
         uses: actions/upload-artifact@v4
         with:
@@ -109,4 +116,5 @@ jobs:
             .tmp/dignities-review-packet.md
             .tmp/astronomy-review-packet.md
             .tmp/core-review-packet.md
+            .tmp/signs-review-packet.md
           retention-days: 30

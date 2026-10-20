@@ -20,6 +20,8 @@ on:
       - 'docs/editorial/batch-09-conditions-slugs.txt'
       - 'docs/editorial/batch-10-lots-slugs.txt'
       - 'docs/editorial/batch-11-time-lords-slugs.txt'
+      - 'docs/editorial/batch-12-foundations-slugs.txt'
+      - 'scripts/check_foundations_batch12.py'
       - 'scripts/check_timelords_batch11.py'
       - 'scripts/check_lots_batch10.py'
       - 'scripts/check_conditions_batch09.py'
@@ -77,6 +79,8 @@ jobs:
         run: python3 scripts/check_lots_batch10.py --db .tmp/lexicographic-triage.sqlite
       - name: Verify Batch 11 source passages, new prose and unchanged reference data
         run: python3 scripts/check_timelords_batch11.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 12 source-linked copy and pending checks
+        run: python3 scripts/check_foundations_batch12.py --db .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \
@@ -137,6 +141,12 @@ jobs:
             --db .tmp/lexicographic-triage.sqlite \
             --slugs-file docs/editorial/batch-11-time-lords-slugs.txt \
             --out .tmp/timelords11-review-packet.md
+      - name: Export Batch 12 assembled foundations, stars and medicine packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-12-foundations-slugs.txt \
+            --out .tmp/foundations12-review-packet.md
       - name: Publish candidate inventory and editorial packets
         uses: actions/upload-artifact@v4
         with:
@@ -153,4 +163,5 @@ jobs:
             .tmp/conditions-review-packet.md
             .tmp/lots10-review-packet.md
             .tmp/timelords11-review-packet.md
+            .tmp/foundations12-review-packet.md
           retention-days: 30

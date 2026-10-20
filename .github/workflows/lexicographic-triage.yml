@@ -18,6 +18,7 @@ on:
       - 'docs/editorial/batch-07-core-slugs.txt'
       - 'docs/editorial/batch-08-signs-slugs.txt'
       - 'docs/editorial/batch-09-conditions-slugs.txt'
+      - 'docs/editorial/batch-10-lots-slugs.txt'
       - 'scripts/check_conditions_batch09.py'
       - 'scripts/check_signs_batch08.py'
       - 'scripts/check_core_batch07.py'
@@ -117,6 +118,12 @@ jobs:
             --db .tmp/lexicographic-triage.sqlite \
             --slugs-file docs/editorial/batch-09-conditions-slugs.txt \
             --out .tmp/conditions-review-packet.md
+      - name: Export Batch 10 historical Lots review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-10-lots-slugs.txt \
+            --out .tmp/lots10-review-packet.md
       - name: Publish candidate inventory and editorial packets
         uses: actions/upload-artifact@v4
         with:
@@ -131,4 +138,5 @@ jobs:
             .tmp/core-review-packet.md
             .tmp/signs-review-packet.md
             .tmp/conditions-review-packet.md
+            .tmp/lots10-review-packet.md
           retention-days: 30

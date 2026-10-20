@@ -9,8 +9,8 @@ from build_editorial_review_snapshot import ROOT, OUT
 
 data = json.loads(OUT.read_text(encoding="utf-8"))
 assert data["version"] == 1
-assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40,40,40,40,40,40,40]
-assert len(data["entries"]) == 388, "390 cohort references share Fortune and Evasion"
+assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40,40,40,40,40,40,40,40]
+assert len(data["entries"]) == 428, "430 cohort references share Fortune and Evasion"
 assert all(entry["before"]["definition"] is not None for entry in data["entries"].values())
 assert all(entry["proposed"]["definition"] for entry in data["entries"].values())
 

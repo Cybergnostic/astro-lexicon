@@ -89,7 +89,15 @@ assert len(changed_time_lords) == 13, f"Expected thirteen substantive time-lord 
 assert any(change["kind"] == "definition" for change in data["entries"]["promittor"]["changes"])
 assert any(change["kind"] == "section" for change in data["entries"]["monthly-profection"]["changes"])
 assert data["entries"]["jarbakhtar"]["changes"] == [], "Historical source hold must not trigger a mechanical rewrite"
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 177
+foundations_medical = data["groups"][11]["slugs"]
+assert len(foundations_medical) == 40
+revised_foundations = [slug for slug in foundations_medical if data["entries"][slug]["changes"]]
+assert len(revised_foundations) == 14, f"Expected fourteen genuine Batch 12 revisions, got {revised_foundations}"
+assert any(c["kind"] == "definition" for c in data["entries"]["medical-crisis"]["changes"])
+assert any(c["kind"] == "section" for c in data["entries"]["critical-days"]["changes"])
+assert data["entries"]["thought-reading"]["changes"] == [], "Source-held category not mechanically rewritten"
+assert any("Lilly" in w["author"] for w in data["entries"]["decumbiture"]["witnesses"])
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 191
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

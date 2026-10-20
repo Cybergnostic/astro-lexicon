@@ -9,8 +9,8 @@ from build_editorial_review_snapshot import ROOT, OUT
 
 data = json.loads(OUT.read_text(encoding="utf-8"))
 assert data["version"] == 1
-assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40,40,40]
-assert len(data["entries"]) == 228, "230 cohort references share Fortune and Evasion"
+assert [len(group["slugs"]) for group in data["groups"]] == [10,20,40,40,40,40,40,40]
+assert len(data["entries"]) == 268, "270 cohort references share Fortune and Evasion"
 assert all(entry["before"]["definition"] is not None for entry in data["entries"].values())
 assert all(entry["proposed"]["definition"] for entry in data["entries"].values())
 
@@ -60,7 +60,14 @@ assert len(revised_core) == 18, f"Expected 18 genuine core-term revisions: {revi
 assert any(c["kind"] == "definition" for c in data["entries"]["mercury"]["changes"])
 assert data["entries"]["element-air"]["before"]["intro"] != data["entries"]["element-air"]["proposed"]["intro"]
 assert data["entries"]["aries"]["changes"] == [], "Sign entries with sound classifications should not be homogenized"
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 107
+signs = data["groups"][7]["slugs"]
+assert len(signs) == 40
+revised_signs = [slug for slug in signs if data["entries"][slug]["changes"]]
+assert len(revised_signs) == 22, f"Expected 22 genuinely revised sign/headword entries: {revised_signs}"
+assert any("Bīrūnī" in w["author"] or "Biruni" in w["author"] for w in data["entries"]["natural-sextile"]["witnesses"])
+assert data["entries"]["natural-sextile"]["before"]["intro"] != data["entries"]["natural-sextile"]["proposed"]["intro"]
+assert data["entries"]["dry-lunar-mansion"]["changes"] == [], "Specialized mansion table should not be mechanically rewritten"
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 129
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

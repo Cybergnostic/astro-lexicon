@@ -22,6 +22,8 @@ on:
       - 'docs/editorial/batch-10-lots-slugs.txt'
       - 'docs/editorial/batch-11-time-lords-slugs.txt'
       - 'docs/editorial/batch-12-foundations-slugs.txt'
+      - 'db/seed/0255_lexicographic_foundations_medical_batch12.sql'
+      - 'db/seed/0256_foundations_medical_direct_witnesses.sql'
       - 'db/seed/0253_lexicographic_timelords_batch11.sql'
       - 'db/seed/0254_timelords_batch11_lilly_sources.sql'
       - 'db/seed/0251_lexicographic_lots_batch10.sql'

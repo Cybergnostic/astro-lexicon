@@ -50,6 +50,11 @@
       "id": "lots2",
       "label": "Batch 10 · Source-specific Lots and calculated points",
       "slugs_file": "docs/editorial/batch-10-lots-slugs.txt"
+    },
+    {
+      "id": "time-lords",
+      "label": "Batch 11 · Time lords and predictive techniques",
+      "slugs_file": "docs/editorial/batch-11-time-lords-slugs.txt"
     }
   ]
 }

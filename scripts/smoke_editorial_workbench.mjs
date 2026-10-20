@@ -45,7 +45,7 @@ try {
   }
   assert.equal(ready,true,'Workbench failed to start: '+output);
   const editorial = (await request('/api/editorial')).data;
-  assert.equal(Object.keys(editorial.entries).length,348);
+  assert.equal(Object.keys(editorial.entries).length,388);
   assert.equal(editorial.groups[1].slugs.length,20);
   assert.equal(editorial.groups[2].slugs.length,40);
   assert.equal(editorial.groups[3].slugs.length,40);
@@ -55,6 +55,7 @@ try {
   assert.equal(editorial.groups[7].slugs.length,40);
   assert.equal(editorial.groups[8].slugs.length,40);
   assert.equal(editorial.groups[9].slugs.length,40);
+  assert.equal(editorial.groups[10].slugs.length,40);
   const before = editorial.ledger['lot-of-sons'];
   assert.ok(before.revision);
   assert.ok(before.pending_check);
@@ -86,7 +87,7 @@ try {
   const retained = await request('/api/reviews');
   assert.equal(retained.status,200);
   assert.ok(Array.isArray(retained.data.notes));
-  console.log('HTTP review smoke passed: 348 comparisons, source resolution, signed approval, stale-save protection and preserved notes.');
+  console.log('HTTP review smoke passed: 388 comparisons, source resolution, signed approval, stale-save protection and preserved notes.');
 } finally {
   server.kill('SIGTERM');
   await wait(200);

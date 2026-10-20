@@ -82,7 +82,14 @@ assert len(revised_lots10) == 19, f"Expected 19 real Lots edits, got {revised_lo
 assert any("Abū Maʿshar" in w["author"] or "Mashar" in w["work"] for w in data["entries"]["lot-of-enemies-hermes"]["witnesses"])
 assert any(c["kind"] == "section" for c in data["entries"]["lot-of-enemies-hermes"]["changes"])
 assert data["entries"]["lot-of-imprisonment"]["changes"] == [], "Do not rewrite an already precise source name"
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 164
+time_lords = data["groups"][10]["slugs"]
+assert len(time_lords) == 40
+changed_time_lords = [slug for slug in time_lords if data["entries"][slug]["changes"]]
+assert len(changed_time_lords) == 13, f"Expected thirteen substantive time-lord revisions, got {changed_time_lords}"
+assert any(change["kind"] == "definition" for change in data["entries"]["promittor"]["changes"])
+assert any(change["kind"] == "section" for change in data["entries"]["monthly-profection"]["changes"])
+assert data["entries"]["jarbakhtar"]["changes"] == [], "Historical source hold must not trigger a mechanical rewrite"
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 177
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

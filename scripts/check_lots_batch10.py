@@ -37,6 +37,6 @@ expected={"source-pending":26,"revised-awaiting-review":5,"triaged":9}
 if states!=expected:raise AssertionError(f"Batch 10 review states {states} do not equal {expected}")
 if any(ledger[s]["reviewer_signoff"] for s in cohort):
     raise AssertionError("Automatic human approval is forbidden")
-if "§4.83" not in ledger["lot-of-enemies-hermes"]["pending_check"] or "§6.15" not in ledger["lot-of-enemies-hermes"]["pending_check"]:
+if "4.83" not in ledger["lot-of-enemies-hermes"]["pending_check"] or "6.15" not in ledger["lot-of-enemies-hermes"]["pending_check"]:
     raise AssertionError("The historical Hermes Enemies Lot source conflict must remain open")
 print("PASS Batch 10: 40 public terms; 19 actual revisions and 3 updated technical sections; 16 cited witnesses; 26 source checks; no fabricated approvals.")

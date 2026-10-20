@@ -45,6 +45,11 @@
       "id": "conditions",
       "label": "Batch 09 · Planetary conditions and aspects",
       "slugs_file": "docs/editorial/batch-09-conditions-slugs.txt"
+    },
+    {
+      "id": "lots2",
+      "label": "Batch 10 · Source-specific Lots and calculated points",
+      "slugs_file": "docs/editorial/batch-10-lots-slugs.txt"
     }
   ]
 }

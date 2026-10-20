@@ -19,6 +19,7 @@ on:
       - 'docs/editorial/batch-07-core-slugs.txt'
       - 'docs/editorial/batch-08-signs-slugs.txt'
       - 'docs/editorial/batch-09-conditions-slugs.txt'
+      - 'docs/editorial/batch-10-lots-slugs.txt'
       - 'db/seed/0249_lexicographic_conditions_batch09.sql'
       - 'db/seed/0250_conditions_batch09_checked_lilly.sql'
       - 'db/seed/0247_lexicographic_signs_batch08.sql'

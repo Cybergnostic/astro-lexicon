@@ -2,13 +2,17 @@ import http from 'node:http';
 import { readFile, writeFile, mkdir, rename, stat } from 'node:fs/promises';
 import { extname, join, normalize, relative, resolve } from 'node:path';
 import crypto from 'node:crypto';
+import { loadLedger, saveLedger, publicLedger, revisionToken, decide } from './editorial_ledger.mjs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const APP_ROOT = join(ROOT, 'editorial', 'app');
-const REVIEW_FILE = join(ROOT, 'editorial', 'reviews.json');
+const REVIEW_FILE = process.env.EDITORIAL_REVIEW_FILE ? resolve(process.env.EDITORIAL_REVIEW_FILE) : join(ROOT, 'editorial', 'reviews.json');
 const ASSET_ROOT = join(ROOT, 'editorial', 'review-assets');
 const CORPUS_FILE = join(ROOT, 'src', 'data', 'generated', 'corpus.json');
+const EDITORIAL_FILE = join(ROOT, '.tmp', 'editorial-review-snapshot.json');
+const LEDGER_FILE = process.env.EDITORIAL_LEDGER_FILE ? resolve(process.env.EDITORIAL_LEDGER_FILE) : join(ROOT, 'docs', 'editorial', 'lexicographic-ledger.csv');
+let decisionQueue = Promise.resolve();
 const HOST = process.env.EDITORIAL_HOST || '127.0.0.1';
 const PORT = Number(process.env.EDITORIAL_PORT || 4322);
 const MAX_BODY = 16 * 1024 * 1024;
@@ -120,6 +124,40 @@ async function termsPayload() {
   });
 }
 
+
+async function editorialPayload() {
+  const [snapshot, ledger] = await Promise.all([readJson(EDITORIAL_FILE), loadLedger(LEDGER_FILE)]);
+  return {
+    ...snapshot,
+    ledger: Object.fromEntries(
+      publicLedger(ledger.rows).map((row) => [row.slug, row]),
+    ),
+  };
+}
+
+async function handleDecision(req, res) {
+  const input = JSON.parse(await readBody(req));
+  const slug = safeSlug(input.slug);
+  // Serialize writes across parallel browser tabs; revision hash protects against stale tabs.
+  const action = decisionQueue.then(async () => {
+    const snapshot = await readJson(EDITORIAL_FILE);
+    if (!Object.hasOwn(snapshot.entries, slug)) {
+      throw new Error('This entry is not in an active editorial batch.');
+    }
+    const ledger = await loadLedger(LEDGER_FILE);
+    const index = ledger.rows.findIndex((row) => row.slug === slug);
+    if (index === -1) throw new Error('This entry has no editorial review record.');
+    const proposed = snapshot.entries[slug];
+    const updated = decide(ledger.rows[index], input, { changed: proposed.changes.length > 0 });
+    ledger.rows[index] = updated;
+    await saveLedger(LEDGER_FILE, ledger.headers, ledger.rows);
+    return { ok: true, entry: { ...updated, revision: revisionToken(updated) } };
+  });
+  decisionQueue = action.catch(() => {});
+  const result = await action;
+  json(res, 200, result);
+}
+
 async function handleUpload(req, res) {
   const payload = JSON.parse(await readBody(req));
   const slug = safeSlug(payload.slug);
@@ -175,6 +213,12 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/api/terms') {
       return json(res, 200, await termsPayload());
     }
+    if (req.method === 'GET' && url.pathname === '/api/editorial') {
+      return json(res, 200, await editorialPayload());
+    }
+    if (req.method === 'PUT' && url.pathname === '/api/decision') {
+      return await handleDecision(req, res);
+    }
     if (req.method === 'GET' && url.pathname === '/api/reviews') {
       return json(res, 200, await readJson(REVIEW_FILE));
     }
@@ -200,13 +244,15 @@ const server = http.createServer(async (req, res) => {
     json(res, 404, { error: 'Not found.' });
   } catch (error) {
     console.error(error);
-    json(res, 400, { error: error instanceof Error ? error.message : String(error) });
+    json(res, error.statusCode || 400, { error: error instanceof Error ? error.message : String(error) });
   }
 });
 
 server.listen(PORT, HOST, () => {
   console.log(`Editorial review workbench: http://${HOST}:${PORT}`);
   console.log('Public preview remains separate. Run `npm run dev` in another terminal for the live entry iframe.');
-  console.log(`Review data: ${relative(ROOT, REVIEW_FILE)}`);
+  console.log('Human review decisions: docs/editorial/lexicographic-ledger.csv');
+  console.log('Comparison snapshots: .tmp/editorial-review-snapshot.json');
+  console.log(`Review notes and attachments: ${relative(ROOT, REVIEW_FILE)}`);
   console.log(`Image suggestions: ${relative(ROOT, ASSET_ROOT)}/`);
 });

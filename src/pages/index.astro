@@ -1,202 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LexiconDirectory from '../components/LexiconDirectory.astro';
 import corpus from '../data/generated/corpus.json';
-import { browseSubjects } from '../data/browseSubjects.js';
 
 const { terms, authors, works, meta } = corpus;
-const featuredSlugs = [
-  'reception','application','sect','hayz','domicile','exaltation','terms','face',
-  'combustion','retrogradation','translation-of-light','collection-of-light',
-  'prohibition','lot-of-fortune','annual-profection','firdaria','horary-astrology','election'
-];
-const featured = featuredSlugs.map((slug) => terms.find((term) => term.slug === slug)).filter(Boolean).slice(0,18);
 ---
-<BaseLayout>
-  <section class="hero">
-    <div class="shell hero-grid">
+<BaseLayout title="Astrological Lexicon — Dictionary of Traditional Astrology" description="A source-based historical dictionary of traditional astrological terms, techniques and doctrines.">
+  <header class="library-hero">
+    <div class="shell library-hero-grid">
       <div>
-        <p class="hero-kicker">Historical dictionary · traditional astrology</p>
-        <h1>Astrological Lexicon</h1>
-        <p class="hero-deck">A source-based reference work tracing technical astrological language across foundational texts from Late Antiquity through the seventeenth century.</p>
-        <div class="search-wrap">
-          <div class="search-label"><span class="micro-label">Search the lexicon</span><span>terms · authors · works</span></div>
-          <div class="search" id="lexicon-search">
-            <input
-              id="term-search"
-              type="search"
-              autocomplete="off"
-              placeholder="Try reception, bounds, Bonatti, Christian Astrology…"
-              aria-label="Search lexicon"
-              role="combobox"
-              aria-autocomplete="list"
-              aria-expanded="false"
-              aria-controls="search-results"
-            />
-            <div id="search-results" class="search-results" role="listbox" aria-label="Search results"></div>
-          </div>
+        <p class="library-hero-eyebrow"><span aria-hidden="true" class="hero-rule"></span> THE HISTORICAL ASTROLOGY REFERENCE</p>
+        <h1>The language of<br/><em>traditional astrology.</em></h1>
+        <p class="library-hero-deck">A scholarly lexicon of concepts, techniques and terminology from the ancient, medieval and early modern astrological traditions.</p>
+        <a class="library-hero-jump" href="#dictionary-heading">Explore the dictionary <span aria-hidden="true">↘</span></a>
+      </div>
+      <aside class="library-hero-aside" aria-label="Reference collection">
+        <div class="library-hero-rule"></div>
+        <p class="library-hero-aside-title">AN OPEN REFERENCE WORK</p>
+        <strong>{meta.terms}<span>entries</span></strong>
+        <p>Definitions, technical distinctions and source-specific historical accounts.</p>
+        <div class="library-hero-numbers">
+          <div><b>{authors.length}</b><span>AUTHORS</span></div>
+          <div><b>{meta.works}</b><span>WORKS</span></div>
         </div>
-      </div>
-      <div>
-        <div class="corpus-stats">
-          <div class="stat"><span class="stat-value">{meta.terms}</span><span class="stat-label">entries</span></div>
-          <div class="stat"><span class="stat-value">{meta.interpretations}</span><span class="stat-label">source accounts</span></div>
-          <div class="stat"><span class="stat-value">{meta.works}</span><span class="stat-label">historical works</span></div>
-        </div>
-        <p class="hero-note"><strong>Not a modernized glossary.</strong> Definitions are synthesized from source evidence while disagreements, aliases, translator choices and historical differences remain visible.</p>
-      </div>
+      </aside>
     </div>
-  </section>
-
-  <section class="section" id="lexicon">
-    <div class="shell section-grid">
-      <div class="section-intro"><p class="micro-label">01 · Lexicon</p><h2>Selected entries</h2><p>A compact doorway into the corpus. The complete A–Z index lives on its own page.</p></div>
-      <div class="section-body">
-        <ul class="index-list compact-list">
-          {featured.map((term) => <li><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="count">{term.category}</span></li>)}
-        </ul>
-        <p class="more-link"><a href="/terms/">Browse all {meta.terms} entries →</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="subjects">
-    <div class="shell section-grid">
-      <div class="section-intro">
-        <p class="micro-label">02 · Subjects</p>
-        <h2>Browse by doctrine</h2>
-        <p>Start with a broad area of traditional doctrine, then narrow the results by name, alias or alphabet.</p>
-      </div>
-      <div class="section-body subject-grid">
-        {browseSubjects.map((subject) =>
-          <a class="subject" href={`/terms/?subject=${subject.slug}`}>
-            <strong>{subject.name}</strong><span>{subject.detail}</span>
-          </a>
-        )}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="tradition"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">03 · Tradition</p><h2>Source witnesses</h2><p>The corpus spans several linguistic and historical layers of the tradition.</p></div><div class="section-body timeline">{authors.map((author) => <div class="timeline-row"><span class="timeline-era">{author.historical_layer}</span><span class="timeline-author"><a href={`/authors/${author.slug}/`}>{author.name}</a></span><span class="timeline-work"><em>{author.works[0]?.title}</em></span></div>)}</div></div></section>
-
-  <section class="section" id="method"><div class="shell section-grid"><div class="section-intro"><p class="micro-label">04 · Method</p><h2>How entries are built</h2><p>Each entry separates a concise definition from attributed historical evidence and source differences.</p></div><div class="section-body method-grid"><div class="method-item"><strong>Clear definition</strong><p>A concise recognition rule explaining what the term is.</p></div><div class="method-item"><strong>Source accounts</strong><p>Historical explanations remain tied to an author, work, edition and locator.</p></div><div class="method-item"><strong>Differences preserved</strong><p>False friends, competing rules and translator-dependent labels are not silently flattened.</p></div></div></div></section>
-
-  <script define:vars={{ terms, authors, works }} is:inline>
-    const input = document.getElementById('term-search');
-    const box = document.getElementById('search-results');
-    const searchRoot = document.getElementById('lexicon-search');
-    const index = [
-      ...terms.map((x) => ({ label: x.label, kind: 'term', detail: [x.category, ...x.aliases.map((a) => a.label)].join(' · '), href: `/terms/${x.slug}/` })),
-      ...authors.map((x) => ({ label: x.name, kind: 'author', detail: x.historical_layer || '', href: `/authors/${x.slug}/` })),
-      ...works.map((x) => ({ label: x.title, kind: 'work', detail: x.author_name, href: `/works/${x.slug}/` }))
-    ];
-
-    let visibleResults = [];
-    let activeIndex = -1;
-
-    const setExpanded = (expanded) => {
-      input?.setAttribute('aria-expanded', String(expanded));
-      box?.classList.toggle('is-open', expanded);
-      if (!expanded) input?.removeAttribute('aria-activedescendant');
-    };
-
-    const closeResults = () => {
-      visibleResults = [];
-      activeIndex = -1;
-      if (box) box.replaceChildren();
-      setExpanded(false);
-    };
-
-    const updateActiveOption = () => {
-      if (!input || !box) return;
-      const options = [...box.querySelectorAll('[role="option"]')];
-      options.forEach((option, optionIndex) => {
-        option.setAttribute('aria-selected', String(optionIndex === activeIndex));
-      });
-      if (activeIndex >= 0 && options[activeIndex]) {
-        input.setAttribute('aria-activedescendant', options[activeIndex].id);
-        options[activeIndex].scrollIntoView({ block: 'nearest' });
-      } else {
-        input.removeAttribute('aria-activedescendant');
-      }
-    };
-
-    const renderResults = () => {
-      if (!box) return;
-      box.replaceChildren();
-
-      if (!visibleResults.length) {
-        const empty = document.createElement('div');
-        empty.className = 'search-result';
-        empty.setAttribute('role', 'status');
-        const kind = document.createElement('small');
-        kind.textContent = 'search';
-        const text = document.createElement('span');
-        text.textContent = 'No indexed result.';
-        empty.append(kind, text);
-        box.append(empty);
-        setExpanded(true);
-        return;
-      }
-
-      visibleResults.forEach((result, resultIndex) => {
-        const link = document.createElement('a');
-        link.className = 'search-result';
-        link.href = result.href;
-        link.id = `search-option-${resultIndex}`;
-        link.setAttribute('role', 'option');
-        link.setAttribute('aria-selected', 'false');
-
-        const kind = document.createElement('small');
-        kind.textContent = result.kind;
-        const content = document.createElement('span');
-        const label = document.createElement('strong');
-        label.textContent = result.label;
-        const meta = document.createElement('span');
-        meta.className = 'meta';
-        meta.textContent = result.detail || '';
-        content.append(label, document.createElement('br'), meta);
-        link.append(kind, content);
-        box.append(link);
-      });
-
-      setExpanded(true);
-      updateActiveOption();
-    };
-
-    input?.addEventListener('input', () => {
-      const q = input.value.trim().toLowerCase();
-      activeIndex = -1;
-      if (!q) {
-        closeResults();
-        return;
-      }
-      visibleResults = index
-        .filter((x) => `${x.label} ${x.detail}`.toLowerCase().includes(q))
-        .slice(0, 9);
-      renderResults();
-    });
-
-    input?.addEventListener('keydown', (event) => {
-      if (!box?.classList.contains('is-open')) return;
-      if (event.key === 'ArrowDown' && visibleResults.length) {
-        event.preventDefault();
-        activeIndex = (activeIndex + 1) % visibleResults.length;
-        updateActiveOption();
-      } else if (event.key === 'ArrowUp' && visibleResults.length) {
-        event.preventDefault();
-        activeIndex = activeIndex <= 0 ? visibleResults.length - 1 : activeIndex - 1;
-        updateActiveOption();
-      } else if (event.key === 'Enter' && activeIndex >= 0 && visibleResults[activeIndex]) {
-        event.preventDefault();
-        window.location.href = visibleResults[activeIndex].href;
-      } else if (event.key === 'Escape') {
-        event.preventDefault();
-        closeResults();
-      }
-    });
-
-    document.addEventListener('click', (event) => {
-      if (searchRoot && !searchRoot.contains(event.target)) closeResults();
-    });
-  </script>
+  </header>
+  <LexiconDirectory terms={terms} authors={authors} works={works} />
 </BaseLayout>

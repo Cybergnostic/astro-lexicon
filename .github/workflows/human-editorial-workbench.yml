@@ -1,0 +1,81 @@
+name: Human editorial workbench
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/editorial_review_server.mjs'
+      - 'scripts/editorial_ledger.mjs'
+      - 'scripts/test_editorial_ledger.mjs'
+      - 'scripts/smoke_editorial_workbench.mjs'
+      - 'scripts/build_editorial_review_snapshot.py'
+      - 'scripts/test_editorial_review_snapshot.py'
+      - 'editorial/app/**'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - 'docs/editorial/review-batches.json'
+      - 'docs/editorial/batch-03-foundations-slugs.txt'
+      - 'docs/editorial/batch-04-horary-slugs.txt'
+      - 'docs/editorial/batch-06-astronomical-slugs.txt'
+      - 'docs/editorial/batch-07-core-slugs.txt'
+      - 'docs/editorial/batch-08-signs-slugs.txt'
+      - 'docs/editorial/batch-09-conditions-slugs.txt'
+      - 'docs/editorial/batch-10-lots-slugs.txt'
+      - 'db/seed/0251_lexicographic_lots_batch10.sql'
+      - 'db/seed/0252_lots_batch10_direct_passages.sql'
+      - 'db/seed/0249_lexicographic_conditions_batch09.sql'
+      - 'db/seed/0250_conditions_batch09_checked_lilly.sql'
+      - 'db/seed/0247_lexicographic_signs_batch08.sql'
+      - 'db/seed/0248_signs_batch08_checked_witnesses.sql'
+      - 'db/seed/0245_lexicographic_core_batch07.sql'
+      - 'db/seed/0246_core_batch07_direct_witnesses.sql'
+      - 'db/seed/0243_lexicographic_astronomy_batch06.sql'
+      - 'db/seed/0244_astronomy_batch06_direct_witnesses.sql'
+      - 'docs/editorial/batch-05-dignities-slugs.txt'
+      - 'db/seed/0241_lexicographic_dignities_batch05.sql'
+      - 'db/seed/0242_dignities_batch05_checked_passages.sql'
+      - 'db/seed/0239_lexicographic_horary_batch04.sql'
+      - 'db/seed/0240_horary_batch04_lilly_direct_witnesses.sql'
+      - 'db/seed/0237_lexicographic_foundations_batch03.sql'
+      - 'package.json'
+      - '.github/workflows/human-editorial-workbench.yml'
+  pull_request:
+    paths:
+      - 'scripts/editorial_review_server.mjs'
+      - 'scripts/editorial_ledger.mjs'
+      - 'scripts/test_editorial_ledger.mjs'
+      - 'scripts/smoke_editorial_workbench.mjs'
+      - 'scripts/build_editorial_review_snapshot.py'
+      - 'scripts/test_editorial_review_snapshot.py'
+      - 'editorial/app/**'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - 'docs/editorial/review-batches.json'
+      - 'docs/editorial/batch-03-foundations-slugs.txt'
+      - 'docs/editorial/batch-04-horary-slugs.txt'
+      - 'docs/editorial/batch-06-astronomical-slugs.txt'
+      - 'docs/editorial/batch-07-core-slugs.txt'
+      - 'docs/editorial/batch-08-signs-slugs.txt'
+      - 'db/seed/0247_lexicographic_signs_batch08.sql'
+      - 'db/seed/0248_signs_batch08_checked_witnesses.sql'
+      - 'db/seed/0245_lexicographic_core_batch07.sql'
+      - 'db/seed/0246_core_batch07_direct_witnesses.sql'
+      - 'db/seed/0243_lexicographic_astronomy_batch06.sql'
+      - 'db/seed/0244_astronomy_batch06_direct_witnesses.sql'
+      - 'db/seed/0239_lexicographic_horary_batch04.sql'
+      - 'db/seed/0240_horary_batch04_lilly_direct_witnesses.sql'
+      - 'db/seed/0237_lexicographic_foundations_batch03.sql'
+      - 'package.json'
+      - '.github/workflows/human-editorial-workbench.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript, review decisions, and before/after snapshots
+        run: npm run review:check

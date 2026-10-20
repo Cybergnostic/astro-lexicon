@@ -1,89 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import LexiconDirectory from '../../components/LexiconDirectory.astro';
 import corpus from '../../data/generated/corpus.json';
-import { browseSubjects, subjectSlugsForTerm } from '../../data/browseSubjects.js';
 
-const { terms, meta } = corpus;
-const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-const availableLetters=new Set(terms.map((term)=>term.label.charAt(0).toUpperCase()));
-const subjectData = browseSubjects.map(({ slug, name, detail }) => ({ slug, name, detail }));
+const { terms, authors, works } = corpus;
 ---
-<BaseLayout title="Lexicon A–Z — Astrological Lexicon" description={`Browse ${meta.terms} traditional astrological terms.`}>
-  <header class="page-header"><div class="shell"><p class="hero-kicker">Lexicon · A–Z</p><h1>Lexicon</h1><p class="page-deck">Browse the complete terminology index, or enter through one of the broad doctrinal subjects.</p></div></header>
-  <section class="section"><div class="shell">
-    <div id="subject-context" class="subject-context" hidden>
-      <div><span class="micro-label">Browsing subject</span><strong id="subject-name"></strong><p id="subject-detail"></p></div>
-      <a href="/terms/">Clear subject ×</a>
+<BaseLayout title="A–Z Dictionary — Astrological Lexicon" description="Search and browse every traditional astrological headword, definition and historical alias.">
+  <header class="collection-header">
+    <div class="shell">
+      <p class="collection-eyebrow"><a href="/">HOME</a> <span aria-hidden="true">/</span> DICTIONARY</p>
+      <h1>Dictionary A–Z</h1>
+      <p>Headwords, definitions, historical names and technical terms in one searchable index.</p>
     </div>
-
-    <div class="subject-filter" aria-label="Browse by subject">
-      <a href="/terms/" data-subject-link="ALL">All subjects</a>
-      {browseSubjects.map((subject)=><a href={`/terms/?subject=${subject.slug}`} data-subject-link={subject.slug}>{subject.name}</a>)}
-    </div>
-
-    <div class="search-wrap"><div class="search-label"><span class="micro-label">Filter entries</span><span>definitions · categories · aliases</span></div><div class="search"><input id="filter" type="search" autocomplete="off" placeholder="Type a term, alias, or category…" aria-label="Filter lexicon entries" /></div></div>
-    <div class="alpha" aria-label="Alphabetical index"><a href="#" data-letter="ALL" class="active" aria-current="true">All</a>{alphabet.map((letter)=>availableLetters.has(letter)?<a href={`#${letter}`} data-letter={letter}>{letter}</a>:<span class="is-empty">{letter}</span>)}</div>
-    <p id="result-count" class="meta" aria-live="polite" aria-atomic="true">Showing all {meta.terms} entries.</p>
-    <ul id="term-list" class="index-list">{terms.map((term)=>{
-      const subjectSlugs=subjectSlugsForTerm(term);
-      return <li data-letter={term.label.charAt(0).toUpperCase()} data-subjects={subjectSlugs.join(' ')} data-search={`${term.label} ${term.short_definition} ${term.category} ${term.aliases.map(a=>a.label).join(' ')}`.toLowerCase()}><a href={`/terms/${term.slug}/`}>{term.label}</a><span class="index-definition">{term.short_definition}</span><span class="count">{term.category}</span></li>;
-    })}</ul>
-  </div></section>
-  <script define:vars={{ total: meta.terms, subjectData }} is:inline>
-    const rows=Array.from(document.querySelectorAll('#term-list li'));
-    const input=document.getElementById('filter');
-    const letterLinks=Array.from(document.querySelectorAll('.alpha a[data-letter]'));
-    const subjectLinks=Array.from(document.querySelectorAll('[data-subject-link]'));
-    const count=document.getElementById('result-count');
-    const context=document.getElementById('subject-context');
-    const subjectName=document.getElementById('subject-name');
-    const subjectDetail=document.getElementById('subject-detail');
-    const params=new URLSearchParams(window.location.search);
-    const requestedSubject=params.get('subject');
-    const activeSubject=subjectData.find(item=>item.slug===requestedSubject) ?? null;
-    let letter='ALL';
-
-    if(activeSubject){
-      if(context) context.hidden=false;
-      if(subjectName) subjectName.textContent=activeSubject.name;
-      if(subjectDetail) subjectDetail.textContent=activeSubject.detail;
-      if(input) input.placeholder=`Search within ${activeSubject.name}…`;
-      document.title=`${activeSubject.name} — Astrological Lexicon`;
-    }
-
-    function apply(){
-      const q=(input?.value||'').trim().toLowerCase();
-      let n=0;
-      rows.forEach(row=>{
-        const subjectMatch=!activeSubject || (row.dataset.subjects||'').split(' ').includes(activeSubject.slug);
-        const show=subjectMatch && (letter==='ALL'||row.dataset.letter===letter) && (!q||row.dataset.search.includes(q));
-        row.hidden=!show;
-        if(show)n++;
-      });
-      letterLinks.forEach(a=>{
-        const active=a.dataset.letter===letter;
-        a.classList.toggle('active',active);
-        if(active) a.setAttribute('aria-current','true');
-        else a.removeAttribute('aria-current');
-      });
-      subjectLinks.forEach(a=>{
-        const active=activeSubject ? a.dataset.subjectLink===activeSubject.slug : a.dataset.subjectLink==='ALL';
-        a.classList.toggle('active',active);
-        if(active) a.setAttribute('aria-current','page');
-        else a.removeAttribute('aria-current');
-      });
-      if(count) count.textContent=activeSubject ? `Showing ${n} entries in ${activeSubject.name}.` : `Showing ${n} of ${total} entries.`;
-    }
-
-    letterLinks.forEach(a=>a.addEventListener('click',e=>{e.preventDefault();letter=a.dataset.letter||'ALL';apply();}));
-    input?.addEventListener('input',apply);
-    apply();
-  </script>
+  </header>
+  <LexiconDirectory terms={terms} authors={authors} works={works} />
 </BaseLayout>
-
-<style>
-  .subject-context{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin:0 0 1.4rem;padding:1rem 0;border-top:1px solid var(--line-dark);border-bottom:1px solid var(--line-dark)}
-  .subject-context strong{display:block;font-size:1.35rem}.subject-context p{margin:.25rem 0 0;color:var(--muted);max-width:48rem}.subject-context>a{white-space:nowrap;font-family:var(--font-ui,ui-sans-serif,system-ui,sans-serif);font-size:.78rem;text-decoration:none}
-  .subject-filter{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.5rem}.subject-filter a{padding:.4rem .6rem;border:1px solid var(--line);font-family:var(--font-ui,ui-sans-serif,system-ui,sans-serif);font-size:.72rem;text-decoration:none;color:var(--muted)}.subject-filter a:hover,.subject-filter a.active{border-color:var(--ink);background:var(--paper-deep);color:var(--ink)}
-  @media(max-width:720px){.subject-context{display:block}.subject-context>a{display:inline-block;margin-top:.7rem}}
-</style>

@@ -1,0 +1,145 @@
+name: Lexicographic triage
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'db/**'
+      - 'scripts/lexicographic_triage.py'
+      - 'scripts/test_lexicographic_triage.py'
+      - 'scripts/export_editorial_packets.py'
+      - 'scripts/check_lots_batch02.py'
+      - 'scripts/check_foundations_batch03.py'
+      - 'scripts/check_horary_batch04.py'
+      - 'docs/editorial/batch-03-foundations-slugs.txt'
+      - 'docs/editorial/batch-04-horary-slugs.txt'
+      - 'docs/editorial/batch-05-dignities-slugs.txt'
+      - 'docs/editorial/batch-06-astronomical-slugs.txt'
+      - 'docs/editorial/batch-07-core-slugs.txt'
+      - 'docs/editorial/batch-08-signs-slugs.txt'
+      - 'docs/editorial/batch-09-conditions-slugs.txt'
+      - 'docs/editorial/batch-10-lots-slugs.txt'
+      - 'scripts/check_lots_batch10.py'
+      - 'scripts/check_conditions_batch09.py'
+      - 'scripts/check_signs_batch08.py'
+      - 'scripts/check_core_batch07.py'
+      - 'scripts/check_astronomy_batch06.py'
+      - 'scripts/check_dignities_batch05.py'
+      - 'docs/editorial/review-batches.json'
+      - 'docs/editorial/lexicographic-pilot-slugs.txt'
+      - 'docs/editorial/batch-02-lots-slugs.txt'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - '.github/workflows/lexicographic-triage.yml'
+  pull_request:
+    paths:
+      - 'db/**'
+      - 'scripts/lexicographic_triage.py'
+      - 'scripts/test_lexicographic_triage.py'
+      - 'docs/editorial/lexicographic-ledger.csv'
+      - '.github/workflows/lexicographic-triage.yml'
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate triage heuristics and approval gate
+        run: python3 -m unittest discover -s scripts -p 'test_lexicographic_triage.py' -v
+      - name: Rebuild corpus and audit all public headwords
+        run: |
+          python3 scripts/lexicographic_triage.py \
+            --out .tmp/lexicographic-triage.csv \
+            --focus reception,essential-dignity,application,translation-of-light,sect,fardar,annual-profection,animodar,lot-of-fortune,saturn
+      - name: Verify Batch 02 edits matched all intended headwords
+        run: python3 scripts/check_lots_batch02.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 03 source holds and actual copy changes
+        run: python3 scripts/check_foundations_batch03.py .tmp/lexicographic-triage.sqlite
+      - name: Verify forty-entry horary edits and primary witnesses
+        run: python3 scripts/check_horary_batch04.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify dignity prose edits and six sourced historical witnesses
+        run: python3 scripts/check_dignities_batch05.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 06 real copy corrections and direct source citations
+        run: python3 scripts/check_astronomy_batch06.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 07 definitions, removed duplicated leads and direct citations
+        run: python3 scripts/check_core_batch07.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 08 actual copy edits and source citations
+        run: python3 scripts/check_signs_batch08.py --db .tmp/lexicographic-triage.sqlite
+      - name: Validate Batch 09 terms, edits and cited source witnesses
+        run: python3 scripts/check_conditions_batch09.py --db .tmp/lexicographic-triage.sqlite
+      - name: Check Batch 10 revised Lots and direct source variants
+        run: python3 scripts/check_lots_batch10.py --db .tmp/lexicographic-triage.sqlite
+      - name: Export actual ten-entry pilot for editorial comparison
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/lexicographic-pilot-slugs.txt \
+            --out .tmp/pilot-review-packet.md
+      - name: Export next 20-entry Lots batch with current source locators
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-02-lots-slugs.txt \
+            --out .tmp/lots-review-packet.md
+      - name: Export forty-entry horary source-review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-04-horary-slugs.txt \
+            --out .tmp/horary-review-packet.md
+      - name: Export forty-entry dignity and sect source-review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-05-dignities-slugs.txt \
+            --out .tmp/dignities-review-packet.md
+      - name: Export Batch 06 astronomical reference review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-06-astronomical-slugs.txt \
+            --out .tmp/astronomy-review-packet.md
+      - name: Export 40-entry core terminology source-review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-07-core-slugs.txt \
+            --out .tmp/core-review-packet.md
+      - name: Export actual forty-entry sign classification review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-08-signs-slugs.txt \
+            --out .tmp/signs-review-packet.md
+      - name: Export Batch 09 actual planetary-condition and aspect review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-09-conditions-slugs.txt \
+            --out .tmp/conditions-review-packet.md
+      - name: Export Batch 10 historical Lots review packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-10-lots-slugs.txt \
+            --out .tmp/lots10-review-packet.md
+      - name: Publish candidate inventory and editorial packets
+        uses: actions/upload-artifact@v4
+        with:
+          name: lexicographic-candidate-inventory
+          path: |
+            .tmp/lexicographic-triage.csv
+            .tmp/pilot-review-packet.md
+            .tmp/lots-review-packet.md
+            .tmp/horary-review-packet.md
+            .tmp/dignities-review-packet.md
+            .tmp/astronomy-review-packet.md
+            .tmp/core-review-packet.md
+            .tmp/signs-review-packet.md
+            .tmp/conditions-review-packet.md
+            .tmp/lots10-review-packet.md
+          retention-days: 30

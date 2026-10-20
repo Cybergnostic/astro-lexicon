@@ -40,6 +40,11 @@
       "id": "signs",
       "label": "Batch 08 · Zodiacal classes, relationships and elections",
       "slugs_file": "docs/editorial/batch-08-signs-slugs.txt"
+    },
+    {
+      "id": "conditions",
+      "label": "Batch 09 · Planetary conditions and aspects",
+      "slugs_file": "docs/editorial/batch-09-conditions-slugs.txt"
     }
   ]
 }

@@ -67,7 +67,15 @@ assert len(revised_signs) == 22, f"Expected 22 genuinely revised sign/headword e
 assert any("Bīrūnī" in w["author"] or "Biruni" in w["author"] for w in data["entries"]["natural-sextile"]["witnesses"])
 assert data["entries"]["natural-sextile"]["before"]["intro"] != data["entries"]["natural-sextile"]["proposed"]["intro"]
 assert data["entries"]["dry-lunar-mansion"]["changes"] == [], "Specialized mansion table should not be mechanically rewritten"
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 129
+conditions = data["groups"][8]["slugs"]
+assert len(conditions) == 40
+changed_conditions = [slug for slug in conditions if data["entries"][slug]["changes"]]
+assert len(changed_conditions) == 16, f"Batch 09 must show 16 real changes, got {changed_conditions}"
+assert any(c["kind"] == "definition" for c in data["entries"]["quincunx"]["changes"])
+assert any(c["kind"] == "section" for c in data["entries"]["cazimi"]["changes"])
+assert any("Lilly" in w["author"] for w in data["entries"]["sesquiquadrate"]["witnesses"])
+assert data["entries"]["dustoria"]["changes"] == [], "Unverified specialist term should remain unchanged"
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 145
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),

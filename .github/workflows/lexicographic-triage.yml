@@ -18,6 +18,7 @@ on:
       - 'docs/editorial/batch-07-core-slugs.txt'
       - 'docs/editorial/batch-08-signs-slugs.txt'
       - 'docs/editorial/batch-09-conditions-slugs.txt'
+      - 'scripts/check_conditions_batch09.py'
       - 'scripts/check_signs_batch08.py'
       - 'scripts/check_core_batch07.py'
       - 'scripts/check_astronomy_batch06.py'
@@ -66,6 +67,8 @@ jobs:
         run: python3 scripts/check_core_batch07.py --db .tmp/lexicographic-triage.sqlite
       - name: Verify Batch 08 actual copy edits and source citations
         run: python3 scripts/check_signs_batch08.py --db .tmp/lexicographic-triage.sqlite
+      - name: Validate Batch 09 terms, edits and cited source witnesses
+        run: python3 scripts/check_conditions_batch09.py --db .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \

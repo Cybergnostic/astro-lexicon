@@ -55,6 +55,11 @@
       "id": "time-lords",
       "label": "Batch 11 · Time lords and predictive techniques",
       "slugs_file": "docs/editorial/batch-11-time-lords-slugs.txt"
+    },
+    {
+      "id": "foundations-medical",
+      "label": "Batch 12 · Foundations, stars and historical medicine",
+      "slugs_file": "docs/editorial/batch-12-foundations-slugs.txt"
     }
   ]
 }

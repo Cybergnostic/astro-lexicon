@@ -19,6 +19,7 @@ on:
       - 'docs/editorial/batch-08-signs-slugs.txt'
       - 'docs/editorial/batch-09-conditions-slugs.txt'
       - 'docs/editorial/batch-10-lots-slugs.txt'
+      - 'docs/editorial/batch-11-time-lords-slugs.txt'
       - 'scripts/check_lots_batch10.py'
       - 'scripts/check_conditions_batch09.py'
       - 'scripts/check_signs_batch08.py'
@@ -127,6 +128,12 @@ jobs:
             --db .tmp/lexicographic-triage.sqlite \
             --slugs-file docs/editorial/batch-10-lots-slugs.txt \
             --out .tmp/lots10-review-packet.md
+      - name: Export Batch 11 true time-lords source and prose packet
+        run: |
+          python3 scripts/export_editorial_packets.py \
+            --db .tmp/lexicographic-triage.sqlite \
+            --slugs-file docs/editorial/batch-11-time-lords-slugs.txt \
+            --out .tmp/timelords11-review-packet.md
       - name: Publish candidate inventory and editorial packets
         uses: actions/upload-artifact@v4
         with:
@@ -142,4 +149,5 @@ jobs:
             .tmp/signs-review-packet.md
             .tmp/conditions-review-packet.md
             .tmp/lots10-review-packet.md
+            .tmp/timelords11-review-packet.md
           retention-days: 30

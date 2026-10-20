@@ -1,6 +1,6 @@
 # Human lexicographic review workbench
 
-The local reviewer UI at http://127.0.0.1:4322/ now reads the **ten-entry calibration, twenty-entry Lots cohort, and five forty-entry cohorts (Foundations, Horary, Dignities, Astronomy and Core)** from their actual canonical slug files, the current SQLite database, and the review-state CSV. It does **not** deploy to the public GitHub Pages website.
+The local reviewer UI at http://127.0.0.1:4322/ now reads the **ten-entry calibration, twenty-entry Lots cohort, and six forty-entry cohorts (Foundations, Horary, Dignities, Astronomy, Core and Signs)** from their actual canonical slug files, the current SQLite database, and the review-state CSV. It does **not** deploy to the public GitHub Pages website.
 
 ## Launch
 
@@ -28,7 +28,7 @@ The local Astro site stays at http://127.0.0.1:4321/ and is embedded in an ifram
 - **Before and proposed**: exact changed short definition, intro and SQL article-section blocks. A removed intro appears as "removed as redundant". Both columns show assembled SQLite content, not an invented AI paraphrase.
 - **Historical witnesses**: inspected/reported evidence recorded in the existing database, including source interpretation and citations; the number of recorded witnesses does not imply they were all personally checked in this batch.
 
-The comparison baseline uses the entire corpus **except** ordered editorial correction seeds 0233 through 0246. The proposed side uses the latest complete corpus. This makes the review consistent across all registered batches, and avoids comparing a SQL fragment with a page that might have been modified again in a later seed.
+The comparison baseline uses the entire corpus **except** ordered editorial correction seeds 0233 through 0248. The proposed side uses the latest complete corpus. This makes the review consistent across all registered batches, and avoids comparing a SQL fragment with a page that might have been modified again in a later seed.
 
 ## Record a human decision
 
@@ -64,13 +64,13 @@ If no notes or images were added, stage only the changed files reported by git s
 
     npm run review:check
 
-The check validates JavaScript syntax, CSV quote/newline handling, source-approval gates, stale-review conflict prevention, and recreates both SQLite comparisons. It ensures all 228 unique headwords from the seven cohorts (some terms occur in two batches) are represented, the intentionally unchanged control is unchanged and the historical source summaries are attached.
+The check validates JavaScript syntax, CSV quote/newline handling, source-approval gates, stale-review conflict prevention, and recreates both SQLite comparisons. It ensures all 268 unique headwords from the eight cohorts (some terms occur in two batches) are represented, the intentionally unchanged control is unchanged and the historical source summaries are attached.
 
 The GitHub workflow "Human editorial workbench" runs the same check in CI.
 
 ## Explicit limits
 
-- The interface reviews **seven curated batches**, not an unreviewed full 468-entry side-by-side diff. Other entries can still be viewed on the public site; new editorial batches need a canonical slug cohort, a manifest entry and (only if justified) a correction seed.
+- The interface reviews **eight curated batches**, not an unreviewed full 468-entry side-by-side diff. Other entries can still be viewed on the public site; new editorial batches need a canonical slug cohort, a manifest entry and (only if justified) a correction seed.
 - It is a **review-and-approval tool**, not an in-browser SQL authoring application. Text revisions belong in ordered SQL seeds, reviewed separately.
 - Citation lists include historical sources in the corpus, not scanned book pages. Use the user's source PDFs or the citation locators to verify claims; never equate existing citation metadata with primary-source verification.
 - After switching branches, rerun the review startup command to regenerate comparisons so they match the checked-out SQL. Do not leave a review process running against a different Git branch's generated data.
@@ -86,3 +86,5 @@ Batch 04's specific source-check tasks and verified Lilly passages: docs/editori
 Batch 05's dignity source checks: docs/editorial/batch-05-dignities-results.md. Batch 06's astronomical source checks: docs/editorial/batch-06-astronomical-results.md. These are source-aware editorial reviews, not bulk approval of all historical claims.
 
 Batch 07's primary text verification and eighteen revised headwords are documented in docs/editorial/batch-07-core-results.md. The twelve zodiac sign entries were not rewritten simply for uniform appearance.
+
+Batch 08's direct historical evidence, source-specific sign relationship examples and twenty-two edited headwords are documented in docs/editorial/batch-08-signs-results.md.

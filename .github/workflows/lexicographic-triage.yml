@@ -20,6 +20,7 @@ on:
       - 'docs/editorial/batch-09-conditions-slugs.txt'
       - 'docs/editorial/batch-10-lots-slugs.txt'
       - 'docs/editorial/batch-11-time-lords-slugs.txt'
+      - 'scripts/check_timelords_batch11.py'
       - 'scripts/check_lots_batch10.py'
       - 'scripts/check_conditions_batch09.py'
       - 'scripts/check_signs_batch08.py'
@@ -74,6 +75,8 @@ jobs:
         run: python3 scripts/check_conditions_batch09.py --db .tmp/lexicographic-triage.sqlite
       - name: Check Batch 10 revised Lots and direct source variants
         run: python3 scripts/check_lots_batch10.py --db .tmp/lexicographic-triage.sqlite
+      - name: Verify Batch 11 source passages, new prose and unchanged reference data
+        run: python3 scripts/check_timelords_batch11.py --db .tmp/lexicographic-triage.sqlite
       - name: Export actual ten-entry pilot for editorial comparison
         run: |
           python3 scripts/export_editorial_packets.py \

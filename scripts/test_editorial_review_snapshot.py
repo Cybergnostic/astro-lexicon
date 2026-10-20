@@ -75,7 +75,14 @@ assert any(c["kind"] == "definition" for c in data["entries"]["quincunx"]["chang
 assert any(c["kind"] == "section" for c in data["entries"]["cazimi"]["changes"])
 assert any("Lilly" in w["author"] for w in data["entries"]["sesquiquadrate"]["witnesses"])
 assert data["entries"]["dustoria"]["changes"] == [], "Unverified specialist term should remain unchanged"
-assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 145
+lots10 = data["groups"][9]["slugs"]
+assert len(lots10) == 40
+revised_lots10 = [slug for slug in lots10 if data["entries"][slug]["changes"]]
+assert len(revised_lots10) == 19, f"Expected 19 real Lots edits, got {revised_lots10}"
+assert any("Abū Maʿshar" in w["author"] or "Mashar" in w["work"] for w in data["entries"]["lot-of-enemies-hermes"]["witnesses"])
+assert any(c["kind"] == "section" for c in data["entries"]["lot-of-enemies-hermes"]["changes"])
+assert data["entries"]["lot-of-imprisonment"]["changes"] == [], "Do not rewrite an already precise source name"
+assert sum(bool(entry["changes"]) for entry in data["entries"].values()) >= 164
 print("Editorial review snapshot OK:",
       len(data["entries"]), "unique headwords;",
       sum(bool(entry["changes"]) for entry in data["entries"].values()),
